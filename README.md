@@ -170,20 +170,6 @@ Password: 1234
 
 ---
 
-## 📸 Screenshots
-
-Add screenshots here to make the README stronger and more professional.
-
-Suggested images:
-
-* Login screen
-* People management screen
-* Applications screen
-* Test booking screen
-* License details screen
-
----
-
 ## 💡 Design Goals
 
 * Clear separation of concerns
