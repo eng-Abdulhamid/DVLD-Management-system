@@ -1,0 +1,213 @@
+[10/01/2026] Error: PageNumber or SizeInEveryPage is invalid (<= 0). Cannot execute GetAllPersonsAtPage operation
+[10/01/2026] Error: PageNumber or SizeInEveryPage is invalid (<= 0). Cannot execute GetAllPersonsAtPage operation
+[10/01/2026] Error: PageNumber or SizeInEveryPage is invalid (<= 0). Cannot execute GetAllPersonsAtPage operation
+[11/01/2026] Error: PageNumber or SizeInEveryPage is invalid (<= 0). Cannot execute GetAllPersonsAtPage operation
+[11/01/2026] Error: PageNumber or SizeInEveryPage is invalid (<= 0). Cannot execute GetAllPersonsAtPage operation
+[11/01/2026] Error: PageNumber or SizeInEveryPage is invalid (<= 0). Cannot execute GetAllPersonsAtPage operation
+[11/01/2026] Error: PageNumber or SizeInEveryPage is invalid (<= 0). Cannot execute GetAllPersonsAtPage operation
+[11/01/2026] Error: PageNumber or SizeInEveryPage is invalid (<= 0). Cannot execute GetAllPersonsAtPage operation
+[11/01/2026] Error: PageNumber or SizeInEveryPage is invalid (<= 0). Cannot execute GetAllPersonsAtPage operation
+[11/01/2026] Error: PageNumber or SizeInEveryPage is invalid (<= 0). Cannot execute GetAllPersonsAtPage operation
+[11/01/2026] Error: PageNumber or SizeInEveryPage is invalid (<= 0). Cannot execute GetAllPersonsAtPage operation
+[19/01/2026] Error: SearchCriteria.PageNumber or SearchCriteria.PageSize is invalid (<= 0). Cannot execute 'GetAllCountryAtPageSearchBy' operation
+[19/01/2026] Error: SearchCriteria.PageNumber or SearchCriteria.PageSize is invalid (<= 0). Cannot execute 'GetAllPersonAtPageSearchBy' operation
+[19/01/2026] Error: SearchCriteria.PageNumber or SearchCriteria.PageSize is invalid (<= 0). Cannot execute 'GetAllPersonAtPageSearchBy' operation
+[19/01/2026] Error: SearchCriteria.PageNumber or SearchCriteria.PageSize is invalid (<= 0). Cannot execute 'GetAllPersonAtPageSearchBy' operation
+[19/01/2026] Error: SearchCriteria.PageNumber or SearchCriteria.PageSize is invalid (<= 0). Cannot execute 'GetAllPersonAtPageSearchBy' operation
+[19/01/2026] Error: SearchCriteria.PageNumber or SearchCriteria.PageSize is invalid (<= 0). Cannot execute 'GetAllPersonAtPageSearchBy' operation
+[19/01/2026] Error: SearchCriteria.PageNumber or SearchCriteria.PageSize is invalid (<= 0). Cannot execute 'GetAllPersonAtPageSearchBy' operation
+[19/01/2026] Error: SearchCriteria.PageNumber or SearchCriteria.PageSize is invalid (<= 0). Cannot execute 'GetAllPersonAtPageSearchBy' operation
+[19/01/2026] Error: SearchCriteria.PageNumber or SearchCriteria.PageSize is invalid (<= 0). Cannot execute 'GetAllPersonAtPageSearchBy' operation
+[19/01/2026] Error: SearchCriteria.PageNumber or SearchCriteria.PageSize is invalid (<= 0). Cannot execute 'GetAllPersonAtPageSearchBy' operation
+[19/01/2026] Error: SearchCriteria.PageNumber or SearchCriteria.PageSize is invalid (<= 0). Cannot execute 'GetAllPersonAtPageSearchBy' operation
+[19/01/2026] Error: SearchCriteria.PageNumber or SearchCriteria.PageSize is invalid (<= 0). Cannot execute 'GetAllPersonAtPageSearchBy' operation
+[19/01/2026] Error: SearchCriteria.PageNumber or SearchCriteria.PageSize is invalid (<= 0). Cannot execute 'GetAllPersonAtPageSearchBy' operation
+[19/01/2026] Error: SearchCriteria.PageNumber or SearchCriteria.PageSize is invalid (<= 0). Cannot execute 'GetAllPersonAtPageSearchBy' operation
+[19/01/2026] Error: SearchCriteria.PageNumber or SearchCriteria.PageSize is invalid (<= 0). Cannot execute 'GetAllPersonAtPageSearchBy' operation
+[19/01/2026] Error: SearchCriteria.PageNumber or SearchCriteria.PageSize is invalid (<= 0). Cannot execute 'GetAllPersonAtPageSearchBy' operation
+[19/01/2026] Error: SearchCriteria.PageNumber or SearchCriteria.PageSize is invalid (<= 0). Cannot execute 'GetAllPersonAtPageSearchBy' operation
+[19/01/2026] Error: SearchCriteria.PageNumber or SearchCriteria.PageSize is invalid (<= 0). Cannot execute 'GetAllCountryAtPageSearchBy' operation
+[19/01/2026] Error: [1/19/2026 9:28:38 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 9:28:39 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 9:28:39 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 9:28:40 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 9:28:41 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 9:28:41 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 9:28:41 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 9:28:41 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 9:28:42 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 9:28:42 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 9:28:42 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 9:28:42 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 9:28:42 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 9:28:43 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 9:28:43 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 9:28:43 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 9:28:43 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 9:28:48 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 9:28:48 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 9:28:48 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 9:28:48 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 9:28:48 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 9:28:48 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:20:28 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:20:29 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:20:29 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:20:30 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:20:30 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:20:30 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:20:30 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:20:30 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:20:30 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:20:30 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:20:30 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:20:31 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:20:31 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:20:31 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:20:31 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:20:31 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:20:31 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:20:31 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:20:31 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:20:31 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:20:31 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:20:32 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:20:32 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:20:32 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:20:32 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:20:32 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:28:22 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:28:23 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:28:23 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:28:23 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:28:23 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:28:24 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:28:24 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:42:19 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:42:36 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:43:47 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:46:12 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:46:57 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:52:42 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:56:26 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:57:07 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[19/01/2026] Error: [1/19/2026 10:57:09 PM] - Error message: Conversion failed when converting the nvarchar value '.' to data type tinyint.
+[20/01/2026] Error: [1/20/2026 1:26:54 AM] - Error message: The DELETE statement conflicted with the REFERENCE constraint "FK_Applications_People". The conflict occurred in database "DVLD", table "dbo.Applications", column 'ApplicantPersonID'.
+The statement has been terminated.
+[20/01/2026] Error: [1/20/2026 1:27:01 AM] - Error message: The DELETE statement conflicted with the REFERENCE constraint "FK_Applications_People". The conflict occurred in database "DVLD", table "dbo.Applications", column 'ApplicantPersonID'.
+The statement has been terminated.
+[20/01/2026] Error: [1/20/2026 1:29:33 AM] - Error message: The DELETE statement conflicted with the REFERENCE constraint "FK_Applications_People". The conflict occurred in database "DVLD", table "dbo.Applications", column 'ApplicantPersonID'.
+The statement has been terminated.
+[20/01/2026] Error: [1/20/2026 1:51:19 AM] - Error message: The DELETE statement conflicted with the REFERENCE constraint "FK_Applications_People". The conflict occurred in database "DVLD", table "dbo.Applications", column 'ApplicantPersonID'.
+The statement has been terminated.
+[20/01/2026] Error: [1/20/2026 1:51:25 AM] - Error message: The DELETE statement conflicted with the REFERENCE constraint "FK_Applications_People". The conflict occurred in database "DVLD", table "dbo.Applications", column 'ApplicantPersonID'.
+The statement has been terminated.
+[21/01/2026] Error: [1/21/2026 1:20:36 AM] - Error message: The DELETE statement conflicted with the REFERENCE constraint "FK_Applications_People". The conflict occurred in database "DVLD", table "dbo.Applications", column 'ApplicantPersonID'.
+The statement has been terminated.
+[21/01/2026] Error: [1/21/2026 1:20:40 AM] - Error message: The DELETE statement conflicted with the REFERENCE constraint "FK_Applications_People". The conflict occurred in database "DVLD", table "dbo.Applications", column 'ApplicantPersonID'.
+The statement has been terminated.
+[22/01/2026] Error: [1/22/2026 3:35:26 AM] - Error message: The DELETE statement conflicted with the REFERENCE constraint "FK_InternationalLicenses_Users". The conflict occurred in database "DVLD", table "dbo.InternationalLicenses", column 'CreatedByUserID'.
+The statement has been terminated.
+[22/01/2026] Error: [1/22/2026 3:19:05 PM] - Error message: The UPDATE statement conflicted with the FOREIGN KEY constraint "FK_Users_People". The conflict occurred in database "DVLD", table "dbo.People", column 'PersonID'.
+The statement has been terminated.
+[22/01/2026] Error: [1/22/2026 3:20:10 PM] - Error message: The UPDATE statement conflicted with the FOREIGN KEY constraint "FK_Users_People". The conflict occurred in database "DVLD", table "dbo.People", column 'PersonID'.
+The statement has been terminated.
+[22/01/2026] Error: [1/22/2026 3:22:38 PM] - Error message: The UPDATE statement conflicted with the FOREIGN KEY constraint "FK_Users_People". The conflict occurred in database "DVLD", table "dbo.People", column 'PersonID'.
+The statement has been terminated.
+[22/01/2026] Error: [1/22/2026 3:22:51 PM] - Error message: The UPDATE statement conflicted with the FOREIGN KEY constraint "FK_Users_People". The conflict occurred in database "DVLD", table "dbo.People", column 'PersonID'.
+The statement has been terminated.
+[25/01/2026] Error: [1/25/2026 9:18:37 PM] - Error message: The UPDATE statement conflicted with the FOREIGN KEY constraint "FK_Users_People". The conflict occurred in database "DVLD", table "dbo.People", column 'PersonID'.
+The statement has been terminated.
+[25/01/2026] Error: [1/25/2026 10:06:43 PM] - Error message: The DELETE statement conflicted with the REFERENCE constraint "FK_Applications_People". The conflict occurred in database "DVLD", table "dbo.Applications", column 'ApplicantPersonID'.
+The statement has been terminated.
+[25/01/2026] Error: [1/25/2026 10:25:12 PM] - Error message: The DELETE statement conflicted with the REFERENCE constraint "FK_InternationalLicenses_Users". The conflict occurred in database "DVLD", table "dbo.InternationalLicenses", column 'CreatedByUserID'.
+The statement has been terminated.
+[25/01/2026] Error: [1/25/2026 11:33:44 PM] - Error message: The DELETE statement conflicted with the REFERENCE constraint "FK_Applications_People". The conflict occurred in database "DVLD", table "dbo.Applications", column 'ApplicantPersonID'.
+The statement has been terminated.
+[25/01/2026] Error: [1/25/2026 11:33:55 PM] - Error message: The DELETE statement conflicted with the REFERENCE constraint "FK_Users_People". The conflict occurred in database "DVLD", table "dbo.Users", column 'PersonID'.
+The statement has been terminated.
+[25/01/2026] Error: [1/25/2026 11:42:56 PM] - Error message: Violation of UNIQUE KEY constraint 'UQ_National_No'. Cannot insert duplicate key in object 'dbo.People'. The duplicate key value is (saf).
+The statement has been terminated.
+[25/01/2026] Error: [1/25/2026 11:42:58 PM] - Error message: Violation of UNIQUE KEY constraint 'UQ_National_No'. Cannot insert duplicate key in object 'dbo.People'. The duplicate key value is (saf).
+The statement has been terminated.
+[25/01/2026] Error: [1/25/2026 11:42:59 PM] - Error message: Violation of UNIQUE KEY constraint 'UQ_National_No'. Cannot insert duplicate key in object 'dbo.People'. The duplicate key value is (saf).
+The statement has been terminated.
+[25/01/2026] Error: [1/25/2026 11:42:59 PM] - Error message: Violation of UNIQUE KEY constraint 'UQ_National_No'. Cannot insert duplicate key in object 'dbo.People'. The duplicate key value is (saf).
+The statement has been terminated.
+[25/01/2026] Error: [1/25/2026 11:43:00 PM] - Error message: Violation of UNIQUE KEY constraint 'UQ_National_No'. Cannot insert duplicate key in object 'dbo.People'. The duplicate key value is (saf).
+The statement has been terminated.
+[25/01/2026] Error: [1/25/2026 11:43:00 PM] - Error message: Violation of UNIQUE KEY constraint 'UQ_National_No'. Cannot insert duplicate key in object 'dbo.People'. The duplicate key value is (saf).
+The statement has been terminated.
+[25/01/2026] Error: [1/25/2026 11:43:00 PM] - Error message: Violation of UNIQUE KEY constraint 'UQ_National_No'. Cannot insert duplicate key in object 'dbo.People'. The duplicate key value is (saf).
+The statement has been terminated.
+[25/01/2026] Error: [1/25/2026 11:45:58 PM] - Error message: Violation of UNIQUE KEY constraint 'UQ_National_No'. Cannot insert duplicate key in object 'dbo.People'. The duplicate key value is (saf).
+The statement has been terminated.
+[25/01/2026] Error: [1/25/2026 11:45:59 PM] - Error message: Violation of UNIQUE KEY constraint 'UQ_National_No'. Cannot insert duplicate key in object 'dbo.People'. The duplicate key value is (saf).
+The statement has been terminated.
+[25/01/2026] Error: [1/25/2026 11:45:59 PM] - Error message: Violation of UNIQUE KEY constraint 'UQ_National_No'. Cannot insert duplicate key in object 'dbo.People'. The duplicate key value is (saf).
+The statement has been terminated.
+[25/01/2026] Error: [1/25/2026 11:45:59 PM] - Error message: Violation of UNIQUE KEY constraint 'UQ_National_No'. Cannot insert duplicate key in object 'dbo.People'. The duplicate key value is (saf).
+The statement has been terminated.
+[25/01/2026] Error: [1/25/2026 11:45:59 PM] - Error message: Violation of UNIQUE KEY constraint 'UQ_National_No'. Cannot insert duplicate key in object 'dbo.People'. The duplicate key value is (saf).
+The statement has been terminated.
+[25/01/2026] Error: [1/25/2026 11:46:00 PM] - Error message: Violation of UNIQUE KEY constraint 'UQ_National_No'. Cannot insert duplicate key in object 'dbo.People'. The duplicate key value is (saf).
+The statement has been terminated.
+[25/01/2026] Error: [1/25/2026 11:46:00 PM] - Error message: Violation of UNIQUE KEY constraint 'UQ_National_No'. Cannot insert duplicate key in object 'dbo.People'. The duplicate key value is (saf).
+The statement has been terminated.
+[25/01/2026] Error: [1/25/2026 11:46:00 PM] - Error message: Violation of UNIQUE KEY constraint 'UQ_National_No'. Cannot insert duplicate key in object 'dbo.People'. The duplicate key value is (saf).
+The statement has been terminated.
+[25/01/2026] Error: [1/25/2026 11:50:38 PM] - Error message: Violation of UNIQUE KEY constraint 'UQ_National_No'. Cannot insert duplicate key in object 'dbo.People'. The duplicate key value is (saf).
+The statement has been terminated.
+[25/01/2026] Error: [1/25/2026 11:50:38 PM] - Error message: Violation of UNIQUE KEY constraint 'UQ_National_No'. Cannot insert duplicate key in object 'dbo.People'. The duplicate key value is (saf).
+The statement has been terminated.
+[25/01/2026] Error: [1/25/2026 11:52:01 PM] - Error message: Violation of UNIQUE KEY constraint 'UQ_National_No'. Cannot insert duplicate key in object 'dbo.People'. The duplicate key value is (sdaf).
+The statement has been terminated.
+[25/01/2026] Error: [1/25/2026 11:52:01 PM] - Error message: Violation of UNIQUE KEY constraint 'UQ_National_No'. Cannot insert duplicate key in object 'dbo.People'. The duplicate key value is (sdaf).
+The statement has been terminated.
+[26/01/2026] Error: [1/26/2026 1:14:14 AM] - Error message: The DELETE statement conflicted with the REFERENCE constraint "FK_Applications_People". The conflict occurred in database "DVLD", table "dbo.Applications", column 'ApplicantPersonID'.
+The statement has been terminated.
+[26/01/2026] Error: [1/26/2026 1:14:55 AM] - Error message: The DELETE statement conflicted with the REFERENCE constraint "FK_Users_People". The conflict occurred in database "DVLD", table "dbo.Users", column 'PersonID'.
+The statement has been terminated.
+[26/01/2026] Error: [1/26/2026 3:13:29 AM] - Error message: The DELETE statement conflicted with the REFERENCE constraint "FK_InternationalLicenses_Users". The conflict occurred in database "DVLD", table "dbo.InternationalLicenses", column 'CreatedByUserID'.
+The statement has been terminated.
+[27/01/2026] Error: [1/27/2026 12:05:37 PM] - Error message: The DELETE statement conflicted with the REFERENCE constraint "FK_Applications_People". The conflict occurred in database "DVLD", table "dbo.Applications", column 'ApplicantPersonID'.
+The statement has been terminated.
+[27/01/2026] Error: [1/27/2026 12:07:03 PM] - Error message: The DELETE statement conflicted with the REFERENCE constraint "FK_Applications_People". The conflict occurred in database "DVLD", table "dbo.Applications", column 'ApplicantPersonID'.
+The statement has been terminated.
+[27/01/2026] Error: [1/27/2026 12:47:09 PM] - Error message: The DELETE statement conflicted with the REFERENCE constraint "FK_Applications_People". The conflict occurred in database "DVLD", table "dbo.Applications", column 'ApplicantPersonID'.
+The statement has been terminated.
+[27/01/2026] Error: [1/27/2026 12:47:11 PM] - Error message: The DELETE statement conflicted with the REFERENCE constraint "FK_Applications_People". The conflict occurred in database "DVLD", table "dbo.Applications", column 'ApplicantPersonID'.
+The statement has been terminated.
+[27/01/2026] Error: [1/27/2026 12:49:39 PM] - Error message: The DELETE statement conflicted with the REFERENCE constraint "FK_Applications_People". The conflict occurred in database "DVLD", table "dbo.Applications", column 'ApplicantPersonID'.
+The statement has been terminated.
+[29/01/2026] Error: [1/29/2026 6:34:14 AM] - Error message: The DELETE statement conflicted with the REFERENCE constraint "FK_Applications_People". The conflict occurred in database "DVLD", table "dbo.Applications", column 'ApplicantPersonID'.
+The statement has been terminated.
+[29/01/2026] Error: [1/29/2026 6:34:18 AM] - Error message: The DELETE statement conflicted with the REFERENCE constraint "FK_Users_People". The conflict occurred in database "DVLD", table "dbo.Users", column 'PersonID'.
+The statement has been terminated.
+[29/01/2026] Error: [1/29/2026 6:34:32 AM] - Error message: The DELETE statement conflicted with the REFERENCE constraint "FK_Users_People". The conflict occurred in database "DVLD", table "dbo.Users", column 'PersonID'.
+The statement has been terminated.
+[29/01/2026] Error: [1/29/2026 6:40:11 AM] - Error message: The DELETE statement conflicted with the REFERENCE constraint "FK_Applications_People". The conflict occurred in database "DVLD", table "dbo.Applications", column 'ApplicantPersonID'.
+The statement has been terminated.
+[26/07/2026] Error: [7/26/2026 7:12:20 PM] - Error message: Gendor
+[26/07/2026] Error: [7/26/2026 7:12:20 PM] - Error message: Gendor
+[26/07/2026] Error: [7/26/2026 7:12:24 PM] - Error message: Invalid column name 'Gendor'.
+Invalid column name 'Gendor'.
+[26/07/2026] Error: [7/26/2026 7:12:24 PM] - Error message: Invalid column name 'Gendor'.
+Invalid column name 'Gendor'.
+[26/07/2026] Error: [7/26/2026 7:12:29 PM] - Error message: Invalid column name 'Gendor'.
+Invalid column name 'Gendor'.
+[26/07/2026] Error: [7/26/2026 7:12:30 PM] - Error message: Invalid column name 'Gendor'.
+Invalid column name 'Gendor'.
+[26/07/2026] Error: [7/26/2026 7:12:41 PM] - Error message: Gendor
+[26/07/2026] Error: [7/26/2026 7:12:42 PM] - Error message: Gendor
+[26/07/2026] Error: [7/26/2026 7:13:24 PM] - Error message: Gendor
+[26/07/2026] Error: [7/26/2026 7:13:24 PM] - Error message: Gendor
+[26/07/2026] Error: [7/26/2026 7:13:28 PM] - Error message: Gendor
+[26/07/2026] Error: [7/26/2026 7:13:28 PM] - Error message: Gendor
+[26/07/2026] Error: [7/26/2026 7:13:31 PM] - Error message: Gendor
+[26/07/2026] Error: [7/26/2026 7:13:32 PM] - Error message: Gendor
+[26/07/2026] Error: [7/26/2026 7:14:21 PM] - Error message: Gendor
+[26/07/2026] Error: [7/26/2026 7:14:21 PM] - Error message: Gendor
+[26/07/2026] Error: [7/26/2026 7:14:24 PM] - Error message: Gendor
+[26/07/2026] Error: [7/26/2026 7:19:17 PM] - Error message: Gendor
+[26/07/2026] Error: [7/26/2026 7:19:17 PM] - Error message: Gendor

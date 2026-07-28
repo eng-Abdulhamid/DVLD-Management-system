@@ -1,0 +1,10 @@
+[23/01/2026] Error: [1/23/2026 1:23:44 PM] - Error message: The DELETE statement conflicted with the REFERENCE constraint "FK_InternationalLicenses_Users". The conflict occurred in database "DVLD", table "dbo.InternationalLicenses", column 'CreatedByUserID'.
+The statement has been terminated.
+[23/01/2026] Error: [1/23/2026 1:24:23 PM] - Error message: The UPDATE statement conflicted with the FOREIGN KEY constraint "FK_Users_People". The conflict occurred in database "DVLD", table "dbo.People", column 'PersonID'.
+The statement has been terminated.
+[23/01/2026] Error: [1/23/2026 1:24:33 PM] - Error message: The UPDATE statement conflicted with the FOREIGN KEY constraint "FK_Users_People". The conflict occurred in database "DVLD", table "dbo.People", column 'PersonID'.
+The statement has been terminated.
+[23/01/2026] Error: [1/23/2026 1:24:46 PM] - Error message: The UPDATE statement conflicted with the FOREIGN KEY constraint "FK_Users_People". The conflict occurred in database "DVLD", table "dbo.People", column 'PersonID'.
+The statement has been terminated.
+[23/01/2026] Error: [1/23/2026 1:24:49 PM] - Error message: The DELETE statement conflicted with the REFERENCE constraint "FK_InternationalLicenses_Users". The conflict occurred in database "DVLD", table "dbo.InternationalLicenses", column 'CreatedByUserID'.
+The statement has been terminated.
