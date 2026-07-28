@@ -1,136 +1,216 @@
-# DVLD Management System
+# 🚗 DVLD – Driver & Vehicle Licensing Department Management System
 
-A Desktop Application for managing a Driver and Vehicle Licensing Department (DVLD) system.
+An enterprise-grade **Windows Desktop rchitecture** for clean separation between UI, business logic, and data access.
 
-The project is built using **C# .NET Windows Forms** and follows a **3-Tier Architecture** to achieve better separation of concerns, maintainability, and scalability.
+The system automates and enforces the full workflow of a driver licensing authority: citizen registration, license applications, multi-stage tests, license issuance, renewals, replacements, international permits, and detained license management.
 
-## Project Overview
+---
 
-DVLD Management System helps manage different operations inside a driving license department, including people management, drivers, licenses, applications, and related administrative processes.
+## ✨ Key Features
 
-The application provides a structured way to handle data entry, searching, updating records, and performing business operations through a user-friendly desktop interface.
+* 👤 **People Identity Management**
+* 🔐 **User Authentication & Security**
+* 📝 **License Application Workflow**
+* 👁️ **Vision, Written & Practical Tests**
+* 📅 **Test Appointment Scheduling**
+* 🚗 **Driver & License Lifecycle Management**
+* 🌍 **International Driving Licenses**
+* ♻️ **Renewal & Replacement Requests**
+* 🚓 **Detained License Release Flow**
+* 🔍 **Advanced Search & Filtering**
+* 📷 **Profile Photo Support**
+* 🧩 **Reusable Custom UserControls**
 
-## Architecture
+---
 
-The project is organized into multiple layers:
+## 🏗 Architecture
 
-### Presentation Layer (PL)
-
-Responsible for the graphical user interface and user interaction.
-
-* Windows Forms UI
-* Forms and user controls
-* Handling user input and displaying results
-
-### Business Logic Layer (BLL)
-
-Contains the application's business rules and logic.
-
-Responsibilities:
-
-* Validating data
-* Managing application workflows
-* Communicating between the presentation layer and data layer
-
-### Data Access Layer (DAL)
-
-Responsible for database communication.
-
-Responsibilities:
-
-* Executing SQL queries
-* Retrieving and updating data
-* Managing database operations
-
-### Custom Controls
-
-A reusable controls library used to improve UI consistency and reduce code duplication.
-
-## Technologies Used
-
-* C#
-* .NET Framework
-* Windows Forms
-* SQL Server
-* ADO.NET
-* Object-Oriented Programming (OOP)
-* 3-Tier Architecture
-
-## Main Features
-
-* People Management
-
-  * Add, update, delete, and search people records
-
-* Driver Management
-
-  * Manage driver information and history
-
-* License Management
-
-  * Issue and manage different types of driving licenses
-
-* Applications Management
-
-  * Handle driving license applications and their statuses
-
-* Search System
-
-  * Fast searching and filtering for records
-
-* User Management
-
-  * Manage system users and permissions
-
-## Database Design
-
-The system uses a relational database designed to store and manage:
-
-* People information
-* Drivers
-* Users
-* Licenses
-* Applications
-* Vehicle and licensing-related data
-
-## Project Structure
-
-```
-DVLD-Management-System
-│
-├── PL              # Presentation Layer
-├── BLL             # Business Logic Layer
-├── DAL             # Data Access Layer
-├── CustomControls  # Reusable UI Controls
-│
-└── README.md
+```text
+Presentation Layer (WinForms)
+        │
+Business Logic Layer (BLL)
+        │
+Data Access Layer (DAL)
+        │
+Microsoft SQL Server
 ```
 
-## Installation
+---
 
-1. Clone the repository:
+## 🛠 Tech Stack
+
+| Technology           | Purpose                       |
+| -------------------- | ----------------------------- |
+| C#                   | Core application language     |
+| .NET Framework       | Desktop application framework |
+| WinForms             | UI layer                      |
+| ADO.NET              | Data access                   |
+| Microsoft SQL Server | Database engine               |
+
+---
+
+## 📦 Project Structure
+
+```text
+DVLD/
+DVLD_BLL/
+DVLD_DAL/
+Database/
+docs/
+README.md
+```
+
+---
+
+## 🔑 Core Modules
+
+<details>
+<summary>👤 People & Identity</summary>
+
+* Register citizens with national number, full name, date of birth, gender, address, contact data, nationality, and photo.
+* Search and filter people records easily.
+* Reusable person card control for selecting or viewing a person across the system.
+
+</details>
+
+<details>
+<summary>🔐 Users & Security</summary>
+
+* Role-based system users linked to people records.
+* Secure password storage.
+* Activate, deactivate, and manage accounts.
+
+</details>
+
+<details>
+<summary>📝 Application Workflow</summary>
+
+Supports:
+
+* New local driving license
+* Renew license
+* Replace damaged license
+* Replace lost license
+* Release detained license
+* Issue international driving license
+
+</details>
+
+<details>
+<summary>🧪 Test Pipeline</summary>
+
+* Vision test
+* Written test
+* Practical test
+* Appointment locking after test submission
+* Retake application handling after failure
+
+</details>
+
+<details>
+<summary>🚗 License Management</summary>
+
+* Driver creation
+* License issuance
+* License validity tracking
+* Class-based rules and restrictions
+* International permit validation
+
+</details>
+
+<details>
+<summary>🚓 Detain & Release</summary>
+
+* Detain licenses with custom fine amount
+* Prevent renewal/replacement while detained
+* Release after fine settlement
+
+</details>
+
+---
+
+## 🗄 Database
+
+* 14 normalized relational tables
+* Primary and foreign keys
+* Referential integrity
+* SQL Server scripts included
+
+ERD and database documentation are available inside the `docs/` folder.
+
+---
+
+## ⚙️ Installation
+
+### Prerequisites
+
+* Visual Studio 2019 / 2022
+* Microsoft SQL Server 2017 or later
+* SQL Server Management Studio
+
+### Setup
 
 ```bash
 git clone https://github.com/eng-Abdulhamid/DVLD-Management-system.git
+cd DVLD-Management-system
 ```
 
-2. Open the project using Visual Studio.
+1. Open `Database/DVLD_Database_Script.sql` in SSMS and execute it.
+2. Open the solution in Visual Studio.
+3. Update the connection string in `DVLD_DAL/clsDataAccessSettings.cs`.
+4. Set `DVLD` as the startup project.
+5. Build and run the solution.
 
-3. Configure the SQL Server database connection.
+### Default Login
 
-4. Run the application.
+```text
+Username: Admin
+Password: 1234
+```
 
-## Learning Objectives
+---
 
-This project demonstrates practical experience with:
+## 📸 Screenshots
 
-* Designing multi-layer applications
-* Applying Object-Oriented Programming principles
-* Working with databases using ADO.NET
-* Building desktop applications using C#
-* Separating business logic from presentation and data access
+Add screenshots here to make the README stronger and more professional.
 
-## Author
+Suggested images:
 
-Abd-Ulhamid Abu-Saada
+* Login screen
+* People management screen
+* Applications screen
+* Test booking screen
+* License details screen
+
+---
+
+## 💡 Design Goals
+
+* Clear separation of concerns
+* Reusable UI components
+* Strong business rule enforcement
+* Secure database access
+* Maintainable and scalable codebase
+
+---
+
+## 📁 Documentation
+
+* `docs/dvld_database_erd.png` — Database ERD
+* `Database/DVLD_Database_Script.sql` — SQL setup script
+
+---
+
+## 👨‍💻 Author
+
+**Eng. Abd-Ulhamid Abu-Saada**
+
 Computer Systems Engineering Student
+
+GitHub: **@eng-Abdulhamid**
+
+---
+
+## 📜 License
+
+This project is open-source and released under the **MIT License**.
