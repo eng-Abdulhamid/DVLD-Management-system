@@ -16,3 +16,12 @@ C:\Users\Abd-Ulhameed\Desktop\Abood desktop\DVLD PROJECT\ApplicatinNeededControl
 C:\Users\Abd-Ulhameed\Desktop\Abood desktop\DVLD PROJECT\ApplicatinNeededControlsModern\obj\Debug\ApplicatinNeededControlsModern.dll
 C:\Users\Abd-Ulhameed\Desktop\Abood desktop\DVLD PROJECT\ApplicatinNeededControlsModern\obj\Debug\ApplicatinNeededControlsModern.pdb
 C:\Users\Abd-Ulhameed\Desktop\Abood desktop\DVLD PROJECT\ApplicatinNeededControlsModern\obj\Debug\CustomControls.Notification.resources
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\CustomControls\bin\Debug\ApplicatinNeededControlsModern.dll
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\CustomControls\bin\Debug\ApplicatinNeededControlsModern.pdb
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\CustomControls\obj\Debug\ApplicatinNeededControlsModern.csproj.AssemblyReference.cache
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\CustomControls\obj\Debug\CustomControls.Notification.resources
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\CustomControls\obj\Debug\ApplicatinNeededControlsModern.Examples.ModernFormDesignerExample.resources
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\CustomControls\obj\Debug\ApplicatinNeededControlsModern.csproj.GenerateResource.cache
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\CustomControls\obj\Debug\ApplicatinNeededControlsModern.csproj.CoreCompileInputs.cache
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\CustomControls\obj\Debug\ApplicatinNeededControlsModern.dll
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\CustomControls\obj\Debug\ApplicatinNeededControlsModern.pdb

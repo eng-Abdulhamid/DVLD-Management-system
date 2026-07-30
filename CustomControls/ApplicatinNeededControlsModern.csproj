@@ -46,6 +46,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="CustomControls\ModernButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="CustomControls\ModernTextBox.cs" />
     <Compile Include="CustomControls\NDataTable.cs">
       <SubType>Component</SubType>

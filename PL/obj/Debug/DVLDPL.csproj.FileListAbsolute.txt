@@ -81,3 +81,21 @@ C:\Users\Abd-Ulhameed\Desktop\Abood desktop\DVLD PROJECT\DVLDPresentationLayerWI
 C:\Users\Abd-Ulhameed\Desktop\Abood desktop\DVLD PROJECT\DVLDPresentationLayerWInFormApp\bin\Debug\DVLD_BusinessLogicLayer.dll
 C:\Users\Abd-Ulhameed\Desktop\Abood desktop\DVLD PROJECT\DVLDPresentationLayerWInFormApp\obj\Debug\DVLDPL.PeopleManagement.frmPeopleManagement.resources
 C:\Users\Abd-Ulhameed\Desktop\Abood desktop\DVLD PROJECT\DVLDPresentationLayerWInFormApp\obj\Debug\DVLDPL.PeopleManagement.ctrlPeopleSearch.resources
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\PL\bin\Debug\DVLDPL.exe.config
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\PL\bin\Debug\DVLDPL.exe
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\PL\bin\Debug\DVLDPL.pdb
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\PL\obj\Debug\DVLDPL.csproj.AssemblyReference.cache
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\PL\obj\Debug\DVLDPL.PeopleManagement.frmPeopleManagement.resources
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\PL\obj\Debug\DVLDPL.PeopleManagement.ctrlPeopleSearch.resources
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\PL\obj\Debug\DVLDPL.Properties.Resources.resources
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\PL\obj\Debug\DVLDPL.csproj.GenerateResource.cache
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\PL\obj\Debug\DVLDPL.csproj.CoreCompileInputs.cache
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\PL\obj\Debug\DVLDPL.csproj.Up2Date
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\PL\obj\Debug\DVLDPL.exe
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\PL\obj\Debug\DVLDPL.pdb
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\PL\bin\Debug\DVLD_BusinessLogicLayer.dll
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\PL\bin\Debug\DVLD_DataAccessLayer.dll
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\PL\bin\Debug\DVLD_BusinessLogicLayer.pdb
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\PL\bin\Debug\DVLD_DataAccessLayer.pdb
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\PL\obj\Debug\DVLDPL.PeopleManagement.ctrlAddNewPersonBotton.resources
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\PL\obj\Debug\DVLDPL.PeopleManagement.frmAddNewPersonForm.resources

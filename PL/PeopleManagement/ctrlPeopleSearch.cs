@@ -20,165 +20,16 @@ namespace DVLDPL.PeopleManagement
         public ctrlPeopleSearch()
         {
             InitializeComponent();
-            //InitializeToolStripMenuItems();
             personServices = new PersonServices();
             InitializeDesign();
             InitializeTools();
-            //AddListPersonRowToDataGrid(GetSearchResults().DataList);
+            eventSearchResults.Invoke(this, GetSearchResults());
         }
+        public event EventHandler<OperationResults<PersonReadDTO>> eventSearchResults = delegate { };
         private string letter = "";
         private string lastSearchResult = "";
         private PersonServices personServices;
         private enGender selectedGender = enGender.Both;
-
-        //private void InitializeToolStripMenuItems()
-        //{
-        //    TPersonID.Checked = true;
-        //    TNationalNo.Checked = true;
-        //    TFullName.Checked = true;
-        //    TDateOfBirth.Checked = true;
-        //    TNationality.Checked = true;
-        //    TPhone.Checked = true;
-        //    TEmail.Checked = true;
-        //    TGender.Checked = true;
-        //    InitializeDataGridColumns();
-        //}
-
-        //private void InitializeDataGridColumns()
-        //{
-        //    dgvResults.AutoGenerateColumns = false;
-        //    dgvResults.Columns.Clear();
-        //    if (TPersonID.Checked)
-        //    {
-        //        dgvResults.Columns.Add(new DataGridViewTextBoxColumn
-        //        {
-        //            Name = "Person ID",
-        //            HeaderText = "Person ID",
-        //            DataPropertyName = "PersonID",
-        //            Width = 80
-        //        });
-        //    }
-        //    if (TNationalNo.Checked)
-        //    {
-        //        dgvResults.Columns.Add(new DataGridViewTextBoxColumn
-        //        {
-        //            Name = "National No.",
-        //            HeaderText = "National No.",
-        //            DataPropertyName = "NationalNo",
-        //            Width = 120
-        //        });
-        //    }
-
-        //    if (TFullName.Checked)
-        //    {
-        //        dgvResults.Columns.Add(new DataGridViewTextBoxColumn
-        //        {
-        //            Name = "Full Name",
-        //            HeaderText = "Full Name",
-        //            DataPropertyName = "FullName",
-        //            Width = 200
-        //        });
-        //    }
-        //    if (TDateOfBirth.Checked)
-        //    {
-        //        dgvResults.Columns.Add(new DataGridViewTextBoxColumn
-        //        {
-        //            Name = "Date of Birth",
-        //            HeaderText = "Date of Birth",
-        //            DataPropertyName = "DateOfBirth",
-        //            Width = 100
-        //        });
-        //    }
-        //    if (TNationality.Checked)
-        //    {
-        //        dgvResults.Columns.Add(new DataGridViewTextBoxColumn
-        //        {
-        //            Name = "Nationality",
-        //            HeaderText = "Nationality",
-        //            DataPropertyName = "Nationality",
-        //            Width = 120
-        //        });
-        //    }
-        //    if (TPhone.Checked)
-        //    {
-        //        dgvResults.Columns.Add(new DataGridViewTextBoxColumn
-        //        {
-        //            Name = "Phone",
-        //            HeaderText = "Phone",
-        //            DataPropertyName = "Phone",
-        //            Width = 120
-        //        });
-        //    }
-        //    if (TEmail.Checked)
-        //    {
-        //        dgvResults.Columns.Add(new DataGridViewTextBoxColumn
-        //        {
-        //            Name = "Email",
-        //            HeaderText = "Email",
-        //            DataPropertyName = "Email",
-        //            Width = 200
-        //        });
-        //    }
-        //    if (TGender.Checked)
-        //    {
-        //        dgvResults.Columns.Add(new DataGridViewTextBoxColumn
-        //        {
-        //            Name = "Gender",
-        //            HeaderText = "Gender",
-        //            DataPropertyName = "Gender",
-        //            Width = 100
-        //        });
-        //    }
-        //}
-        //private void AddNewPersonRowToDataGrid(PersonReadDTO person)
-        //{
-        //    var cells = new List<object>();
-        //    foreach (DataGridViewColumn col in dgvResults.Columns)
-        //    {
-        //        switch (col.Name)
-        //        {
-        //            case "Person ID":
-        //                cells.Add(person.PersonID);
-        //                break;
-        //            case "National No.":
-        //                cells.Add(person.NationalNo);
-        //                break;
-        //            case "Full Name":
-        //                cells.Add($"{person.FirstName} {person.SecondName} {person.ThirdName} {person.LastName}".Trim());
-        //                break;
-        //            case "Date of Birth":
-        //                cells.Add(person.DateOfBirth.ToString("yyyy-MM-dd"));
-        //                break;
-        //            case "Nationality":
-        //                cells.Add("Not Specified");
-        //                break;
-        //            case "Phone":
-        //                cells.Add(person.Phone);
-        //                break;
-        //            case "Email":
-        //                cells.Add(person.Email);
-        //                break;
-        //            case "Gender":
-        //                cells.Add(person.Gender);
-        //                break;
-        //            default:
-        //                cells.Add(null);
-        //                break;
-        //        }
-        //    }
-        //    dgvResults.Rows.Add(cells.ToArray());
-        //}
-        //private void AddListPersonRowToDataGrid(List<PersonReadDTO> lstPerson)
-        //{
-        //    dgvResults.Rows.Clear();
-        //    if (lstPerson != null && lstPerson.Count > 0)
-        //    {
-        //        foreach (PersonReadDTO person in lstPerson)
-        //        {
-        //            AddNewPersonRowToDataGrid(person);
-        //        }
-        //    }
-        //}
         private void InitializeDesign()
         {
             this.BackColor = Color.FromArgb(240, 242, 245);
@@ -206,7 +57,6 @@ namespace DVLDPL.PeopleManagement
                 }
             }
         }
-
         private void InitializeSearchBox()
         {
             txtSearch.AddIcon(
@@ -227,7 +77,6 @@ namespace DVLDPL.PeopleManagement
             txtSearch.PlaceholderColor = Color.FromArgb(150, 150, 150);
             txtSearch.Margin = new Padding(15, 15, 15, 10);
         }
-
         private void InitializeSearchByLetterComboBox()
         {
             cbSearchByLetter.Items.AddRange(new object[]
@@ -238,14 +87,12 @@ namespace DVLDPL.PeopleManagement
             cbSearchByLetter.SelectedIndex = 0;
             cbSearchByLetter.DropDownStyle = ComboBoxStyle.DropDownList;
         }
-
         private void InitializeSearchByGenderComboBox()
         {
             cbByGender.Items.AddRange(new object[] { "Both", "Male", "Female" });
             cbByGender.SelectedIndex = 0;
             cbByGender.DropDownStyle = ComboBoxStyle.DropDownList;
         }
-
         private void InitializeFilterByComboBox()
         {
             cbFilterBy.Items.AddRange(new object[]
@@ -257,7 +104,6 @@ namespace DVLDPL.PeopleManagement
             cbFilterBy.DropDownStyle = ComboBoxStyle.DropDownList;
             UpdateSearchPlaceholder("Search by first name...");
         }
-
         private void InitializeTools()
         {
             InitializeSearchBox();
@@ -265,18 +111,16 @@ namespace DVLDPL.PeopleManagement
             InitializeSearchByGenderComboBox();
             InitializeFilterByComboBox();
         }
-
         private void UpdateSearchPlaceholder(string newText)
         {
             txtSearch.PlaceholderText = newText;
         }
-
         private void cbFilterBy_SelectedIndexChanged(object sender, EventArgs e)
         {
             txtSearch.Text = string.Empty;
             UpdateSearchPlaceholder($"Search by {cbFilterBy.Text.ToLower()}...");
+            eventSearchResults.Invoke(this, GetSearchResults());
         }
-
         private void cbSearchByLetter_SelectedIndexChanged(object sender, EventArgs e)
         {
             letter = cbSearchByLetter.Text == "All" ? "" : cbSearchByLetter.Text;
@@ -284,7 +128,7 @@ namespace DVLDPL.PeopleManagement
             {
                 txtSearch.Text = string.Empty;
             }
-            //AddListPersonRowToDataGrid(GetSearchResults().DataList);
+            eventSearchResults.Invoke(this, GetSearchResults());
         }
         private enGender GetSelectedGender()
         {
@@ -309,10 +153,9 @@ namespace DVLDPL.PeopleManagement
             if (selectedGender != GetSelectedGender())
             {
                 selectedGender = GetSelectedGender();
-                //AddListPersonRowToDataGrid(GetSearchResults().DataList);
+                eventSearchResults.Invoke(this, GetSearchResults());
             }
         }
-
         private void txtSearch_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -326,13 +169,12 @@ namespace DVLDPL.PeopleManagement
                 e.SuppressKeyPress = true;
             }
         }
-
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
             if (txtSearch.Text.Length == 0)
             {
                 txtSearch.SuggestList = new string[0];
-                //AddListPersonRowToDataGrid(GetSearchResults().DataList);
+                eventSearchResults.Invoke(this, GetSearchResults());
             }
             else
             {
@@ -351,7 +193,6 @@ namespace DVLDPL.PeopleManagement
                 }
             }
         }
-
         private PersonServices.enFields SelectCurrentFilter()
         {
             return cbFilterBy.Text switch
@@ -381,20 +222,26 @@ namespace DVLDPL.PeopleManagement
         private OperationResults<PersonReadDTO> GetSearchResults()
         {
             string searchText = txtSearch.Text.Trim();
+            enSearchType searchType = enSearchType.None;
             if (string.IsNullOrWhiteSpace(txtSearch.Text) && !string.IsNullOrWhiteSpace(letter))
             {
                 searchText = letter;
+                searchType = enSearchType.StartWith;
+            }
+            else
+            {
+                searchType = enSearchType.Contain;
             }
             SearchCriteria<PersonServices.enFields> searchBy = new SearchCriteria<PersonServices.enFields>
             {
                 GenderFilter = GetSelectedGender(),
                 FilterBy = SelectCurrentFilter(),
                 SearchString = searchText,
-                SearchType = enSearchType.Contain
+                SearchType = searchType
             };
             return personServices.GetPeople(searchBy);
         }
-        private void PerformSearch()
+        public void PerformSearch()
         {
             try
             {
@@ -403,12 +250,12 @@ namespace DVLDPL.PeopleManagement
                 if (results.IsSuccess && results.DataList?.Count > 0)
                 {
                     lastSearchResult = txtSearch.Text;
-                    //AddListPersonRowToDataGrid(results.DataList);
+                    eventSearchResults.Invoke(this, GetSearchResults());
                 }
                 else
                 {
                     txtSearch.SuggestList = new string[0];
-                    //dgvResults.Rows.Clear();
+                    eventSearchResults.Invoke(this, null); // Nothing
                     Notification.Show($"No people found matching the search criteria.", IconType.Info, 3);
 
                 }
@@ -419,24 +266,6 @@ namespace DVLDPL.PeopleManagement
             }
         }
 
-        //private void CheckedChanged(object sender, EventArgs e)
-        //{
-        //    ToolStripMenuItem senderObject = sender as ToolStripMenuItem;
-
-        //    string columnKey = (senderObject.Text ?? string.Empty).Trim();
-            //if (dgvResults.Columns.Contains(columnKey))
-            //{
-
-            //    if (senderObject.Checked)
-            //    {
-            //        dgvResults.Columns[columnKey].Visible = true;
-            //    }
-            //    else
-            //    {
-            //        dgvResults.Columns[columnKey].Visible = false;
-            //    }
-            //}
-        //}
 
     }
 }

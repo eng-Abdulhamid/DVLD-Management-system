@@ -1,4 +1,7 @@
-﻿namespace DVLDPL.PeopleManagement
+﻿using DTOs;
+using DVLD_BusinessLogicLayer;
+
+namespace DVLDPL.PeopleManagement
 {
     partial class frmPeopleManagement
     {
@@ -41,10 +44,15 @@
             this.TPhone = new System.Windows.Forms.ToolStripMenuItem();
             this.TEmail = new System.Windows.Forms.ToolStripMenuItem();
             this.TGender = new System.Windows.Forms.ToolStripMenuItem();
+            this.dgvResults = new NControls.NDataGrid();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.ctrlAddNewPersonBotton1 = new DVLDPL.PeopleManagement.ctrlAddNewPersonBotton();
             this.ctrlPeopleSearch1 = new DVLDPL.PeopleManagement.ctrlPeopleSearch();
-            this.nDataGrid1 = new NControls.NDataGrid();
             this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nDataGrid1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvResults)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -55,7 +63,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.menuStrip1.Size = new System.Drawing.Size(1127, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1078, 24);
             this.menuStrip1.TabIndex = 20;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -90,6 +98,7 @@
             this.TPersonID.Name = "TPersonID";
             this.TPersonID.Size = new System.Drawing.Size(140, 22);
             this.TPersonID.Text = "Person ID";
+            this.TPersonID.CheckedChanged += new System.EventHandler(this.CheckedChanged);
             // 
             // TNationalNo
             // 
@@ -99,6 +108,7 @@
             this.TNationalNo.Name = "TNationalNo";
             this.TNationalNo.Size = new System.Drawing.Size(140, 22);
             this.TNationalNo.Text = "National no.";
+            this.TNationalNo.CheckedChanged += new System.EventHandler(this.CheckedChanged);
             // 
             // TFullName
             // 
@@ -108,6 +118,7 @@
             this.TFullName.Name = "TFullName";
             this.TFullName.Size = new System.Drawing.Size(140, 22);
             this.TFullName.Text = "Full name";
+            this.TFullName.CheckedChanged += new System.EventHandler(this.CheckedChanged);
             // 
             // TDateOfBirth
             // 
@@ -117,6 +128,7 @@
             this.TDateOfBirth.Name = "TDateOfBirth";
             this.TDateOfBirth.Size = new System.Drawing.Size(140, 22);
             this.TDateOfBirth.Text = "Date of birth";
+            this.TDateOfBirth.CheckedChanged += new System.EventHandler(this.CheckedChanged);
             // 
             // TNationality
             // 
@@ -126,6 +138,7 @@
             this.TNationality.Name = "TNationality";
             this.TNationality.Size = new System.Drawing.Size(140, 22);
             this.TNationality.Text = "Nationality";
+            this.TNationality.CheckedChanged += new System.EventHandler(this.CheckedChanged);
             // 
             // TPhone
             // 
@@ -135,6 +148,7 @@
             this.TPhone.Name = "TPhone";
             this.TPhone.Size = new System.Drawing.Size(140, 22);
             this.TPhone.Text = "Phone";
+            this.TPhone.CheckedChanged += new System.EventHandler(this.CheckedChanged);
             // 
             // TEmail
             // 
@@ -144,6 +158,7 @@
             this.TEmail.Name = "TEmail";
             this.TEmail.Size = new System.Drawing.Size(140, 22);
             this.TEmail.Text = "Email";
+            this.TEmail.CheckedChanged += new System.EventHandler(this.CheckedChanged);
             // 
             // TGender
             // 
@@ -153,6 +168,84 @@
             this.TGender.Name = "TGender";
             this.TGender.Size = new System.Drawing.Size(140, 22);
             this.TGender.Text = "Gender";
+            this.TGender.CheckedChanged += new System.EventHandler(this.CheckedChanged);
+            // 
+            // dgvResults
+            // 
+            this.dgvResults.AllowUserToAddRows = false;
+            this.dgvResults.AllowUserToDeleteRows = false;
+            this.dgvResults.AllowUserToOrderColumns = true;
+            this.dgvResults.AllowUserToResizeRows = false;
+            this.dgvResults.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvResults.BackgroundColor = System.Drawing.Color.White;
+            this.dgvResults.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvResults.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
+            this.dgvResults.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10.5F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvResults.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvResults.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(230)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvResults.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dgvResults.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvResults.EnableHeadersVisualStyles = false;
+            this.dgvResults.Location = new System.Drawing.Point(0, 164);
+            this.dgvResults.Name = "dgvResults";
+            this.dgvResults.RowHeadersVisible = false;
+            this.dgvResults.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.dgvResults.RowTemplate.Height = 40;
+            this.dgvResults.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvResults.Size = new System.Drawing.Size(1078, 542);
+            this.dgvResults.TabIndex = 22;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pictureBox1.Image = global::DVLDPL.Properties.Resources.refresh;
+            this.pictureBox1.InitialImage = global::DVLDPL.Properties.Resources.refresh;
+            this.pictureBox1.Location = new System.Drawing.Point(13, 108);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(40, 38);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 23;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pictureBox3.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pictureBox3.Image = global::DVLDPL.Properties.Resources.icons8_search_500;
+            this.pictureBox3.InitialImage = global::DVLDPL.Properties.Resources.refresh;
+            this.pictureBox3.Location = new System.Drawing.Point(699, 36);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(40, 38);
+            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox3.TabIndex = 25;
+            this.pictureBox3.TabStop = false;
+            this.pictureBox3.Click += new System.EventHandler(this.pictureBox3_Click);
+            // 
+            // ctrlAddNewPersonBotton1
+            // 
+            this.ctrlAddNewPersonBotton1.BackColor = System.Drawing.Color.Transparent;
+            this.ctrlAddNewPersonBotton1.Location = new System.Drawing.Point(72, 108);
+            this.ctrlAddNewPersonBotton1.Name = "ctrlAddNewPersonBotton1";
+            this.ctrlAddNewPersonBotton1.Size = new System.Drawing.Size(40, 38);
+            this.ctrlAddNewPersonBotton1.TabIndex = 26;
             // 
             // ctrlPeopleSearch1
             // 
@@ -163,62 +256,31 @@
             this.ctrlPeopleSearch1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ctrlPeopleSearch1.MinimumSize = new System.Drawing.Size(1077, 140);
             this.ctrlPeopleSearch1.Name = "ctrlPeopleSearch1";
-            this.ctrlPeopleSearch1.Size = new System.Drawing.Size(1127, 140);
+            this.ctrlPeopleSearch1.Size = new System.Drawing.Size(1078, 140);
             this.ctrlPeopleSearch1.TabIndex = 21;
-            // 
-            // nDataGrid1
-            // 
-            this.nDataGrid1.AllowUserToAddRows = false;
-            this.nDataGrid1.AllowUserToDeleteRows = false;
-            this.nDataGrid1.AllowUserToOrderColumns = true;
-            this.nDataGrid1.AllowUserToResizeRows = false;
-            this.nDataGrid1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.nDataGrid1.BackgroundColor = System.Drawing.Color.White;
-            this.nDataGrid1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.nDataGrid1.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
-            this.nDataGrid1.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10.5F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.nDataGrid1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.nDataGrid1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(230)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.nDataGrid1.DefaultCellStyle = dataGridViewCellStyle2;
-            this.nDataGrid1.EnableHeadersVisualStyles = false;
-            this.nDataGrid1.Location = new System.Drawing.Point(249, 261);
-            this.nDataGrid1.Name = "nDataGrid1";
-            this.nDataGrid1.RowHeadersVisible = false;
-            this.nDataGrid1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            this.nDataGrid1.RowTemplate.Height = 40;
-            this.nDataGrid1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.nDataGrid1.Size = new System.Drawing.Size(240, 150);
-            this.nDataGrid1.TabIndex = 22;
             // 
             // frmPeopleManagement
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.ClientSize = new System.Drawing.Size(1127, 706);
-            this.Controls.Add(this.nDataGrid1);
+            this.ClientSize = new System.Drawing.Size(1078, 706);
+            this.Controls.Add(this.ctrlAddNewPersonBotton1);
+            this.Controls.Add(this.pictureBox3);
+            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.dgvResults);
             this.Controls.Add(this.ctrlPeopleSearch1);
             this.Controls.Add(this.menuStrip1);
-            this.MinimumSize = new System.Drawing.Size(949, 348);
+            this.MinimumSize = new System.Drawing.Size(1094, 745);
             this.Name = "frmPeopleManagement";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.frmPeopleManagement_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nDataGrid1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvResults)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -237,6 +299,9 @@
         private System.Windows.Forms.ToolStripMenuItem TEmail;
         private System.Windows.Forms.ToolStripMenuItem TGender;
         private ctrlPeopleSearch ctrlPeopleSearch1;
-        private NControls.NDataGrid nDataGrid1;
+        private NControls.NDataGrid dgvResults;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox pictureBox3;
+        private ctrlAddNewPersonBotton ctrlAddNewPersonBotton1;
     }
 }

@@ -211,3 +211,9 @@ Invalid column name 'Gendor'.
 [26/07/2026] Error: [7/26/2026 7:14:24 PM] - Error message: Gendor
 [26/07/2026] Error: [7/26/2026 7:19:17 PM] - Error message: Gendor
 [26/07/2026] Error: [7/26/2026 7:19:17 PM] - Error message: Gendor
+[30/07/2026] Error: [7/30/2026 10:24:05 AM] - Error message: The parameterized query '(@NationalNo nvarchar(5),@FirstName nvarchar(5),@SecondName nvar' expects the parameter '@ImagePath', which was not supplied.
+[30/07/2026] Error: [7/30/2026 10:24:21 AM] - Error message: The parameterized query '(@NationalNo nvarchar(5),@FirstName nvarchar(5),@SecondName nvar' expects the parameter '@ImagePath', which was not supplied.
+[30/07/2026] Error: [7/30/2026 10:24:47 AM] - Error message: Violation of UNIQUE KEY constraint 'UQ_National_No'. Cannot insert duplicate key in object 'dbo.People'. The duplicate key value is (121213434).
+The statement has been terminated.
+[30/07/2026] Error: [7/30/2026 10:24:49 AM] - Error message: Violation of UNIQUE KEY constraint 'UQ_National_No'. Cannot insert duplicate key in object 'dbo.People'. The duplicate key value is (121213434).
+The statement has been terminated.
