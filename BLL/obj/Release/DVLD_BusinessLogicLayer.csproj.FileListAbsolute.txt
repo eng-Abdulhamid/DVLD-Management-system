@@ -1,9 +1,0 @@
-C:\Users\Abd-Ulhameed\Desktop\Project Course __19__\DVLD_BusinessLogicLayer\bin\Release\DVLD_BusinessLogicLayer.dll
-C:\Users\Abd-Ulhameed\Desktop\Project Course __19__\DVLD_BusinessLogicLayer\bin\Release\DVLD_BusinessLogicLayer.pdb
-C:\Users\Abd-Ulhameed\Desktop\Project Course __19__\DVLD_BusinessLogicLayer\bin\Release\DVLD_DataAccessLayer.dll
-C:\Users\Abd-Ulhameed\Desktop\Project Course __19__\DVLD_BusinessLogicLayer\bin\Release\DVLD_DataAccessLayer.pdb
-C:\Users\Abd-Ulhameed\Desktop\Project Course __19__\DVLD_BusinessLogicLayer\obj\Release\DVLD_BusinessLogicLayer.csproj.AssemblyReference.cache
-C:\Users\Abd-Ulhameed\Desktop\Project Course __19__\DVLD_BusinessLogicLayer\obj\Release\DVLD_BusinessLogicLayer.csproj.CoreCompileInputs.cache
-C:\Users\Abd-Ulhameed\Desktop\Project Course __19__\DVLD_BusinessLogicLayer\obj\Release\DVLD_Bus.49F0C77A.Up2Date
-C:\Users\Abd-Ulhameed\Desktop\Project Course __19__\DVLD_BusinessLogicLayer\obj\Release\DVLD_BusinessLogicLayer.dll
-C:\Users\Abd-Ulhameed\Desktop\Project Course __19__\DVLD_BusinessLogicLayer\obj\Release\DVLD_BusinessLogicLayer.pdb

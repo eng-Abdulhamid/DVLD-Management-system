@@ -1,0 +1,9 @@
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Business_Logic_Layer_(BLL)\bin\Debug\DVLD_BusinessLogicLayer.dll
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Business_Logic_Layer_(BLL)\bin\Debug\DVLD_BusinessLogicLayer.pdb
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Business_Logic_Layer_(BLL)\bin\Debug\DVLD_DataAccessLayer.dll
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Business_Logic_Layer_(BLL)\bin\Debug\DVLD_DataAccessLayer.pdb
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Business_Logic_Layer_(BLL)\obj\Debug\DVLD_BusinessLogicLayer.csproj.AssemblyReference.cache
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Business_Logic_Layer_(BLL)\obj\Debug\DVLD_BusinessLogicLayer.csproj.CoreCompileInputs.cache
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Business_Logic_Layer_(BLL)\obj\Debug\DVLD_Bus.49F0C77A.Up2Date
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Business_Logic_Layer_(BLL)\obj\Debug\DVLD_BusinessLogicLayer.dll
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Business_Logic_Layer_(BLL)\obj\Debug\DVLD_BusinessLogicLayer.pdb

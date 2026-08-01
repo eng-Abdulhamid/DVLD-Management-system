@@ -1,6 +1,0 @@
-C:\Users\Abd-Ulhameed\Desktop\Project Course __19__\DVLD_DataAccessLayer\bin\Release\DVLD_DataAccessLayer.dll
-C:\Users\Abd-Ulhameed\Desktop\Project Course __19__\DVLD_DataAccessLayer\bin\Release\DVLD_DataAccessLayer.pdb
-C:\Users\Abd-Ulhameed\Desktop\Project Course __19__\DVLD_DataAccessLayer\obj\Release\DVLD_DataAccessLayer.csproj.AssemblyReference.cache
-C:\Users\Abd-Ulhameed\Desktop\Project Course __19__\DVLD_DataAccessLayer\obj\Release\DVLD_DataAccessLayer.csproj.CoreCompileInputs.cache
-C:\Users\Abd-Ulhameed\Desktop\Project Course __19__\DVLD_DataAccessLayer\obj\Release\DVLD_DataAccessLayer.dll
-C:\Users\Abd-Ulhameed\Desktop\Project Course __19__\DVLD_DataAccessLayer\obj\Release\DVLD_DataAccessLayer.pdb
