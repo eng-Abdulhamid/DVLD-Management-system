@@ -23,7 +23,8 @@ namespace Repositories
         Phone,
         Email,
         NationalityCountryID,
-        ImagePath
+        ImagePath,
+        NationalityCountryName
     }
     #endregion
 
@@ -56,7 +57,7 @@ namespace Repositories
         }
         public Person FindPersonByPersonID(int PersonID)
         {
-            string Query = $"SELECT TOP 1 * FROM People WHERE PersonID = @PersonID";
+            string Query = "SELECT People.*, Countries.CountryName FROM Countries INNER JOIN People ON Countries.CountryID = People.NationalityCountryID where People.PersonID = @PersonID";
             SqlCommand Command = new SqlCommand(Query);
             Command.Parameters.AddWithValue("@PersonID", (object)PersonID);
             Person person = new Person();
@@ -84,9 +85,10 @@ namespace Repositories
                             int ordEmail = reader.GetOrdinal("Email");
                             int ordNationalityCountryID = reader.GetOrdinal("NationalityCountryID");
                             int ordImagePath = reader.GetOrdinal("ImagePath");
+                            int ordNatioalityCountryName = reader.GetOrdinal("CountryName");
                             if (reader.Read())
                             {
-                                person = _MapDataReaderToPerson(reader, ordPersonID, ordNationalNo, ordFirstName, ordSecondName, ordThirdName, ordLastName, ordDateOfBirth, ordGender, ordAddress, ordPhone, ordEmail, ordNationalityCountryID, ordImagePath);
+                                person = _MapDataReaderToPerson(reader, ordPersonID, ordNationalNo, ordFirstName, ordSecondName, ordThirdName, ordLastName, ordDateOfBirth, ordGender, ordAddress, ordPhone, ordEmail, ordNationalityCountryID, ordImagePath, ordNatioalityCountryName);
                             }
                         }
                     }
@@ -175,9 +177,10 @@ namespace Repositories
                             int ordEmail = reader.GetOrdinal("Email");
                             int ordNationalityCountryID = reader.GetOrdinal("NationalityCountryID");
                             int ordImagePath = reader.GetOrdinal("ImagePath");
+                            int ordNationalityCountryName = reader.GetOrdinal("CountryName");
                             if (reader.Read())
                             {
-                                person = _MapDataReaderToPerson(reader, ordPersonID, ordNationalNo, ordFirstName, ordSecondName, ordThirdName, ordLastName, ordDateOfBirth, ordGender, ordAddress, ordPhone, ordEmail, ordNationalityCountryID, ordImagePath);
+                                person = _MapDataReaderToPerson(reader, ordPersonID, ordNationalNo, ordFirstName, ordSecondName, ordThirdName, ordLastName, ordDateOfBirth, ordGender, ordAddress, ordPhone, ordEmail, ordNationalityCountryID, ordImagePath, ordNationalityCountryName);
                             }
                         }
                     }
@@ -267,7 +270,7 @@ namespace Repositories
         { 
             if (SearchCriteria == null)
             {
-                string Query = "Select * from People";
+                string Query = "SELECT People.*, Countries.CountryName FROM Countries INNER JOIN People ON Countries.CountryID = People.NationalityCountryID";
                 SqlCommand Command = new SqlCommand(Query);
                 return _ExecuteCommandReturnPeople(Command);
             }
@@ -276,7 +279,7 @@ namespace Repositories
 
         public class PeopleSearchCriteria
         {
-            public enGender Gender { get; set; } = enGender.Both;
+            public enGender Gender { get; set; } = enGender.Unknown;
             public enPersonField FilterBy { get; set; } = enPersonField.None;
             public enSearchType SearchType { get; set; } = enSearchType.None;
             public string SearchText { get; set; } = string.Empty;
@@ -297,7 +300,7 @@ namespace Repositories
             int ordPhone,
             int ordEmail,
             int ordNationalityCountryID,
-            int ordImagePath)
+            int ordImagePath, int ordNationalityCountryName)
         {
             Person person = new Person();
 
@@ -313,7 +316,7 @@ namespace Repositories
                 person.DateOfBirth = reader.GetDateTime(ordDateOfBirth);
 
                 byte GenderValue = Convert.ToByte(reader.GetValue(ordGender));
-                person.Gender = (GenderValue == 1) ? enGender.Male : ((GenderValue == 2) ? enGender.Female : enGender.Both);
+                person.Gender = (GenderValue == 1) ? enGender.Male : ((GenderValue == 2) ? enGender.Female : enGender.Unknown);
 
                 person.Address = reader.GetString(ordAddress);
                 person.Phone = reader.GetString(ordPhone);
@@ -323,6 +326,8 @@ namespace Repositories
                 person.NationalityCountryID = reader.GetInt32(ordNationalityCountryID);
 
                 person.ImagePath = reader.IsDBNull(ordImagePath) ? string.Empty : reader.GetString(ordImagePath);
+                person.CountryName = reader.IsDBNull(ordNationalityCountryName) ? string.Empty : reader.GetString(ordNationalityCountryName);
+
             }
             catch (Exception ex)
             {
@@ -369,13 +374,13 @@ namespace Repositories
                 command.Parameters.AddWithValue("@pattern", likePattern);
             }
 
-            if (SearchCriteria.Gender != enGender.Both)
+            if (SearchCriteria.Gender != enGender.Unknown)
             {
                 whereClauses.Add("Gender = @gender");
                 command.Parameters.AddWithValue("@gender", (byte)SearchCriteria.Gender);
             }
 
-            string query = "SELECT * FROM People";
+            string query = "SELECT People.*, Countries.CountryName FROM Countries INNER JOIN People ON Countries.CountryID = People.NationalityCountryID";
 
             if (whereClauses.Count > 0)
             {
@@ -431,6 +436,9 @@ namespace Repositories
                 case enPersonField.ImagePath:
                     strOrderBy = "ImagePath";
                     break;
+                case enPersonField.NationalityCountryName:
+                    strOrderBy = "CountryName";
+                    break;
                 default:
                     strOrderBy = "PersonID";
                     break;
@@ -467,9 +475,10 @@ namespace Repositories
                             int ordEmail = reader.GetOrdinal("Email");
                             int ordNationalityCountryID = reader.GetOrdinal("NationalityCountryID");
                             int ordImagePath = reader.GetOrdinal("ImagePath");
+                            int ordNationalityCountryName = reader.GetOrdinal("CountryName");
                             while (reader.Read())
                             {
-                                people.Add(_MapDataReaderToPerson(reader, ordPersonID, ordNationalNo, ordFirstName, ordSecondName, ordThirdName, ordLastName, ordDateOfBirth, ordGender, ordAddress, ordPhone, ordEmail, ordNationalityCountryID,ordImagePath ));
+                                people.Add(_MapDataReaderToPerson(reader, ordPersonID, ordNationalNo, ordFirstName, ordSecondName, ordThirdName, ordLastName, ordDateOfBirth, ordGender, ordAddress, ordPhone, ordEmail, ordNationalityCountryID,ordImagePath, ordNationalityCountryName));
                             }
                         }
                     }

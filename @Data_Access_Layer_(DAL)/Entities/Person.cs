@@ -17,6 +17,7 @@ namespace Entities
         public string Email { get; set; } // Nullable column
         public int NationalityCountryID { get; set; }
         public string ImagePath { get; set; } // Nullable column
+        public string CountryName { get; set; }
     }
 }
 

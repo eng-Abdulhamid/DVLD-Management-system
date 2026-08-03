@@ -8,7 +8,6 @@ C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\ob
 C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\bin\Debug\DVLDPL.exe.config
 C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\bin\Debug\DVLDPL.exe
 C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\bin\Debug\DVLDPL.pdb
-C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\bin\Debug\ApplicatinNeededControlsModern.dll
 C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\bin\Debug\DVLD_BusinessLogicLayer.dll
 C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\bin\Debug\DVLD_DataAccessLayer.dll
 C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\bin\Debug\ApplicatinNeededControlsModern.pdb
@@ -18,3 +17,7 @@ C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\ob
 C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\obj\Debug\DVLDPL.exe
 C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\obj\Debug\DVLDPL.pdb
 C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\obj\Debug\DVLDPL.PeopleManagement.frmSavePerson.resources
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\obj\Debug\DVLDPL.PeopleManagement.frmPeopleManagementSettings.resources
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\obj\Debug\DVLDPL.PeopleManagement.ctrlPersonCard.resources
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\obj\Debug\DVLDPL.PeopleManagement.frmDeletePersonForm.resources
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\obj\Debug\DVLDPL.PeopleManagement.frmPersonCard.resources

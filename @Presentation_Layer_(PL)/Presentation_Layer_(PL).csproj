@@ -63,6 +63,30 @@
     <Compile Include="PeopleManagement\ctrlAddNewPersonBotton.Designer.cs">
       <DependentUpon>ctrlAddNewPersonBotton.cs</DependentUpon>
     </Compile>
+    <Compile Include="PeopleManagement\ctrlPersonCard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PeopleManagement\ctrlPersonCard.Designer.cs">
+      <DependentUpon>ctrlPersonCard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PeopleManagement\frmDeletePersonForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PeopleManagement\frmDeletePersonForm.Designer.cs">
+      <DependentUpon>frmDeletePersonForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PeopleManagement\frmPeopleManagementSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PeopleManagement\frmPeopleManagementSettings.Designer.cs">
+      <DependentUpon>frmPeopleManagementSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PeopleManagement\frmPersonCard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PeopleManagement\frmPersonCard.Designer.cs">
+      <DependentUpon>frmPersonCard.cs</DependentUpon>
+    </Compile>
     <Compile Include="PeopleManagement\frmSavePerson.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -85,6 +109,18 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="PeopleManagement\ctrlAddNewPersonBotton.resx">
       <DependentUpon>ctrlAddNewPersonBotton.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PeopleManagement\ctrlPersonCard.resx">
+      <DependentUpon>ctrlPersonCard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PeopleManagement\frmDeletePersonForm.resx">
+      <DependentUpon>frmDeletePersonForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PeopleManagement\frmPeopleManagementSettings.resx">
+      <DependentUpon>frmPeopleManagementSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PeopleManagement\frmPersonCard.resx">
+      <DependentUpon>frmPersonCard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PeopleManagement\frmSavePerson.resx">
       <DependentUpon>frmSavePerson.cs</DependentUpon>
@@ -270,6 +306,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\user.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\delete-user %281%291.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Settings.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

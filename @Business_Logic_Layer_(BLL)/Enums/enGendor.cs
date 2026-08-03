@@ -2,11 +2,11 @@
 {
     public enum enGender {
         [System.ComponentModel.Description("Unknown")]
-        Both = 0,
+        Unknown = -1,
         [System.ComponentModel.Description("Male")]
-        Male = 1,
+        Male = 0,
         [System.ComponentModel.Description("Female")]
-        Female = 2
+        Female = 1
     }
 
 }

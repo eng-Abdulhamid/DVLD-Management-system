@@ -24,7 +24,8 @@ namespace Services
             Email,
             NationalityCountryID,
             ImagePath,
-            Gender
+            Gender,
+            CountryName
         }
         #region Properties
         private PersonRepository repo;
@@ -151,7 +152,8 @@ namespace Services
                 Email = Entity.Email,
                 NationalityCountryID = Entity.NationalityCountryID,
                 ImagePath = Entity.ImagePath,
-                Gender = (Entity.Gender == Repositories.enGender.Male) ? enGender.Male : enGender.Female
+                Gender = (Entity.Gender == Repositories.enGender.Male) ? enGender.Male : enGender.Female,
+                CountryName = Entity.CountryName
             };
         }
 
@@ -172,6 +174,8 @@ namespace Services
                 NationalityCountryID = AddDTO.NationalityCountryID,
                 ImagePath = AddDTO.ImagePath,
                 Gender = (AddDTO.Gender == enGender.Male) ? Repositories.enGender.Male : Repositories.enGender.Female
+                ,
+                CountryName = AddDTO.CountryName
             };
         }
 
@@ -193,6 +197,8 @@ namespace Services
                 NationalityCountryID = UpdateDTO.NationalityCountryID,
                 ImagePath = UpdateDTO.ImagePath,
                 Gender = (UpdateDTO.Gender == enGender.Male) ? Repositories.enGender.Male : Repositories.enGender.Female
+                ,
+                CountryName = UpdateDTO.CountryName
             };
         }
 
@@ -238,6 +244,8 @@ namespace Services
                     return Repositories.enPersonField.ImagePath;
                 case enFields.Gender:
                     return Repositories.enPersonField.Gender;
+                case enFields.CountryName:
+                    return Repositories.enPersonField.NationalityCountryName;
                 default:
                     return Repositories.enPersonField.PersonID;
             }

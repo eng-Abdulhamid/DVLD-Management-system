@@ -29,7 +29,7 @@ namespace DVLDPL.PeopleManagement
         private string letter = "";
         private string lastSearchResult = "";
         private PersonServices personServices;
-        private enGender selectedGender = enGender.Both;
+        private enGender selectedGender = enGender.Unknown;
         private void InitializeDesign()
         {
             this.BackColor = Color.FromArgb(240, 242, 245);
@@ -144,7 +144,7 @@ namespace DVLDPL.PeopleManagement
             }
             else
             {
-                return enGender.Both;
+                return enGender.Unknown;
             }
 
         }

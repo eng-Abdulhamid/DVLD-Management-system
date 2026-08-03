@@ -31,8 +31,9 @@ namespace DVLDPL.PeopleManagement
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.columnsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -45,14 +46,20 @@ namespace DVLDPL.PeopleManagement
             this.TEmail = new System.Windows.Forms.ToolStripMenuItem();
             this.TGender = new System.Windows.Forms.ToolStripMenuItem();
             this.dgvResults = new NControls.NDataGrid();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.ctrlAddNewPersonBotton1 = new DVLDPL.PeopleManagement.ctrlAddNewPersonBotton();
             this.ctrlPeopleSearch1 = new DVLDPL.PeopleManagement.ctrlPeopleSearch();
+            this.btnSettings = new System.Windows.Forms.PictureBox();
+            this.btnDeleteSelectedPerson = new System.Windows.Forms.PictureBox();
+            this.btnUpdateSelectedPerson = new System.Windows.Forms.PictureBox();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvResults)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnSettings)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnDeleteSelectedPerson)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnUpdateSelectedPerson)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -176,74 +183,58 @@ namespace DVLDPL.PeopleManagement
             this.dgvResults.AllowUserToDeleteRows = false;
             this.dgvResults.AllowUserToOrderColumns = true;
             this.dgvResults.AllowUserToResizeRows = false;
+            this.dgvResults.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvResults.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvResults.BackgroundColor = System.Drawing.Color.White;
             this.dgvResults.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvResults.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgvResults.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10.5F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvResults.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Segoe UI", 10.5F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvResults.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.dgvResults.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(230)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvResults.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dgvResults.Dock = System.Windows.Forms.DockStyle.Fill;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Segoe UI", 10F);
+            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(230)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvResults.DefaultCellStyle = dataGridViewCellStyle8;
             this.dgvResults.EnableHeadersVisualStyles = false;
+            this.dgvResults.GridColor = System.Drawing.Color.White;
             this.dgvResults.Location = new System.Drawing.Point(0, 164);
+            this.dgvResults.MultiSelect = false;
             this.dgvResults.Name = "dgvResults";
+            this.dgvResults.ReadOnly = true;
             this.dgvResults.RowHeadersVisible = false;
             this.dgvResults.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = System.Drawing.Color.Snow;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle9.NullValue = "None";
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvResults.RowsDefaultCellStyle = dataGridViewCellStyle9;
             this.dgvResults.RowTemplate.Height = 40;
             this.dgvResults.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvResults.Size = new System.Drawing.Size(1078, 542);
             this.dgvResults.TabIndex = 22;
             this.dgvResults.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvResults_CellDoubleClick);
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBox1.Image = global::DVLDPL.Properties.Resources.refresh;
-            this.pictureBox1.InitialImage = global::DVLDPL.Properties.Resources.refresh;
-            this.pictureBox1.Location = new System.Drawing.Point(13, 108);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(40, 38);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 23;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
-            // 
-            // pictureBox3
-            // 
-            this.pictureBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pictureBox3.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBox3.Image = global::DVLDPL.Properties.Resources.icons8_search_500;
-            this.pictureBox3.InitialImage = global::DVLDPL.Properties.Resources.refresh;
-            this.pictureBox3.Location = new System.Drawing.Point(699, 36);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(40, 38);
-            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox3.TabIndex = 25;
-            this.pictureBox3.TabStop = false;
-            this.pictureBox3.Click += new System.EventHandler(this.pictureBox3_Click);
-            // 
             // ctrlAddNewPersonBotton1
             // 
             this.ctrlAddNewPersonBotton1.BackColor = System.Drawing.Color.Transparent;
-            this.ctrlAddNewPersonBotton1.Location = new System.Drawing.Point(72, 108);
+            this.ctrlAddNewPersonBotton1.Location = new System.Drawing.Point(80, 102);
             this.ctrlAddNewPersonBotton1.Name = "ctrlAddNewPersonBotton1";
             this.ctrlAddNewPersonBotton1.Size = new System.Drawing.Size(40, 38);
             this.ctrlAddNewPersonBotton1.TabIndex = 26;
@@ -261,12 +252,90 @@ namespace DVLDPL.PeopleManagement
             this.ctrlPeopleSearch1.Size = new System.Drawing.Size(1078, 140);
             this.ctrlPeopleSearch1.TabIndex = 21;
             // 
+            // btnSettings
+            // 
+            this.btnSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSettings.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnSettings.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.btnSettings.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSettings.Image = global::DVLDPL.Properties.Resources.Settings;
+            this.btnSettings.InitialImage = global::DVLDPL.Properties.Resources.refresh;
+            this.btnSettings.Location = new System.Drawing.Point(1038, 24);
+            this.btnSettings.Name = "btnSettings";
+            this.btnSettings.Size = new System.Drawing.Size(40, 38);
+            this.btnSettings.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.btnSettings.TabIndex = 29;
+            this.btnSettings.TabStop = false;
+            // 
+            // btnDeleteSelectedPerson
+            // 
+            this.btnDeleteSelectedPerson.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnDeleteSelectedPerson.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.btnDeleteSelectedPerson.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnDeleteSelectedPerson.Image = global::DVLDPL.Properties.Resources.delete_user__1_1;
+            this.btnDeleteSelectedPerson.InitialImage = global::DVLDPL.Properties.Resources.refresh;
+            this.btnDeleteSelectedPerson.Location = new System.Drawing.Point(196, 102);
+            this.btnDeleteSelectedPerson.Name = "btnDeleteSelectedPerson";
+            this.btnDeleteSelectedPerson.Size = new System.Drawing.Size(40, 38);
+            this.btnDeleteSelectedPerson.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.btnDeleteSelectedPerson.TabIndex = 28;
+            this.btnDeleteSelectedPerson.TabStop = false;
+            this.btnDeleteSelectedPerson.Click += new System.EventHandler(this.btnDeleteSelectedPerson_Click);
+            // 
+            // btnUpdateSelectedPerson
+            // 
+            this.btnUpdateSelectedPerson.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnUpdateSelectedPerson.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.btnUpdateSelectedPerson.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnUpdateSelectedPerson.Image = global::DVLDPL.Properties.Resources.user_edit_21991;
+            this.btnUpdateSelectedPerson.InitialImage = global::DVLDPL.Properties.Resources.refresh;
+            this.btnUpdateSelectedPerson.Location = new System.Drawing.Point(138, 102);
+            this.btnUpdateSelectedPerson.Name = "btnUpdateSelectedPerson";
+            this.btnUpdateSelectedPerson.Size = new System.Drawing.Size(40, 38);
+            this.btnUpdateSelectedPerson.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.btnUpdateSelectedPerson.TabIndex = 27;
+            this.btnUpdateSelectedPerson.TabStop = false;
+            this.btnUpdateSelectedPerson.Click += new System.EventHandler(this.btnUpdateSelectedPerson_Click);
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pictureBox3.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pictureBox3.Image = global::DVLDPL.Properties.Resources.icons8_search_500;
+            this.pictureBox3.InitialImage = global::DVLDPL.Properties.Resources.refresh;
+            this.pictureBox3.Location = new System.Drawing.Point(699, 36);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(40, 38);
+            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox3.TabIndex = 25;
+            this.pictureBox3.TabStop = false;
+            this.pictureBox3.Click += new System.EventHandler(this.pictureBox3_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pictureBox1.Image = global::DVLDPL.Properties.Resources.refresh;
+            this.pictureBox1.InitialImage = global::DVLDPL.Properties.Resources.refresh;
+            this.pictureBox1.Location = new System.Drawing.Point(22, 102);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(40, 38);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 23;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+            // 
             // frmPeopleManagement
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(1078, 706);
+            this.Controls.Add(this.btnSettings);
+            this.Controls.Add(this.btnDeleteSelectedPerson);
+            this.Controls.Add(this.btnUpdateSelectedPerson);
             this.Controls.Add(this.ctrlAddNewPersonBotton1);
             this.Controls.Add(this.pictureBox3);
             this.Controls.Add(this.pictureBox1);
@@ -275,14 +344,18 @@ namespace DVLDPL.PeopleManagement
             this.Controls.Add(this.menuStrip1);
             this.MinimumSize = new System.Drawing.Size(1094, 745);
             this.Name = "frmPeopleManagement";
+            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Form1";
+            this.Text = "People Management";
             this.Load += new System.EventHandler(this.frmPeopleManagement_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvResults)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnSettings)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnDeleteSelectedPerson)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnUpdateSelectedPerson)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -305,5 +378,8 @@ namespace DVLDPL.PeopleManagement
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.PictureBox pictureBox3;
         private ctrlAddNewPersonBotton ctrlAddNewPersonBotton1;
+        private System.Windows.Forms.PictureBox btnUpdateSelectedPerson;
+        private System.Windows.Forms.PictureBox btnDeleteSelectedPerson;
+        private System.Windows.Forms.PictureBox btnSettings;
     }
 }

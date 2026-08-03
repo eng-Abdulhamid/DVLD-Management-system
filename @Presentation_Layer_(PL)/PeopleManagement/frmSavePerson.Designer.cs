@@ -57,6 +57,7 @@
             this.label10 = new System.Windows.Forms.Label();
             this.picPersonImage = new System.Windows.Forms.PictureBox();
             this.lblDeletePicture = new System.Windows.Forms.LinkLabel();
+            this.btnSubmitAndClose = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.epValidation)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picPersonImage)).BeginInit();
             this.SuspendLayout();
@@ -522,6 +523,23 @@
             this.lblDeletePicture.VisitedLinkColor = System.Drawing.Color.Black;
             this.lblDeletePicture.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblDeletePicture_LinkClicked);
             // 
+            // btnSubmitAndClose
+            // 
+            this.btnSubmitAndClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
+            this.btnSubmitAndClose.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSubmitAndClose.Enabled = false;
+            this.btnSubmitAndClose.FlatAppearance.BorderSize = 0;
+            this.btnSubmitAndClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSubmitAndClose.Font = new System.Drawing.Font("Segoe UI Semibold", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSubmitAndClose.ForeColor = System.Drawing.Color.White;
+            this.btnSubmitAndClose.Location = new System.Drawing.Point(260, 365);
+            this.btnSubmitAndClose.Name = "btnSubmitAndClose";
+            this.btnSubmitAndClose.Size = new System.Drawing.Size(219, 42);
+            this.btnSubmitAndClose.TabIndex = 103;
+            this.btnSubmitAndClose.Text = "Submit and Close the window";
+            this.btnSubmitAndClose.UseVisualStyleBackColor = false;
+            this.btnSubmitAndClose.Click += new System.EventHandler(this.btnSubmitAndClose_Click);
+            // 
             // frmSavePerson
             // 
             this.AcceptButton = this.btnSubmit;
@@ -529,6 +547,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
             this.ClientSize = new System.Drawing.Size(820, 428);
+            this.Controls.Add(this.btnSubmitAndClose);
             this.Controls.Add(this.lblDeletePicture);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label9);
@@ -556,7 +575,7 @@
             this.Controls.Add(this.label7);
             this.Controls.Add(this.txtPersonID);
             this.Controls.Add(this.picPersonImage);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximumSize = new System.Drawing.Size(836, 467);
             this.MinimumSize = new System.Drawing.Size(836, 467);
             this.Name = "frmSavePerson";
@@ -600,5 +619,6 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.LinkLabel lblDeletePicture;
+        private System.Windows.Forms.Button btnSubmitAndClose;
     }
 }

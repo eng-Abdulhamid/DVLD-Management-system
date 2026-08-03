@@ -12,6 +12,6 @@
         Ascending = 0,
         Descending = 1
     }
-    public enum enGender { Both = 0, Male = 1, Female = 2 }
+    public enum enGender { Unknown = -1, Male = 0, Female = 1 }
 
 }

@@ -1,8 +1,0 @@
-C:\Users\Abd-Ulhameed\Desktop\Project Course __19__\ApplicatinNeededControlsModern\bin\Release\ApplicatinNeededControlsModern.dll
-C:\Users\Abd-Ulhameed\Desktop\Project Course __19__\ApplicatinNeededControlsModern\bin\Release\ApplicatinNeededControlsModern.pdb
-C:\Users\Abd-Ulhameed\Desktop\Project Course __19__\ApplicatinNeededControlsModern\obj\Release\ApplicatinNeededControlsModern.csproj.AssemblyReference.cache
-C:\Users\Abd-Ulhameed\Desktop\Project Course __19__\ApplicatinNeededControlsModern\obj\Release\ApplicatinNeededControlsModern.Examples.ModernFormDesignerExample.resources
-C:\Users\Abd-Ulhameed\Desktop\Project Course __19__\ApplicatinNeededControlsModern\obj\Release\ApplicatinNeededControlsModern.csproj.GenerateResource.cache
-C:\Users\Abd-Ulhameed\Desktop\Project Course __19__\ApplicatinNeededControlsModern\obj\Release\ApplicatinNeededControlsModern.csproj.CoreCompileInputs.cache
-C:\Users\Abd-Ulhameed\Desktop\Project Course __19__\ApplicatinNeededControlsModern\obj\Release\ApplicatinNeededControlsModern.dll
-C:\Users\Abd-Ulhameed\Desktop\Project Course __19__\ApplicatinNeededControlsModern\obj\Release\ApplicatinNeededControlsModern.pdb

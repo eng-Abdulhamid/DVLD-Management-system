@@ -57,6 +57,8 @@ namespace DVLDPL.PeopleManagement
             cmbGender.SelectedItem = personData.Gender.ToString();
             picPersonImage.Tag = personData.ImagePath;
             picPersonImage.Image = !string.IsNullOrEmpty(personData.ImagePath) && File.Exists(personData.ImagePath) ? Image.FromFile(personData.ImagePath) : Properties.Resources.user;
+            cmbNationality.Items.Add(personData.CountryName);
+            cmbNationality.Text = personData.CountryName;
         }
         #region Initialization
         private void InitializeGenderComboBox()
@@ -117,6 +119,13 @@ namespace DVLDPL.PeopleManagement
         {
             Save();
         }
+        private void btnSubmitAndClose_Click(object sender, EventArgs e)
+        {
+            if (Save())
+            {
+                this.Close();
+            }
+        }
         private void btnCancel_Click(object sender, EventArgs e)
         {
             Notification.Show("User cancelled the operation.", IconType.Info);
@@ -140,7 +149,7 @@ namespace DVLDPL.PeopleManagement
         #region Maping
         private enGender GetSelectedGender()
         {
-            return enGender.Both;
+            return enGender.Unknown;
         }
         private int GetSelectedNationalityCountryID()
         {
@@ -316,13 +325,15 @@ namespace DVLDPL.PeopleManagement
         private void UpdateSubmitButtonState()
         {
             btnSubmit.Enabled = !string.IsNullOrWhiteSpace(txtNationalNo.Text) && !string.IsNullOrWhiteSpace(txtFirstName.Text) && !string.IsNullOrWhiteSpace(txtSecondName.Text) && !string.IsNullOrWhiteSpace(txtThirdName.Text) && !string.IsNullOrWhiteSpace(txtLastName.Text) && !string.IsNullOrWhiteSpace(txtPhone.Text) && !string.IsNullOrWhiteSpace(txtAdress.Text) && cmbGender.SelectedIndex >= 0 && cmbNationality.SelectedIndex >= 0 && dtpBirthDate.Value.Date < DateTime.Now.Date;
+            btnSubmitAndClose.Enabled = btnSubmit.Enabled;
         }
         #endregion
 
 
         #region Save Person
-        private void PerformAddNewPerson()
+        private bool PerformAddNewPerson()
         {
+            bool IsAddSuccessfully = false;
             int personID = personServices.AddNew(CreatePersonAddDTO());
             if (personID > 0)
             {
@@ -331,24 +342,27 @@ namespace DVLDPL.PeopleManagement
                 this.Text = $"Update Person {personID} Details";
                 Mode = enMode.UpdateExisting;
                 _StoredPersonData = CreatePersonAddDTO();
+                IsAddSuccessfully = true;
                 PersonSaved?.Invoke(personID);
             }
             else
             {
                 Notification.Show("Failed to add person. Please check the details and try again.", IconType.Error);
             }
+            return IsAddSuccessfully;
 
         }
-        private void PerformUpdateExistingPerson()
+        private bool PerformUpdateExistingPerson()
         {
+            bool IsUpdatedSuccessfully = false;
             int personID = GetThePersonID();
             if (personID <= 0)
             {
                 Notification.Show("Please check the details and try again.", IconType.Error);
-                return;
+                return IsUpdatedSuccessfully;
             }
-            bool isUpdated = personServices.UpdateByPersonID(CreatePersonUpdateDTO());
-            if (isUpdated)
+            IsUpdatedSuccessfully = personServices.UpdateByPersonID(CreatePersonUpdateDTO());
+            if (IsUpdatedSuccessfully)
             {
                 Notification.Show("Person updated successfully!", IconType.Success);
                 PersonSaved?.Invoke(personID);
@@ -359,21 +373,26 @@ namespace DVLDPL.PeopleManagement
             {
                 Notification.Show("Failed to update person. Please check the details and try again.", IconType.Error);
             }
+            return IsUpdatedSuccessfully;
         }
 
-        private void Save()
+        private bool Save()
         {
-            if (!(ValidateDataBeforeSubmit())) return;
+            bool IsSaved = false;
+            if (!(ValidateDataBeforeSubmit())) return IsSaved;
 
             if (Mode == enMode.AddNew)
             {
-                PerformAddNewPerson();
+                IsSaved = PerformAddNewPerson();
             }
             else
             {
                 if (ValidateWhetherDataNeedsUpdateOrNot())
-                    PerformUpdateExistingPerson();
+                    IsSaved = PerformUpdateExistingPerson();
+                else
+                    IsSaved = true;
             }
+            return IsSaved;
 
         }
         #endregion
@@ -383,5 +402,7 @@ namespace DVLDPL.PeopleManagement
             picPersonImage.Image = Properties.Resources.user;
             picPersonImage.Tag = "";
         }
+
+        
     }
 }

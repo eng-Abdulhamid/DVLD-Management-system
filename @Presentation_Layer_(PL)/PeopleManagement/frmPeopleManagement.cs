@@ -1,7 +1,9 @@
 ﻿using DTOs;
 using DVLD_BusinessLogicLayer;
+using Services;
 using System;
 using System.Collections.Generic;
+using System.Media;
 using System.Windows.Forms;
 
 namespace DVLDPL.PeopleManagement
@@ -152,7 +154,7 @@ namespace DVLDPL.PeopleManagement
                         cells.Add(person.DateOfBirth.ToString("yyyy-MM-dd"));
                         break;
                     case "Nationality":
-                        cells.Add("Not Specified");
+                        cells.Add(person.CountryName);
                         break;
                     case "Phone":
                         cells.Add(person.Phone);
@@ -195,12 +197,12 @@ namespace DVLDPL.PeopleManagement
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            Refresh();
+            RefreshPeopleList();
         }
 
         private void pictureBox3_Click(object sender, EventArgs e)
         {
-            Refresh();
+            RefreshPeopleList();
         }
 
         private void ctrlAddNewPersonBotton1_Load(object sender, EventArgs e)
@@ -210,11 +212,48 @@ namespace DVLDPL.PeopleManagement
 
         private void dgvResults_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex < 0) return;
+            int personID = GetSelectedPersonIDFromDataGrid();
+            frmPersonCard PersonCardForm = new frmPersonCard(personID);
 
-            object cellValue = dgvResults.Rows[e.RowIndex].Cells["Person ID"].Value;
+            PersonCardForm.PersonDeleted += PersonDeletedSuccessfullyEventHundler;
+            PersonCardForm.PersonUpdated += PersonSaveEventHandler;
+            PersonCardForm.ShowDialog();
 
-            if (cellValue != null && int.TryParse(cellValue.ToString(), out int personID))
+        }
+        private void PersonSaveEventHandler(int personId)
+        {
+            RefreshPeopleList();
+        }
+        private void RefreshPeopleList()
+        {
+            ctrlPeopleSearch1.PerformSearch();
+        }
+
+        private void pictureBox4_Click(object sender, EventArgs e)
+        {
+
+        }
+        
+        private void btnDeleteSelectedPerson_Click(object sender, EventArgs e)
+        {
+            int personID = GetSelectedPersonIDFromDataGrid();
+            if (personID > 0)
+            {
+                frmDeletePersonForm DeletePersonForm = new frmDeletePersonForm(personID);
+                DeletePersonForm.DeletedSuccessfully += PersonDeletedSuccessfullyEventHundler;
+                DeletePersonForm.ShowDialog();
+            }
+
+        }
+        private void PersonDeletedSuccessfullyEventHundler()
+        {
+            RefreshPeopleList();
+        }
+
+        private void btnUpdateSelectedPerson_Click(object sender, EventArgs e)
+        {
+            int personID = GetSelectedPersonIDFromDataGrid();
+            if (personID > 0)
             {
                 frmSavePerson frm = new frmSavePerson(personID);
 
@@ -223,14 +262,15 @@ namespace DVLDPL.PeopleManagement
                 frm.ShowDialog();
             }
         }
-        private void PersonSaveEventHandler(int personId)
+        private int GetSelectedPersonIDFromDataGrid()
         {
-            Refresh();
-        }
-        private void Refresh()
-        {
-            ctrlPeopleSearch1.PerformSearch();
-        }
+            object cellValue = dgvResults.SelectedRows[0].Cells["Person ID"].Value;
+            if (cellValue != null && int.TryParse(cellValue.ToString(), out int personID))
+            {
+                return personID;
+            }
+            return -1;
 
+        }
     }
 }
