@@ -19,7 +19,7 @@ namespace DTOs
         public int NationalityCountryID { get; set; }
         public string ImagePath { get; set; } // Nullable column
         public string CountryName { get; set; }
-    
+        public string FullName => $"{FirstName} {SecondName} {ThirdName} {LastName}".Replace("  ", " ").Trim();
     }
 }
 

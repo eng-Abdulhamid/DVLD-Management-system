@@ -1,8 +1,15 @@
 C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\obj\Debug\Presentation_Layer_(PL).csproj.AssemblyReference.cache
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\obj\Debug\DVLDPL.frmMainScreen.resources
 C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\obj\Debug\DVLDPL.PeopleManagement.ctrlAddNewPersonBotton.resources
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\obj\Debug\DVLDPL.PeopleManagement.ctrlPersonCard.resources
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\obj\Debug\DVLDPL.PeopleManagement.frmDeletePersonForm.resources
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\obj\Debug\DVLDPL.PeopleManagement.frmPeopleManagementSettings.resources
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\obj\Debug\DVLDPL.PeopleManagement.frmPersonCard.resources
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\obj\Debug\DVLDPL.PeopleManagement.frmSavePerson.resources
 C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\obj\Debug\DVLDPL.PeopleManagement.frmPeopleManagement.resources
 C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\obj\Debug\DVLDPL.PeopleManagement.ctrlPeopleSearch.resources
 C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\obj\Debug\DVLDPL.Properties.Resources.resources
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\obj\Debug\DVLDPL.UsersManagement.frmUsersManagement.resources
 C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\obj\Debug\Presentation_Layer_(PL).csproj.GenerateResource.cache
 C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\obj\Debug\Presentation_Layer_(PL).csproj.CoreCompileInputs.cache
 C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\bin\Debug\DVLDPL.exe.config
@@ -16,8 +23,4 @@ C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\bi
 C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\obj\Debug\Presenta.D2C0E1A7.Up2Date
 C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\obj\Debug\DVLDPL.exe
 C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\obj\Debug\DVLDPL.pdb
-C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\obj\Debug\DVLDPL.PeopleManagement.frmSavePerson.resources
-C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\obj\Debug\DVLDPL.PeopleManagement.frmPeopleManagementSettings.resources
-C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\obj\Debug\DVLDPL.PeopleManagement.ctrlPersonCard.resources
-C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\obj\Debug\DVLDPL.PeopleManagement.frmDeletePersonForm.resources
-C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\obj\Debug\DVLDPL.PeopleManagement.frmPersonCard.resources
+C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\bin\Debug\ApplicatinNeededControlsModern.dll

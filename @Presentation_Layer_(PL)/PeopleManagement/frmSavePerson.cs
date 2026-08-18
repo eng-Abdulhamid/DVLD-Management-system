@@ -126,9 +126,10 @@ namespace DVLDPL.PeopleManagement
                 this.Close();
             }
         }
+
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            Notification.Show("User cancelled the operation.", IconType.Info);
+            Shared.ShowNotificaiton("User cancelled the operation.", "Save Person", IconType.Info);
             this.Close();
         }
         private void MockDataForTesting_Click(object sender, EventArgs e)
@@ -242,13 +243,14 @@ namespace DVLDPL.PeopleManagement
                 _StoredPersonData.Gender != GetSelectedGender() ||
                 _StoredPersonData.ImagePath != (picPersonImage.Tag as string);
         }
+
         private bool ValidateConstraintnsColumns()
         {
             if (txtNationalNo.Text != _StoredPersonData.NationalNo)
             {
                 if (personServices.IsNationalNoExists(txtNationalNo.Text))
                 {
-                    Notification.Show("National number already exists.");
+                        Shared.ShowNotificaiton("National number already exists.", "Save Person", IconType.Warning);
                     epValidation.SetError(txtNationalNo, "Please enter another National no.");
                     txtNationalNo.Focus();
                     return false;
@@ -263,7 +265,7 @@ namespace DVLDPL.PeopleManagement
                 epValidation.Clear();
                 epValidation.SetError(dtpBirthDate, "Please enter a valid birth date.");
                 dtpBirthDate.Focus();
-                Notification.Show("Please enter a valid birth date.", IconType.Warning);
+                Shared.ShowNotificaiton("Please enter a valid birth date.", "Save Person", IconType.Warning);
                 return false;
             }
             return true;
@@ -279,7 +281,7 @@ namespace DVLDPL.PeopleManagement
                     epValidation.Clear();
                     epValidation.SetError(txtAdress, "Invalid Email Address.");
                     txtAdress.Focus();
-                    Notification.Show("Invalid Email Address.", IconType.Warning);
+                    Shared.ShowNotificaiton("Invalid Email Address.", "Save Person", IconType.Warning);
                     return false;
                 }
             }
@@ -287,7 +289,7 @@ namespace DVLDPL.PeopleManagement
             {
                 epValidation.SetError(txtAdress, "Invalid Email Address. ");
                 txtAdress.Focus();
-                Notification.Show("Invalid Email Address. Please try again with this format: username@domain.com", IconType.Warning);
+                Shared.ShowNotificaiton("Invalid Email Address. Please try again with this format: username@domain.com", "Save Person", IconType.Warning);
                 return false;
             }
             return true;
@@ -299,7 +301,7 @@ namespace DVLDPL.PeopleManagement
                 epValidation.Clear();
                 epValidation.SetError(cmbNationality, "Please select a nationality.");
                 cmbNationality.Focus();
-                Notification.Show("Please select a nationality.", IconType.Warning);
+                Shared.ShowNotificaiton("Please select a nationality.", "Save Person", IconType.Warning);
                 return false;
             }
 
@@ -309,7 +311,7 @@ namespace DVLDPL.PeopleManagement
 
                 epValidation.SetError(cmbGender, "Please select a gender.");
                 cmbGender.Focus();
-                Notification.Show("Please select a gender.", IconType.Warning);
+                Shared.ShowNotificaiton("Please select a gender.", "Save Person", IconType.Warning);
                 return false;
             }
             return true;
@@ -338,7 +340,7 @@ namespace DVLDPL.PeopleManagement
             if (personID > 0)
             {
                 txtPersonID.Text = personID.ToString();
-                Notification.Show("Person added successfully!", IconType.Success);
+                Shared.ShowNotificaiton("Person added successfully!", "Save Person", IconType.Success);
                 this.Text = $"Update Person {personID} Details";
                 Mode = enMode.UpdateExisting;
                 _StoredPersonData = CreatePersonAddDTO();
@@ -347,7 +349,7 @@ namespace DVLDPL.PeopleManagement
             }
             else
             {
-                Notification.Show("Failed to add person. Please check the details and try again.", IconType.Error);
+                Shared.ShowNotificaiton("Failed to add person. Please check the details and try again.", "Save Person", IconType.Error);
             }
             return IsAddSuccessfully;
 
@@ -358,20 +360,20 @@ namespace DVLDPL.PeopleManagement
             int personID = GetThePersonID();
             if (personID <= 0)
             {
-                Notification.Show("Please check the details and try again.", IconType.Error);
+                Shared.ShowNotificaiton("Please check the details and try again.", "Save Person", IconType.Error);
                 return IsUpdatedSuccessfully;
             }
             IsUpdatedSuccessfully = personServices.UpdateByPersonID(CreatePersonUpdateDTO());
             if (IsUpdatedSuccessfully)
             {
-                Notification.Show("Person updated successfully!", IconType.Success);
+                Shared.ShowNotificaiton("Person updated successfully!", "Save Person", IconType.Success);
                 PersonSaved?.Invoke(personID);
                 _StoredPersonData = CreatePersonAddDTO();
 
             }
             else
             {
-                Notification.Show("Failed to update person. Please check the details and try again.", IconType.Error);
+                Shared.ShowNotificaiton("Failed to update person. Please check the details and try again.", "Save Person", IconType.Error);
             }
             return IsUpdatedSuccessfully;
         }

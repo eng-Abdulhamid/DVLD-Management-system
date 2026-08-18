@@ -123,6 +123,16 @@ namespace DVLDPL.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Access_Denied {
+            get {
+                object obj = ResourceManager.GetObject("Access Denied", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap add1_89334 {
             get {
                 object obj = ResourceManager.GetObject("add1_89334", resourceCulture);
@@ -136,6 +146,26 @@ namespace DVLDPL.Properties {
         internal static System.Drawing.Bitmap arrow_left_logout_icon_183058 {
             get {
                 object obj = ResourceManager.GetObject("arrow_left_logout_icon_183058", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap bootloader_users_person_people_6080 {
+            get {
+                object obj = ResourceManager.GetObject("bootloader_users_person_people_6080", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ChatGPT_Image_Aug_18__2026__11_09_30_AM {
+            get {
+                object obj = ResourceManager.GetObject("ChatGPT Image Aug 18, 2026, 11_09_30 AM", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -243,6 +273,16 @@ namespace DVLDPL.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap customers {
+            get {
+                object obj = ResourceManager.GetObject("customers", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap delete {
             get {
                 object obj = ResourceManager.GetObject("delete", resourceCulture);
@@ -316,6 +356,16 @@ namespace DVLDPL.Properties {
         internal static System.Drawing.Bitmap icons8_search_500 {
             get {
                 object obj = ResourceManager.GetObject("icons8-search-500", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap list_3600 {
+            get {
+                object obj = ResourceManager.GetObject("list_3600", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

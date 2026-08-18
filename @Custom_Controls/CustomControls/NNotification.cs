@@ -97,6 +97,9 @@ namespace CustomControls
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
         private static extern IntPtr CreateRoundRectRgn(int nLeftRect, int nTopRect, int nRightRect, int nBottomRect, int nWidthEllipse, int nHeightEllipse);
 
+        [DllImport("Gdi32.dll", EntryPoint = "DeleteObject")]
+        private static extern bool DeleteObject(IntPtr hObject);
+
         private static readonly List<NotificationForm> OpenNotifications = new List<NotificationForm>();
 
         private enum NotificationState { FadeIn, Wait, FadeOut }
@@ -105,7 +108,7 @@ namespace CustomControls
         private Timer _timerAnim;
         private int _durationInMs;
         private int _elapsedTime;
-        private double _opacityIncrement = 0.05;
+        private double _opacityIncrement = 0.08;
 
         private NotificationBuilder _options;
         private Color _themeColor;
@@ -122,39 +125,51 @@ namespace CustomControls
 
             InitializeCustomComponents();
             SetupAppearance();
+
+            lock (OpenNotifications)
+            {
+                OpenNotifications.Add(this);
+            }
+
             ApplyPositioning();
 
             if (_options.PlaySound)
             {
                 PlayNotificationSound();
             }
-
-            OpenNotifications.Add(this);
         }
+
+        protected override bool ShowWithoutActivation => true;
 
         protected override CreateParams CreateParams
         {
             get
             {
                 CreateParams cp = base.CreateParams;
-                cp.ClassStyle |= 0x00020000;
+                cp.ClassStyle |= 0x00020000; // Drop Shadow
+                cp.ExStyle |= 0x08000000;    // WS_EX_NOACTIVATE 
                 return cp;
             }
         }
 
         private void InitializeCustomComponents()
         {
+            this.StartPosition = FormStartPosition.Manual;
+            this.AllowTransparency = true;
             this.FormBorderStyle = FormBorderStyle.None;
-            this.Size = new Size(350, 90);
+            this.Size = new Size(390, 100); // زيادة الحجم ليكون أكثر وضوحاً وأناقة
             this.TopMost = true;
             this.ShowInTaskbar = false;
             this.DoubleBuffered = true;
-            this.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, this.Width, this.Height, 15, 15));
+
+            IntPtr handleRegion = CreateRoundRectRgn(0, 0, this.Width, this.Height, 16, 16);
+            this.Region = Region.FromHrgn(handleRegion);
+            DeleteObject(handleRegion);
 
             pbIcon = new PictureBox
             {
-                Size = new Size(40, 40),
-                Location = new Point(15, 20),
+                Size = new Size(44, 44),
+                Location = new Point(18, 28),
                 SizeMode = PictureBoxSizeMode.Zoom,
                 BackColor = Color.Transparent,
                 Cursor = _options.OnClickAction != null ? Cursors.Hand : Cursors.Default
@@ -163,10 +178,10 @@ namespace CustomControls
             lblTitle = new Label
             {
                 Text = _options.Title,
-                Font = new Font("Segoe UI", 11, FontStyle.Bold),
-                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 11.5f, FontStyle.Bold),
+                ForeColor = Color.FromArgb(245, 245, 250),
                 AutoSize = true,
-                Location = new Point(65, 15),
+                Location = new Point(72, 18),
                 BackColor = Color.Transparent,
                 Cursor = _options.OnClickAction != null ? Cursors.Hand : Cursors.Default
             };
@@ -174,10 +189,10 @@ namespace CustomControls
             lblMessage = new Label
             {
                 Text = _options.Message,
-                Font = new Font("Segoe UI", 9, FontStyle.Regular),
-                ForeColor = Color.WhiteSmoke,
-                Size = new Size(240, 40),
-                Location = new Point(65, 38),
+                Font = new Font("Segoe UI", 9.5f, FontStyle.Regular),
+                ForeColor = Color.FromArgb(185, 190, 205),
+                Size = new Size(280, 48),
+                Location = new Point(72, 44),
                 BackColor = Color.Transparent,
                 Cursor = _options.OnClickAction != null ? Cursors.Hand : Cursors.Default
             };
@@ -185,16 +200,16 @@ namespace CustomControls
             lblClose = new Label
             {
                 Text = "✕",
-                Font = new Font("Segoe UI", 10, FontStyle.Bold),
-                ForeColor = Color.LightGray,
+                Font = new Font("Segoe UI", 10f, FontStyle.Bold),
+                ForeColor = Color.FromArgb(140, 145, 160),
                 AutoSize = true,
-                Location = new Point(this.Width - 25, 10),
+                Location = new Point(this.Width - 28, 12),
                 BackColor = Color.Transparent,
                 Cursor = Cursors.Hand
             };
 
             lblClose.MouseEnter += (s, e) => lblClose.ForeColor = Color.White;
-            lblClose.MouseLeave += (s, e) => lblClose.ForeColor = Color.LightGray;
+            lblClose.MouseLeave += (s, e) => lblClose.ForeColor = Color.FromArgb(140, 145, 160);
             lblClose.Click += (s, e) => { _currentState = NotificationState.FadeOut; };
 
             if (_options.OnClickAction != null)
@@ -216,30 +231,31 @@ namespace CustomControls
 
         private void ExecuteAction(object sender, EventArgs e)
         {
-            _options.OnClickAction.Invoke();
+            _options.OnClickAction?.Invoke();
             _currentState = NotificationState.FadeOut;
         }
 
         private void SetupAppearance()
         {
-            this.BackColor = Color.FromArgb(45, 45, 48);
+            // خلفية كارت حديثة وفخمة (Slate Dark) بدلاً من الأسود المعتام
+            this.BackColor = Color.FromArgb(28, 30, 38);
 
             switch (_options.Type)
             {
                 case IconType.Success:
-                    _themeColor = Color.FromArgb(46, 204, 113);
+                    _themeColor = Color.FromArgb(46, 213, 115); // Emerald Green
                     break;
                 case IconType.Error:
-                    _themeColor = Color.FromArgb(231, 76, 60);
+                    _themeColor = Color.FromArgb(255, 71, 87);  // Vibrant Coral Red
                     break;
                 case IconType.Warning:
-                    _themeColor = Color.FromArgb(241, 196, 15);
+                    _themeColor = Color.FromArgb(255, 165, 2);  // Warm Amber
                     break;
                 case IconType.Info:
-                    _themeColor = Color.FromArgb(52, 152, 219);
+                    _themeColor = Color.FromArgb(30, 144, 255); // Electric Blue
                     break;
                 default:
-                    _themeColor = Color.Gray;
+                    _themeColor = Color.FromArgb(140, 150, 165);
                     break;
             }
 
@@ -250,20 +266,35 @@ namespace CustomControls
             else
             {
                 pbIcon.Visible = false;
-                lblTitle.Location = new Point(15, 15);
-                lblMessage.Location = new Point(15, 38);
+                lblTitle.Location = new Point(18, 18);
+                lblMessage.Location = new Point(18, 44);
+                lblMessage.Width = 330;
             }
         }
 
         private void ApplyPositioning()
         {
-            Rectangle workingArea = Screen.PrimaryScreen.WorkingArea;
+            Screen currentScreen = Screen.FromPoint(Cursor.Position);
+            Rectangle workingArea = currentScreen.WorkingArea;
+
+            int margin = 18;
+            int spacing = 12;
+
+            List<NotificationForm> similarPositions;
+            lock (OpenNotifications)
+            {
+                similarPositions = OpenNotifications
+                    .Where(n => n._options.Position == this._options.Position && !n.IsDisposed)
+                    .ToList();
+            }
+
+            int index = similarPositions.IndexOf(this);
+            if (index < 0) return;
+
+            int offset = index * (this.Height + spacing);
+
             int x = 0;
             int y = 0;
-            int margin = 15;
-
-            var similarPositions = OpenNotifications.Where(n => n._options.Position == this._options.Position).ToList();
-            int offset = similarPositions.Count * (this.Height + 10);
 
             switch (_options.Position)
             {
@@ -286,6 +317,23 @@ namespace CustomControls
             }
 
             this.Location = new Point(x, y);
+        }
+
+        private static void RepositionOpenNotifications()
+        {
+            List<NotificationForm> copy;
+            lock (OpenNotifications)
+            {
+                copy = OpenNotifications.ToList();
+            }
+
+            foreach (var notification in copy)
+            {
+                if (!notification.IsDisposed && notification.IsHandleCreated)
+                {
+                    notification.ApplyPositioning();
+                }
+            }
         }
 
         protected override void OnLoad(EventArgs e)
@@ -343,70 +391,77 @@ namespace CustomControls
         {
             base.OnPaint(e);
 
-            using (Pen borderPen = new Pen(Color.FromArgb(80, 80, 80), 1))
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+
+            // إطار ناعم وأنيق حول الإشعار
+            using (Pen borderPen = new Pen(Color.FromArgb(45, 255, 255, 255), 1))
             {
                 e.Graphics.DrawRectangle(borderPen, 0, 0, this.Width - 1, this.Height - 1);
             }
 
+            // شريط جانبي جانبي متناسق مع اللون الأساسي للإشعار
             using (SolidBrush accentBrush = new SolidBrush(_themeColor))
             {
                 e.Graphics.FillRectangle(accentBrush, 0, 0, 5, this.Height);
             }
 
+            // شريط التقدم السفلي
             if (_options.ShowProgressBar && _currentState == NotificationState.Wait)
             {
                 float progress = 1.0f - ((float)_elapsedTime / _durationInMs);
+                if (progress < 0) progress = 0;
+
                 int progressWidth = (int)((this.Width - 5) * progress);
 
-                using (SolidBrush progressBrush = new SolidBrush(Color.FromArgb(100, _themeColor)))
+                using (SolidBrush progressBrush = new SolidBrush(Color.FromArgb(180, _themeColor)))
                 {
-                    e.Graphics.FillRectangle(progressBrush, 5, this.Height - 4, progressWidth, 4);
+                    e.Graphics.FillRectangle(progressBrush, 5, this.Height - 3, progressWidth, 3);
                 }
             }
         }
 
         private Bitmap GenerateIcon(IconType type, Color color)
         {
-            Bitmap bmp = new Bitmap(40, 40);
+            Bitmap bmp = new Bitmap(44, 44);
             using (Graphics g = Graphics.FromImage(bmp))
             {
                 g.SmoothingMode = SmoothingMode.AntiAlias;
                 g.Clear(Color.Transparent);
 
-                using (SolidBrush bgBrush = new SolidBrush(Color.FromArgb(30, color)))
+                using (SolidBrush bgBrush = new SolidBrush(Color.FromArgb(35, color)))
                 {
-                    g.FillEllipse(bgBrush, 2, 2, 36, 36);
+                    g.FillEllipse(bgBrush, 2, 2, 40, 40);
                 }
 
-                using (Pen pen = new Pen(color, 3))
+                using (Pen pen = new Pen(color, 3.2f))
                 {
                     pen.StartCap = LineCap.Round;
                     pen.EndCap = LineCap.Round;
 
                     if (type == IconType.Success)
                     {
-                        g.DrawLine(pen, 12, 20, 18, 26);
-                        g.DrawLine(pen, 18, 26, 28, 14);
+                        g.DrawLine(pen, 13, 22, 19, 28);
+                        g.DrawLine(pen, 19, 28, 30, 15);
                     }
                     else if (type == IconType.Error)
                     {
-                        g.DrawLine(pen, 14, 14, 26, 26);
-                        g.DrawLine(pen, 26, 14, 14, 26);
+                        g.DrawLine(pen, 15, 15, 29, 29);
+                        g.DrawLine(pen, 29, 15, 15, 29);
                     }
                     else if (type == IconType.Info)
                     {
                         using (SolidBrush dotBrush = new SolidBrush(color))
                         {
-                            g.FillEllipse(dotBrush, 18, 10, 4, 4);
+                            g.FillEllipse(dotBrush, 20, 12, 4.5f, 4.5f);
                         }
-                        g.DrawLine(pen, 20, 18, 20, 28);
+                        g.DrawLine(pen, 22, 20, 22, 30);
                     }
                     else if (type == IconType.Warning)
                     {
-                        g.DrawLine(pen, 20, 10, 20, 22);
+                        g.DrawLine(pen, 22, 12, 22, 24);
                         using (SolidBrush dotBrush = new SolidBrush(color))
                         {
-                            g.FillEllipse(dotBrush, 18, 26, 4, 4);
+                            g.FillEllipse(dotBrush, 20, 28, 4.5f, 4.5f);
                         }
                     }
                 }
@@ -437,12 +492,22 @@ namespace CustomControls
 
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
-            _timerAnim.Stop();
+            _timerAnim?.Stop();
+            _timerAnim?.Dispose();
+
             if (pbIcon.Image != null)
             {
                 pbIcon.Image.Dispose();
             }
-            OpenNotifications.Remove(this);
+
+            lock (OpenNotifications)
+            {
+                OpenNotifications.Remove(this);
+            }
+
+            // إعادة ترتيب جميع الإشعارات المتبقية فور اختفاء هذا الإشعار
+            RepositionOpenNotifications();
+
             base.OnFormClosed(e);
         }
     }

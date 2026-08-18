@@ -31,9 +31,11 @@ namespace DVLDPL.PeopleManagement
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmPeopleManagement));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.columnsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -46,20 +48,30 @@ namespace DVLDPL.PeopleManagement
             this.TEmail = new System.Windows.Forms.ToolStripMenuItem();
             this.TGender = new System.Windows.Forms.ToolStripMenuItem();
             this.dgvResults = new NControls.NDataGrid();
+            this.cmsViewColumns = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cmsPersonID = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsNationalNo = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsFullName = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsDateOfBirth = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsNationality = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsPhone = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsEmail = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsGender = new System.Windows.Forms.ToolStripMenuItem();
             this.ctrlAddNewPersonBotton1 = new DVLDPL.PeopleManagement.ctrlAddNewPersonBotton();
             this.ctrlPeopleSearch1 = new DVLDPL.PeopleManagement.ctrlPeopleSearch();
             this.btnSettings = new System.Windows.Forms.PictureBox();
             this.btnDeleteSelectedPerson = new System.Windows.Forms.PictureBox();
             this.btnUpdateSelectedPerson = new System.Windows.Forms.PictureBox();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.btnRefresh = new System.Windows.Forms.PictureBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvResults)).BeginInit();
+            this.cmsViewColumns.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btnSettings)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnDeleteSelectedPerson)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnUpdateSelectedPerson)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnRefresh)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -70,7 +82,7 @@ namespace DVLDPL.PeopleManagement
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.menuStrip1.Size = new System.Drawing.Size(1078, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1078, 25);
             this.menuStrip1.TabIndex = 20;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -78,8 +90,9 @@ namespace DVLDPL.PeopleManagement
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.columnsToolStripMenuItem1});
+            this.viewToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(47, 21);
             this.viewToolStripMenuItem.Text = "View";
             // 
             // columnsToolStripMenuItem1
@@ -94,7 +107,7 @@ namespace DVLDPL.PeopleManagement
             this.TEmail,
             this.TGender});
             this.columnsToolStripMenuItem1.Name = "columnsToolStripMenuItem1";
-            this.columnsToolStripMenuItem1.Size = new System.Drawing.Size(122, 22);
+            this.columnsToolStripMenuItem1.Size = new System.Drawing.Size(126, 22);
             this.columnsToolStripMenuItem1.Text = "Columns";
             // 
             // TPersonID
@@ -103,8 +116,7 @@ namespace DVLDPL.PeopleManagement
             this.TPersonID.CheckOnClick = true;
             this.TPersonID.CheckState = System.Windows.Forms.CheckState.Checked;
             this.TPersonID.Name = "TPersonID";
-            this.TPersonID.Size = new System.Drawing.Size(140, 22);
-            this.TPersonID.Text = "Person ID";
+            this.TPersonID.Size = new System.Drawing.Size(68, 22);
             this.TPersonID.CheckedChanged += new System.EventHandler(this.CheckedChanged);
             // 
             // TNationalNo
@@ -113,8 +125,7 @@ namespace DVLDPL.PeopleManagement
             this.TNationalNo.CheckOnClick = true;
             this.TNationalNo.CheckState = System.Windows.Forms.CheckState.Checked;
             this.TNationalNo.Name = "TNationalNo";
-            this.TNationalNo.Size = new System.Drawing.Size(140, 22);
-            this.TNationalNo.Text = "National no.";
+            this.TNationalNo.Size = new System.Drawing.Size(68, 22);
             this.TNationalNo.CheckedChanged += new System.EventHandler(this.CheckedChanged);
             // 
             // TFullName
@@ -123,8 +134,7 @@ namespace DVLDPL.PeopleManagement
             this.TFullName.CheckOnClick = true;
             this.TFullName.CheckState = System.Windows.Forms.CheckState.Checked;
             this.TFullName.Name = "TFullName";
-            this.TFullName.Size = new System.Drawing.Size(140, 22);
-            this.TFullName.Text = "Full name";
+            this.TFullName.Size = new System.Drawing.Size(68, 22);
             this.TFullName.CheckedChanged += new System.EventHandler(this.CheckedChanged);
             // 
             // TDateOfBirth
@@ -133,8 +143,7 @@ namespace DVLDPL.PeopleManagement
             this.TDateOfBirth.CheckOnClick = true;
             this.TDateOfBirth.CheckState = System.Windows.Forms.CheckState.Checked;
             this.TDateOfBirth.Name = "TDateOfBirth";
-            this.TDateOfBirth.Size = new System.Drawing.Size(140, 22);
-            this.TDateOfBirth.Text = "Date of birth";
+            this.TDateOfBirth.Size = new System.Drawing.Size(68, 22);
             this.TDateOfBirth.CheckedChanged += new System.EventHandler(this.CheckedChanged);
             // 
             // TNationality
@@ -143,8 +152,7 @@ namespace DVLDPL.PeopleManagement
             this.TNationality.CheckOnClick = true;
             this.TNationality.CheckState = System.Windows.Forms.CheckState.Checked;
             this.TNationality.Name = "TNationality";
-            this.TNationality.Size = new System.Drawing.Size(140, 22);
-            this.TNationality.Text = "Nationality";
+            this.TNationality.Size = new System.Drawing.Size(68, 22);
             this.TNationality.CheckedChanged += new System.EventHandler(this.CheckedChanged);
             // 
             // TPhone
@@ -153,8 +161,7 @@ namespace DVLDPL.PeopleManagement
             this.TPhone.CheckOnClick = true;
             this.TPhone.CheckState = System.Windows.Forms.CheckState.Checked;
             this.TPhone.Name = "TPhone";
-            this.TPhone.Size = new System.Drawing.Size(140, 22);
-            this.TPhone.Text = "Phone";
+            this.TPhone.Size = new System.Drawing.Size(68, 22);
             this.TPhone.CheckedChanged += new System.EventHandler(this.CheckedChanged);
             // 
             // TEmail
@@ -163,8 +170,7 @@ namespace DVLDPL.PeopleManagement
             this.TEmail.CheckOnClick = true;
             this.TEmail.CheckState = System.Windows.Forms.CheckState.Checked;
             this.TEmail.Name = "TEmail";
-            this.TEmail.Size = new System.Drawing.Size(140, 22);
-            this.TEmail.Text = "Email";
+            this.TEmail.Size = new System.Drawing.Size(68, 22);
             this.TEmail.CheckedChanged += new System.EventHandler(this.CheckedChanged);
             // 
             // TGender
@@ -173,8 +179,7 @@ namespace DVLDPL.PeopleManagement
             this.TGender.CheckOnClick = true;
             this.TGender.CheckState = System.Windows.Forms.CheckState.Checked;
             this.TGender.Name = "TGender";
-            this.TGender.Size = new System.Drawing.Size(140, 22);
-            this.TGender.Text = "Gender";
+            this.TGender.Size = new System.Drawing.Size(68, 22);
             this.TGender.CheckedChanged += new System.EventHandler(this.CheckedChanged);
             // 
             // dgvResults
@@ -191,23 +196,24 @@ namespace DVLDPL.PeopleManagement
             this.dgvResults.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvResults.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgvResults.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Segoe UI", 10.5F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvResults.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10.5F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvResults.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvResults.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Segoe UI", 10F);
-            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(230)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvResults.DefaultCellStyle = dataGridViewCellStyle8;
+            this.dgvResults.ContextMenuStrip = this.cmsViewColumns;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(230)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvResults.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvResults.EnableHeadersVisualStyles = false;
             this.dgvResults.GridColor = System.Drawing.Color.White;
             this.dgvResults.Location = new System.Drawing.Point(0, 164);
@@ -216,20 +222,116 @@ namespace DVLDPL.PeopleManagement
             this.dgvResults.ReadOnly = true;
             this.dgvResults.RowHeadersVisible = false;
             this.dgvResults.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle9.BackColor = System.Drawing.Color.Snow;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle9.NullValue = "None";
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvResults.RowsDefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Snow;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle3.NullValue = "None";
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvResults.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvResults.RowTemplate.Height = 40;
             this.dgvResults.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvResults.Size = new System.Drawing.Size(1078, 542);
             this.dgvResults.TabIndex = 22;
             this.dgvResults.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvResults_CellDoubleClick);
+            // 
+            // cmsViewColumns
+            // 
+            this.cmsViewColumns.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmsViewColumns.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmsPersonID,
+            this.cmsNationalNo,
+            this.cmsFullName,
+            this.cmsDateOfBirth,
+            this.cmsNationality,
+            this.cmsPhone,
+            this.cmsEmail,
+            this.cmsGender});
+            this.cmsViewColumns.Name = "cmsViewColumns";
+            this.cmsViewColumns.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+            this.cmsViewColumns.Size = new System.Drawing.Size(192, 180);
+            // 
+            // cmsPersonID
+            // 
+            this.cmsPersonID.Checked = true;
+            this.cmsPersonID.CheckOnClick = true;
+            this.cmsPersonID.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cmsPersonID.Name = "cmsPersonID";
+            this.cmsPersonID.Size = new System.Drawing.Size(191, 22);
+            this.cmsPersonID.Text = "toolStripMenuItem2";
+            this.cmsPersonID.CheckedChanged += new System.EventHandler(this.CheckedChanged);
+            // 
+            // cmsNationalNo
+            // 
+            this.cmsNationalNo.Checked = true;
+            this.cmsNationalNo.CheckOnClick = true;
+            this.cmsNationalNo.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cmsNationalNo.Name = "cmsNationalNo";
+            this.cmsNationalNo.Size = new System.Drawing.Size(191, 22);
+            this.cmsNationalNo.Text = "toolStripMenuItem2";
+            this.cmsNationalNo.CheckedChanged += new System.EventHandler(this.CheckedChanged);
+            // 
+            // cmsFullName
+            // 
+            this.cmsFullName.Checked = true;
+            this.cmsFullName.CheckOnClick = true;
+            this.cmsFullName.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cmsFullName.Name = "cmsFullName";
+            this.cmsFullName.Size = new System.Drawing.Size(191, 22);
+            this.cmsFullName.Text = "toolStripMenuItem2";
+            this.cmsFullName.CheckedChanged += new System.EventHandler(this.CheckedChanged);
+            // 
+            // cmsDateOfBirth
+            // 
+            this.cmsDateOfBirth.Checked = true;
+            this.cmsDateOfBirth.CheckOnClick = true;
+            this.cmsDateOfBirth.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cmsDateOfBirth.Name = "cmsDateOfBirth";
+            this.cmsDateOfBirth.Size = new System.Drawing.Size(191, 22);
+            this.cmsDateOfBirth.Text = "toolStripMenuItem2";
+            this.cmsDateOfBirth.CheckedChanged += new System.EventHandler(this.CheckedChanged);
+            // 
+            // cmsNationality
+            // 
+            this.cmsNationality.Checked = true;
+            this.cmsNationality.CheckOnClick = true;
+            this.cmsNationality.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cmsNationality.Name = "cmsNationality";
+            this.cmsNationality.Size = new System.Drawing.Size(191, 22);
+            this.cmsNationality.Text = "toolStripMenuItem2";
+            this.cmsNationality.CheckedChanged += new System.EventHandler(this.CheckedChanged);
+            // 
+            // cmsPhone
+            // 
+            this.cmsPhone.Checked = true;
+            this.cmsPhone.CheckOnClick = true;
+            this.cmsPhone.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cmsPhone.Name = "cmsPhone";
+            this.cmsPhone.Size = new System.Drawing.Size(191, 22);
+            this.cmsPhone.Text = "toolStripMenuItem2";
+            this.cmsPhone.CheckedChanged += new System.EventHandler(this.CheckedChanged);
+            // 
+            // cmsEmail
+            // 
+            this.cmsEmail.Checked = true;
+            this.cmsEmail.CheckOnClick = true;
+            this.cmsEmail.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cmsEmail.Name = "cmsEmail";
+            this.cmsEmail.Size = new System.Drawing.Size(191, 22);
+            this.cmsEmail.Text = "toolStripMenuItem2";
+            this.cmsEmail.CheckedChanged += new System.EventHandler(this.CheckedChanged);
+            // 
+            // cmsGender
+            // 
+            this.cmsGender.Checked = true;
+            this.cmsGender.CheckOnClick = true;
+            this.cmsGender.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cmsGender.Name = "cmsGender";
+            this.cmsGender.Size = new System.Drawing.Size(191, 22);
+            this.cmsGender.Text = "toolStripMenuItem2";
+            this.cmsGender.CheckedChanged += new System.EventHandler(this.CheckedChanged);
             // 
             // ctrlAddNewPersonBotton1
             // 
@@ -238,14 +340,13 @@ namespace DVLDPL.PeopleManagement
             this.ctrlAddNewPersonBotton1.Name = "ctrlAddNewPersonBotton1";
             this.ctrlAddNewPersonBotton1.Size = new System.Drawing.Size(40, 38);
             this.ctrlAddNewPersonBotton1.TabIndex = 26;
-            this.ctrlAddNewPersonBotton1.Load += new System.EventHandler(this.ctrlAddNewPersonBotton1_Load);
             // 
             // ctrlPeopleSearch1
             // 
             this.ctrlPeopleSearch1.BackColor = System.Drawing.Color.Transparent;
             this.ctrlPeopleSearch1.Dock = System.Windows.Forms.DockStyle.Top;
             this.ctrlPeopleSearch1.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.ctrlPeopleSearch1.Location = new System.Drawing.Point(0, 24);
+            this.ctrlPeopleSearch1.Location = new System.Drawing.Point(0, 25);
             this.ctrlPeopleSearch1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ctrlPeopleSearch1.MinimumSize = new System.Drawing.Size(1077, 140);
             this.ctrlPeopleSearch1.Name = "ctrlPeopleSearch1";
@@ -312,50 +413,50 @@ namespace DVLDPL.PeopleManagement
             this.pictureBox3.TabStop = false;
             this.pictureBox3.Click += new System.EventHandler(this.pictureBox3_Click);
             // 
-            // pictureBox1
+            // btnRefresh
             // 
-            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBox1.Image = global::DVLDPL.Properties.Resources.refresh;
-            this.pictureBox1.InitialImage = global::DVLDPL.Properties.Resources.refresh;
-            this.pictureBox1.Location = new System.Drawing.Point(22, 102);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(40, 38);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 23;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+            this.btnRefresh.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnRefresh.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.btnRefresh.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnRefresh.Image = global::DVLDPL.Properties.Resources.refresh;
+            this.btnRefresh.InitialImage = global::DVLDPL.Properties.Resources.refresh;
+            this.btnRefresh.Location = new System.Drawing.Point(22, 102);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(40, 38);
+            this.btnRefresh.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.btnRefresh.TabIndex = 23;
+            this.btnRefresh.TabStop = false;
+            this.btnRefresh.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // frmPeopleManagement
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1078, 706);
             this.Controls.Add(this.btnSettings);
             this.Controls.Add(this.btnDeleteSelectedPerson);
             this.Controls.Add(this.btnUpdateSelectedPerson);
             this.Controls.Add(this.ctrlAddNewPersonBotton1);
             this.Controls.Add(this.pictureBox3);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.dgvResults);
             this.Controls.Add(this.ctrlPeopleSearch1);
             this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(1094, 745);
             this.Name = "frmPeopleManagement";
-            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "People Management";
-            this.Load += new System.EventHandler(this.frmPeopleManagement_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvResults)).EndInit();
+            this.cmsViewColumns.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.btnSettings)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnDeleteSelectedPerson)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnUpdateSelectedPerson)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnRefresh)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -365,6 +466,24 @@ namespace DVLDPL.PeopleManagement
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem columnsToolStripMenuItem1;
+        private ctrlPeopleSearch ctrlPeopleSearch1;
+        private NControls.NDataGrid dgvResults;
+        private System.Windows.Forms.PictureBox btnRefresh;
+        private System.Windows.Forms.PictureBox pictureBox3;
+        private ctrlAddNewPersonBotton ctrlAddNewPersonBotton1;
+        private System.Windows.Forms.PictureBox btnUpdateSelectedPerson;
+        private System.Windows.Forms.PictureBox btnDeleteSelectedPerson;
+        private System.Windows.Forms.PictureBox btnSettings;
+        private System.Windows.Forms.ContextMenuStrip cmsViewColumns;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem cmsPersonID;
+        private System.Windows.Forms.ToolStripMenuItem cmsNationalNo;
+        private System.Windows.Forms.ToolStripMenuItem cmsFullName;
+        private System.Windows.Forms.ToolStripMenuItem cmsDateOfBirth;
+        private System.Windows.Forms.ToolStripMenuItem cmsNationality;
+        private System.Windows.Forms.ToolStripMenuItem cmsPhone;
+        private System.Windows.Forms.ToolStripMenuItem cmsEmail;
+        private System.Windows.Forms.ToolStripMenuItem cmsGender;
         private System.Windows.Forms.ToolStripMenuItem TPersonID;
         private System.Windows.Forms.ToolStripMenuItem TNationalNo;
         private System.Windows.Forms.ToolStripMenuItem TFullName;
@@ -373,13 +492,5 @@ namespace DVLDPL.PeopleManagement
         private System.Windows.Forms.ToolStripMenuItem TPhone;
         private System.Windows.Forms.ToolStripMenuItem TEmail;
         private System.Windows.Forms.ToolStripMenuItem TGender;
-        private ctrlPeopleSearch ctrlPeopleSearch1;
-        private NControls.NDataGrid dgvResults;
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.PictureBox pictureBox3;
-        private ctrlAddNewPersonBotton ctrlAddNewPersonBotton1;
-        private System.Windows.Forms.PictureBox btnUpdateSelectedPerson;
-        private System.Windows.Forms.PictureBox btnDeleteSelectedPerson;
-        private System.Windows.Forms.PictureBox btnSettings;
     }
 }

@@ -24,7 +24,7 @@ namespace DVLDPL.PeopleManagement
             personServices = new PersonServices();
             InitializeDesign();
             InitializeTools();
-            this.Load += (s, e) => eventSearchResults.Invoke(this, GetSearchResults());
+            eventSearchResults.Invoke(this, GetSearchResults());
         }
         public event Action<string> SearchTextChanged;
         public event EventHandler<OperationResults<PersonReadDTO>> eventSearchResults = delegate { };
@@ -244,6 +244,19 @@ namespace DVLDPL.PeopleManagement
             };
             return personServices.GetPeople(searchBy);
         }
+        public void ShowNotificaiton(string Message, string Title, IconType iconType)
+        {
+            NotificationBuilder Notify = new NotificationBuilder();
+
+            Notify.WithMessage(Message)
+            .WithDuration(3)
+            .WithTitle(Title)
+            .WithType(iconType)
+            .WithProgressBar(true)
+            .WithSound(true).WithPosition(NotificationPosition.TopRight);
+            Notify.Show();
+
+        }
         public void PerformSearch()
         {
             try
@@ -259,14 +272,14 @@ namespace DVLDPL.PeopleManagement
                 {
                     txtSearch.SuggestList = new string[0];
                     eventSearchResults.Invoke(this, null); // Nothing
-                    Shared.ShowNotificaiton("No people found matching the search criteria.", "Search Result", IconType.Info);
+                    ShowNotificaiton("No people found matching the search criteria.", "Search Result", IconType.Info);
 
                 }
             }
             catch (Exception ex)
             {
                 NotificationBuilder Notify = new NotificationBuilder();
-                Shared.ShowNotificaiton($"{ex.Message}", "Search error", IconType.Error);
+                ShowNotificaiton($"{ex.Message}", "Search error", IconType.Error);
             }
         }
 

@@ -23,7 +23,7 @@ namespace DVLDPL
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmPeopleManagement());
+            Application.Run(new frmMainScreen());
         }
     }
 }

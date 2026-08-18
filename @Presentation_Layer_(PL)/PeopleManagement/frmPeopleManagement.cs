@@ -1,203 +1,232 @@
-﻿using DTOs;
+﻿using CustomControls;
+using DTOs;
 using DVLD_BusinessLogicLayer;
-using Services;
 using System;
 using System.Collections.Generic;
-using System.Media;
 using System.Windows.Forms;
 
 namespace DVLDPL.PeopleManagement
 {
     public partial class frmPeopleManagement : Form
     {
+        private class ColumnDefinition
+        {
+            public string Key { get; set; }
+            public string HeaderText { get; set; }
+            public string DataPropertyName { get; set; }
+            public int Width { get; set; }
+            public ToolStripMenuItem ToolStripItem { get; set; }
+            public ToolStripMenuItem ContextMenuItem { get; set; }
+            public Func<PersonReadDTO, object> ValueSelector { get; set; }
+        }
+
+        private List<ColumnDefinition> _columnDefinitions;
+
         public frmPeopleManagement()
         {
             InitializeComponent();
-            InitializeToolStripMenuItems();
-            ctrlPeopleSearch1.eventSearchResults += AddListPersonRowToDataGrid;
-            ctrlAddNewPersonBotton1.PersonSaved += PersonSaveEventHandler;
+
+            _columnDefinitions = new List<ColumnDefinition>
+            {
+                new ColumnDefinition
+                {
+                    Key = "PersonID",
+                    HeaderText = "Person ID",
+                    DataPropertyName = "PersonID",
+                    Width = 80,
+                    ToolStripItem = TPersonID,
+                    ContextMenuItem = cmsPersonID,
+                    ValueSelector = person => person.PersonID
+                },
+
+                new ColumnDefinition
+                {
+                    Key = "NationalNo",
+                    HeaderText = "National No.",
+                    DataPropertyName = "NationalNo",
+                    Width = 120,
+                    ToolStripItem = TNationalNo,
+                    ContextMenuItem = cmsNationalNo,
+                    ValueSelector = person => person.NationalNo
+                },
+
+                new ColumnDefinition
+                {
+                    Key = "FullName",
+                    HeaderText = "Full Name",
+                    DataPropertyName = "FullName",
+                    Width = 200,
+                    ToolStripItem = TFullName,
+                    ContextMenuItem = cmsFullName,
+                    ValueSelector = person => person.FullName
+                },
+
+                new ColumnDefinition
+                {
+                    Key = "DateOfBirth",
+                    HeaderText = "Date of Birth",
+                    DataPropertyName = "DateOfBirth",
+                    Width = 100,
+                    ToolStripItem = TDateOfBirth,
+                    ContextMenuItem = cmsDateOfBirth,
+                    ValueSelector = person => person.DateOfBirth.ToString("yyyy-MM-dd")
+                },
+
+                new ColumnDefinition
+                {
+                    Key = "Nationality",
+                    HeaderText = "Nationality",
+                    DataPropertyName = "Nationality",
+                    Width = 120,
+                    ToolStripItem = TNationality,
+                    ContextMenuItem = cmsNationality,
+                    ValueSelector = person => person.CountryName
+                },
+
+                new ColumnDefinition
+                {
+                    Key = "Phone",
+                    HeaderText = "Phone",
+                    DataPropertyName = "Phone",
+                    Width = 120,
+                    ToolStripItem = TPhone,
+                    ContextMenuItem = cmsPhone,
+                    ValueSelector = person => person.Phone
+                },
+
+                new ColumnDefinition
+                {
+                    Key = "Email",
+                    HeaderText = "Email",
+                    DataPropertyName = "Email",
+                    Width = 200,
+                    ToolStripItem = TEmail,
+                    ContextMenuItem = cmsEmail,
+                    ValueSelector = person => person.Email
+                },
+
+                new ColumnDefinition
+                {
+                    Key = "Gender",
+                    HeaderText = "Gender",
+                    DataPropertyName = "Gender",
+                    Width = 100,
+                    ToolStripItem = TGender,
+                    ContextMenuItem = cmsGender,
+                    ValueSelector = person => person.Gender
+                }
+            };
+
+            InitializeFunctions();
         }
+
+        private void InitializeFunctions()
+        {
+            InitializeDataGridColumns();
+            ctrlPeopleSearch1.eventSearchResults += AddPeopleListInDataGrid;
+            ctrlAddNewPersonBotton1.PersonSaved += PersonSaveEventHandler;
+            timer.Tick += Timer_Tick;
+        }
+
         private void InitializeDataGridColumns()
         {
             dgvResults.AutoGenerateColumns = false;
             dgvResults.Columns.Clear();
-            if (TPersonID.Checked)
-            {
-                dgvResults.Columns.Add(new DataGridViewTextBoxColumn
-                {
-                    Name = "Person ID",
-                    HeaderText = "Person ID",
-                    DataPropertyName = "PersonID",
-                    Width = 80
-                });
-            }
-            if (TNationalNo.Checked)
-            {
-                dgvResults.Columns.Add(new DataGridViewTextBoxColumn
-                {
-                    Name = "National No.",
-                    HeaderText = "National No.",
-                    DataPropertyName = "NationalNo",
-                    Width = 120
-                });
-            }
 
-            if (TFullName.Checked)
+            foreach (ColumnDefinition column in _columnDefinitions)
             {
-                dgvResults.Columns.Add(new DataGridViewTextBoxColumn
+                if (column.ToolStripItem.Checked)
                 {
-                    Name = "Full Name",
-                    HeaderText = "Full Name",
-                    DataPropertyName = "FullName",
-                    Width = 200
-                });
-            }
-            if (TDateOfBirth.Checked)
-            {
-                dgvResults.Columns.Add(new DataGridViewTextBoxColumn
-                {
-                    Name = "Date of Birth",
-                    HeaderText = "Date of Birth",
-                    DataPropertyName = "DateOfBirth",
-                    Width = 100
-                });
-            }
-            if (TNationality.Checked)
-            {
-                dgvResults.Columns.Add(new DataGridViewTextBoxColumn
-                {
-                    Name = "Nationality",
-                    HeaderText = "Nationality",
-                    DataPropertyName = "Nationality",
-                    Width = 120
-                });
-            }
-            if (TPhone.Checked)
-            {
-                dgvResults.Columns.Add(new DataGridViewTextBoxColumn
-                {
-                    Name = "Phone",
-                    HeaderText = "Phone",
-                    DataPropertyName = "Phone",
-                    Width = 120
-                });
-            }
-            if (TEmail.Checked)
-            {
-                dgvResults.Columns.Add(new DataGridViewTextBoxColumn
-                {
-                    Name = "Email",
-                    HeaderText = "Email",
-                    DataPropertyName = "Email",
-                    Width = 200
-                });
-            }
-            if (TGender.Checked)
-            {
-                dgvResults.Columns.Add(new DataGridViewTextBoxColumn
-                {
-                    Name = "Gender",
-                    HeaderText = "Gender",
-                    DataPropertyName = "Gender",
-                    Width = 100
-                });
+                    dgvResults.Columns.Add(new DataGridViewTextBoxColumn
+                    {
+                        Name = column.Key,
+                        HeaderText = column.HeaderText,
+                        DataPropertyName = column.DataPropertyName,
+                        Width = column.Width
+                    });
+                }
+                column.ToolStripItem.Text = column.HeaderText;
+                column.ToolStripItem.Tag = column.Key;
+                column.ToolStripItem.Enabled = true;
+
+                column.ContextMenuItem.Text = column.HeaderText;
+                column.ContextMenuItem.Tag = column.Key;
+                column.ContextMenuItem.Enabled = true;
+
             }
         }
-        private void InitializeToolStripMenuItems()
-        {
-            TPersonID.Checked = true;
-            TNationalNo.Checked = true;
-            TFullName.Checked = true;
-            TDateOfBirth.Checked = true;
-            TNationality.Checked = true;
-            TPhone.Checked = true;
-            TEmail.Checked = true;
-            TGender.Checked = true;
-            InitializeDataGridColumns();
-        }
-        private void AddListPersonRowToDataGrid(object sender, OperationResults<PersonReadDTO> lstPerson)
+        private void AddPeopleListInDataGrid(object sender, OperationResults<PersonReadDTO> lstPerson)
         {
             dgvResults.Rows.Clear();
-            if (lstPerson == null) return;
-            if (lstPerson.IsSuccess)
+
+            if (lstPerson == null || !lstPerson.IsSuccess)
+                return;
+
+            foreach (PersonReadDTO person in lstPerson.DataList)
             {
-                if (lstPerson.DataList.Count > 0)
-                {
-                    dgvResults.Rows.Clear();
-                    if (lstPerson != null && lstPerson.DataList.Count > 0)
-                    {
-                        foreach (PersonReadDTO person in lstPerson.DataList)
-                        {
-                            AddNewPersonRowToDataGrid(person);
-                        }
-                    }
-                }
+                AddPersonToDataGrid(person);
             }
         }
-        private void AddNewPersonRowToDataGrid(PersonReadDTO person)
+
+        private void AddPersonToDataGrid(PersonReadDTO person)
         {
             var cells = new List<object>();
+
             foreach (DataGridViewColumn col in dgvResults.Columns)
             {
-                switch (col.Name)
+                ColumnDefinition column = _columnDefinitions.Find(c => c.Key == col.Name);
+
+                if (column != null)
                 {
-                    case "Person ID":
-                        cells.Add(person.PersonID);
-                        break;
-                    case "National No.":
-                        cells.Add(person.NationalNo);
-                        break;
-                    case "Full Name":
-                        cells.Add($"{person.FirstName} {person.SecondName} {person.ThirdName} {person.LastName}".Trim());
-                        break;
-                    case "Date of Birth":
-                        cells.Add(person.DateOfBirth.ToString("yyyy-MM-dd"));
-                        break;
-                    case "Nationality":
-                        cells.Add(person.CountryName);
-                        break;
-                    case "Phone":
-                        cells.Add(person.Phone);
-                        break;
-                    case "Email":
-                        cells.Add(person.Email);
-                        break;
-                    case "Gender":
-                        cells.Add(person.Gender);
-                        break;
-                    default:
-                        cells.Add(null);
-                        break;
+                    cells.Add(column.ValueSelector(person));
                 }
             }
+
             dgvResults.Rows.Add(cells.ToArray());
-        }    
+        }
+
         private void CheckedChanged(object sender, EventArgs e)
         {
             ToolStripMenuItem senderObject = sender as ToolStripMenuItem;
 
-            string columnKey = (senderObject.Text ?? string.Empty).Trim();
+            if (senderObject == null)
+                return;
+
+            string columnKey = senderObject.Tag?.ToString();
+
+            if (string.IsNullOrEmpty(columnKey))
+                return;
+
             if (dgvResults.Columns.Contains(columnKey))
             {
+                dgvResults.Columns[columnKey].Visible = senderObject.Checked;
 
-                if (senderObject.Checked)
+                foreach (ColumnDefinition column in _columnDefinitions)
                 {
-                    dgvResults.Columns[columnKey].Visible = true;
-                }
-                else
-                {
-                    dgvResults.Columns[columnKey].Visible = false;
+                    if (column.Key == columnKey)
+                    {
+                        column.ToolStripItem.Checked = senderObject.Checked;
+                        column.ContextMenuItem.Checked = senderObject.Checked;
+                        break;
+                    }
                 }
             }
         }
-        private void frmPeopleManagement_Load(object sender, EventArgs e)
-        {
 
-        }
+        Timer timer = new Timer();
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
             RefreshPeopleList();
+            btnRefresh.Enabled = false;
+            timer.Start();
+            timer.Interval = 3000;
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            btnRefresh.Enabled = true;
+            timer.Stop();
         }
 
         private void pictureBox3_Click(object sender, EventArgs e)
@@ -205,46 +234,55 @@ namespace DVLDPL.PeopleManagement
             RefreshPeopleList();
         }
 
-        private void ctrlAddNewPersonBotton1_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void dgvResults_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            int personID = GetSelectedPersonIDFromDataGrid();
-            frmPersonCard PersonCardForm = new frmPersonCard(personID);
+            if (e.RowIndex < 0)
+                return;
 
-            PersonCardForm.PersonDeleted += PersonDeletedSuccessfullyEventHundler;
-            PersonCardForm.PersonUpdated += PersonSaveEventHandler;
-            PersonCardForm.ShowDialog();
+            if (dgvResults.SelectedCells.Count > 0)
+            {
+                int personID = GetSelectedPersonIDFromDataGrid();
 
+                using (frmPersonCard PersonCardForm = new frmPersonCard(personID))
+                {
+                    PersonCardForm.PersonDeleted += PersonDeletedSuccessfullyEventHundler;
+                    PersonCardForm.PersonUpdated += PersonSaveEventHandler;
+                    PersonCardForm.ShowDialog();
+                }
+            }
         }
+
         private void PersonSaveEventHandler(int personId)
         {
             RefreshPeopleList();
         }
+
         private void RefreshPeopleList()
         {
             ctrlPeopleSearch1.PerformSearch();
         }
 
-        private void pictureBox4_Click(object sender, EventArgs e)
-        {
-
-        }
-        
         private void btnDeleteSelectedPerson_Click(object sender, EventArgs e)
         {
-            int personID = GetSelectedPersonIDFromDataGrid();
-            if (personID > 0)
+            if (dgvResults.SelectedCells.Count > 0)
             {
-                frmDeletePersonForm DeletePersonForm = new frmDeletePersonForm(personID);
-                DeletePersonForm.DeletedSuccessfully += PersonDeletedSuccessfullyEventHundler;
-                DeletePersonForm.ShowDialog();
-            }
+                int personID = GetSelectedPersonIDFromDataGrid();
 
+                if (personID > 0)
+                {
+                    using (frmDeletePersonForm DeletePersonForm = new frmDeletePersonForm(personID))
+                    {
+                        DeletePersonForm.DeletedSuccessfully += PersonDeletedSuccessfullyEventHundler;
+                        DeletePersonForm.ShowDialog();
+                    }
+                }
+            }
+            else
+            {
+                Shared.ShowNotificaiton("Please select a person to delete.", "Delete Person", IconType.Info);
+            }
         }
+
         private void PersonDeletedSuccessfullyEventHundler()
         {
             RefreshPeopleList();
@@ -252,25 +290,36 @@ namespace DVLDPL.PeopleManagement
 
         private void btnUpdateSelectedPerson_Click(object sender, EventArgs e)
         {
-            int personID = GetSelectedPersonIDFromDataGrid();
-            if (personID > 0)
+            if (dgvResults.SelectedCells.Count > 0)
             {
-                frmSavePerson frm = new frmSavePerson(personID);
+                int personID = GetSelectedPersonIDFromDataGrid();
 
-                frm.PersonSaved += PersonSaveEventHandler;
-
-                frm.ShowDialog();
+                if (personID > 0)
+                {
+                    using (frmSavePerson frm = new frmSavePerson(personID))
+                    {
+                        frm.PersonSaved += PersonSaveEventHandler;
+                        frm.ShowDialog();
+                    }
+                }
+            }
+            else
+            {
+                Shared.ShowNotificaiton("Please select a person to edit.", "Edit Person", IconType.Info);
             }
         }
+
         private int GetSelectedPersonIDFromDataGrid()
         {
-            object cellValue = dgvResults.SelectedRows[0].Cells["Person ID"].Value;
+            object cellValue = dgvResults.SelectedRows[0].Cells["PersonID"].Value;
+
             if (cellValue != null && int.TryParse(cellValue.ToString(), out int personID))
             {
                 return personID;
             }
-            return -1;
 
+            return -1;
         }
+
     }
 }

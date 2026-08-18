@@ -46,41 +46,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
-    <Compile Include="CustomControls\ModernButton.cs">
+    <Compile Include="CustomControls\NButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="CustomControls\ModernTextBox.cs" />
+    <Compile Include="CustomControls\NTextBox.cs" />
     <Compile Include="CustomControls\NDataTable.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="CustomControls\notification.cs">
-      <SubType>Form</SubType>
+    <Compile Include="CustomControls\NNotification.cs" />
+    <Compile Include="CustomControls\NNotification.Designer.cs">
+      <DependentUpon>NNotification.cs</DependentUpon>
     </Compile>
-    <Compile Include="CustomControls\notification.Designer.cs">
-      <DependentUpon>notification.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\ModernFormDesignerExample.cs" />
-    <Compile Include="Examples\SmoothEdgesTestForm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Documentation\BorderImprovements.md" />
-    <None Include="Documentation\ColorEditorGuide.md" />
-    <None Include="Documentation\DragForm_Guide.md" />
-    <None Include="Documentation\IMPROVEMENTS_SUMMARY.md" />
-    <None Include="Documentation\IndividualBorderRadius_Colors.md" />
-    <None Include="Documentation\ModernFormDesigner_Guide_AR.md" />
-    <None Include="Documentation\SmoothEdges_Enhancement.md" />
     <None Include="ModernLabel_Documentation.md" />
     <None Include="ModernLabel_Summary.md" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="CustomControls\notification.resx">
-      <DependentUpon>notification.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Examples\ModernFormDesignerExample.resx">
-      <DependentUpon>ModernFormDesignerExample.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

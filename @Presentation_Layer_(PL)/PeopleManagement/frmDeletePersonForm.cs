@@ -14,6 +14,7 @@ namespace DVLDPL.PeopleManagement
 {
     public partial class frmDeletePersonForm : Form
     {
+
         private readonly int personID = -1;
         public Action DeletedSuccessfully;
         public frmDeletePersonForm(int PersonID)
@@ -25,8 +26,8 @@ namespace DVLDPL.PeopleManagement
                 ctrlPersonCard1.RefreshCard(PersonID);
             }
             else
-            {
-                Notification.Show("Cannot load this person, please try again later.", IconType.Error);
+            {       
+                Shared.ShowNotificaiton("Cannot load this person, please try again later.", "Delete Person", IconType.Error);
                 this.Close();
             }
 
@@ -42,7 +43,7 @@ namespace DVLDPL.PeopleManagement
             PersonServices personServices = new PersonServices();
             if (personServices.DeleteByPersonID(personID))
             {
-                Notification.Show($"Person Deleted Successfully.", IconType.Success);
+                Shared.ShowNotificaiton($"Person Deleted Successfully.", "Delete Person", IconType.Success);
                 this.Close();
                 DeletedSuccessfully?.Invoke();
             }
