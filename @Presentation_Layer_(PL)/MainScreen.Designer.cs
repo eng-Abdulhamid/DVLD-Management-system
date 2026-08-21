@@ -52,7 +52,6 @@
             // pictureBox1
             // 
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Image = global::DVLDPL.Properties.Resources.ChatGPT_Image_Aug_18__2026__11_09_30_AM;
             this.pictureBox1.Location = new System.Drawing.Point(279, 0);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(552, 496);
@@ -87,9 +86,9 @@
             this.btnUserManagement.IconColor = System.Drawing.Color.White;
             this.btnUserManagement.IconMargin = 10;
             this.btnUserManagement.IconOffset = new System.Drawing.Point(1, 2);
-            this.btnUserManagement.IconSize = new System.Drawing.Size(40, 40);
+            this.btnUserManagement.IconSize = new System.Drawing.Size(45, 40);
             this.btnUserManagement.IconSpacing = 0;
-            this.btnUserManagement.LeftIcon = global::DVLDPL.Properties.Resources.customers;
+            this.btnUserManagement.LeftIcon = global::DVLDPL.Properties.Resources.UsersManagement;
             this.btnUserManagement.Location = new System.Drawing.Point(0, 61);
             this.btnUserManagement.Name = "btnUserManagement";
             this.btnUserManagement.PressedEndColor = System.Drawing.Color.White;
@@ -135,9 +134,9 @@
             this.btnPeopleManagement.IconColor = System.Drawing.Color.White;
             this.btnPeopleManagement.IconMargin = 10;
             this.btnPeopleManagement.IconOffset = new System.Drawing.Point(1, 2);
-            this.btnPeopleManagement.IconSize = new System.Drawing.Size(40, 40);
+            this.btnPeopleManagement.IconSize = new System.Drawing.Size(45, 40);
             this.btnPeopleManagement.IconSpacing = 0;
-            this.btnPeopleManagement.LeftIcon = global::DVLDPL.Properties.Resources.bootloader_users_person_people_6080;
+            this.btnPeopleManagement.LeftIcon = global::DVLDPL.Properties.Resources.users_clients_group_167741;
             this.btnPeopleManagement.Location = new System.Drawing.Point(0, 0);
             this.btnPeopleManagement.Name = "btnPeopleManagement";
             this.btnPeopleManagement.PressedEndColor = System.Drawing.Color.White;
