@@ -178,11 +178,11 @@ namespace Services
         public OperationResult<LicenseReadDTO> FindByLicenseID(int LicenseID)
         {
             var data = repo.FindLicenseByLicenseID(LicenseID);
-            if (data == null) return OperationResult<LicenseReadDTO>.FailureDBAError(enResult.rDBAError);
+            if (data == null) return OperationResult<LicenseReadDTO>.FailureDBAError(ErrorCode.rDBAError);
             // simple not-found check: if primary numeric and <=0 treat as not found else if all default treat not found
             bool notFound = false;
             if (data.LicenseID <= 0) notFound = true;
-            if (notFound) return OperationResult<LicenseReadDTO>.Failure(enResult.rNotFound, "No License Data Found.");
+            if (notFound) return OperationResult<LicenseReadDTO>.Failure(ErrorCode.rNotFound, "No License Data Found.");
             return OperationResult<LicenseReadDTO>.Success(_MapEntityToReadDTO(data), "License Data Retrieved Successfully.");
         }
         public bool DeleteByLicenseID(int LicenseID)
@@ -209,8 +209,8 @@ namespace Services
         #region Private Methods
         private OperationResults<LicenseReadDTO> _GetResultFromGetLicensesList(List<Entities.License> Data)
         {
-            if (Data == null) return OperationResults<LicenseReadDTO>.FailureDBAError(enResult.rDBAError);
-            if (Data.Count == 0) return OperationResults<LicenseReadDTO>.Failure(enResult.rNoData, "No Licenses Data Found.");
+            if (Data == null) return OperationResults<LicenseReadDTO>.FailureDBAError(ErrorCode.rDBAError);
+            if (Data.Count == 0) return OperationResults<LicenseReadDTO>.Failure(ErrorCode.rNoData, "No Licenses Data Found.");
             return OperationResults<LicenseReadDTO>.Success(_MapEntitiesTOReadDTOs(Data), "Licenses Data Retrieved Successfully.");
         }
         #endregion

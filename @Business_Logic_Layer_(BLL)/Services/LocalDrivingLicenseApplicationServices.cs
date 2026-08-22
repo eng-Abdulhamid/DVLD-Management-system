@@ -130,11 +130,11 @@ namespace Services
         public OperationResult<LocalDrivingLicenseApplicationReadDTO> FindByLocalDrivingLicenseApplicationID(int LocalDrivingLicenseApplicationID)
         {
             var data = repo.FindLocalDrivingLicenseApplicationByLocalDrivingLicenseApplicationID(LocalDrivingLicenseApplicationID);
-            if (data == null) return OperationResult<LocalDrivingLicenseApplicationReadDTO>.FailureDBAError(enResult.rDBAError);
+            if (data == null) return OperationResult<LocalDrivingLicenseApplicationReadDTO>.FailureDBAError(ErrorCode.rDBAError);
             // simple not-found check: if primary numeric and <=0 treat as not found else if all default treat not found
             bool notFound = false;
             if (data.LocalDrivingLicenseApplicationID <= 0) notFound = true;
-            if (notFound) return OperationResult<LocalDrivingLicenseApplicationReadDTO>.Failure(enResult.rNotFound, "No LocalDrivingLicenseApplication Data Found.");
+            if (notFound) return OperationResult<LocalDrivingLicenseApplicationReadDTO>.Failure(ErrorCode.rNotFound, "No LocalDrivingLicenseApplication Data Found.");
             return OperationResult<LocalDrivingLicenseApplicationReadDTO>.Success(_MapEntityToReadDTO(data), "LocalDrivingLicenseApplication Data Retrieved Successfully.");
         }
         public bool DeleteByLocalDrivingLicenseApplicationID(int LocalDrivingLicenseApplicationID)
@@ -161,8 +161,8 @@ namespace Services
         #region Private Methods
         private OperationResults<LocalDrivingLicenseApplicationReadDTO> _GetResultFromGetLocalDrivingLicenseApplicationsList(List<Entities.LocalDrivingLicenseApplication> Data)
         {
-            if (Data == null) return OperationResults<LocalDrivingLicenseApplicationReadDTO>.FailureDBAError(enResult.rDBAError);
-            if (Data.Count == 0) return OperationResults<LocalDrivingLicenseApplicationReadDTO>.Failure(enResult.rNoData, "No LocalDrivingLicenseApplications Data Found.");
+            if (Data == null) return OperationResults<LocalDrivingLicenseApplicationReadDTO>.FailureDBAError(ErrorCode.rDBAError);
+            if (Data.Count == 0) return OperationResults<LocalDrivingLicenseApplicationReadDTO>.Failure(ErrorCode.rNoData, "No LocalDrivingLicenseApplications Data Found.");
             return OperationResults<LocalDrivingLicenseApplicationReadDTO>.Success(_MapEntitiesTOReadDTOs(Data), "LocalDrivingLicenseApplications Data Retrieved Successfully.");
         }
         #endregion

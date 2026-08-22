@@ -153,11 +153,11 @@ namespace Services
         public OperationResult<TestAppointmentReadDTO> FindByTestAppointmentID(int TestAppointmentID)
         {
             var data = repo.FindTestAppointmentByTestAppointmentID(TestAppointmentID);
-            if (data == null) return OperationResult<TestAppointmentReadDTO>.FailureDBAError(enResult.rDBAError);
+            if (data == null) return OperationResult<TestAppointmentReadDTO>.FailureDBAError(ErrorCode.rDBAError);
             // simple not-found check: if primary numeric and <=0 treat as not found else if all default treat not found
             bool notFound = false;
             if (data.TestAppointmentID <= 0) notFound = true;
-            if (notFound) return OperationResult<TestAppointmentReadDTO>.Failure(enResult.rNotFound, "No TestAppointment Data Found.");
+            if (notFound) return OperationResult<TestAppointmentReadDTO>.Failure(ErrorCode.rNotFound, "No TestAppointment Data Found.");
             return OperationResult<TestAppointmentReadDTO>.Success(_MapEntityToReadDTO(data), "TestAppointment Data Retrieved Successfully.");
         }
         public bool DeleteByTestAppointmentID(int TestAppointmentID)
@@ -184,8 +184,8 @@ namespace Services
         #region Private Methods
         private OperationResults<TestAppointmentReadDTO> _GetResultFromGetTestAppointmentsList(List<Entities.TestAppointment> Data)
         {
-            if (Data == null) return OperationResults<TestAppointmentReadDTO>.FailureDBAError(enResult.rDBAError);
-            if (Data.Count == 0) return OperationResults<TestAppointmentReadDTO>.Failure(enResult.rNoData, "No TestAppointments Data Found.");
+            if (Data == null) return OperationResults<TestAppointmentReadDTO>.FailureDBAError(ErrorCode.rDBAError);
+            if (Data.Count == 0) return OperationResults<TestAppointmentReadDTO>.Failure(ErrorCode.rNoData, "No TestAppointments Data Found.");
             return OperationResults<TestAppointmentReadDTO>.Success(_MapEntitiesTOReadDTOs(Data), "TestAppointments Data Retrieved Successfully.");
         }
         #endregion

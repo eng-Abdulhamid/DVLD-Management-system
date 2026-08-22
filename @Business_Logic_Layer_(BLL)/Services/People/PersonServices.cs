@@ -1,6 +1,4 @@
-using DTOs;
 using DVLD_BusinessLogicLayer;
-using Repositories;
 
 using System;
 using System.Collections.Generic;
@@ -63,11 +61,11 @@ namespace Services
         public OperationResult<PersonReadDTO> FindByPersonID(int PersonID)
         {
             var data = repo.Find(PersonID);
-            if (data == null) return OperationResult<PersonReadDTO>.FailureDBAError(enResult.rDBAError);
+            if (data == null) return OperationResult<PersonReadDTO>.FailureDBAError(ErrorCode.rDBAError);
             // simple not-found check: if primary numeric and <=0 treat as not found else if all default treat not found
             bool notFound = false;
             if (data.PersonID <= 0) notFound = true;
-            if (notFound) return OperationResult<PersonReadDTO>.Failure(enResult.rNotFound, "No Person Data Found.");
+            if (notFound) return OperationResult<PersonReadDTO>.Failure(ErrorCode.rNotFound, "No Person Data Found.");
             return OperationResult<PersonReadDTO>.Success(_MapEntityToReadDTO(data), "Person Data Retrieved Successfully.");
         }
         public bool DeleteByPersonID(int PersonID)
@@ -86,10 +84,10 @@ namespace Services
         public OperationResult<PersonReadDTO> FindByNationalNo(string NationalNo)
         {
             var data = repo.FindByNationalNo(NationalNo);
-            if (data == null) return OperationResult<PersonReadDTO>.FailureDBAError(enResult.rDBAError);
+            if (data == null) return OperationResult<PersonReadDTO>.FailureDBAError(ErrorCode.rDBAError);
             // simple not-found check: if primary numeric and <=0 treat as not found else if all default treat not found
             bool notFound = false;
-            if (notFound) return OperationResult<PersonReadDTO>.Failure(enResult.rNotFound, "No Person Data Found.");
+            if (notFound) return OperationResult<PersonReadDTO>.Failure(ErrorCode.rNotFound, "No Person Data Found.");
             return OperationResult<PersonReadDTO>.Success(_MapEntityToReadDTO(data), "Person Data Retrieved Successfully.");
         }
         public bool DeleteByNationalNo(string NationalNo)
@@ -120,8 +118,8 @@ namespace Services
         #region Private Methods
         private OperationResults<PersonReadDTO> _GetResultFromGetPeopleList(List<Entities.Person> Data)
         {
-            if (Data == null) return OperationResults<PersonReadDTO>.FailureDBAError(enResult.rDBAError);
-            if (Data.Count == 0) return OperationResults<PersonReadDTO>.Failure(enResult.rNoData, "No People Data Found.");
+            if (Data == null) return OperationResults<PersonReadDTO>.FailureDBAError(ErrorCode.rDBAError);
+            if (Data.Count == 0) return OperationResults<PersonReadDTO>.Failure(ErrorCode.rNoData, "No People Data Found.");
             return OperationResults<PersonReadDTO>.Success(_MapEntitiesTOReadDTOs(Data), "People Data Retrieved Successfully.");
         }
         #endregion

@@ -124,11 +124,11 @@ namespace Services
         public OperationResult<CountryReadDTO> FindByCountryID(int CountryID)
         {
             var data = repo.FindCountryByCountryID(CountryID);
-            if (data == null) return OperationResult<CountryReadDTO>.FailureDBAError(enResult.rDBAError);
+            if (data == null) return OperationResult<CountryReadDTO>.FailureDBAError(ErrorCode.rDBAError);
             // simple not-found check: if primary numeric and <=0 treat as not found else if all default treat not found
             bool notFound = false;
             if (data.CountryID <= 0) notFound = true;
-            if (notFound) return OperationResult<CountryReadDTO>.Failure(enResult.rNotFound, "No Country Data Found.");
+            if (notFound) return OperationResult<CountryReadDTO>.Failure(ErrorCode.rNotFound, "No Country Data Found.");
             return OperationResult<CountryReadDTO>.Success(_MapEntityToReadDTO(data), "Country Data Retrieved Successfully.");
         }
         public bool DeleteByCountryID(int CountryID)
@@ -155,8 +155,8 @@ namespace Services
         #region Private Methods
         private OperationResults<CountryReadDTO> _GetResultFromGetCountriesList(List<Entities.Country> Data)
         {
-            if (Data == null) return OperationResults<CountryReadDTO>.FailureDBAError(enResult.rDBAError);
-            if (Data.Count == 0) return OperationResults<CountryReadDTO>.Failure(enResult.rNoData, "No Countries Data Found.");
+            if (Data == null) return OperationResults<CountryReadDTO>.FailureDBAError(ErrorCode.rDBAError);
+            if (Data.Count == 0) return OperationResults<CountryReadDTO>.Failure(ErrorCode.rNoData, "No Countries Data Found.");
             return OperationResults<CountryReadDTO>.Success(_MapEntitiesTOReadDTOs(Data), "Countries Data Retrieved Successfully.");
         }
         #endregion

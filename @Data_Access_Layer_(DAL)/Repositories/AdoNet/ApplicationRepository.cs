@@ -1,9 +1,7 @@
-using DataAccessLayer;
 using Entities;
-using RepositoriesInterfaces;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 namespace Repositories
 {
     #region Enums

@@ -134,11 +134,11 @@ namespace Services
         public OperationResult<DriverReadDTO> FindByDriverID(int DriverID)
         {
             var data = repo.FindDriverByDriverID(DriverID);
-            if (data == null) return OperationResult<DriverReadDTO>.FailureDBAError(enResult.rDBAError);
+            if (data == null) return OperationResult<DriverReadDTO>.FailureDBAError(ErrorCode.rDBAError);
             // simple not-found check: if primary numeric and <=0 treat as not found else if all default treat not found
             bool notFound = false;
             if (data.DriverID <= 0) notFound = true;
-            if (notFound) return OperationResult<DriverReadDTO>.Failure(enResult.rNotFound, "No Driver Data Found.");
+            if (notFound) return OperationResult<DriverReadDTO>.Failure(ErrorCode.rNotFound, "No Driver Data Found.");
             return OperationResult<DriverReadDTO>.Success(_MapEntityToReadDTO(data), "Driver Data Retrieved Successfully.");
         }
         public bool DeleteByDriverID(int DriverID)
@@ -165,8 +165,8 @@ namespace Services
         #region Private Methods
         private OperationResults<DriverReadDTO> _GetResultFromGetDriversList(List<Entities.Driver> Data)
         {
-            if (Data == null) return OperationResults<DriverReadDTO>.FailureDBAError(enResult.rDBAError);
-            if (Data.Count == 0) return OperationResults<DriverReadDTO>.Failure(enResult.rNoData, "No Drivers Data Found.");
+            if (Data == null) return OperationResults<DriverReadDTO>.FailureDBAError(ErrorCode.rDBAError);
+            if (Data.Count == 0) return OperationResults<DriverReadDTO>.Failure(ErrorCode.rNoData, "No Drivers Data Found.");
             return OperationResults<DriverReadDTO>.Success(_MapEntitiesTOReadDTOs(Data), "Drivers Data Retrieved Successfully.");
         }
         #endregion

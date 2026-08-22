@@ -142,11 +142,11 @@ namespace Services
         public OperationResult<UserReadDTO> FindByUserID(int UserID)
         {
             var data = repo.FindUserByUserID(UserID);
-            if (data == null) return OperationResult<UserReadDTO>.FailureDBAError(enResult.rDBAError);
+            if (data == null) return OperationResult<UserReadDTO>.FailureDBAError(ErrorCode.rDBAError);
             // simple not-found check: if primary numeric and <=0 treat as not found else if all default treat not found
             bool notFound = false;
             if (data.UserID <= 0) notFound = true;
-            if (notFound) return OperationResult<UserReadDTO>.Failure(enResult.rNotFound, "No User Data Found.");
+            if (notFound) return OperationResult<UserReadDTO>.Failure(ErrorCode.rNotFound, "No User Data Found.");
             return OperationResult<UserReadDTO>.Success(_MapEntityToReadDTO(data), "User Data Retrieved Successfully.");
         }
         public bool DeleteByUserID(int UserID)
@@ -173,8 +173,8 @@ namespace Services
         #region Private Methods
         private OperationResults<UserReadDTO> _GetResultFromGetUsersList(List<Entities.User> Data)
         {
-            if (Data == null) return OperationResults<UserReadDTO>.FailureDBAError(enResult.rDBAError);
-            if (Data.Count == 0) return OperationResults<UserReadDTO>.Failure(enResult.rNoData, "No Users Data Found.");
+            if (Data == null) return OperationResults<UserReadDTO>.FailureDBAError(ErrorCode.rDBAError);
+            if (Data.Count == 0) return OperationResults<UserReadDTO>.Failure(ErrorCode.rNoData, "No Users Data Found.");
             return OperationResults<UserReadDTO>.Success(_MapEntitiesTOReadDTOs(Data), "Users Data Retrieved Successfully.");
         }
         #endregion

@@ -1,6 +1,6 @@
 using Services;
 using System;
-namespace DTOs
+namespace DVLD.BLL.DTOs
 {
     public class PersonReadDTO
     {

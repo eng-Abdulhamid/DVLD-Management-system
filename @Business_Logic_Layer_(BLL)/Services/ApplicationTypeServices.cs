@@ -130,11 +130,11 @@ namespace Services
         public OperationResult<ApplicationTypeReadDTO> FindByApplicationTypeID(int ApplicationTypeID)
         {
             var data = repo.FindApplicationTypeByApplicationTypeID(ApplicationTypeID);
-            if (data == null) return OperationResult<ApplicationTypeReadDTO>.FailureDBAError(enResult.rDBAError);
+            if (data == null) return OperationResult<ApplicationTypeReadDTO>.FailureDBAError(ErrorCode.rDBAError);
             // simple not-found check: if primary numeric and <=0 treat as not found else if all default treat not found
             bool notFound = false;
             if (data.ApplicationTypeID <= 0) notFound = true;
-            if (notFound) return OperationResult<ApplicationTypeReadDTO>.Failure(enResult.rNotFound, "No ApplicationType Data Found.");
+            if (notFound) return OperationResult<ApplicationTypeReadDTO>.Failure(ErrorCode.rNotFound, "No ApplicationType Data Found.");
             return OperationResult<ApplicationTypeReadDTO>.Success(_MapEntityToReadDTO(data), "ApplicationType Data Retrieved Successfully.");
         }
         public bool DeleteByApplicationTypeID(int ApplicationTypeID)
@@ -161,8 +161,8 @@ namespace Services
         #region Private Methods
         private OperationResults<ApplicationTypeReadDTO> _GetResultFromGetApplicationTypesList(List<Entities.ApplicationType> Data)
         {
-            if (Data == null) return OperationResults<ApplicationTypeReadDTO>.FailureDBAError(enResult.rDBAError);
-            if (Data.Count == 0) return OperationResults<ApplicationTypeReadDTO>.Failure(enResult.rNoData, "No ApplicationTypes Data Found.");
+            if (Data == null) return OperationResults<ApplicationTypeReadDTO>.FailureDBAError(ErrorCode.rDBAError);
+            if (Data.Count == 0) return OperationResults<ApplicationTypeReadDTO>.Failure(ErrorCode.rNoData, "No ApplicationTypes Data Found.");
             return OperationResults<ApplicationTypeReadDTO>.Success(_MapEntitiesTOReadDTOs(Data), "ApplicationTypes Data Retrieved Successfully.");
         }
         #endregion

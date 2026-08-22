@@ -157,11 +157,11 @@ namespace Services
         public OperationResult<ApplicationReadDTO> FindByApplicationID(int ApplicationID)
         {
             var data = repo.FindApplicationByApplicationID(ApplicationID);
-            if (data == null) return OperationResult<ApplicationReadDTO>.FailureDBAError(enResult.rDBAError);
+            if (data == null) return OperationResult<ApplicationReadDTO>.FailureDBAError(ErrorCode.rDBAError);
             // simple not-found check: if primary numeric and <=0 treat as not found else if all default treat not found
             bool notFound = false;
             if (data.ApplicationID <= 0) notFound = true;
-            if (notFound) return OperationResult<ApplicationReadDTO>.Failure(enResult.rNotFound, "No Application Data Found.");
+            if (notFound) return OperationResult<ApplicationReadDTO>.Failure(ErrorCode.rNotFound, "No Application Data Found.");
             return OperationResult<ApplicationReadDTO>.Success(_MapEntityToReadDTO(data), "Application Data Retrieved Successfully.");
         }
         public bool DeleteByApplicationID(int ApplicationID)
@@ -188,8 +188,8 @@ namespace Services
         #region Private Methods
         private OperationResults<ApplicationReadDTO> _GetResultFromGetApplicationsList(List<Entities.Application> Data)
         {
-            if (Data == null) return OperationResults<ApplicationReadDTO>.FailureDBAError(enResult.rDBAError);
-            if (Data.Count == 0) return OperationResults<ApplicationReadDTO>.Failure(enResult.rNoData, "No Applications Data Found.");
+            if (Data == null) return OperationResults<ApplicationReadDTO>.FailureDBAError(ErrorCode.rDBAError);
+            if (Data.Count == 0) return OperationResults<ApplicationReadDTO>.Failure(ErrorCode.rNoData, "No Applications Data Found.");
             return OperationResults<ApplicationReadDTO>.Success(_MapEntitiesTOReadDTOs(Data), "Applications Data Retrieved Successfully.");
         }
         #endregion

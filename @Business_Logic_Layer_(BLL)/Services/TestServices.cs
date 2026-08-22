@@ -141,11 +141,11 @@ namespace Services
         public OperationResult<TestReadDTO> FindByTestID(int TestID)
         {
             var data = repo.FindTestByTestID(TestID);
-            if (data == null) return OperationResult<TestReadDTO>.FailureDBAError(enResult.rDBAError);
+            if (data == null) return OperationResult<TestReadDTO>.FailureDBAError(ErrorCode.rDBAError);
             // simple not-found check: if primary numeric and <=0 treat as not found else if all default treat not found
             bool notFound = false;
             if (data.TestID <= 0) notFound = true;
-            if (notFound) return OperationResult<TestReadDTO>.Failure(enResult.rNotFound, "No Test Data Found.");
+            if (notFound) return OperationResult<TestReadDTO>.Failure(ErrorCode.rNotFound, "No Test Data Found.");
             return OperationResult<TestReadDTO>.Success(_MapEntityToReadDTO(data), "Test Data Retrieved Successfully.");
         }
         public bool DeleteByTestID(int TestID)
@@ -172,8 +172,8 @@ namespace Services
         #region Private Methods
         private OperationResults<TestReadDTO> _GetResultFromGetTestsList(List<Entities.Test> Data)
         {
-            if (Data == null) return OperationResults<TestReadDTO>.FailureDBAError(enResult.rDBAError);
-            if (Data.Count == 0) return OperationResults<TestReadDTO>.Failure(enResult.rNoData, "No Tests Data Found.");
+            if (Data == null) return OperationResults<TestReadDTO>.FailureDBAError(ErrorCode.rDBAError);
+            if (Data.Count == 0) return OperationResults<TestReadDTO>.Failure(ErrorCode.rNoData, "No Tests Data Found.");
             return OperationResults<TestReadDTO>.Success(_MapEntitiesTOReadDTOs(Data), "Tests Data Retrieved Successfully.");
         }
         #endregion

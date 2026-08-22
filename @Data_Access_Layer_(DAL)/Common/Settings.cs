@@ -1,4 +1,5 @@
-﻿namespace DVLD.DAL.Common
+﻿
+namespace DVLD.DAL.Common
 {
     internal static class Settings
     {

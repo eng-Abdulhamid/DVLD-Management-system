@@ -1,5 +1,5 @@
 using System;
-namespace DTOs
+namespace DVLD.BLL.DTOs
 {
     public partial class TestAppointmentReadDTO
     {

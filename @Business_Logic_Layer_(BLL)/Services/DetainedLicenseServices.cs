@@ -165,11 +165,11 @@ namespace Services
         public OperationResult<DetainedLicenseReadDTO> FindByDetainID(int DetainID)
         {
             var data = repo.FindDetainedLicenseByDetainID(DetainID);
-            if (data == null) return OperationResult<DetainedLicenseReadDTO>.FailureDBAError(enResult.rDBAError);
+            if (data == null) return OperationResult<DetainedLicenseReadDTO>.FailureDBAError(ErrorCode.rDBAError);
             // simple not-found check: if primary numeric and <=0 treat as not found else if all default treat not found
             bool notFound = false;
             if (data.DetainID <= 0) notFound = true;
-            if (notFound) return OperationResult<DetainedLicenseReadDTO>.Failure(enResult.rNotFound, "No DetainedLicense Data Found.");
+            if (notFound) return OperationResult<DetainedLicenseReadDTO>.Failure(ErrorCode.rNotFound, "No DetainedLicense Data Found.");
             return OperationResult<DetainedLicenseReadDTO>.Success(_MapEntityToReadDTO(data), "DetainedLicense Data Retrieved Successfully.");
         }
         public bool DeleteByDetainID(int DetainID)
@@ -196,8 +196,8 @@ namespace Services
         #region Private Methods
         private OperationResults<DetainedLicenseReadDTO> _GetResultFromGetDetainedLicensesList(List<Entities.DetainedLicense> Data)
         {
-            if (Data == null) return OperationResults<DetainedLicenseReadDTO>.FailureDBAError(enResult.rDBAError);
-            if (Data.Count == 0) return OperationResults<DetainedLicenseReadDTO>.Failure(enResult.rNoData, "No DetainedLicenses Data Found.");
+            if (Data == null) return OperationResults<DetainedLicenseReadDTO>.FailureDBAError(ErrorCode.rDBAError);
+            if (Data.Count == 0) return OperationResults<DetainedLicenseReadDTO>.Failure(ErrorCode.rNoData, "No DetainedLicenses Data Found.");
             return OperationResults<DetainedLicenseReadDTO>.Success(_MapEntitiesTOReadDTOs(Data), "DetainedLicenses Data Retrieved Successfully.");
         }
         #endregion

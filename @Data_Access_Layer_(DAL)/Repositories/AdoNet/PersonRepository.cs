@@ -1,78 +1,55 @@
 using DVLD.DAL.Common;
-using DVLD.DAL.Interfaces;
-using DVLD.DAL.Repo.ADOnet;
-using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
 using DVLD.DAL.Entities;
-
+using DVLD.DAL.Interfaces;
+using DVLD.DAL.Mapper;
+using Microsoft.Data.SqlClient;
+using System.Reflection.PortableExecutable;
 namespace DVLD.DAL.Repo.ADONet
 {
     public class PersonRepository : IPersonRepository
     {
-        public int Add(Person PersonDeatils)
+        public async Task<int> AddAsync(Person PersonDetails)
         {
-            string Query =
-                $@"INSERT INTO People(NationalNo, FirstName, SecondName, ThirdName, LastName, DateOfBirth, Gender, Address, Phone, Email, NationalityCountryID, ImagePath)
-                   VALUES(@NationalNo, @FirstName, @SecondName, @ThirdName, @LastName, @DateOfBirth, @Gender, @Address, @Phone, @Email, @NationalityCountryID, @ImagePath)
-                   Select SCOPE_IDENTITY();";
+            string Query = @"INSERT INTO People 
+        (NationalNo, FirstName, SecondName, ThirdName, LastName, DateOfBirth, Gender, Address, Phone, Email, NationalityCountryID, ImagePath)
+        VALUES 
+        (@NationalNo, @FirstName, @SecondName, @ThirdName, @LastName, @DateOfBirth, @Gender, @Address, @Phone, @Email, @NationalityCountryID, @ImagePath);
+        SELECT SCOPE_IDENTITY();";
 
             SqlCommand Command = new SqlCommand(Query);
-            Command.Parameters.AddWithValue("@NationalNo", (object)PersonDeatils.NationalNo);
-            Command.Parameters.AddWithValue("@FirstName", (object)PersonDeatils.FirstName);
-            Command.Parameters.AddWithValue("@SecondName", (object)PersonDeatils.SecondName);
-            Command.Parameters.AddWithValue("@ThirdName", (object)PersonDeatils.ThirdName);
-            Command.Parameters.AddWithValue("@LastName", (object)PersonDeatils.LastName);
-            Command.Parameters.AddWithValue("@DateOfBirth", (object)PersonDeatils.DateOfBirth);
-            Command.Parameters.AddWithValue("@Gender", (object)PersonDeatils.Gender);
-            Command.Parameters.AddWithValue("@Address", (object)PersonDeatils.Address);
-            Command.Parameters.AddWithValue("@Phone", (object)PersonDeatils.Phone);
-            Command.Parameters.AddWithValue("@Email", (object)PersonDeatils.Email);
-            Command.Parameters.AddWithValue("@NationalityCountryID", (object)PersonDeatils.NationalityCountryID);
-            Command.Parameters.AddWithValue("@ImagePath", (object)PersonDeatils.ImagePath);
-            return DbExecutor.ExecuteScalarReturnInt(Command);
+
+            Command.Parameters.AddWithValue("@NationalNo", PersonDetails.NationalNo);
+            Command.Parameters.AddWithValue("@FirstName", PersonDetails.FirstName);
+            Command.Parameters.AddWithValue("@SecondName", PersonDetails.SecondName);
+            Command.Parameters.AddWithValue("@ThirdName", string.IsNullOrEmpty(PersonDetails.ThirdName) ? (object)DBNull.Value : PersonDetails.ThirdName);
+            Command.Parameters.AddWithValue("@LastName", PersonDetails.LastName);
+            Command.Parameters.AddWithValue("@DateOfBirth", PersonDetails.DateOfBirth);
+            Command.Parameters.AddWithValue("@Gender", (byte)PersonDetails.Gender);
+            Command.Parameters.AddWithValue("@Address", PersonDetails.Address);
+            Command.Parameters.AddWithValue("@Phone", PersonDetails.Phone);
+            Command.Parameters.AddWithValue("@Email", string.IsNullOrEmpty(PersonDetails.Email) ? (object)DBNull.Value : PersonDetails.Email);
+            Command.Parameters.AddWithValue("@NationalityCountryID", PersonDetails.NationalityCountryID);
+            Command.Parameters.AddWithValue("@ImagePath", string.IsNullOrEmpty(PersonDetails.ImagePath) ? (object)DBNull.Value : PersonDetails.ImagePath);
+
+            return await DbExecutor.ExecuteScalarReturnInt(Command);
         }
-        public Person Find(int PersonID)
+        public async Task<Person?> FindAsync(int PersonID)
         {
-            string Query = "SELECT * From People_View where People.PersonID = @PersonID";
+            string Query = "SELECT * From People_View where PersonID = @PersonID";
             SqlCommand Command = new SqlCommand(Query);
             Command.Parameters.AddWithValue("@PersonID", (object)PersonID);
             Person person = new Person();
 
-            using (SqlConnection conn = new SqlConnection(Settings.ConnectionString))
-            {
-                Command.Connection = conn;
-                try
-                {
-                    conn.Open();
-                    using (SqlDataReader reader = Command.ExecuteReader())
-                    {
-                        if (reader.HasRows)
-                        {
-                            if (reader.Read())
-                            {
-                                Mapper.PersonMapper.PersonColumnIndices indices = Mapper.PersonMapper.PersonColumnIndices.Create(reader);
-                                person = Mapper.PersonMapper.ToEntity(reader, indices);
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    person = new Person();
-                    Logs.AppendLog(Logs.enType.Error, $"[{DateTime.Now}] - Error message: {ex.Message}");
-                }
-            }
-            return person;
+            return await DbExecutor.ExecuteReaderSingleAsync<Person, PersonColumnIndices>(Command, PersonMapper.FromReader);
         }
-        public bool Delete(int PersonID)
+        public async Task<bool> DeleteAsync(int PersonID)
         {
             string Query = $"DELETE FROM People WHERE PersonID=@PersonID";
             SqlCommand Command = new SqlCommand(Query);
             Command.Parameters.AddWithValue($"@PersonID", (object)PersonID);
-            return DbExecutor.ExecuteCommandReturnRowsAffected(Command) > 0;
+            return await DbExecutor.ExecuteCommandReturnRowsAffected(Command) > 0;
         }
-        public bool Update(Person UpdatedPerson)
+        public async Task<bool> UpdateAsync(Person UpdatedPerson)
         {
             string Query = $@"UPDATE People SET 
                 NationalNo=@NationalNo,
@@ -89,59 +66,47 @@ namespace DVLD.DAL.Repo.ADONet
                 ImagePath=@ImagePath
                 WHERE PersonID=@PersonID";
             SqlCommand Command = new SqlCommand(Query);
-            return DbExecutor.ExecuteCommandReturnRowsAffected(Command) > 0;
+            Command.Parameters.AddWithValue("@PersonID", UpdatedPerson.PersonID);
+            Command.Parameters.AddWithValue("@NationalNo", UpdatedPerson.NationalNo);
+            Command.Parameters.AddWithValue("@FirstName", UpdatedPerson.FirstName);
+            Command.Parameters.AddWithValue("@SecondName", UpdatedPerson.SecondName);
+            Command.Parameters.AddWithValue("@ThirdName", string.IsNullOrEmpty(UpdatedPerson.ThirdName) ? (object)DBNull.Value : UpdatedPerson.ThirdName);
+            Command.Parameters.AddWithValue("@LastName", UpdatedPerson.LastName);
+            Command.Parameters.AddWithValue("@DateOfBirth", UpdatedPerson.DateOfBirth);
+            Command.Parameters.AddWithValue("@Gender", (byte)UpdatedPerson.Gender);
+            Command.Parameters.AddWithValue("@Address", UpdatedPerson.Address);
+            Command.Parameters.AddWithValue("@Phone", UpdatedPerson.Phone);
+            Command.Parameters.AddWithValue("@Email", string.IsNullOrEmpty(UpdatedPerson.Email) ? (object)DBNull.Value : UpdatedPerson.Email);
+            Command.Parameters.AddWithValue("@NationalityCountryID", UpdatedPerson.NationalityCountryID);
+            Command.Parameters.AddWithValue("@ImagePath", string.IsNullOrEmpty(UpdatedPerson.ImagePath) ? (object)DBNull.Value : UpdatedPerson.ImagePath);
+            return await DbExecutor.ExecuteCommandReturnRowsAffected(Command) > 0;
         }
-        public bool Exists(int PersonID)
+        public async Task<bool> ExistsAsync(int PersonID)
         {
             string Query = $"SELECT 1 FROM People WHERE PersonID = @PersonID";
             SqlCommand Command = new SqlCommand(Query);
             Command.Parameters.AddWithValue($"@PersonID", PersonID);
-            return DbExecutor.ExecuteCommandReturnBoolean(Command);
+            return await DbExecutor.ExecuteCommandReturnBoolean(Command);
         }
-        public Person FindByNationalNo(string NationalNo)
+        public async Task<Person?> FindByNationalNoAsync(string NationalNo)
         {
             string Query = $"SELECT TOP 1 * FROM People_View WHERE NationalNo = @NationalNo";
             SqlCommand Command = new SqlCommand(Query);
             Command.Parameters.AddWithValue("@NationalNo", (object)NationalNo);
             Person person = new Person();
 
-            using (SqlConnection conn = new SqlConnection(Settings.ConnectionString))
-            {
-                Command.Connection = conn;
-                try
-                {
-                    conn.Open();
-                    using (SqlDataReader reader = Command.ExecuteReader())
-                    {
-                        if (reader.HasRows)
-                        {
-                            if (reader.Read())
-                            {
-                                Mapper.PersonMapper.PersonColumnIndices indices = Mapper.PersonMapper.PersonColumnIndices.Create(reader);
-                                person = Mapper.PersonMapper.ToEntity(reader, indices);
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    person = new Person();
-                    Logs.AppendLog(Logs.enType.Error, $"[{DateTime.Now}] - Error message: {ex.Message}");
-                }
-            }
-            return person;
+            return await DbExecutor.ExecuteReaderSingleAsync<Person, PersonColumnIndices>(Command, PersonMapper.FromReader);
         }
-        public bool DeleteByNationalNo(string NationalNo)
+        public async Task<bool> DeleteByNationalNoAsync(string NationalNo)
         {
             string Query = $"DELETE FROM People WHERE NationalNo=@NationalNo";
             SqlCommand Command = new SqlCommand(Query);
             Command.Parameters.AddWithValue($"@NationalNo", (object)NationalNo);
-            return DbExecutor.ExecuteCommandReturnRowsAffected(Command) > 0;
+            return await DbExecutor.ExecuteCommandReturnRowsAffected(Command) > 0;
         }
-        public bool UpdateByNationalNo(Person UpdatedPerson)
+        public async Task<bool> UpdateByNationalNoAsync(Person UpdatedPerson)
         {
             string Query = $@"UPDATE People SET 
-                PersonID=@PersonID,
                 FirstName=@FirstName,
                 SecondName=@SecondName,
                 ThirdName=@ThirdName,
@@ -154,75 +119,44 @@ namespace DVLD.DAL.Repo.ADONet
                 NationalityCountryID=@NationalityCountryID,
                 ImagePath=@ImagePath
                 WHERE NationalNo=@NationalNo";
-            SqlCommand Command = new SqlCommand(Query);
-            Command.Parameters.AddWithValue("@PersonID", (object)UpdatedPerson.PersonID);
-            Command.Parameters.AddWithValue("@NationalNo", (object)UpdatedPerson.NationalNo);
-            Command.Parameters.AddWithValue("@FirstName", (object)UpdatedPerson.FirstName);
-            Command.Parameters.AddWithValue("@SecondName", (object)UpdatedPerson.SecondName);
-            Command.Parameters.AddWithValue("@ThirdName", (object)UpdatedPerson.ThirdName);
-            Command.Parameters.AddWithValue("@LastName", (object)UpdatedPerson.LastName);
-            Command.Parameters.AddWithValue("@DateOfBirth", (object)UpdatedPerson.DateOfBirth);
-            Command.Parameters.AddWithValue("@Gender", (object)UpdatedPerson.Gender);
-            Command.Parameters.AddWithValue("@Address", (object)UpdatedPerson.Address);
-            Command.Parameters.AddWithValue("@Phone", (object)UpdatedPerson.Phone);
-            Command.Parameters.AddWithValue("@Email", (object)UpdatedPerson.Email);
-            Command.Parameters.AddWithValue("@NationalityCountryID", (object)UpdatedPerson.NationalityCountryID);
-            Command.Parameters.AddWithValue("@ImagePath", (object)UpdatedPerson.ImagePath);
-            return DbExecutor.ExecuteCommandReturnRowsAffected(Command) > 0;
+            SqlCommand Command;
+            using (Command = new SqlCommand(Query))
+            {
+                Command.Parameters.AddWithValue("@NationalNo", UpdatedPerson.NationalNo);
+                Command.Parameters.AddWithValue("@FirstName", UpdatedPerson.FirstName);
+                Command.Parameters.AddWithValue("@SecondName", UpdatedPerson.SecondName);
+                Command.Parameters.AddWithValue("@ThirdName", string.IsNullOrEmpty(UpdatedPerson.ThirdName) ? (object)DBNull.Value : UpdatedPerson.ThirdName);
+                Command.Parameters.AddWithValue("@LastName", UpdatedPerson.LastName);
+                Command.Parameters.AddWithValue("@DateOfBirth", UpdatedPerson.DateOfBirth);
+                Command.Parameters.AddWithValue("@Gender", (byte)UpdatedPerson.Gender);
+                Command.Parameters.AddWithValue("@Address", UpdatedPerson.Address);
+                Command.Parameters.AddWithValue("@Phone", UpdatedPerson.Phone);
+                Command.Parameters.AddWithValue("@Email", string.IsNullOrEmpty(UpdatedPerson.Email) ? (object)DBNull.Value : UpdatedPerson.Email);
+                Command.Parameters.AddWithValue("@NationalityCountryID", UpdatedPerson.NationalityCountryID);
+                Command.Parameters.AddWithValue("@ImagePath", string.IsNullOrEmpty(UpdatedPerson.ImagePath) ? (object)DBNull.Value : UpdatedPerson.ImagePath);
+            }
+            return await DbExecutor.ExecuteCommandReturnRowsAffected(Command) > 0;
         }
-        public bool ExistsByNationalNo(string NationalNo)
+        public async Task<bool> ExistsByNationalNoAsync(string NationalNo)
         {
             string Query = $"SELECT 1 FROM People WHERE NationalNo = @NationalNo";
             SqlCommand Command = new SqlCommand(Query);
             Command.Parameters.AddWithValue($"@NationalNo", NationalNo);
-            return DbExecutor.ExecuteCommandReturnBoolean(Command);
+            return await DbExecutor.ExecuteCommandReturnBoolean(Command);
         }
-        public int Count()
+        public async Task<int> CountAsync()
         {
             SqlCommand Command = new SqlCommand();
             Command.CommandText =
             $@"SELECT COUNT(*) AS PeopleCount FROM People";
             
-            return DbExecutor.ExecuteScalarReturnInt(Command);
+            return await DbExecutor.ExecuteScalarReturnInt(Command);
         }
-        public List<Person> GetAll()
+        public async Task<List<Person>?> GetAllAsync()
         { 
             string Query = "SELECT * FROM People_View";
             SqlCommand Command = new SqlCommand(Query);
-            return _ExecuteReaderList(Command);
-        }
-        private static List<Person> _ExecuteReaderList(SqlCommand command)
-        {
-            List<Person> people = new List<Person>();
-
-            using (SqlConnection connection = new SqlConnection(Settings.ConnectionString))
-            {
-                command.Connection = connection;
-
-                try
-                {
-                    connection.Open();
-
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        if (reader.HasRows)
-                        {
-                            Mapper.PersonMapper.PersonColumnIndices indices = Mapper.PersonMapper.PersonColumnIndices.Create(reader);
-                            while (reader.Read())
-                            {
-                                people.Add(Mapper.PersonMapper.ToEntity(reader, indices));
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    people.Clear();
-                    Logs.AppendLog(Logs.enType.Error, $"[{DateTime.Now}] - Error message: {ex.Message}");
-                }
-            }
-
-            return people;
+            return await DbExecutor.ExecuteReaderListAsync<Person, PersonColumnIndices>(Command, PersonMapper.FromReader);
         }
     }
 }

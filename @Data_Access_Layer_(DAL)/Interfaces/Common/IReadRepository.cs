@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 namespace DVLD.DAL.Interfaces
 {
     public interface IReadRepository<T> where T : class
     {
-        int Count();
-        List<T> GetAll();
-        T Find(int id);
-        bool Exists(int id);
+        Task<int> CountAsync();
+        Task<List<T>?> GetAllAsync();
+        Task<T?> FindAsync(int id);
+        Task<bool> ExistsAsync(int id);
     }
 }

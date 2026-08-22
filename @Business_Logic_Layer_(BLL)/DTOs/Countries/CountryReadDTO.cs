@@ -1,4 +1,4 @@
-namespace DTOs
+namespace DVLD.BLL.DTOs
 {
     public class CountryReadDTO
     {

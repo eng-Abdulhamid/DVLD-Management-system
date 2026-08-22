@@ -160,11 +160,11 @@ namespace Services
         public OperationResult<InternationalLicenseReadDTO> FindByInternationalLicenseID(int InternationalLicenseID)
         {
             var data = repo.FindInternationalLicenseByInternationalLicenseID(InternationalLicenseID);
-            if (data == null) return OperationResult<InternationalLicenseReadDTO>.FailureDBAError(enResult.rDBAError);
+            if (data == null) return OperationResult<InternationalLicenseReadDTO>.FailureDBAError(ErrorCode.rDBAError);
             // simple not-found check: if primary numeric and <=0 treat as not found else if all default treat not found
             bool notFound = false;
             if (data.InternationalLicenseID <= 0) notFound = true;
-            if (notFound) return OperationResult<InternationalLicenseReadDTO>.Failure(enResult.rNotFound, "No InternationalLicense Data Found.");
+            if (notFound) return OperationResult<InternationalLicenseReadDTO>.Failure(ErrorCode.rNotFound, "No InternationalLicense Data Found.");
             return OperationResult<InternationalLicenseReadDTO>.Success(_MapEntityToReadDTO(data), "InternationalLicense Data Retrieved Successfully.");
         }
         public bool DeleteByInternationalLicenseID(int InternationalLicenseID)
@@ -191,8 +191,8 @@ namespace Services
         #region Private Methods
         private OperationResults<InternationalLicenseReadDTO> _GetResultFromGetInternationalLicensesList(List<Entities.InternationalLicense> Data)
         {
-            if (Data == null) return OperationResults<InternationalLicenseReadDTO>.FailureDBAError(enResult.rDBAError);
-            if (Data.Count == 0) return OperationResults<InternationalLicenseReadDTO>.Failure(enResult.rNoData, "No InternationalLicenses Data Found.");
+            if (Data == null) return OperationResults<InternationalLicenseReadDTO>.FailureDBAError(ErrorCode.rDBAError);
+            if (Data.Count == 0) return OperationResults<InternationalLicenseReadDTO>.Failure(ErrorCode.rNoData, "No InternationalLicenses Data Found.");
             return OperationResults<InternationalLicenseReadDTO>.Success(_MapEntitiesTOReadDTOs(Data), "InternationalLicenses Data Retrieved Successfully.");
         }
         #endregion

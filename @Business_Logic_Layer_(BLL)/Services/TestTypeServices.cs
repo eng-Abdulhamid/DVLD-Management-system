@@ -136,11 +136,11 @@ namespace Services
         public OperationResult<TestTypeReadDTO> FindByTestTypeID(int TestTypeID)
         {
             var data = repo.FindTestTypeByTestTypeID(TestTypeID);
-            if (data == null) return OperationResult<TestTypeReadDTO>.FailureDBAError(enResult.rDBAError);
+            if (data == null) return OperationResult<TestTypeReadDTO>.FailureDBAError(ErrorCode.rDBAError);
             // simple not-found check: if primary numeric and <=0 treat as not found else if all default treat not found
             bool notFound = false;
             if (data.TestTypeID <= 0) notFound = true;
-            if (notFound) return OperationResult<TestTypeReadDTO>.Failure(enResult.rNotFound, "No TestType Data Found.");
+            if (notFound) return OperationResult<TestTypeReadDTO>.Failure(ErrorCode.rNotFound, "No TestType Data Found.");
             return OperationResult<TestTypeReadDTO>.Success(_MapEntityToReadDTO(data), "TestType Data Retrieved Successfully.");
         }
         public bool DeleteByTestTypeID(int TestTypeID)
@@ -167,8 +167,8 @@ namespace Services
         #region Private Methods
         private OperationResults<TestTypeReadDTO> _GetResultFromGetTestTypesList(List<Entities.TestType> Data)
         {
-            if (Data == null) return OperationResults<TestTypeReadDTO>.FailureDBAError(enResult.rDBAError);
-            if (Data.Count == 0) return OperationResults<TestTypeReadDTO>.Failure(enResult.rNoData, "No TestTypes Data Found.");
+            if (Data == null) return OperationResults<TestTypeReadDTO>.FailureDBAError(ErrorCode.rDBAError);
+            if (Data.Count == 0) return OperationResults<TestTypeReadDTO>.Failure(ErrorCode.rNoData, "No TestTypes Data Found.");
             return OperationResults<TestTypeReadDTO>.Success(_MapEntitiesTOReadDTOs(Data), "TestTypes Data Retrieved Successfully.");
         }
         #endregion
