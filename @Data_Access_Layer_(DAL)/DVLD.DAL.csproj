@@ -17,7 +17,6 @@
 	  <Compile Remove="Common\clsCRUD.cs" />
 	  <Compile Remove="Entities\Application.cs" />
 	  <Compile Remove="Entities\ApplicationType.cs" />
-	  <Compile Remove="Entities\Country.cs" />
 	  <Compile Remove="Entities\DetainedLicense.cs" />
 	  <Compile Remove="Entities\Driver.cs" />
 	  <Compile Remove="Entities\InternationalLicense.cs" />
@@ -30,7 +29,6 @@
 	  <Compile Remove="Entities\User.cs" />
 	  <Compile Remove="Repositories\AdoNet\ApplicationRepository.cs" />
 	  <Compile Remove="Repositories\AdoNet\ApplicationTypeRepository.cs" />
-	  <Compile Remove="Repositories\AdoNet\CountryRepository.cs" />
 	  <Compile Remove="Repositories\AdoNet\DetainedLicenseRepository.cs" />
 	  <Compile Remove="Repositories\AdoNet\DriverRepository.cs" />
 	  <Compile Remove="Repositories\AdoNet\InternationalLicenseRepository.cs" />

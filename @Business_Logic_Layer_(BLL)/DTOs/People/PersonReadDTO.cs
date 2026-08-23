@@ -1,25 +1,25 @@
-using Services;
-using System;
+using DVLD.BLL.Enums;
 namespace DVLD.BLL.DTOs
 {
     public class PersonReadDTO
     {
         public int PersonID { get; set; }
-        public string NationalNo { get; set; }
-        public string FirstName { get; set; }
-        public string SecondName { get; set; }
-        public string ThirdName { get; set; } // Nullable column
-        public string LastName { get; set; }
+        public string NationalNo { get; set; } = string.Empty;
+        public string FirstName { get; set; } = string.Empty;
+        public string SecondName { get; set; } = string.Empty;
+        public string ThirdName { get; set; } = string.Empty;// Nullable column
+        public string LastName { get; set; } = string.Empty;
         public int Age { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public enGender Gender { get; set; }
-        public string Address { get; set; }
-        public string Phone { get; set; }
-        public string Email { get; set; } // Nullable column
+        public Gender Gender { get; set; }
+        public string Address { get; set; } = string.Empty;
+        public string Phone { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;// Nullable column
         public int NationalityCountryID { get; set; }
-        public string ImagePath { get; set; } // Nullable column
-        public string CountryName { get; set; }
-        public string FullName => $"{FirstName} {SecondName} {ThirdName} {LastName}".Replace("  ", " ").Trim();
+        public string ImagePath { get; set; } = string.Empty; // Nullable column
+        public string CountryName { get; set; } = string.Empty;
+        public string FullName { get; set; } = string.Empty;
+
     }
 }
 

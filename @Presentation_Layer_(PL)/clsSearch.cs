@@ -1,16 +1,4 @@
-﻿using AbdUlhamid_CustomControls.CustomControls;
-using DTOs;
-using DVLD_BusinessLogicLayer;
-using Services;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace DVLDPL.General
+﻿namespace DVLDPL.General
 {
     public class clsSearch : UserControl 
     {

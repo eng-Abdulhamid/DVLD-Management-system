@@ -14,7 +14,7 @@ namespace DVLD.DAL.Entities
         public string ThirdName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public DateTime DateOfBirth { get; set; }
-        public enGender Gender { get; set; }
+        public Gender Gender { get; set; }
         public string Address { get; set; } = string.Empty;
         public string Phone { get; set; } = string.Empty;
         /// <summary>

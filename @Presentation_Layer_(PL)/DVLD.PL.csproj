@@ -11,11 +11,20 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<ApplicationManifest>app.manifest</ApplicationManifest>
 		<Deterministic>true</Deterministic>
+		<ApplicationIcon>ChatGPT Image Aug 18, 2026, 11_09_30 AM.ico</ApplicationIcon>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\@Business_Logic_Layer_(BLL)\DVLD_BusinessLogicLayer.csproj" />
-		<ProjectReference Include="..\@Custom_Controls\ApplicatinNeededControlsModern.csproj" />
+	  <Content Include="ChatGPT Image Aug 18, 2026, 11_09_30 AM.ico" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Reference Include="ApplicatinNeededControlsModern">
+	    <HintPath>..\@Custom_Controls\bin\Debug\ApplicatinNeededControlsModern.dll</HintPath>
+	  </Reference>
+	  <Reference Include="DVLD.BLL">
+	    <HintPath>..\@Business_Logic_Layer_(BLL)\bin\Debug\net10.0\DVLD.BLL.dll</HintPath>
+	  </Reference>
 	</ItemGroup>
 
 </Project>

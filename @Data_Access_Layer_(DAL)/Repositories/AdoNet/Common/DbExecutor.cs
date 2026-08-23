@@ -1,7 +1,8 @@
 ﻿using DVLD.DAL.Common;
+using DVLD.DAL.Entities;
+using DVLD.DAL.Mapper;
 using Microsoft.Data.SqlClient;
 using System.Runtime.CompilerServices;
-using DVLD.DAL.Mapper;
 namespace DVLD.DAL.Repo.ADONet
 {
     internal static class DbExecutor
@@ -46,13 +47,13 @@ namespace DVLD.DAL.Repo.ADONet
         /// <returns>The mapped entity or null if no rows are found.</returns>
         internal async static Task<TEntity?> ExecuteReaderSingleAsync<TEntity, TIndices>(
         SqlCommand command,
-        Func<SqlDataReader, TIndices, TEntity> mapper)
+        Func<SqlDataReader, TIndices, Task<TEntity>> mapper)
         where TEntity : class, new()
         where TIndices : IColumnIndices<TIndices>
         {
             await IsValidCommand(command);
 
-            TEntity? result = new TEntity();
+            TEntity? result = null;
 
             using (SqlConnection connection = new SqlConnection(Settings.ConnectionString))
             {
@@ -70,7 +71,7 @@ namespace DVLD.DAL.Repo.ADONet
                         if (reader.HasRows && await reader.ReadAsync())
                         {
                             TIndices indices = TIndices.Create(reader);
-                            result = mapper(reader, indices);
+                            result = await mapper(reader, indices);
                         }
                     }
                 }
@@ -96,7 +97,7 @@ namespace DVLD.DAL.Repo.ADONet
         /// <returns>A list of entities mapped from the result set.</returns>
         internal async static Task<List<TEntity>> ExecuteReaderListAsync<TEntity, TIndices>(
         SqlCommand command,
-        Func<SqlDataReader, TIndices, TEntity> mapper)
+        Func<SqlDataReader, TIndices, Task<TEntity>> mapper)
         where TEntity : class
         where TIndices : IColumnIndices<TIndices>
         {
@@ -122,14 +123,13 @@ namespace DVLD.DAL.Repo.ADONet
                             TIndices indices = TIndices.Create(reader);
                             while (await reader.ReadAsync())
                             {
-                                list.Add(mapper(reader, indices));
+                                list.Add(await mapper(reader, indices));
                             }
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    list.Clear();
                     await Logs.AppendLog(
                         Logs.enType.Error,
                         $"[{DateTime.Now}] - Error message: {ex.Message}"
@@ -197,7 +197,6 @@ namespace DVLD.DAL.Repo.ADONet
                 {
                     command.Connection = connection;
                 }
-
                 try
                 {
                     await connection.OpenAsync();
@@ -209,7 +208,7 @@ namespace DVLD.DAL.Repo.ADONet
                         return false;
                     }
 
-                    return (int)result == 1;
+                    return (int.TryParse(result.ToString(), out int value) && value == 1);
                 }
                 catch (Exception ex)
                 {
@@ -231,7 +230,7 @@ namespace DVLD.DAL.Repo.ADONet
         {
             await IsValidCommand(command);
 
-            int rowsAffected = 0;
+            int rowsAffected = -1;
 
             using (SqlConnection connection = new SqlConnection(Settings.ConnectionString))
             {
@@ -239,7 +238,6 @@ namespace DVLD.DAL.Repo.ADONet
                 {
                     command.Connection = connection;
                 }
-
                 try
                 {
                     await connection.OpenAsync();
@@ -248,8 +246,6 @@ namespace DVLD.DAL.Repo.ADONet
                 }
                 catch (Exception ex)
                 {
-                    rowsAffected = -1;
-
                     await Logs.AppendLog(
                         Logs.enType.Error,
                         $"[{DateTime.Now}] - Error message: {ex.Message}"
@@ -257,7 +253,6 @@ namespace DVLD.DAL.Repo.ADONet
                     throw;
                 }
             }
-
             return rowsAffected;
         }
     }

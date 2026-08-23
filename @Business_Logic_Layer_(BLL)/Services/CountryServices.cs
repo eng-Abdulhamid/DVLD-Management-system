@@ -1,164 +1,207 @@
-using DTOs;
-using DVLD_BusinessLogicLayer;
-using Repositories;
-using RepositoriesInterfaces;
-using System.Collections.Generic;
-namespace Services
+using DVLD.BLL.DTOs;
+using DVLD.BLL.Enums;
+using DVLD.BLL.OperationResults;
+using DVLD.DAL.Interfaces;
+using DVLD.DAL.Repo.ADONet;
+using DVLD.DAL.Entities;
+using static DVLD.BLL.Mappers.CountryMapper;
+
+namespace DVLD.BLL.Services
 {
-
-    public partial class CountryServices : ICountryServices
+    /// <summary>
+    /// Provides business logic services and operations for managing country entities.
+    /// </summary>
+    public class CountryService
     {
-        public enum enFields
-        {
-            None = 0,
-            CountryID,
-            CountryName
-        }
-        #region Properties
-        private ICountryRepository repo;
-        #endregion
         #region Constructors
-        public CountryServices()
+
+        private readonly ICountryRepository _countryRepo;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CountryService"/> class with the default ADO.NET repository.
+        /// </summary>
+        public CountryService()
         {
-            this.repo = new CountryRepository();
-        }
-        #endregion 
-        #region Maps
-        private CountryReadDTO _MapEntityToReadDTO(Entities.Country Entity)
-        {
-            if (Entity == null) return null;
-            return new CountryReadDTO()
-            {
-                CountryID = Entity.CountryID,
-                CountryName = Entity.CountryName,
-            };
+            _countryRepo = new CountryRepositoryADO();
         }
 
-        private Entities.Country _MapAddDTOToEntity(CountryAddDTO AddDTO)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CountryService"/> class with a specified data repository.
+        /// </summary>
+        /// <param name="countryRepo">The repository instance used for data access operations.</param>
+        public CountryService(ICountryRepository countryRepo)
         {
-            if (AddDTO == null) return null;
-            return new Entities.Country()
-            {
-                CountryName = AddDTO.CountryName,
-            };
+            _countryRepo = countryRepo;
         }
 
-        private Entities.Country _MapUpdateDTOToEntity(CountryUpdateDTO UpdateDTO)
-        {
-            if (UpdateDTO == null) return null;
-            return new Entities.Country()
-            {
-                CountryID = UpdateDTO.CountryID,
-                CountryName = UpdateDTO.CountryName,
-            };
-        }
-
-
-        private List<CountryReadDTO> _MapEntitiesTOReadDTOs(List<Entities.Country> EntitiesList)
-        {
-            List<CountryReadDTO> Results = new List<CountryReadDTO>();
-            if (EntitiesList == null) return Results;
-            foreach (var entity in EntitiesList)
-            {
-                var dto = _MapEntityToReadDTO(entity);
-                if (dto != null) Results.Add(dto);
-            }
-            return Results;
-        }
-        private Repositories.enCountryField _MapToRepoFieldEmum(enFields Field)
-        {
-            switch (Field)
-            {
-                case enFields.CountryID:
-                    return Repositories.enCountryField.CountryID;
-                case enFields.CountryName:
-                    return Repositories.enCountryField.CountryName;
-                default:
-                    return Repositories.enCountryField.CountryID;
-            }
-        }
-
-        private CountryRepository.CountriesSearchCriteria _MapToRepoSearchCriteria(SearchCriteria<enFields> SearchCriteria)
-        {
-            if (SearchCriteria == null) return null;
-            return new CountryRepository.CountriesSearchCriteria()
-            {
-                PageNumber = SearchCriteria.PageNumber,
-                PageSize = SearchCriteria.SizeInEveryPage,
-                SearchBy = _MapToRepoFieldEmum(SearchCriteria.SearchBy),
-                OrderBy = _MapToRepoFieldEmum(SearchCriteria.OrderBy),
-                SearchText = SearchCriteria.SearchString,
-                Sorting = (Repositories.enSorting)SearchCriteria.SortingBy,
-                SearchType = (Repositories.enSearchType)SearchCriteria.SearchType
-            };
-        }
         #endregion
 
-        #region CRUD METHODS 
-        public OperationResults<CountryReadDTO> GetPeople(SearchCriteria<CountryServices.enFields> SearchCriteria)
+        #region CRUD Methods
+
+        /// <summary>
+        /// Asynchronously retrieves all country records from the data store.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="OperationResults{CountryReadDTO}"/> containing the list of retrieved countries on success, 
+        /// or error details if no data is found.
+        /// </returns>
+        public async Task<OperationResults<CountryReadDTO>> GetAllAsync()
         {
-            return _GetResultFromGetCountriesList(repo.GetCountries(_MapToRepoSearchCriteria(SearchCriteria)));
+            return MapToOperationResult(await _countryRepo.GetAllAsync());
         }
-        public OperationResults<CountryReadDTO> GetAllPeople()
+
+        /// <summary>
+        /// Asynchronously determines whether a country exists with the specified country ID.
+        /// </summary>
+        /// <param name="id">The unique identifier of the country to check.</param>
+        /// <returns>
+        /// <see langword="true"/> if the country exists; otherwise, <see langword="false"/>.
+        /// </returns>
+        public async Task<bool> ExistsAsync(int id)
         {
-            return _GetResultFromGetCountriesList(repo.GetAllCountries());
+            return await _countryRepo.ExistsAsync(id);
         }
-        public int AddNew(CountryAddDTO AddDTO)
+
+        /// <summary>
+        /// Asynchronously adds a new country record after validating that the country name is unique.
+        /// </summary>
+        /// <param name="dto">The data transfer object containing the new country details.</param>
+        /// <returns>
+        /// An <see cref="OperationResult{Int32}"/> containing the generated Country ID upon success, 
+        /// or a failure result if a conflict occurs or insertion fails.
+        /// </returns>
+        public async Task<OperationResult<int>> AddAsync(CountryAddDTO dto)
         {
-            if (!_ValidationBeforeAddNew(AddDTO)) return -1;
-            int AddResult = repo.AddNewCountry(_MapAddDTOToEntity(AddDTO));
-            if (AddResult > 0)
+            if (await _countryRepo.ExistsByNameAsync(dto.CountryName))
             {
-                return AddResult;
+                return OperationResult<int>.Failure(ErrorCode.Conflict, "Country with the same name already exists.");
             }
-            return AddResult;
-        }
-        public int PeopleCount(SearchCriteria<CountryServices.enFields> SearchCriteria)
-        {
-            return repo.GetCountOfCountriesByFilter(_MapToRepoSearchCriteria(SearchCriteria));
-        }
-        public int GetCountOfAllWithoutFilter()
-        {
-            return repo.GetCountOfAllCountries();
-        }
-        public OperationResult<CountryReadDTO> FindByCountryID(int CountryID)
-        {
-            var data = repo.FindCountryByCountryID(CountryID);
-            if (data == null) return OperationResult<CountryReadDTO>.FailureDBAError(ErrorCode.rDBAError);
-            // simple not-found check: if primary numeric and <=0 treat as not found else if all default treat not found
-            bool notFound = false;
-            if (data.CountryID <= 0) notFound = true;
-            if (notFound) return OperationResult<CountryReadDTO>.Failure(ErrorCode.rNotFound, "No Country Data Found.");
-            return OperationResult<CountryReadDTO>.Success(_MapEntityToReadDTO(data), "Country Data Retrieved Successfully.");
-        }
-        public bool DeleteByCountryID(int CountryID)
-        {
-            if (repo.DeleteCountryByCountryID(CountryID))
+
+            int addResult = await _countryRepo.AddAsync(MapToEntity(dto));
+
+            if (addResult > 0)
             {
-                return true;
+                return OperationResult<int>.Success(addResult, "Country added successfully.");
             }
-            else
-                return false;
+
+            return OperationResult<int>.Failure(ErrorCode.Conflict, "Failed to add country.");
         }
-        public bool UpdateByCountryID(CountryUpdateDTO UpdatedData)
+
+        /// <summary>
+        /// Asynchronously retrieves the total count of country records in the data store.
+        /// </summary>
+        /// <returns>The total number of registered countries.</returns>
+        public async Task<int> GetCountAsync()
         {
-            return repo.UpdateCountryByCountryID(_MapUpdateDTOToEntity(UpdatedData));
+            return await _countryRepo.CountAsync();
         }
-        #endregion
-        #region Validations
-        private bool _ValidationBeforeAddNew(CountryAddDTO AddDTO)
+
+        /// <summary>
+        /// Asynchronously retrieves a country record by its unique ID.
+        /// </summary>
+        /// <param name="countryId">The unique identifier of the country.</param>
+        /// <returns>
+        /// An <see cref="OperationResult{CountryReadDTO}"/> containing the country data if found; 
+        /// otherwise, a failure result indicating the record was not found.
+        /// </returns>
+        public async Task<OperationResult<CountryReadDTO>> GetByIdAsync(int countryId)
         {
-            // Verification code (customize as needed)
-            return true;
+            var data = await _countryRepo.FindAsync(countryId);
+            if (data == null || data.CountryID <= 0)
+            {
+                return OperationResult<CountryReadDTO>.Failure(ErrorCode.NotFound, "No Country Data Found.");
+            }
+
+            return OperationResult<CountryReadDTO>.Success(MapToReadDTO(data), "Country Data Retrieved Successfully.");
         }
-        #endregion
-        #region Private Methods
-        private OperationResults<CountryReadDTO> _GetResultFromGetCountriesList(List<Entities.Country> Data)
+
+        /// <summary>
+        /// Asynchronously deletes a country record by its unique ID after verifying existence and database constraints.
+        /// </summary>
+        /// <param name="id">The unique identifier of the country to delete.</param>
+        /// <returns>
+        /// An <see cref="OperationResult{Boolean}"/> indicating whether the deletion succeeded, 
+        /// or an error describing why deletion failed (e.g., entity not found or referenced in other records).
+        /// </returns>
+        public async Task<OperationResult<bool>> DeleteAsync(int id)
         {
-            if (Data == null) return OperationResults<CountryReadDTO>.FailureDBAError(ErrorCode.rDBAError);
-            if (Data.Count == 0) return OperationResults<CountryReadDTO>.Failure(ErrorCode.rNoData, "No Countries Data Found.");
-            return OperationResults<CountryReadDTO>.Success(_MapEntitiesTOReadDTOs(Data), "Countries Data Retrieved Successfully.");
+            if (!await _countryRepo.ExistsAsync(id))
+            {
+                return OperationResult<bool>.Failure(ErrorCode.NotFound, "Country not found.");
+            }
+
+            bool isDeleted = await _countryRepo.DeleteAsync(id);
+            if (!isDeleted)
+            {
+                return OperationResult<bool>.Failure(ErrorCode.Conflict, "Cannot delete this country because it is referenced in other records.");
+            }
+
+            return OperationResult<bool>.Success(true, "Country deleted successfully.");
         }
+
+        /// <summary>
+        /// Asynchronously updates an existing country record after verifying existence and checking for name uniqueness conflicts.
+        /// </summary>
+        /// <param name="dto">The data transfer object containing the updated country details.</param>
+        /// <returns>
+        /// An <see cref="OperationResult{Boolean}"/> indicating whether the update operation succeeded or failed.
+        /// </returns>
+        public async Task<OperationResult<bool>> UpdateAsync(CountryUpdateDTO dto)
+        {
+            Country? country = await _countryRepo.FindAsync(dto.CountryID);
+            if (country == null)
+            {
+                return OperationResult<bool>.Failure(ErrorCode.NotFound, $"Country with ID {dto.CountryID} is not found.");
+            }
+
+            if (!string.Equals(country.CountryName, dto.CountryName, StringComparison.OrdinalIgnoreCase))
+            {
+                if (await _countryRepo.ExistsByNameAsync(dto.CountryName))
+                {
+                    return OperationResult<bool>.Failure(ErrorCode.Conflict, "Country with exact same name already exists.");
+                }
+            }
+
+            bool isUpdated = await _countryRepo.UpdateAsync(MapToEntity(dto));
+            if (!isUpdated)
+            {
+                return OperationResult<bool>.Failure(ErrorCode.Conflict, "Failed to update country.");
+            }
+
+            return OperationResult<bool>.Success(true, "Country updated successfully.");
+        }
+
+        /// <summary>
+        /// Asynchronously retrieves a country record by its name.
+        /// </summary>
+        /// <param name="countryName">The name of the country to search for.</param>
+        /// <returns>
+        /// An <see cref="OperationResult{CountryReadDTO}"/> containing the country data if found; 
+        /// otherwise, a failure result indicating the record was not found.
+        /// </returns>
+        public async Task<OperationResult<CountryReadDTO>> GetByNameAsync(string countryName)
+        {
+            var data = await _countryRepo.FindByNameAsync(countryName);
+            if (data == null)
+            {
+                return OperationResult<CountryReadDTO>.Failure(ErrorCode.NotFound, "No Country Data Found.");
+            }
+
+            return OperationResult<CountryReadDTO>.Success(MapToReadDTO(data), "Country Data Retrieved Successfully.");
+        }
+
+        /// <summary>
+        /// Asynchronously determines whether a country exists with the specified country name.
+        /// </summary>
+        /// <param name="countryName">The country name to check for existence.</param>
+        /// <returns>
+        /// <see langword="true"/> if a country with the given name exists; otherwise, <see langword="false"/>.
+        /// </returns>
+        public async Task<bool> ExistsByNameAsync(string countryName)
+        {
+            return await _countryRepo.ExistsByNameAsync(countryName);
+        }
+
         #endregion
     }
 }

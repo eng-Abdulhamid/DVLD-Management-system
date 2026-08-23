@@ -1,6 +1,7 @@
 ﻿namespace DVLD.BLL.Enums
 {
-    public enum enGender {
+    public enum Gender : byte
+    {
         Male = 0,
         Female = 1
     }

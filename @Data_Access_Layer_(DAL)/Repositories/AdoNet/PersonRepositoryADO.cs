@@ -6,7 +6,7 @@ using Microsoft.Data.SqlClient;
 using System.Reflection.PortableExecutable;
 namespace DVLD.DAL.Repo.ADONet
 {
-    public class PersonRepository : IPersonRepository
+    public class PersonRepositoryADO : IPersonRepository
     {
         public async Task<int> AddAsync(Person PersonDetails)
         {
@@ -152,11 +152,11 @@ namespace DVLD.DAL.Repo.ADONet
             
             return await DbExecutor.ExecuteScalarReturnInt(Command);
         }
-        public async Task<List<Person>?> GetAllAsync()
+        public async Task<List<Person>> GetAllAsync()
         { 
             string Query = "SELECT * FROM People_View";
             SqlCommand Command = new SqlCommand(Query);
             return await DbExecutor.ExecuteReaderListAsync<Person, PersonColumnIndices>(Command, PersonMapper.FromReader);
         }
-    }
 }
+    }

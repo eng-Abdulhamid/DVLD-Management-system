@@ -1,5 +1,5 @@
 using DTOs;
-using DVLD_BusinessLogicLayer;
+using DVLD.BLL;
 using Entities;
 using Repositories;
 using RepositoriesInterfaces;

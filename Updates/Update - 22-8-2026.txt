@@ -1,0 +1,26 @@
+Update - 22-8-2026
+Today's Updates
+
+Today’s work focused on the DAL and BLL layers.
+
+DAL
+- Added async/await support to the DAL.
+- Improved and cleaned up the DAL layer.
+- Fixed logical issues and errors.
+- Refactored DbExecutor and completely separated responsibilities within this layer.
+
+BLL
+- Spent around 3 hours researching how to handle errors coming from the DAL, including expected and unexpected errors.
+- Reached the following approach:
+  - Unexpected errors: throw the exception.
+  - Expected errors: return values such as false, -1, null, etc.
+- Designed a Result class and an ErrorCode enum in the BLL to communicate expected errors to the presentation layer.
+- The presentation layer should handle unexpected errors coming from the DAL appropriately.
+- However, the error-handling design is still not fully resolved, so I want to ask experienced developers for their opinions and recommendations.
+
+Goals for the Next Session
+
+- Ask experienced developers about the error-handling design.
+- Create and configure App.config for application settings.
+- Further separate responsibilities in the BLL and establish a strong structure for the layer.
+- Create PersonService and its interfaces.

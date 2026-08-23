@@ -14,7 +14,72 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="DTOs\Applications\**" />
+	  <Compile Remove="DTOs\ApplicationTypes\**" />
+	  <Compile Remove="DTOs\DetainedLicenses\**" />
+	  <Compile Remove="DTOs\Drivers\**" />
+	  <Compile Remove="DTOs\InternationalLicenses\**" />
+	  <Compile Remove="DTOs\LicenseClasses\**" />
+	  <Compile Remove="DTOs\Licenses\**" />
+	  <Compile Remove="DTOs\LocalDrivingLicenseApplications\**" />
+	  <Compile Remove="DTOs\TestAppointments\**" />
+	  <Compile Remove="DTOs\Tests\**" />
+	  <Compile Remove="DTOs\TestTypes\**" />
+	  <Compile Remove="DTOs\Users\**" />
+	  <Compile Remove="Services\Partial\**" />
+	  <EmbeddedResource Remove="DTOs\Applications\**" />
+	  <EmbeddedResource Remove="DTOs\ApplicationTypes\**" />
+	  <EmbeddedResource Remove="DTOs\DetainedLicenses\**" />
+	  <EmbeddedResource Remove="DTOs\Drivers\**" />
+	  <EmbeddedResource Remove="DTOs\InternationalLicenses\**" />
+	  <EmbeddedResource Remove="DTOs\LicenseClasses\**" />
+	  <EmbeddedResource Remove="DTOs\Licenses\**" />
+	  <EmbeddedResource Remove="DTOs\LocalDrivingLicenseApplications\**" />
+	  <EmbeddedResource Remove="DTOs\TestAppointments\**" />
+	  <EmbeddedResource Remove="DTOs\Tests\**" />
+	  <EmbeddedResource Remove="DTOs\TestTypes\**" />
+	  <EmbeddedResource Remove="DTOs\Users\**" />
+	  <EmbeddedResource Remove="Services\Partial\**" />
+	  <None Remove="DTOs\Applications\**" />
+	  <None Remove="DTOs\ApplicationTypes\**" />
+	  <None Remove="DTOs\DetainedLicenses\**" />
+	  <None Remove="DTOs\Drivers\**" />
+	  <None Remove="DTOs\InternationalLicenses\**" />
+	  <None Remove="DTOs\LicenseClasses\**" />
+	  <None Remove="DTOs\Licenses\**" />
+	  <None Remove="DTOs\LocalDrivingLicenseApplications\**" />
+	  <None Remove="DTOs\TestAppointments\**" />
+	  <None Remove="DTOs\Tests\**" />
+	  <None Remove="DTOs\TestTypes\**" />
+	  <None Remove="DTOs\Users\**" />
+	  <None Remove="Services\Partial\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Remove="Common\SearchCriteria.cs" />
+	  <Compile Remove="Interfaces\IAddServices.cs" />
+	  <Compile Remove="Interfaces\IReadServices.cs" />
+	  <Compile Remove="Interfaces\IUpdateServices.cs" />
+	  <Compile Remove="Services\ApplicationServices.cs" />
+	  <Compile Remove="Services\ApplicationTypeServices.cs" />
+	  <Compile Remove="Services\DetainedLicenseServices.cs" />
+	  <Compile Remove="Services\DriverServices.cs" />
+	  <Compile Remove="Services\InternationalLicenseServices.cs" />
+	  <Compile Remove="Services\LicenseClassServices.cs" />
+	  <Compile Remove="Services\LicenseServices.cs" />
+	  <Compile Remove="Services\LocalDrivingLicenseApplicationServices.cs" />
+	  <Compile Remove="Services\TestAppointmentServices.cs" />
+	  <Compile Remove="Services\TestServices.cs" />
+	  <Compile Remove="Services\TestTypeServices.cs" />
+	  <Compile Remove="Services\UserServices.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<ProjectReference Include="..\@Data_Access_Layer_(DAL)\DVLD.DAL.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Interfaces\" />
 	</ItemGroup>
 
 </Project>
