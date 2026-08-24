@@ -1,9 +1,8 @@
-using DVLD.DAL.Common;
 using DVLD.DAL.Entities;
-using DVLD.DAL.Interfaces;
 using DVLD.DAL.Mapper;
+using DVLD.DAL.Mappers;
 using Microsoft.Data.SqlClient;
-
+using DVLD.DAL.Interfaces.IRepositories;
 namespace DVLD.DAL.Repo.ADONet
 {
     public class CountryRepositoryADO : ICountryRepository
@@ -14,7 +13,7 @@ namespace DVLD.DAL.Repo.ADONet
                              VALUES (@CountryName);
                              SELECT SCOPE_IDENTITY();";
 
-            SqlCommand command = new SqlCommand(query);
+            SqlCommand command = new(query);
             command.Parameters.AddWithValue("@CountryName", countryDetails.CountryName);
 
             return await DbExecutor.ExecuteScalarReturnInt(command);
@@ -23,7 +22,7 @@ namespace DVLD.DAL.Repo.ADONet
         public async Task<Country?> FindAsync(int countryID)
         {
             string query = "SELECT * FROM Countries WHERE CountryID = @CountryID";
-            SqlCommand command = new SqlCommand(query);
+            SqlCommand command = new(query);
             command.Parameters.AddWithValue("@CountryID", countryID);
 
             return await DbExecutor.ExecuteReaderSingleAsync<Country, CountryColumnIndices>(command, CountryMapper.FromReader);
@@ -32,7 +31,7 @@ namespace DVLD.DAL.Repo.ADONet
         public async Task<Country?> FindByNameAsync(string countryName)
         {
             string query = "SELECT TOP 1 * FROM Countries WHERE CountryName = @CountryName";
-            SqlCommand command = new SqlCommand(query);
+            SqlCommand command = new(query);
             command.Parameters.AddWithValue("@CountryName", countryName);
 
             return await DbExecutor.ExecuteReaderSingleAsync<Country, CountryColumnIndices>(command, CountryMapper.FromReader);
@@ -41,7 +40,7 @@ namespace DVLD.DAL.Repo.ADONet
         public async Task<bool> DeleteAsync(int countryID)
         {
             string query = "DELETE FROM Countries WHERE CountryID = @CountryID";
-            SqlCommand command = new SqlCommand(query);
+            SqlCommand command = new(query);
             command.Parameters.AddWithValue("@CountryID", countryID);
 
             return await DbExecutor.ExecuteCommandReturnRowsAffected(command) > 0;
@@ -53,7 +52,7 @@ namespace DVLD.DAL.Repo.ADONet
                              SET CountryName = @CountryName 
                              WHERE CountryID = @CountryID";
 
-            SqlCommand command = new SqlCommand(query);
+            SqlCommand command = new(query);
             command.Parameters.AddWithValue("@CountryID", updatedCountry.CountryID);
             command.Parameters.AddWithValue("@CountryName", updatedCountry.CountryName);
 
@@ -63,7 +62,7 @@ namespace DVLD.DAL.Repo.ADONet
         public async Task<bool> ExistsAsync(int countryID)
         {
             string query = "SELECT 1 FROM Countries WHERE CountryID = @CountryID";
-            SqlCommand command = new SqlCommand(query);
+            SqlCommand command = new(query);
             command.Parameters.AddWithValue("@CountryID", countryID);
 
             return await DbExecutor.ExecuteCommandReturnBoolean(command);
@@ -72,7 +71,7 @@ namespace DVLD.DAL.Repo.ADONet
         public async Task<bool> ExistsByNameAsync(string countryName)
         {
             string query = "SELECT 1 FROM Countries WHERE CountryName = @CountryName";
-            SqlCommand command = new SqlCommand(query);
+            SqlCommand command = new(query);
             command.Parameters.AddWithValue("@CountryName", countryName);
 
             return await DbExecutor.ExecuteCommandReturnBoolean(command);
@@ -80,14 +79,14 @@ namespace DVLD.DAL.Repo.ADONet
 
         public async Task<int> CountAsync()
         {
-            SqlCommand command = new SqlCommand("SELECT COUNT(*) AS CountriesCount FROM Countries");
+            SqlCommand command = new("SELECT COUNT(*) AS CountriesCount FROM Countries");
             return await DbExecutor.ExecuteScalarReturnInt(command);
         }
 
         public async Task<List<Country>> GetAllAsync()
         {
             string query = "SELECT * FROM Countries ORDER BY CountryName";
-            SqlCommand command = new SqlCommand(query);
+            SqlCommand command = new(query);
 
             return await DbExecutor.ExecuteReaderListAsync<Country, CountryColumnIndices>(command, CountryMapper.FromReader);
         }

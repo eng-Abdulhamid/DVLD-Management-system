@@ -15,23 +15,25 @@ namespace DVLD.BLL.Mappers
         public static PersonReadDTO MapToReadDTO(Person Entity)
         {
             //if (Entity == null) return null;
-            return new PersonReadDTO()
-            {
-                PersonID = Entity.PersonID,
-                NationalNo = Entity.NationalNo,
-                FirstName = Entity.FirstName,
-                SecondName = Entity.SecondName,
-                ThirdName = Entity.ThirdName,
-                LastName = Entity.LastName,
-                Address = Entity.Address,
-                Phone = Entity.Phone,
-                DateOfBirth = Entity.DateOfBirth,
-                Email = Entity.Email,
-                NationalityCountryID = Entity.NationalityCountryID,
-                ImagePath = Entity.ImagePath,
-                Gender = (DVLD.BLL.Enums.Gender)Entity.Gender,
-                CountryName = Entity.CountryName
-            };
+            return new PersonReadDTO
+                (
+                Entity.PersonID,
+                Entity.NationalNo,
+                Entity.FirstName,
+                Entity.SecondName,
+                Entity.ThirdName,
+                Entity.LastName,
+                Entity.Age,
+                Entity.DateOfBirth,
+                (Enums.Gender)Entity.Gender,
+                Entity.Address,
+                Entity.Phone,
+                Entity.Email,
+                Entity.NationalityCountryID,
+                Entity.ImagePath,
+                Entity.CountryName,
+                Entity.FullName
+                );
         }
         public static List<PersonReadDTO> MapToReadDTOs(List<DVLD.DAL.Entities.Person> EntitiesList)
         {
@@ -62,8 +64,7 @@ namespace DVLD.BLL.Mappers
                 Email = dto.Email,
                 NationalityCountryID = dto.NationalityCountryID,
                 ImagePath = dto.ImagePath,
-                Gender = (DVLD.DAL.Enums.Gender)dto.Gender,
-                CountryName = dto.CountryName
+                Gender = (DVLD.DAL.Enums.Gender)dto.Gender
             };
         }
         public static Person MapToEntity(PersonAddDTO dto)
@@ -82,8 +83,7 @@ namespace DVLD.BLL.Mappers
                 Email = dto.Email,
                 NationalityCountryID = dto.NationalityCountryID,
                 ImagePath = dto.ImagePath,
-                Gender = (DVLD.DAL.Enums.Gender)dto.Gender,
-                CountryName = dto.CountryName
+                Gender = (DVLD.DAL.Enums.Gender)dto.Gender
             };
         }
     }

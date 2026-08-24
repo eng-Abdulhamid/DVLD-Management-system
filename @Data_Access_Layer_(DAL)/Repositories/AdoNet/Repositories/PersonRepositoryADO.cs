@@ -1,9 +1,8 @@
-using DVLD.DAL.Common;
 using DVLD.DAL.Entities;
-using DVLD.DAL.Interfaces;
+using DVLD.DAL.Enums;
+using DVLD.DAL.Interfaces.IRepositories;
 using DVLD.DAL.Mapper;
 using Microsoft.Data.SqlClient;
-using System.Reflection.PortableExecutable;
 namespace DVLD.DAL.Repo.ADONet
 {
     public class PersonRepositoryADO : IPersonRepository
@@ -16,7 +15,7 @@ namespace DVLD.DAL.Repo.ADONet
         (@NationalNo, @FirstName, @SecondName, @ThirdName, @LastName, @DateOfBirth, @Gender, @Address, @Phone, @Email, @NationalityCountryID, @ImagePath);
         SELECT SCOPE_IDENTITY();";
 
-            SqlCommand Command = new SqlCommand(Query);
+            SqlCommand Command = new(Query);
 
             Command.Parameters.AddWithValue("@NationalNo", PersonDetails.NationalNo);
             Command.Parameters.AddWithValue("@FirstName", PersonDetails.FirstName);
@@ -36,18 +35,45 @@ namespace DVLD.DAL.Repo.ADONet
         public async Task<Person?> FindAsync(int PersonID)
         {
             string Query = "SELECT * From People_View where PersonID = @PersonID";
-            SqlCommand Command = new SqlCommand(Query);
+            SqlCommand Command = new(Query);
             Command.Parameters.AddWithValue("@PersonID", (object)PersonID);
-            Person person = new Person();
+            Person person = new();
 
             return await DbExecutor.ExecuteReaderSingleAsync<Person, PersonColumnIndices>(Command, PersonMapper.FromReader);
         }
-        public async Task<bool> DeleteAsync(int PersonID)
+        public async Task<PersonDeletionResult> DeleteAsync(int PersonID)
         {
-            string Query = $"DELETE FROM People WHERE PersonID=@PersonID";
-            SqlCommand Command = new SqlCommand(Query);
+            string Query = @"
+                IF NOT EXISTS (SELECT 1 FROM People WHERE PersonID = @PersonID)
+                BEGIN
+                    SELECT 0;
+                    RETURN;
+                END
+
+                IF EXISTS (SELECT 1 FROM Users WHERE PersonID = @PersonID)
+                BEGIN
+                    SELECT -1;
+                    RETURN;
+                END
+
+                IF EXISTS (SELECT 1 FROM Applications WHERE ApplicantPersonID = @PersonID)
+                BEGIN
+                    SELECT -2;
+                    RETURN;
+                END
+
+                IF EXISTS (SELECT 1 FROM Drivers WHERE PersonID = @PersonID)
+                BEGIN
+                    SELECT -3;
+                    RETURN;
+                END
+
+                DELETE FROM People WHERE PersonID = @PersonID;
+                SELECT 1;"; 
+            SqlCommand Command = new(Query);
             Command.Parameters.AddWithValue($"@PersonID", (object)PersonID);
-            return await DbExecutor.ExecuteCommandReturnRowsAffected(Command) > 0;
+            PersonDeletionResult enResult = (PersonDeletionResult)await DbExecutor.ExecuteScalarReturnInt(Command);
+            return enResult;
         }
         public async Task<bool> UpdateAsync(Person UpdatedPerson)
         {
@@ -65,7 +91,7 @@ namespace DVLD.DAL.Repo.ADONet
                 NationalityCountryID=@NationalityCountryID,
                 ImagePath=@ImagePath
                 WHERE PersonID=@PersonID";
-            SqlCommand Command = new SqlCommand(Query);
+            SqlCommand Command = new(Query);
             Command.Parameters.AddWithValue("@PersonID", UpdatedPerson.PersonID);
             Command.Parameters.AddWithValue("@NationalNo", UpdatedPerson.NationalNo);
             Command.Parameters.AddWithValue("@FirstName", UpdatedPerson.FirstName);
@@ -84,25 +110,58 @@ namespace DVLD.DAL.Repo.ADONet
         public async Task<bool> ExistsAsync(int PersonID)
         {
             string Query = $"SELECT 1 FROM People WHERE PersonID = @PersonID";
-            SqlCommand Command = new SqlCommand(Query);
+            SqlCommand Command = new(Query);
             Command.Parameters.AddWithValue($"@PersonID", PersonID);
             return await DbExecutor.ExecuteCommandReturnBoolean(Command);
         }
         public async Task<Person?> FindByNationalNoAsync(string NationalNo)
         {
             string Query = $"SELECT TOP 1 * FROM People_View WHERE NationalNo = @NationalNo";
-            SqlCommand Command = new SqlCommand(Query);
+            SqlCommand Command = new(Query);
             Command.Parameters.AddWithValue("@NationalNo", (object)NationalNo);
-            Person person = new Person();
+            Person person = new();
 
             return await DbExecutor.ExecuteReaderSingleAsync<Person, PersonColumnIndices>(Command, PersonMapper.FromReader);
         }
-        public async Task<bool> DeleteByNationalNoAsync(string NationalNo)
+        public async Task<PersonDeletionResult> DeleteByNationalNoAsync(string NationalNo)
         {
-            string Query = $"DELETE FROM People WHERE NationalNo=@NationalNo";
-            SqlCommand Command = new SqlCommand(Query);
+            string Query = @"
+                DECLARE @PersonID INT;
+
+                SELECT @PersonID = PersonID 
+                FROM People 
+                WHERE NationalNo = @NationalNo;
+
+                IF @PersonID IS NULL
+                BEGIN
+                    SELECT 0;
+                    RETURN;
+                END
+
+                IF EXISTS (SELECT 1 FROM Users WHERE PersonID = @PersonID)
+                BEGIN
+                    SELECT -1;
+                    RETURN;
+                END
+
+                IF EXISTS (SELECT 1 FROM Applications WHERE ApplicantPersonID = @PersonID)
+                BEGIN
+                    SELECT -2;
+                    RETURN;
+                END
+
+                IF EXISTS (SELECT 1 FROM Drivers WHERE PersonID = @PersonID)
+                BEGIN
+                    SELECT -3;
+                    RETURN;
+                END
+
+                DELETE FROM People WHERE PersonID = @PersonID;
+                SELECT 1;";
+            SqlCommand Command = new(Query);
             Command.Parameters.AddWithValue($"@NationalNo", (object)NationalNo);
-            return await DbExecutor.ExecuteCommandReturnRowsAffected(Command) > 0;
+            int result = await DbExecutor.ExecuteScalarReturnInt(Command);
+            return (PersonDeletionResult)result;
         }
         public async Task<bool> UpdateByNationalNoAsync(Person UpdatedPerson)
         {
@@ -140,23 +199,32 @@ namespace DVLD.DAL.Repo.ADONet
         public async Task<bool> ExistsByNationalNoAsync(string NationalNo)
         {
             string Query = $"SELECT 1 FROM People WHERE NationalNo = @NationalNo";
-            SqlCommand Command = new SqlCommand(Query);
+            SqlCommand Command = new(Query);
             Command.Parameters.AddWithValue($"@NationalNo", NationalNo);
             return await DbExecutor.ExecuteCommandReturnBoolean(Command);
         }
         public async Task<int> CountAsync()
         {
-            SqlCommand Command = new SqlCommand();
-            Command.CommandText =
-            $@"SELECT COUNT(*) AS PeopleCount FROM People";
-            
+            SqlCommand Command = new() {
+                CommandText = $@"SELECT COUNT(*) AS PeopleCount FROM People"
+            };
             return await DbExecutor.ExecuteScalarReturnInt(Command);
         }
         public async Task<List<Person>> GetAllAsync()
         { 
             string Query = "SELECT * FROM People_View";
-            SqlCommand Command = new SqlCommand(Query);
+            SqlCommand Command = new(Query);
             return await DbExecutor.ExecuteReaderListAsync<Person, PersonColumnIndices>(Command, PersonMapper.FromReader);
         }
-}
+        public async Task<bool> ExistsByNationalityCountryIDAsync(int NationalityCountryID)
+        {
+            SqlCommand Command = new() {
+                CommandText = "Select 1 from People where NationalityCountryID = @NationalityCountryID"
+            };
+            Command.Parameters.AddWithValue("@NationalityCountryID", NationalityCountryID);
+            return await DbExecutor.ExecuteCommandReturnBoolean(Command);
+        }
+
+
     }
+}

@@ -1,0 +1,40 @@
+Tip: Deletion Handling & BLL Testing
+
+Deletion Handling
+
+Database constraints and foreign key relationships should be handled in the DAL, not the BLL.
+
+The DAL can use a single T-SQL query to check whether the entity is referenced by other tables, then return a specific result such as:
+
+* HasApplications
+* HasDriver
+* HasUser
+* NotFound
+* Success
+
+The BLL should interpret these results and convert them into business-level results that can be understood by the PL.
+
+This keeps the responsibilities separated:
+
+PL → displays the result
+BLL → applies business logic and interprets results
+DAL → handles SQL queries and database constraints
+Database → enforces referential integrity
+
+The pre-check improves error handling, but the actual Foreign Key constraints should remain in the database as the final protection for data integrity.
+
+BLL Testing
+
+Testing the BLL through a Console project is very useful during development.
+
+Before building the UI, test important cases such as:
+
+* Delete a non-existing person
+* Delete a person with Applications
+* Delete a person with a Driver
+* Delete a person with a User
+* Delete a person with no references
+
+This allows the BLL logic and deletion flow to be verified independently from the UI and makes it easier to identify whether a problem is in the DAL, BLL, or PL.
+
+Later, these tests can be moved to a dedicated Unit Test project for automated testing.

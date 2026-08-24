@@ -15,8 +15,21 @@ namespace DVLD.BLL.DTOs
         public string Email { get; set; } = string.Empty;// Nullable column
         public int NationalityCountryID { get; set; }
         public string ImagePath { get; set; } = string.Empty;// Nullable column,
-        public string CountryName { get; set; } = string.Empty;
-
+        public PersonAddDTO(string nationalNo, string firstName, string secondName, string thirdName, string lastName, DateTime dateOfBirth, Gender gender, string address, string phone, string email, int nationalityCountryID, string imagePath)
+        {
+            NationalNo = nationalNo;
+            FirstName = firstName;
+            SecondName = secondName;
+            ThirdName = thirdName;
+            LastName = lastName;
+            DateOfBirth = dateOfBirth;
+            Gender = gender;
+            Address = address;
+            Phone = phone;
+            Email = email;
+            NationalityCountryID = nationalityCountryID;
+            ImagePath = imagePath;
+        }
     }
 }
 

@@ -16,7 +16,22 @@ namespace DVLD.BLL.DTOs
         public string Email { get; set; } = string.Empty; // Nullable column
         public int NationalityCountryID { get; set; }
         public string ImagePath { get; set; } = string.Empty; // Nullable column
-        public string CountryName { get; set; } = string.Empty;
+        public PersonUpdateDTO() { }
+        public PersonUpdateDTO(PersonReadDTO PersonReadDTO) 
+        {
+            this.PersonID = PersonReadDTO.PersonID;
+            this.FirstName = PersonReadDTO.FirstName;
+            this.SecondName = PersonReadDTO.SecondName;
+            this.ThirdName = PersonReadDTO.ThirdName;
+            this.LastName = PersonReadDTO.LastName;
+            this.DateOfBirth = PersonReadDTO.DateOfBirth;
+            this.Gender = PersonReadDTO.Gender;
+            this.Address = PersonReadDTO.Address;
+            this.Phone = PersonReadDTO.Phone;
+            this.Email = PersonReadDTO.Email;
+            this.NationalityCountryID = PersonReadDTO.NationalityCountryID;
+            this.ImagePath = PersonReadDTO.ImagePath;
+        }
 
     }
 }

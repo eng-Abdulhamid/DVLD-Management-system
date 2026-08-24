@@ -1,0 +1,20 @@
+Update - 23-8-2026
+Today's Updates
+
+Today’s work focused on finalizing the BLL architecture, refining service patterns, and completing code refactoring.
+
+BLL & Architecture
+
+* Consulted experienced developers regarding the error-handling design and finalized the architecture using `OperationResult<T>` and `ErrorCode`.
+* Further separated responsibilities in the BLL to establish a clean and robust layer structure.
+* Evaluated the `Save()` and `Mode` (AddNew/Update) pattern versus the `Service` pattern; opted for stateless `Service` classes to maintain proper dependency handling and clean repository integration.
+* Created `PersonService` and `CountryService` directly without service interfaces to keep the design clean and focused.
+* Added comprehensive XML documentation (`<summary>`, `<param>`, `<returns>`) across services and repositories.
+* Refactored and optimized the entire codebase across the DAL, Mappers, and BLL layers.
+
+Goals for the Next Session
+
+* Create and configure `App.config` for application configuration and connection strings.
+* Implement business validation rules to prevent deleting a person referenced in other records (such as Applications, Drivers, Users, etc.).
+* Build the Presentation Layer (UI) for People Management with full CRUD operations (search filters will be added later).
+* Build a simple UI for Countries Management (viewing, adding, and basic search).

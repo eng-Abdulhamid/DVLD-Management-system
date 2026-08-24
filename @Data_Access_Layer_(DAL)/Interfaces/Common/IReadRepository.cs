@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-namespace DVLD.DAL.Interfaces
+namespace DVLD.DAL.Interfaces.Common
 {
     public interface IReadRepository<T> where T : class
     {

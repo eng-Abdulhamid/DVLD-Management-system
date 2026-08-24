@@ -1,0 +1,42 @@
+الـ await الداخلي ينتظر العملية التي تنفذها الدالة.
+
+الـ await الخارجي ينتظر الدالة نفسها حتى تعطي نتيجتها.
+
+
+=============================
+
+Tip: Internal vs External `await`
+
+The **inner `await`** waits for the asynchronous operation executed inside the method to complete.
+
+The **outer `await`** waits for the method itself to complete and return its result.
+
+```csharp
+var result = await ServiceMethodAsync();
+```
+
+Inside the method:
+
+```csharp
+return await RepositoryMethodAsync();
+```
+
+Flow:
+
+```text
+Outer await
+    ↓
+ServiceMethodAsync()
+    ↓
+Inner await
+    ↓
+RepositoryMethodAsync()
+    ↓
+Operation completes
+    ↓
+Service returns result
+    ↓
+Outer await receives result
+```
+
+In practice, the outer `await` does not wait for a separate operation from the inner `await`. It waits for the `Task` returned by the method, which completes when the awaited operation inside it completes.

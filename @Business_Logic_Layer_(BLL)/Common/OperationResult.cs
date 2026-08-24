@@ -1,4 +1,5 @@
-﻿using DVLD.BLL.Enums;
+﻿using DVLD.BLL.DTOs;
+using DVLD.BLL.Enums;
 namespace DVLD.BLL.OperationResults
 {
     public class OperationResult<T>
@@ -13,7 +14,6 @@ namespace DVLD.BLL.OperationResults
             new OperationResult<T> { Result = result, Message = message };
         internal static OperationResult<T> FailureDBAError(ErrorCode result) =>
             new OperationResult<T> { Result = result, Message = "Data base access error." };
-
     }
     public class OperationResults<T> 
     {
@@ -27,6 +27,5 @@ namespace DVLD.BLL.OperationResults
             new OperationResults<T> { Result = result, Message = message };
         internal static OperationResults<T> FailureDBAError(ErrorCode result) =>
             new OperationResults<T> { Result = result, Message = "Data base access error." };
-
     }
 }

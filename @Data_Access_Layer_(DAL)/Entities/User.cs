@@ -1,4 +1,4 @@
-namespace Entities
+namespace DVLD.DAL.Entities
 {
     public class User
     {

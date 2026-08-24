@@ -1,0 +1,19 @@
+Update - 24-8-2026
+Today's Updates
+
+Today’s work focused on improving the repository layer, deletion handling, and constraint validation.
+
+DAL & Repositories
+
+Created repositories for Application, Driver, and User tables.
+Updated the Delete methods to return specific deletion result enums such as PersonDeletionResult instead of bool.
+Added a T-SQL query to check related records and database constraints using a single query before deletion.
+Improved deletion handling and constraint-related validation across the repositories.
+Refactored the repository logic and improved the overall DAL structure.
+
+Goals for the Next Session
+
+Continue implementing and refining the remaining repositories.
+Complete the deletion validation logic across related entities.
+Start implementing the Presentation Layer for People Management.
+Continue improving the integration between the BLL and DAL.

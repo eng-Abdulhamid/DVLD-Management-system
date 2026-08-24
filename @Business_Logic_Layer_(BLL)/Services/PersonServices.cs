@@ -1,9 +1,10 @@
 using DVLD.BLL.DTOs;
 using DVLD.BLL.Enums;
 using DVLD.BLL.OperationResults;
-using DVLD.DAL.Interfaces;
+using DVLD.DAL.Interfaces.IRepositories;
 using DVLD.DAL.Repo.ADONet;
 using DVLD.DAL.Entities;
+using DVLD.DAL.Enums;
 using static DVLD.BLL.Mappers.PersonMapper;
 
 namespace DVLD.BLL.Services
@@ -114,8 +115,7 @@ namespace DVLD.BLL.Services
 
             return OperationResult<PersonReadDTO>.Success(MapToReadDTO(data), "Person Data Retrieved Successfully.");
         }
-
-        /// <summary>
+                /// <summary>
         /// Asynchronously deletes a person record by their unique ID after verifying existence and database constraints.
         /// </summary>
         /// <param name="id">The unique identifier of the person to delete.</param>
@@ -125,15 +125,20 @@ namespace DVLD.BLL.Services
         /// </returns>
         public async Task<OperationResult<bool>> DeleteAsync(int id)
         {
-            if (!await _personRepo.ExistsAsync(id))
+            
+            PersonDeletionResult deletionResult = await _personRepo.DeleteAsync(id);
+            if (deletionResult != PersonDeletionResult.Successful)
             {
-                return OperationResult<bool>.Failure(ErrorCode.NotFound, "Person not found.");
-            }
+                string errorMessage = deletionResult switch
+                {
+                    PersonDeletionResult.NotFound => "Person not found.",
+                    PersonDeletionResult.HasUser => "Cannot delete this person because they have an active user account.",
+                    PersonDeletionResult.HasApplication => "Cannot delete this person because they have linked applications.",
+                    PersonDeletionResult.HasDriver => "Cannot delete this person because they have a registered driver record.",
+                    _ => "An unexpected error occurred while attempting to delete the person."
+                };
 
-            bool isDeleted = await _personRepo.DeleteAsync(id);
-            if (!isDeleted)
-            {
-                return OperationResult<bool>.Failure(ErrorCode.Conflict, "Cannot delete this person because it is referenced in other records.");
+                return OperationResult<bool>.Failure(ErrorCode.Conflict, errorMessage);
             }
 
             return OperationResult<bool>.Success(true, "Person deleted successfully.");
@@ -212,15 +217,19 @@ namespace DVLD.BLL.Services
         /// </returns>
         public async Task<OperationResult<bool>> DeleteByNationalNoAsync(string nationalNo)
         {
-            if (!await _personRepo.ExistsByNationalNoAsync(nationalNo))
+            PersonDeletionResult deletionResult = await _personRepo.DeleteByNationalNoAsync(nationalNo);
+            if (deletionResult != PersonDeletionResult.Successful)
             {
-                return OperationResult<bool>.Failure(ErrorCode.NotFound, "Person not found.");
-            }
+                string errorMessage = deletionResult switch
+                {
+                    PersonDeletionResult.NotFound => "Person not found.",
+                    PersonDeletionResult.HasUser => "Cannot delete this person because they have an active user account.",
+                    PersonDeletionResult.HasApplication => "Cannot delete this person because they have linked applications.",
+                    PersonDeletionResult.HasDriver => "Cannot delete this person because they have a registered driver record.",
+                    _ => "An unexpected error occurred while attempting to delete the person."
+                };
 
-            bool isDeleted = await _personRepo.DeleteByNationalNoAsync(nationalNo);
-            if (!isDeleted)
-            {
-                return OperationResult<bool>.Failure(ErrorCode.Conflict, "Cannot delete this person because it is referenced in other records.");
+                return OperationResult<bool>.Failure(ErrorCode.Conflict, errorMessage);
             }
 
             return OperationResult<bool>.Success(true, "Person deleted successfully.");

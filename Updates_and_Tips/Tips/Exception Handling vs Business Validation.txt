@@ -1,0 +1,36 @@
+الأخطاء غير المتوقعة او اللي ما تقدر تعالجها تتعامل معها عن طريق الـ Global Exception Handler.
+
+اما الـ Business Rules والـ Validiation تقدر تتعامل معها باستخدام الـ Result Pattern و FluentValidation على سبيل المثال
+
+يعني مثلًا، لما يحصل خطأ في قاعدة البيانات او الاتصال، هذي يتعامل معها الـ Exception Handler.
+
+اما الـ Business Rules مثلًا، ان الشخص لا بد يكون عمره اكبر من ١٨، او لابد الرخصة تكون مفعلة هذي تقدر تتعامل معها بالـ Result Pattern، بحيث ترجع ردّ واضح للكلاينت.
+--------------------------------------
+
+Tip: Exception Handling vs Business Validation
+
+Unexpected errors that cannot be handled as normal business cases should be handled by a Global Exception Handler.
+
+Business Rules and input validation should be handled explicitly using patterns such as the Result Pattern and FluentValidation.
+
+For example:
+
+Database connection failure → Global Exception Handler
+SQL Server unexpected error → Global Exception Handler
+Person must be 18 or older → Result Pattern / FluentValidation
+License must be active → Result Pattern
+Required field is missing → FluentValidation
+
+The main idea is:
+
+Unexpected Technical Error
+        ↓
+Global Exception Handler
+
+Business Rule / Validation Failure
+        ↓
+Result Pattern / FluentValidation
+        ↓
+Clear Result for the Client
+
+This keeps expected business failures separate from unexpected technical exceptions and makes the application easier to maintain and debug.

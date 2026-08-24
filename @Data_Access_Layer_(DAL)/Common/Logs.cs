@@ -1,10 +1,5 @@
-﻿using System;
-using System.Globalization;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace DVLD.DAL.Common
+﻿using System.Globalization;
+namespace DVLD.DAL
 {
     /// <summary>
     /// Provides thread-safe, asynchronous logging functionality for the Data Access Layer.
