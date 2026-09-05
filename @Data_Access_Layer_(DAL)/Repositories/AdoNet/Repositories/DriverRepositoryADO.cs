@@ -45,16 +45,12 @@ namespace DVLD.DAL.Repo.ADONet
         public async Task<bool> UpdateAsync(Driver UpdatedDriver)
         {
             string Query = @"UPDATE Drivers SET 
-                PersonID = @PersonID, 
-                CreatedByUserID = @CreatedByUserID, 
-                CreatedDate = @CreatedDate
+                PersonID = @PersonID
                 WHERE DriverID = @DriverID";
 
             SqlCommand Command = new SqlCommand(Query);
 
             Command.Parameters.AddWithValue("@PersonID", UpdatedDriver.PersonID);
-            Command.Parameters.AddWithValue("@CreatedByUserID", UpdatedDriver.CreatedByUserID);
-            Command.Parameters.AddWithValue("@CreatedDate", UpdatedDriver.CreatedDate);
 
             return await DbExecutor.ExecuteCommandReturnRowsAffected(Command) > 0;
         }

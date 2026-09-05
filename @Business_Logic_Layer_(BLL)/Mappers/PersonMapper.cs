@@ -25,7 +25,7 @@ namespace DVLD.BLL.Mappers
                 Entity.LastName,
                 Entity.Age,
                 Entity.DateOfBirth,
-                (Enums.Gender)Entity.Gender,
+                (Enums.Gendor)Entity.Gendor,
                 Entity.Address,
                 Entity.Phone,
                 Entity.Email,
@@ -64,7 +64,7 @@ namespace DVLD.BLL.Mappers
                 Email = dto.Email,
                 NationalityCountryID = dto.NationalityCountryID,
                 ImagePath = dto.ImagePath,
-                Gender = (DVLD.DAL.Enums.Gender)dto.Gender
+                Gendor = (DVLD.DAL.Enums.Gendor)dto.Gendor
             };
         }
         public static Person MapToEntity(PersonAddDTO dto)
@@ -83,7 +83,7 @@ namespace DVLD.BLL.Mappers
                 Email = dto.Email,
                 NationalityCountryID = dto.NationalityCountryID,
                 ImagePath = dto.ImagePath,
-                Gender = (DVLD.DAL.Enums.Gender)dto.Gender
+                Gendor = (DVLD.DAL.Enums.Gendor)dto.Gendor
             };
         }
     }

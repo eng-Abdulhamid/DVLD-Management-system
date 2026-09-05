@@ -32,7 +32,7 @@
             this.lblNationalNo = new System.Windows.Forms.Label();
             this.lblFullName = new System.Windows.Forms.Label();
             this.lblDateOfBirth = new System.Windows.Forms.Label();
-            this.lblGender = new System.Windows.Forms.Label();
+            this.lblGendor = new System.Windows.Forms.Label();
             this.lblAddress = new System.Windows.Forms.Label();
             this.lblPhone = new System.Windows.Forms.Label();
             this.lblEmail = new System.Windows.Forms.Label();
@@ -44,7 +44,7 @@
             this.Phone = new System.Windows.Forms.Label();
             this.DateOfBirth = new System.Windows.Forms.Label();
             this.Nationality = new System.Windows.Forms.Label();
-            this.Gender = new System.Windows.Forms.Label();
+            this.Gendor = new System.Windows.Forms.Label();
             this.Address = new System.Windows.Forms.Label();
             this.picPersonImage = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.picPersonImage)).BeginInit();
@@ -94,16 +94,16 @@
             this.lblDateOfBirth.TabIndex = 64;
             this.lblDateOfBirth.Text = "DateOfBIrth";
             // 
-            // lblGender
+            // lblGendor
             // 
-            this.lblGender.AutoSize = true;
-            this.lblGender.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblGender.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(80)))), ((int)(((byte)(95)))));
-            this.lblGender.Location = new System.Drawing.Point(388, 160);
-            this.lblGender.Name = "lblGender";
-            this.lblGender.Size = new System.Drawing.Size(49, 15);
-            this.lblGender.TabIndex = 65;
-            this.lblGender.Text = "Gender";
+            this.lblGendor.AutoSize = true;
+            this.lblGendor.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblGendor.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(80)))), ((int)(((byte)(95)))));
+            this.lblGendor.Location = new System.Drawing.Point(388, 160);
+            this.lblGendor.Name = "lblGendor";
+            this.lblGendor.Size = new System.Drawing.Size(49, 15);
+            this.lblGendor.TabIndex = 65;
+            this.lblGendor.Text = "Gendor";
             // 
             // lblAddress
             // 
@@ -226,16 +226,16 @@
             this.Nationality.TabIndex = 76;
             this.Nationality.Text = "Person ID";
             // 
-            // Gender
+            // Gendor
             // 
-            this.Gender.AutoSize = true;
-            this.Gender.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Gender.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(80)))), ((int)(((byte)(95)))));
-            this.Gender.Location = new System.Drawing.Point(387, 175);
-            this.Gender.Name = "Gender";
-            this.Gender.Size = new System.Drawing.Size(77, 20);
-            this.Gender.TabIndex = 77;
-            this.Gender.Text = "Person ID";
+            this.Gendor.AutoSize = true;
+            this.Gendor.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Gendor.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(80)))), ((int)(((byte)(95)))));
+            this.Gendor.Location = new System.Drawing.Point(387, 175);
+            this.Gendor.Name = "Gendor";
+            this.Gendor.Size = new System.Drawing.Size(77, 20);
+            this.Gendor.TabIndex = 77;
+            this.Gendor.Text = "Person ID";
             // 
             // Address
             // 
@@ -266,7 +266,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Transparent;
             this.Controls.Add(this.Address);
-            this.Controls.Add(this.Gender);
+            this.Controls.Add(this.Gendor);
             this.Controls.Add(this.Nationality);
             this.Controls.Add(this.DateOfBirth);
             this.Controls.Add(this.Phone);
@@ -278,7 +278,7 @@
             this.Controls.Add(this.lblEmail);
             this.Controls.Add(this.lblPhone);
             this.Controls.Add(this.lblAddress);
-            this.Controls.Add(this.lblGender);
+            this.Controls.Add(this.lblGendor);
             this.Controls.Add(this.lblDateOfBirth);
             this.Controls.Add(this.lblFullName);
             this.Controls.Add(this.lblNationalNo);
@@ -300,7 +300,7 @@
         private System.Windows.Forms.Label lblNationalNo;
         private System.Windows.Forms.Label lblFullName;
         private System.Windows.Forms.Label lblDateOfBirth;
-        private System.Windows.Forms.Label lblGender;
+        private System.Windows.Forms.Label lblGendor;
         private System.Windows.Forms.Label lblAddress;
         private System.Windows.Forms.Label lblPhone;
         private System.Windows.Forms.Label lblEmail;
@@ -312,7 +312,7 @@
         private System.Windows.Forms.Label Phone;
         private System.Windows.Forms.Label DateOfBirth;
         private System.Windows.Forms.Label Nationality;
-        private System.Windows.Forms.Label Gender;
+        private System.Windows.Forms.Label Gendor;
         private System.Windows.Forms.Label Address;
     }
 }

@@ -31,7 +31,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.txtSearch = new NControls.NTextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.cbByGender = new System.Windows.Forms.ComboBox();
+            this.cbByGendor = new System.Windows.Forms.ComboBox();
             this.cbSearchByLetter = new System.Windows.Forms.ComboBox();
             this.cbFilterBy = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -46,7 +46,7 @@
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(82, 18);
             this.label4.TabIndex = 41;
-            this.label4.Text = "By Gender:";
+            this.label4.Text = "By Gendor:";
             // 
             // txtSearch
             // 
@@ -89,16 +89,16 @@
             this.label1.TabIndex = 37;
             this.label1.Text = "Letters:";
             // 
-            // cbByGender
+            // cbByGendor
             // 
-            this.cbByGender.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbByGender.Font = new System.Drawing.Font("Figtree", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbByGender.FormattingEnabled = true;
-            this.cbByGender.Location = new System.Drawing.Point(511, 73);
-            this.cbByGender.Name = "cbByGender";
-            this.cbByGender.Size = new System.Drawing.Size(79, 24);
-            this.cbByGender.TabIndex = 40;
-            this.cbByGender.SelectedIndexChanged += new System.EventHandler(this.cbByGender_SelectedIndexChanged);
+            this.cbByGendor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbByGendor.Font = new System.Drawing.Font("Figtree", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbByGendor.FormattingEnabled = true;
+            this.cbByGendor.Location = new System.Drawing.Point(511, 73);
+            this.cbByGendor.Name = "cbByGendor";
+            this.cbByGendor.Size = new System.Drawing.Size(79, 24);
+            this.cbByGendor.TabIndex = 40;
+            this.cbByGendor.SelectedIndexChanged += new System.EventHandler(this.cbByGendor_SelectedIndexChanged);
             // 
             // cbSearchByLetter
             // 
@@ -142,7 +142,7 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.txtSearch);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.cbByGender);
+            this.Controls.Add(this.cbByGendor);
             this.Controls.Add(this.cbSearchByLetter);
             this.Controls.Add(this.cbFilterBy);
             this.Controls.Add(this.label2);
@@ -159,7 +159,7 @@
         private System.Windows.Forms.Label label4;
         private NControls.NTextBox txtSearch;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox cbByGender;
+        private System.Windows.Forms.ComboBox cbByGendor;
         private System.Windows.Forms.ComboBox cbSearchByLetter;
         private System.Windows.Forms.ComboBox cbFilterBy;
         private System.Windows.Forms.Label label2;

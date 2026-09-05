@@ -46,7 +46,7 @@ namespace DVLDPL.PeopleManagement
             this.TNationality = new System.Windows.Forms.ToolStripMenuItem();
             this.TPhone = new System.Windows.Forms.ToolStripMenuItem();
             this.TEmail = new System.Windows.Forms.ToolStripMenuItem();
-            this.TGender = new System.Windows.Forms.ToolStripMenuItem();
+            this.TGendor = new System.Windows.Forms.ToolStripMenuItem();
             this.dgvResults = new NControls.NDataGrid();
             this.cmsViewColumns = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.cmsPersonID = new System.Windows.Forms.ToolStripMenuItem();
@@ -56,7 +56,7 @@ namespace DVLDPL.PeopleManagement
             this.cmsNationality = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsPhone = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsEmail = new System.Windows.Forms.ToolStripMenuItem();
-            this.cmsGender = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsGendor = new System.Windows.Forms.ToolStripMenuItem();
             this.ctrlAddNewPersonBotton1 = new DVLDPL.PeopleManagement.ctrlAddNewPersonBotton();
             this.ctrlPeopleSearch1 = new DVLDPL.PeopleManagement.ctrlPeopleSearch();
             this.btnSettings = new System.Windows.Forms.PictureBox();
@@ -105,7 +105,7 @@ namespace DVLDPL.PeopleManagement
             this.TNationality,
             this.TPhone,
             this.TEmail,
-            this.TGender});
+            this.TGendor});
             this.columnsToolStripMenuItem1.Name = "columnsToolStripMenuItem1";
             this.columnsToolStripMenuItem1.Size = new System.Drawing.Size(126, 22);
             this.columnsToolStripMenuItem1.Text = "Columns";
@@ -173,14 +173,14 @@ namespace DVLDPL.PeopleManagement
             this.TEmail.Size = new System.Drawing.Size(68, 22);
             this.TEmail.CheckedChanged += new System.EventHandler(this.CheckedChanged);
             // 
-            // TGender
+            // TGendor
             // 
-            this.TGender.Checked = true;
-            this.TGender.CheckOnClick = true;
-            this.TGender.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.TGender.Name = "TGender";
-            this.TGender.Size = new System.Drawing.Size(68, 22);
-            this.TGender.CheckedChanged += new System.EventHandler(this.CheckedChanged);
+            this.TGendor.Checked = true;
+            this.TGendor.CheckOnClick = true;
+            this.TGendor.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.TGendor.Name = "TGendor";
+            this.TGendor.Size = new System.Drawing.Size(68, 22);
+            this.TGendor.CheckedChanged += new System.EventHandler(this.CheckedChanged);
             // 
             // dgvResults
             // 
@@ -248,7 +248,7 @@ namespace DVLDPL.PeopleManagement
             this.cmsNationality,
             this.cmsPhone,
             this.cmsEmail,
-            this.cmsGender});
+            this.cmsGendor});
             this.cmsViewColumns.Name = "cmsViewColumns";
             this.cmsViewColumns.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.cmsViewColumns.Size = new System.Drawing.Size(192, 180);
@@ -323,15 +323,15 @@ namespace DVLDPL.PeopleManagement
             this.cmsEmail.Text = "toolStripMenuItem2";
             this.cmsEmail.CheckedChanged += new System.EventHandler(this.CheckedChanged);
             // 
-            // cmsGender
+            // cmsGendor
             // 
-            this.cmsGender.Checked = true;
-            this.cmsGender.CheckOnClick = true;
-            this.cmsGender.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cmsGender.Name = "cmsGender";
-            this.cmsGender.Size = new System.Drawing.Size(191, 22);
-            this.cmsGender.Text = "toolStripMenuItem2";
-            this.cmsGender.CheckedChanged += new System.EventHandler(this.CheckedChanged);
+            this.cmsGendor.Checked = true;
+            this.cmsGendor.CheckOnClick = true;
+            this.cmsGendor.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cmsGendor.Name = "cmsGendor";
+            this.cmsGendor.Size = new System.Drawing.Size(191, 22);
+            this.cmsGendor.Text = "toolStripMenuItem2";
+            this.cmsGendor.CheckedChanged += new System.EventHandler(this.CheckedChanged);
             // 
             // ctrlAddNewPersonBotton1
             // 
@@ -483,7 +483,7 @@ namespace DVLDPL.PeopleManagement
         private System.Windows.Forms.ToolStripMenuItem cmsNationality;
         private System.Windows.Forms.ToolStripMenuItem cmsPhone;
         private System.Windows.Forms.ToolStripMenuItem cmsEmail;
-        private System.Windows.Forms.ToolStripMenuItem cmsGender;
+        private System.Windows.Forms.ToolStripMenuItem cmsGendor;
         private System.Windows.Forms.ToolStripMenuItem TPersonID;
         private System.Windows.Forms.ToolStripMenuItem TNationalNo;
         private System.Windows.Forms.ToolStripMenuItem TFullName;
@@ -491,6 +491,6 @@ namespace DVLDPL.PeopleManagement
         private System.Windows.Forms.ToolStripMenuItem TNationality;
         private System.Windows.Forms.ToolStripMenuItem TPhone;
         private System.Windows.Forms.ToolStripMenuItem TEmail;
-        private System.Windows.Forms.ToolStripMenuItem TGender;
+        private System.Windows.Forms.ToolStripMenuItem TGendor;
     }
 }

@@ -1,5 +1,4 @@
-using System;
-namespace Entities
+﻿namespace DVLD.DAL.Entities
 {
     public class DetainedLicense
     {
@@ -9,10 +8,8 @@ namespace Entities
         public decimal FineFees { get; set; }
         public int CreatedByUserID { get; set; }
         public bool IsReleased { get; set; }
-        public DateTime? ReleaseDate { get; set; } // Nullable column
-        public int? ReleasedByUserID { get; set; } // Nullable column
-        public int? ReleaseApplicationID { get; set; } // Nullable column
-
+        public DateTime? ReleaseDate { get; set; }
+        public int? ReleasedByUserID { get; set; }
+        public int? ReleaseApplicationID { get; set; }
     }
 }
-

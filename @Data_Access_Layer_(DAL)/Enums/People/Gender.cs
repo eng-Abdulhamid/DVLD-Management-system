@@ -1,6 +1,6 @@
 ﻿namespace DVLD.DAL.Enums
 {
-    public enum Gender : byte
+    public enum Gendor : byte
     { 
         Male = 0, 
         Female = 1

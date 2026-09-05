@@ -4,5 +4,7 @@ namespace DVLD.DAL.Interfaces.IRepositories
 {
     public interface IApplicationRepository : IWriteRepository<Application>, IReadRepository<Application>
     {
+        Task<bool> DeleteAsync(int ApplicationID);
+        Task<bool> UpdateStatusAsync(int applicationID, byte newStatus);
     }
 }

@@ -1,176 +1,145 @@
-using DTOs;
-using DVLD.BLL;
-using Repositories;
-using RepositoriesInterfaces;
-using System.Collections.Generic;
-namespace Services
+using System;
+using System.Threading.Tasks;
+using DVLD.BLL.DTOs;
+using DVLD.BLL.Enums;
+using DVLD.BLL.OperationResults;
+using DVLD.DAL.Entities;
+using DVLD.DAL.Interfaces.IRepositories;
+using DVLD.DAL.Repo.ADONet;
+using static DVLD.BLL.Mappers.TestTypeMapper;
+
+namespace DVLD.BLL.Services
 {
-
-    public partial class TestTypeServices : ITestTypeServices
+    public class TestTypeService
     {
-        public enum enFields
-        {
-            None = 0,
-            TestTypeID,
-            TestTypeTitle,
-            TestTypeDescription,
-            TestTypeFees
-        }
-        #region Properties
-        private ITestTypeRepository repo;
-        #endregion
         #region Constructors
-        public TestTypeServices()
+
+        private readonly ITestTypeRepository _testTypeRepo;
+
+        public TestTypeService()
         {
-            this.repo = new TestTypeRepository();
-        }
-        #endregion 
-        #region Maps
-        private TestTypeReadDTO _MapEntityToReadDTO(Entities.TestType Entity)
-        {
-            if (Entity == null) return null;
-            return new TestTypeReadDTO()
-            {
-                TestTypeID = Entity.TestTypeID,
-                TestTypeTitle = Entity.TestTypeTitle,
-                TestTypeDescription = Entity.TestTypeDescription,
-                TestTypeFees = Entity.TestTypeFees,
-            };
+            _testTypeRepo = new TestTypeRepositoryADO();
         }
 
-        private Entities.TestType _MapAddDTOToEntity(TestTypeAddDTO AddDTO)
+        public TestTypeService(ITestTypeRepository testTypeRepo)
         {
-            if (AddDTO == null) return null;
-            return new Entities.TestType()
-            {
-                TestTypeTitle = AddDTO.TestTypeTitle,
-                TestTypeDescription = AddDTO.TestTypeDescription,
-                TestTypeFees = AddDTO.TestTypeFees,
-            };
+            _testTypeRepo = testTypeRepo;
         }
 
-        private Entities.TestType _MapUpdateDTOToEntity(TestTypeUpdateDTO UpdateDTO)
-        {
-            if (UpdateDTO == null) return null;
-            return new Entities.TestType()
-            {
-                TestTypeID = UpdateDTO.TestTypeID,
-                TestTypeTitle = UpdateDTO.TestTypeTitle,
-                TestTypeDescription = UpdateDTO.TestTypeDescription,
-                TestTypeFees = UpdateDTO.TestTypeFees,
-            };
-        }
-
-
-        private List<TestTypeReadDTO> _MapEntitiesTOReadDTOs(List<Entities.TestType> EntitiesList)
-        {
-            List<TestTypeReadDTO> Results = new List<TestTypeReadDTO>();
-            if (EntitiesList == null) return Results;
-            foreach (var entity in EntitiesList)
-            {
-                var dto = _MapEntityToReadDTO(entity);
-                if (dto != null) Results.Add(dto);
-            }
-            return Results;
-        }
-        private Repositories.enTestTypeField _MapToRepoFieldEmum(enFields Field)
-        {
-            switch (Field)
-            {
-                case enFields.TestTypeID:
-                    return Repositories.enTestTypeField.TestTypeID;
-                case enFields.TestTypeTitle:
-                    return Repositories.enTestTypeField.TestTypeTitle;
-                case enFields.TestTypeDescription:
-                    return Repositories.enTestTypeField.TestTypeDescription;
-                case enFields.TestTypeFees:
-                    return Repositories.enTestTypeField.TestTypeFees;
-                default:
-                    return Repositories.enTestTypeField.TestTypeID;
-            }
-        }
-
-        private TestTypeRepository.TestTypesSearchCriteria _MapToRepoSearchCriteria(SearchCriteria<enFields> SearchCriteria)
-        {
-            if (SearchCriteria == null) return null;
-            return new TestTypeRepository.TestTypesSearchCriteria()
-            {
-                PageNumber = SearchCriteria.PageNumber,
-                PageSize = SearchCriteria.SizeInEveryPage,
-                SearchBy = _MapToRepoFieldEmum(SearchCriteria.SearchBy),
-                OrderBy = _MapToRepoFieldEmum(SearchCriteria.OrderBy),
-                SearchText = SearchCriteria.SearchString,
-                Sorting = (Repositories.enSorting)SearchCriteria.SortingBy,
-                SearchType = (Repositories.enSearchType)SearchCriteria.SearchType
-            };
-        }
         #endregion
 
-        #region CRUD METHODS 
-        public OperationResults<TestTypeReadDTO> GetPeople(SearchCriteria<TestTypeServices.enFields> SearchCriteria)
+        #region CRUD Methods
+
+        public async Task<OperationResults<TestTypeReadDTO>> GetAllAsync()
         {
-            return _GetResultFromGetTestTypesList(repo.GetTestTypes(_MapToRepoSearchCriteria(SearchCriteria)));
+            return MapToOperationResult(await _testTypeRepo.GetAllAsync());
         }
-        public OperationResults<TestTypeReadDTO> GetAllPeople()
+
+        public async Task<bool> ExistsAsync(int id)
         {
-            return _GetResultFromGetTestTypesList(repo.GetAllTestTypes());
+            return await _testTypeRepo.ExistsAsync(id);
         }
-        public int AddNew(TestTypeAddDTO AddDTO)
+
+        public async Task<OperationResult<int>> AddAsync(TestTypeAddDTO dto)
         {
-            if (!_ValidationBeforeAddNew(AddDTO)) return -1;
-            int AddResult = repo.AddNewTestType(_MapAddDTOToEntity(AddDTO));
-            if (AddResult > 0)
+            if (dto == null)
             {
-                return AddResult;
+                return OperationResult<int>.Failure(ErrorCode.BadRequest, "Test type data cannot be null.");
             }
-            return AddResult;
-        }
-        public int PeopleCount(SearchCriteria<TestTypeServices.enFields> SearchCriteria)
-        {
-            return repo.GetCountOfTestTypesByFilter(_MapToRepoSearchCriteria(SearchCriteria));
-        }
-        public int GetCountOfAllWithoutFilter()
-        {
-            return repo.GetCountOfAllTestTypes();
-        }
-        public OperationResult<TestTypeReadDTO> FindByTestTypeID(int TestTypeID)
-        {
-            var data = repo.FindTestTypeByTestTypeID(TestTypeID);
-            if (data == null) return OperationResult<TestTypeReadDTO>.FailureDBAError(ErrorCode.rDBAError);
-            // simple not-found check: if primary numeric and <=0 treat as not found else if all default treat not found
-            bool notFound = false;
-            if (data.TestTypeID <= 0) notFound = true;
-            if (notFound) return OperationResult<TestTypeReadDTO>.Failure(ErrorCode.rNotFound, "No TestType Data Found.");
-            return OperationResult<TestTypeReadDTO>.Success(_MapEntityToReadDTO(data), "TestType Data Retrieved Successfully.");
-        }
-        public bool DeleteByTestTypeID(int TestTypeID)
-        {
-            if (repo.DeleteTestTypeByTestTypeID(TestTypeID))
+
+            if (await _testTypeRepo.ExistsByTitleAsync(dto.TestTypeTitle))
             {
-                return true;
+                return OperationResult<int>.Failure(ErrorCode.Conflict, "Test type with the same title already exists.");
             }
-            else
-                return false;
+
+            int addResult = await _testTypeRepo.AddAsync(MapToEntity(dto));
+
+            if (addResult > 0)
+            {
+                return OperationResult<int>.Success(addResult, "Test type added successfully.");
+            }
+
+            return OperationResult<int>.Failure(ErrorCode.Conflict, "Failed to add test type.");
         }
-        public bool UpdateByTestTypeID(TestTypeUpdateDTO UpdatedData)
+
+        public async Task<int> GetCountAsync()
         {
-            return repo.UpdateTestTypeByTestTypeID(_MapUpdateDTOToEntity(UpdatedData));
+            return await _testTypeRepo.CountAsync();
         }
-        #endregion
-        #region Validations
-        private bool _ValidationBeforeAddNew(TestTypeAddDTO AddDTO)
+
+        public async Task<OperationResult<TestTypeReadDTO>> GetByIdAsync(int testTypeId)
         {
-            // Verification code (customize as needed)
-            return true;
+            var data = await _testTypeRepo.FindAsync(testTypeId);
+            if (data == null || data.TestTypeID <= 0)
+            {
+                return OperationResult<TestTypeReadDTO>.Failure(ErrorCode.NotFound, "No test type data found.");
+            }
+
+            return OperationResult<TestTypeReadDTO>.Success(MapToReadDTO(data), "Test type data retrieved successfully.");
         }
-        #endregion
-        #region Private Methods
-        private OperationResults<TestTypeReadDTO> _GetResultFromGetTestTypesList(List<Entities.TestType> Data)
+
+        public async Task<OperationResult<TestTypeReadDTO>> GetByTitleAsync(string title)
         {
-            if (Data == null) return OperationResults<TestTypeReadDTO>.FailureDBAError(ErrorCode.rDBAError);
-            if (Data.Count == 0) return OperationResults<TestTypeReadDTO>.Failure(ErrorCode.rNoData, "No TestTypes Data Found.");
-            return OperationResults<TestTypeReadDTO>.Success(_MapEntitiesTOReadDTOs(Data), "TestTypes Data Retrieved Successfully.");
+            var data = await _testTypeRepo.FindByTitleAsync(title);
+            if (data == null)
+            {
+                return OperationResult<TestTypeReadDTO>.Failure(ErrorCode.NotFound, "No test type data found.");
+            }
+
+            return OperationResult<TestTypeReadDTO>.Success(MapToReadDTO(data), "Test type data retrieved successfully.");
         }
+
+        public async Task<bool> ExistsByTitleAsync(string title)
+        {
+            return await _testTypeRepo.ExistsByTitleAsync(title);
+        }
+
+        public async Task<OperationResult<bool>> DeleteAsync(int id)
+        {
+            if (!await _testTypeRepo.ExistsAsync(id))
+            {
+                return OperationResult<bool>.Failure(ErrorCode.NotFound, "Test type not found.");
+            }
+
+            bool isDeleted = await _testTypeRepo.DeleteAsync(id);
+            if (!isDeleted)
+            {
+                return OperationResult<bool>.Failure(ErrorCode.Conflict, "Cannot delete test type because it is linked to test appointments.");
+            }
+
+            return OperationResult<bool>.Success(true, "Test type deleted successfully.");
+        }
+
+        public async Task<OperationResult<bool>> UpdateAsync(TestTypeUpdateDTO dto)
+        {
+            if (dto == null)
+            {
+                return OperationResult<bool>.Failure(ErrorCode.BadRequest, "Test type data cannot be null.");
+            }
+
+            TestType? existingType = await _testTypeRepo.FindAsync(dto.TestTypeID);
+            if (existingType == null)
+            {
+                return OperationResult<bool>.Failure(ErrorCode.NotFound, $"Test type with ID {dto.TestTypeID} is not found.");
+            }
+
+            if (!string.Equals(existingType.TestTypeTitle, dto.TestTypeTitle, StringComparison.OrdinalIgnoreCase))
+            {
+                if (await _testTypeRepo.ExistsByTitleAsync(dto.TestTypeTitle))
+                {
+                    return OperationResult<bool>.Failure(ErrorCode.Conflict, "Test type with the same title already exists.");
+                }
+            }
+
+            bool isUpdated = await _testTypeRepo.UpdateAsync(MapToEntity(dto));
+            if (!isUpdated)
+            {
+                return OperationResult<bool>.Failure(ErrorCode.Conflict, "Failed to update test type.");
+            }
+
+            return OperationResult<bool>.Success(true, "Test type updated successfully.");
+        }
+
         #endregion
     }
 }

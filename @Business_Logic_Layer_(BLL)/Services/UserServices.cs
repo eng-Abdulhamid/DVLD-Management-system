@@ -1,182 +1,115 @@
-using DTOs;
-using DVLD.BLL;
-using Repositories;
-using RepositoriesInterfaces;
-using System.Collections.Generic;
-namespace Services
+using System;
+using System.Threading.Tasks;
+using DVLD.BLL.DTOs;
+using DVLD.BLL.Enums;
+using DVLD.BLL.OperationResults;
+using DVLD.DAL.Entities;
+using DVLD.DAL.Interfaces.IRepositories;
+using DVLD.DAL.Repo.ADONet;
+using static DVLD.BLL.Mappers.UserMapper;
+
+namespace DVLD.BLL.Services
 {
-
-    public partial class UserServices : IUserServices
+    public class UserService
     {
-        public enum enFields
-        {
-            None = 0,
-            UserID,
-            PersonID,
-            UserName,
-            Password,
-            IsActive
-        }
-        #region Properties
-        private IUserRepository repo;
-        #endregion
         #region Constructors
-        public UserServices()
+
+        private readonly IUserRepository _userRepo;
+
+        public UserService()
         {
-            this.repo = new UserRepository();
-        }
-        #endregion 
-        #region Maps
-        private UserReadDTO _MapEntityToReadDTO(Entities.User Entity)
-        {
-            if (Entity == null) return null;
-            return new UserReadDTO()
-            {
-                UserID = Entity.UserID,
-                PersonID = Entity.PersonID,
-                UserName = Entity.UserName,
-                Password = Entity.Password,
-                IsActive = Entity.IsActive,
-            };
+            _userRepo = new UserRepositoryADO();
         }
 
-        private Entities.User _MapAddDTOToEntity(UserAddDTO AddDTO)
+        public UserService(IUserRepository userRepo)
         {
-            if (AddDTO == null) return null;
-            return new Entities.User()
-            {
-                PersonID = AddDTO.PersonID,
-                UserName = AddDTO.UserName,
-                Password = AddDTO.Password,
-                IsActive = AddDTO.IsActive,
-            };
+            _userRepo = userRepo;
         }
 
-        private Entities.User _MapUpdateDTOToEntity(UserUpdateDTO UpdateDTO)
-        {
-            if (UpdateDTO == null) return null;
-            return new Entities.User()
-            {
-                UserID = UpdateDTO.UserID,
-                PersonID = UpdateDTO.PersonID,
-                UserName = UpdateDTO.UserName,
-                Password = UpdateDTO.Password,
-                IsActive = UpdateDTO.IsActive,
-            };
-        }
-
-
-        private List<UserReadDTO> _MapEntitiesTOReadDTOs(List<Entities.User> EntitiesList)
-        {
-            List<UserReadDTO> Results = new List<UserReadDTO>();
-            if (EntitiesList == null) return Results;
-            foreach (var entity in EntitiesList)
-            {
-                var dto = _MapEntityToReadDTO(entity);
-                if (dto != null) Results.Add(dto);
-            }
-            return Results;
-        }
-        private Repositories.enUserField _MapToRepoFieldEmum(enFields Field)
-        {
-            switch (Field)
-            {
-                case enFields.UserID:
-                    return Repositories.enUserField.UserID;
-                case enFields.PersonID:
-                    return Repositories.enUserField.PersonID;
-                case enFields.UserName:
-                    return Repositories.enUserField.UserName;
-                case enFields.Password:
-                    return Repositories.enUserField.Password;
-                case enFields.IsActive:
-                    return Repositories.enUserField.IsActive;
-                default:
-                    return Repositories.enUserField.UserID;
-            }
-        }
-
-        private UserRepository.UsersSearchCriteria _MapToRepoSearchCriteria(SearchCriteria<enFields> SearchCriteria)
-        {
-            if (SearchCriteria == null) return null;
-            return new UserRepository.UsersSearchCriteria()
-            {
-                PageNumber = SearchCriteria.PageNumber,
-                PageSize = SearchCriteria.SizeInEveryPage,
-                SearchBy = _MapToRepoFieldEmum(SearchCriteria.SearchBy),
-                OrderBy = _MapToRepoFieldEmum(SearchCriteria.OrderBy),
-                SearchText = SearchCriteria.SearchString,
-                Sorting = (Repositories.enSorting)SearchCriteria.SortingBy,
-                SearchType = (Repositories.enSearchType)SearchCriteria.SearchType
-            };
-        }
         #endregion
 
-        #region CRUD METHODS 
-        public OperationResults<UserReadDTO> GetPeople(SearchCriteria<UserServices.enFields> SearchCriteria)
+        #region CRUD Methods
+
+        public async Task<OperationResults<UserReadDTO>> GetAllAsync()
         {
-            return _GetResultFromGetUsersList(repo.GetUsers(_MapToRepoSearchCriteria(SearchCriteria)));
+            return MapToOperationResult(await _userRepo.GetAllAsync());
         }
-        public OperationResults<UserReadDTO> GetAllPeople()
+
+        public async Task<bool> ExistsAsync(int id)
         {
-            return _GetResultFromGetUsersList(repo.GetAllUsers());
+            return await _userRepo.ExistsAsync(id);
         }
-        public int AddNew(UserAddDTO AddDTO)
+
+        public async Task<OperationResult<int>> AddAsync(UserAddDTO dto)
         {
-            if (!_ValidationBeforeAddNew(AddDTO)) return -1;
-            int AddResult = repo.AddNewUser(_MapAddDTOToEntity(AddDTO));
-            if (AddResult > 0)
+            if (dto == null)
             {
-                return AddResult;
+                return OperationResult<int>.Failure(ErrorCode.BadRequest, "User data cannot be null.");
             }
-            return AddResult;
-        }
-        public int PeopleCount(SearchCriteria<UserServices.enFields> SearchCriteria)
-        {
-            return repo.GetCountOfUsersByFilter(_MapToRepoSearchCriteria(SearchCriteria));
-        }
-        public int GetCountOfAllWithoutFilter()
-        {
-            return repo.GetCountOfAllUsers();
-        }
-        public OperationResult<UserReadDTO> FindByUserID(int UserID)
-        {
-            var data = repo.FindUserByUserID(UserID);
-            if (data == null) return OperationResult<UserReadDTO>.FailureDBAError(ErrorCode.rDBAError);
-            // simple not-found check: if primary numeric and <=0 treat as not found else if all default treat not found
-            bool notFound = false;
-            if (data.UserID <= 0) notFound = true;
-            if (notFound) return OperationResult<UserReadDTO>.Failure(ErrorCode.rNotFound, "No User Data Found.");
-            return OperationResult<UserReadDTO>.Success(_MapEntityToReadDTO(data), "User Data Retrieved Successfully.");
-        }
-        public bool DeleteByUserID(int UserID)
-        {
-            if (repo.DeleteUserByUserID(UserID))
+
+            int addResult = await _userRepo.AddAsync(MapToEntity(dto));
+
+            if (addResult > 0)
             {
-                return true;
+                return OperationResult<int>.Success(addResult, "User added successfully.");
             }
-            else
-                return false;
+
+            return OperationResult<int>.Failure(ErrorCode.Conflict, "Failed to add user.");
         }
-        public bool UpdateByUserID(UserUpdateDTO UpdatedData)
+
+        public async Task<int> GetCountAsync()
         {
-            return repo.UpdateUserByUserID(_MapUpdateDTOToEntity(UpdatedData));
+            return await _userRepo.CountAsync();
         }
-        #endregion
-        #region Validations
-        private bool _ValidationBeforeAddNew(UserAddDTO AddDTO)
+
+        public async Task<OperationResult<UserReadDTO>> GetByIdAsync(int userId)
         {
-            // Verification code (customize as needed)
-            return true;
+            var data = await _userRepo.FindAsync(userId);
+            if (data == null || data.UserID <= 0)
+            {
+                return OperationResult<UserReadDTO>.Failure(ErrorCode.NotFound, "No user data found.");
+            }
+
+            return OperationResult<UserReadDTO>.Success(MapToReadDTO(data), "User data retrieved successfully.");
         }
-        #endregion
-        #region Private Methods
-        private OperationResults<UserReadDTO> _GetResultFromGetUsersList(List<Entities.User> Data)
+
+        public async Task<OperationResult<bool>> DeleteAsync(int id)
         {
-            if (Data == null) return OperationResults<UserReadDTO>.FailureDBAError(ErrorCode.rDBAError);
-            if (Data.Count == 0) return OperationResults<UserReadDTO>.Failure(ErrorCode.rNoData, "No Users Data Found.");
-            return OperationResults<UserReadDTO>.Success(_MapEntitiesTOReadDTOs(Data), "Users Data Retrieved Successfully.");
+            if (!await _userRepo.ExistsAsync(id))
+            {
+                return OperationResult<bool>.Failure(ErrorCode.NotFound, "User not found.");
+            }
+
+            bool isDeleted = await _userRepo.DeleteAsync(id);
+            if (!isDeleted)
+            {
+                return OperationResult<bool>.Failure(ErrorCode.Conflict, "Cannot delete user because they are referenced by other system records.");
+            }
+
+            return OperationResult<bool>.Success(true, "User deleted successfully.");
         }
+
+        public async Task<OperationResult<bool>> UpdateAsync(UserUpdateDTO dto)
+        {
+            if (dto == null)
+            {
+                return OperationResult<bool>.Failure(ErrorCode.BadRequest, "User data cannot be null.");
+            }
+
+            if (!await _userRepo.ExistsAsync(dto.UserID))
+            {
+                return OperationResult<bool>.Failure(ErrorCode.NotFound, $"User with ID {dto.UserID} is not found.");
+            }
+
+            bool isUpdated = await _userRepo.UpdateAsync(MapToEntity(dto));
+            if (!isUpdated)
+            {
+                return OperationResult<bool>.Failure(ErrorCode.Conflict, "Failed to update user.");
+            }
+
+            return OperationResult<bool>.Success(true, "User updated successfully.");
+        }
+
         #endregion
     }
 }

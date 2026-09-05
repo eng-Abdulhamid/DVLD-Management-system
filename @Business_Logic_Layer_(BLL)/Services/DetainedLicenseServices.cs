@@ -1,205 +1,162 @@
-using DTOs;
-using DVLD.BLL;
-using Repositories;
-using RepositoriesInterfaces;
-using System.Collections.Generic;
-namespace Services
+using System;
+using System.Threading.Tasks;
+using DVLD.BLL.DTOs;
+using DVLD.BLL.Enums;
+using DVLD.BLL.OperationResults;
+using DVLD.DAL.Entities;
+using DVLD.DAL.Interfaces.IRepositories;
+using DVLD.DAL.Repo.ADONet;
+using static DVLD.BLL.Mappers.DetainedLicenseMapper;
+
+namespace DVLD.BLL.Services
 {
-
-    public partial class DetainedLicenseServices : IDetainedLicenseServices
+    public class DetainedLicenseService
     {
-        public enum enFields
-        {
-            None = 0,
-            DetainID,
-            LicenseID,
-            DetainDate,
-            FineFees,
-            CreatedByUserID,
-            IsReleased,
-            ReleaseDate,
-            ReleasedByUserID,
-            ReleaseApplicationID
-        }
-        #region Properties
-        private IDetainedLicenseRepository repo;
-        #endregion
         #region Constructors
-        public DetainedLicenseServices()
+
+        private readonly IDetainedLicenseRepository _detainedLicenseRepo;
+
+        public DetainedLicenseService()
         {
-            this.repo = new DetainedLicenseRepository();
-        }
-        #endregion 
-        #region Maps
-        private DetainedLicenseReadDTO _MapEntityToReadDTO(Entities.DetainedLicense Entity)
-        {
-            if (Entity == null) return null;
-            return new DetainedLicenseReadDTO()
-            {
-                DetainID = Entity.DetainID,
-                LicenseID = Entity.LicenseID,
-                DetainDate = Entity.DetainDate,
-                FineFees = Entity.FineFees,
-                CreatedByUserID = Entity.CreatedByUserID,
-                IsReleased = Entity.IsReleased,
-                ReleaseDate = Entity.ReleaseDate,
-                ReleasedByUserID = Entity.ReleasedByUserID,
-                ReleaseApplicationID = Entity.ReleaseApplicationID,
-            };
+            _detainedLicenseRepo = new DetainedLicenseRepositoryADO();
         }
 
-        private Entities.DetainedLicense _MapAddDTOToEntity(DetainedLicenseAddDTO AddDTO)
+        public DetainedLicenseService(IDetainedLicenseRepository detainedLicenseRepo)
         {
-            if (AddDTO == null) return null;
-            return new Entities.DetainedLicense()
-            {
-                LicenseID = AddDTO.LicenseID,
-                DetainDate = AddDTO.DetainDate,
-                FineFees = AddDTO.FineFees,
-                CreatedByUserID = AddDTO.CreatedByUserID,
-                IsReleased = AddDTO.IsReleased,
-                ReleaseDate = AddDTO.ReleaseDate,
-                ReleasedByUserID = AddDTO.ReleasedByUserID,
-                ReleaseApplicationID = AddDTO.ReleaseApplicationID,
-            };
+            _detainedLicenseRepo = detainedLicenseRepo;
         }
 
-        private Entities.DetainedLicense _MapUpdateDTOToEntity(DetainedLicenseUpdateDTO UpdateDTO)
-        {
-            if (UpdateDTO == null) return null;
-            return new Entities.DetainedLicense()
-            {
-                DetainID = UpdateDTO.DetainID,
-                LicenseID = UpdateDTO.LicenseID,
-                DetainDate = UpdateDTO.DetainDate,
-                FineFees = UpdateDTO.FineFees,
-                IsReleased = UpdateDTO.IsReleased,
-                ReleaseDate = UpdateDTO.ReleaseDate,
-                ReleasedByUserID = UpdateDTO.ReleasedByUserID,
-                ReleaseApplicationID = UpdateDTO.ReleaseApplicationID,
-            };
-        }
-
-
-        private List<DetainedLicenseReadDTO> _MapEntitiesTOReadDTOs(List<Entities.DetainedLicense> EntitiesList)
-        {
-            List<DetainedLicenseReadDTO> Results = new List<DetainedLicenseReadDTO>();
-            if (EntitiesList == null) return Results;
-            foreach (var entity in EntitiesList)
-            {
-                var dto = _MapEntityToReadDTO(entity);
-                if (dto != null) Results.Add(dto);
-            }
-            return Results;
-        }
-        private Repositories.enDetainedLicenseField _MapToRepoFieldEmum(enFields Field)
-        {
-            switch (Field)
-            {
-                case enFields.DetainID:
-                    return Repositories.enDetainedLicenseField.DetainID;
-                case enFields.LicenseID:
-                    return Repositories.enDetainedLicenseField.LicenseID;
-                case enFields.DetainDate:
-                    return Repositories.enDetainedLicenseField.DetainDate;
-                case enFields.FineFees:
-                    return Repositories.enDetainedLicenseField.FineFees;
-                case enFields.CreatedByUserID:
-                    return Repositories.enDetainedLicenseField.CreatedByUserID;
-                case enFields.IsReleased:
-                    return Repositories.enDetainedLicenseField.IsReleased;
-                case enFields.ReleaseDate:
-                    return Repositories.enDetainedLicenseField.ReleaseDate;
-                case enFields.ReleasedByUserID:
-                    return Repositories.enDetainedLicenseField.ReleasedByUserID;
-                case enFields.ReleaseApplicationID:
-                    return Repositories.enDetainedLicenseField.ReleaseApplicationID;
-                default:
-                    return Repositories.enDetainedLicenseField.DetainID;
-            }
-        }
-
-        private DetainedLicenseRepository.DetainedLicensesSearchCriteria _MapToRepoSearchCriteria(SearchCriteria<enFields> SearchCriteria)
-        {
-            if (SearchCriteria == null) return null;
-            return new DetainedLicenseRepository.DetainedLicensesSearchCriteria()
-            {
-                PageNumber = SearchCriteria.PageNumber,
-                PageSize = SearchCriteria.SizeInEveryPage,
-                SearchBy = _MapToRepoFieldEmum(SearchCriteria.SearchBy),
-                OrderBy = _MapToRepoFieldEmum(SearchCriteria.OrderBy),
-                SearchText = SearchCriteria.SearchString,
-                Sorting = (Repositories.enSorting)SearchCriteria.SortingBy,
-                SearchType = (Repositories.enSearchType)SearchCriteria.SearchType
-            };
-        }
         #endregion
 
-        #region CRUD METHODS 
-        public OperationResults<DetainedLicenseReadDTO> GetPeople(SearchCriteria<DetainedLicenseServices.enFields> SearchCriteria)
+        #region CRUD Methods
+
+        public async Task<OperationResults<DetainedLicenseReadDTO>> GetAllAsync()
         {
-            return _GetResultFromGetDetainedLicensesList(repo.GetDetainedLicenses(_MapToRepoSearchCriteria(SearchCriteria)));
+            return MapToOperationResult(await _detainedLicenseRepo.GetAllAsync());
         }
-        public OperationResults<DetainedLicenseReadDTO> GetAllPeople()
+
+        public async Task<bool> ExistsAsync(int id)
         {
-            return _GetResultFromGetDetainedLicensesList(repo.GetAllDetainedLicenses());
+            return await _detainedLicenseRepo.ExistsAsync(id);
         }
-        public int AddNew(DetainedLicenseAddDTO AddDTO)
+
+        public async Task<OperationResult<int>> AddAsync(DetainedLicenseAddDTO dto)
         {
-            if (!_ValidationBeforeAddNew(AddDTO)) return -1;
-            int AddResult = repo.AddNewDetainedLicense(_MapAddDTOToEntity(AddDTO));
-            if (AddResult > 0)
+            if (dto == null)
             {
-                return AddResult;
+                return OperationResult<int>.Failure(ErrorCode.BadRequest, "Detained license data cannot be null.");
             }
-            return AddResult;
-        }
-        public int PeopleCount(SearchCriteria<DetainedLicenseServices.enFields> SearchCriteria)
-        {
-            return repo.GetCountOfDetainedLicensesByFilter(_MapToRepoSearchCriteria(SearchCriteria));
-        }
-        public int GetCountOfAllWithoutFilter()
-        {
-            return repo.GetCountOfAllDetainedLicenses();
-        }
-        public OperationResult<DetainedLicenseReadDTO> FindByDetainID(int DetainID)
-        {
-            var data = repo.FindDetainedLicenseByDetainID(DetainID);
-            if (data == null) return OperationResult<DetainedLicenseReadDTO>.FailureDBAError(ErrorCode.rDBAError);
-            // simple not-found check: if primary numeric and <=0 treat as not found else if all default treat not found
-            bool notFound = false;
-            if (data.DetainID <= 0) notFound = true;
-            if (notFound) return OperationResult<DetainedLicenseReadDTO>.Failure(ErrorCode.rNotFound, "No DetainedLicense Data Found.");
-            return OperationResult<DetainedLicenseReadDTO>.Success(_MapEntityToReadDTO(data), "DetainedLicense Data Retrieved Successfully.");
-        }
-        public bool DeleteByDetainID(int DetainID)
-        {
-            if (repo.DeleteDetainedLicenseByDetainID(DetainID))
+
+            if (await _detainedLicenseRepo.IsLicenseDetainedAsync(dto.LicenseID))
             {
-                return true;
+                return OperationResult<int>.Failure(ErrorCode.Conflict, "This license is already detained.");
             }
-            else
-                return false;
+
+            int addResult = await _detainedLicenseRepo.AddAsync(MapToEntity(dto));
+
+            if (addResult > 0)
+            {
+                return OperationResult<int>.Success(addResult, "License detained successfully.");
+            }
+
+            return OperationResult<int>.Failure(ErrorCode.Conflict, "Failed to detain license.");
         }
-        public bool UpdateByDetainID(DetainedLicenseUpdateDTO UpdatedData)
+
+        public async Task<int> GetCountAsync()
         {
-            return repo.UpdateDetainedLicenseByDetainID(_MapUpdateDTOToEntity(UpdatedData));
+            return await _detainedLicenseRepo.CountAsync();
         }
+
+        public async Task<OperationResult<DetainedLicenseReadDTO>> GetByIdAsync(int detainId)
+        {
+            var data = await _detainedLicenseRepo.FindAsync(detainId);
+            if (data == null || data.DetainID <= 0)
+            {
+                return OperationResult<DetainedLicenseReadDTO>.Failure(ErrorCode.NotFound, "No detained license record found.");
+            }
+
+            return OperationResult<DetainedLicenseReadDTO>.Success(MapToReadDTO(data), "Detained license data retrieved successfully.");
+        }
+
+        public async Task<OperationResult<bool>> DeleteAsync(int id)
+        {
+            if (!await _detainedLicenseRepo.ExistsAsync(id))
+            {
+                return OperationResult<bool>.Failure(ErrorCode.NotFound, "Detained record not found.");
+            }
+
+            bool isDeleted = await _detainedLicenseRepo.DeleteAsync(id);
+            if (!isDeleted)
+            {
+                return OperationResult<bool>.Failure(ErrorCode.Conflict, "Failed to delete detained license record.");
+            }
+
+            return OperationResult<bool>.Success(true, "Detained record deleted successfully.");
+        }
+
+        public async Task<OperationResult<bool>> UpdateAsync(DetainedLicenseUpdateDTO dto)
+        {
+            if (dto == null)
+            {
+                return OperationResult<bool>.Failure(ErrorCode.BadRequest, "Detained license data cannot be null.");
+            }
+
+            if (!await _detainedLicenseRepo.ExistsAsync(dto.DetainID))
+            {
+                return OperationResult<bool>.Failure(ErrorCode.NotFound, $"Detained record with ID {dto.DetainID} is not found.");
+            }
+
+            bool isUpdated = await _detainedLicenseRepo.UpdateAsync(MapToEntity(dto));
+            if (!isUpdated)
+            {
+                return OperationResult<bool>.Failure(ErrorCode.Conflict, "Failed to update detained license record.");
+            }
+
+            return OperationResult<bool>.Success(true, "Detained record updated successfully.");
+        }
+
         #endregion
-        #region Validations
-        private bool _ValidationBeforeAddNew(DetainedLicenseAddDTO AddDTO)
+
+        #region Domain Specific Methods
+
+        public async Task<OperationResult<DetainedLicenseReadDTO>> GetByLicenseIdAsync(int licenseId)
         {
-            // Verification code (customize as needed)
-            return true;
+            var data = await _detainedLicenseRepo.FindByLicenseIdAsync(licenseId);
+            if (data == null || data.DetainID <= 0)
+            {
+                return OperationResult<DetainedLicenseReadDTO>.Failure(ErrorCode.NotFound, "No detain record found for this license.");
+            }
+
+            return OperationResult<DetainedLicenseReadDTO>.Success(MapToReadDTO(data), "Detained license data retrieved successfully.");
         }
-        #endregion
-        #region Private Methods
-        private OperationResults<DetainedLicenseReadDTO> _GetResultFromGetDetainedLicensesList(List<Entities.DetainedLicense> Data)
+
+        public async Task<bool> IsLicenseDetainedAsync(int licenseId)
         {
-            if (Data == null) return OperationResults<DetainedLicenseReadDTO>.FailureDBAError(ErrorCode.rDBAError);
-            if (Data.Count == 0) return OperationResults<DetainedLicenseReadDTO>.Failure(ErrorCode.rNoData, "No DetainedLicenses Data Found.");
-            return OperationResults<DetainedLicenseReadDTO>.Success(_MapEntitiesTOReadDTOs(Data), "DetainedLicenses Data Retrieved Successfully.");
+            return await _detainedLicenseRepo.IsLicenseDetainedAsync(licenseId);
         }
+
+        public async Task<OperationResult<bool>> ReleaseDetainedLicenseAsync(int detainId, int releasedByUserId, int releaseApplicationId)
+        {
+            var record = await _detainedLicenseRepo.FindAsync(detainId);
+            if (record == null)
+            {
+                return OperationResult<bool>.Failure(ErrorCode.NotFound, "Detained record not found.");
+            }
+
+            if (record.IsReleased)
+            {
+                return OperationResult<bool>.Failure(ErrorCode.Conflict, "This license is already released.");
+            }
+
+            bool isReleased = await _detainedLicenseRepo.ReleaseDetainedLicenseAsync(detainId, releasedByUserId, releaseApplicationId);
+            if (!isReleased)
+            {
+                return OperationResult<bool>.Failure(ErrorCode.Conflict, "Failed to release detained license.");
+            }
+
+            return OperationResult<bool>.Success(true, "Detained license released successfully.");
+        }
+
         #endregion
     }
 }

@@ -107,13 +107,13 @@ namespace DVLDPL.PeopleManagement
 
                 new ColumnDefinition
                 {
-                    Key = "Gender",
-                    HeaderText = "Gender",
-                    DataPropertyName = "Gender",
+                    Key = "Gendor",
+                    HeaderText = "Gendor",
+                    DataPropertyName = "Gendor",
                     Width = 100,
-                    ToolStripItem = TGender,
-                    ContextMenuItem = cmsGender,
-                    ValueSelector = person => person.Gender
+                    ToolStripItem = TGendor,
+                    ContextMenuItem = cmsGendor,
+                    ValueSelector = person => person.Gendor
                 }
             };
 

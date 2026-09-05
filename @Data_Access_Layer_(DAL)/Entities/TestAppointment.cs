@@ -1,5 +1,6 @@
 using System;
-namespace Entities
+
+namespace DVLD.DAL.Entities
 {
     public class TestAppointment
     {
@@ -10,6 +11,6 @@ namespace Entities
         public decimal PaidFees { get; set; }
         public int CreatedByUserID { get; set; }
         public bool IsLocked { get; set; }
+        public int? RetakeTestApplicationID { get; set; }
     }
 }
-

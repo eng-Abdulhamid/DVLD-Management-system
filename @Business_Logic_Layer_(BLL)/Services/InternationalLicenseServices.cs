@@ -1,200 +1,144 @@
-using DTOs;
-using DVLD.BLL;
+using DVLD.BLL.DTOs;
+using DVLD.BLL.Enums;
+using DVLD.BLL.OperationResults;
+using DVLD.DAL.Entities;
+using DVLD.DAL.Interfaces.IRepositories;
+using DVLD.DAL.Repo.ADONet;
 using Entities;
-using Repositories;
-using RepositoriesInterfaces;
+using System;
 using System.Collections.Generic;
-namespace Services
+using System.Threading.Tasks;
+using static DVLD.BLL.Mappers.InternationalLicenseMapper;
+
+namespace DVLD.BLL.Services
 {
-
-    public partial class InternationalLicenseServices : IInternationalLicenseServices
+    public class InternationalLicenseService
     {
-        public enum enFields
-        {
-            None = 0,
-            InternationalLicenseID,
-            ApplicationID,
-            DriverID,
-            IssuedUsingLocalLicenseID,
-            IssueDate,
-            ExpirationDate,
-            IsActive,
-            CreatedByUserID
-        }
-        #region Properties
-        private IInternationalLicenseRepository repo;
-        #endregion
         #region Constructors
-        public InternationalLicenseServices()
+
+        private readonly IInternationalLicenseRepository _internationalLicenseRepo;
+
+        public InternationalLicenseService()
         {
-            this.repo = new InternationalLicenseRepository();
-        }
-        #endregion 
-        #region Maps
-        private InternationalLicenseReadDTO _MapEntityToReadDTO(Entities.InternationalLicense Entity)
-        {
-            if (Entity == null) return null;
-            return new InternationalLicenseReadDTO()
-            {
-                InternationalLicenseID = Entity.InternationalLicenseID,
-                ApplicationID = Entity.ApplicationID,
-                DriverID = Entity.DriverID,
-                IssuedUsingLocalLicenseID = Entity.IssuedUsingLocalLicenseID,
-                IssueDate = Entity.IssueDate,
-                ExpirationDate = Entity.ExpirationDate,
-                IsActive = Entity.IsActive,
-                CreatedByUserID = Entity.CreatedByUserID,
-            };
+            _internationalLicenseRepo = new InternationalLicenseRepositoryADO();
         }
 
-        private Entities.InternationalLicense _MapAddDTOToEntity(InternationalLicenseAddDTO AddDTO)
+        public InternationalLicenseService(IInternationalLicenseRepository internationalLicenseRepo)
         {
-            if (AddDTO == null) return null;
-            return new Entities.InternationalLicense()
-            {
-                ApplicationID = AddDTO.ApplicationID,
-                DriverID = AddDTO.DriverID,
-                IssuedUsingLocalLicenseID = AddDTO.IssuedUsingLocalLicenseID,
-                IssueDate = AddDTO.IssueDate,
-                ExpirationDate = AddDTO.ExpirationDate,
-                IsActive = AddDTO.IsActive,
-                CreatedByUserID = AddDTO.CreatedByUserID,
-            };
+            _internationalLicenseRepo = internationalLicenseRepo;
         }
 
-        private Entities.InternationalLicense _MapUpdateDTOToEntity(InternationalLicenseUpdateDTO UpdateDTO)
-        {
-            if (UpdateDTO == null) return null;
-            return new Entities.InternationalLicense()
-            {
-                InternationalLicenseID = UpdateDTO.InternationalLicenseID,
-                ApplicationID = UpdateDTO.ApplicationID,
-                DriverID = UpdateDTO.DriverID,
-                IssuedUsingLocalLicenseID = UpdateDTO.IssuedUsingLocalLicenseID,
-                IssueDate = UpdateDTO.IssueDate,
-                ExpirationDate = UpdateDTO.ExpirationDate,
-                IsActive = UpdateDTO.IsActive
-            };
-        }
-
-
-        private List<InternationalLicenseReadDTO> _MapEntitiesTOReadDTOs(List<Entities.InternationalLicense> EntitiesList)
-        {
-            List<InternationalLicenseReadDTO> Results = new List<InternationalLicenseReadDTO>();
-            if (EntitiesList == null) return Results;
-            foreach (var entity in EntitiesList)
-            {
-                var dto = _MapEntityToReadDTO(entity);
-                if (dto != null) Results.Add(dto);
-            }
-            return Results;
-        }
-        private Repositories.enInternationalLicenseField _MapToRepoFieldEmum(enFields Field)
-        {
-            switch (Field)
-            {
-                case enFields.InternationalLicenseID:
-                    return Repositories.enInternationalLicenseField.InternationalLicenseID;
-                case enFields.ApplicationID:
-                    return Repositories.enInternationalLicenseField.ApplicationID;
-                case enFields.DriverID:
-                    return Repositories.enInternationalLicenseField.DriverID;
-                case enFields.IssuedUsingLocalLicenseID:
-                    return Repositories.enInternationalLicenseField.IssuedUsingLocalLicenseID;
-                case enFields.IssueDate:
-                    return Repositories.enInternationalLicenseField.IssueDate;
-                case enFields.ExpirationDate:
-                    return Repositories.enInternationalLicenseField.ExpirationDate;
-                case enFields.IsActive:
-                    return Repositories.enInternationalLicenseField.IsActive;
-                case enFields.CreatedByUserID:
-                    return Repositories.enInternationalLicenseField.CreatedByUserID;
-                default:
-                    return Repositories.enInternationalLicenseField.InternationalLicenseID;
-            }
-        }
-
-        private InternationalLicenseRepository.InternationalLicensesSearchCriteria _MapToRepoSearchCriteria(SearchCriteria<enFields> SearchCriteria)
-        {
-            if (SearchCriteria == null) return null;
-            return new InternationalLicenseRepository.InternationalLicensesSearchCriteria()
-            {
-                PageNumber = SearchCriteria.PageNumber,
-                PageSize = SearchCriteria.SizeInEveryPage,
-                SearchBy = _MapToRepoFieldEmum(SearchCriteria.SearchBy),
-                OrderBy = _MapToRepoFieldEmum(SearchCriteria.OrderBy),
-                SearchText = SearchCriteria.SearchString,
-                Sorting = (Repositories.enSorting)SearchCriteria.SortingBy,
-                SearchType = (Repositories.enSearchType)SearchCriteria.SearchType
-            };
-        }
         #endregion
 
-        #region CRUD METHODS 
-        public OperationResults<InternationalLicenseReadDTO> GetPeople(SearchCriteria<InternationalLicenseServices.enFields> SearchCriteria)
+        #region CRUD Methods
+
+        public async Task<OperationResults<InternationalLicenseReadDTO>> GetAllAsync()
         {
-            return _GetResultFromGetInternationalLicensesList(repo.GetInternationalLicenses(_MapToRepoSearchCriteria(SearchCriteria)));
+            return MapToOperationResult(await _internationalLicenseRepo.GetAllAsync());
         }
-        public OperationResults<InternationalLicenseReadDTO> GetAllPeople()
+
+        public async Task<bool> ExistsAsync(int id)
         {
-            return _GetResultFromGetInternationalLicensesList(repo.GetAllInternationalLicenses());
+            return await _internationalLicenseRepo.ExistsAsync(id);
         }
-        public int AddNew(InternationalLicenseAddDTO AddDTO)
+
+        public async Task<OperationResult<int>> AddAsync(InternationalLicenseAddDTO dto)
         {
-            if (!_ValidationBeforeAddNew(AddDTO)) return -1;
-            int AddResult = repo.AddNewInternationalLicense(_MapAddDTOToEntity(AddDTO));
-            if (AddResult > 0)
+            if (dto == null)
             {
-                return AddResult;
+                return OperationResult<int>.Failure(ErrorCode.BadRequest, "International license data cannot be null.");
             }
-            return AddResult;
-        }
-        public int PeopleCount(SearchCriteria<InternationalLicenseServices.enFields> SearchCriteria)
-        {
-            return repo.GetCountOfInternationalLicensesByFilter(_MapToRepoSearchCriteria(SearchCriteria));
-        }
-        public int GetCountOfAllWithoutFilter()
-        {
-            return repo.GetCountOfAllInternationalLicenses();
-        }
-        public OperationResult<InternationalLicenseReadDTO> FindByInternationalLicenseID(int InternationalLicenseID)
-        {
-            var data = repo.FindInternationalLicenseByInternationalLicenseID(InternationalLicenseID);
-            if (data == null) return OperationResult<InternationalLicenseReadDTO>.FailureDBAError(ErrorCode.rDBAError);
-            // simple not-found check: if primary numeric and <=0 treat as not found else if all default treat not found
-            bool notFound = false;
-            if (data.InternationalLicenseID <= 0) notFound = true;
-            if (notFound) return OperationResult<InternationalLicenseReadDTO>.Failure(ErrorCode.rNotFound, "No InternationalLicense Data Found.");
-            return OperationResult<InternationalLicenseReadDTO>.Success(_MapEntityToReadDTO(data), "InternationalLicense Data Retrieved Successfully.");
-        }
-        public bool DeleteByInternationalLicenseID(int InternationalLicenseID)
-        {
-            if (repo.DeleteInternationalLicenseByInternationalLicenseID(InternationalLicenseID))
+
+            int? activeLicenseId = await _internationalLicenseRepo.GetActiveInternationalLicenseIdByDriverIdAsync(dto.DriverID);
+            if (activeLicenseId.HasValue)
             {
-                return true;
+                return OperationResult<int>.Failure(ErrorCode.Conflict, "Driver already has an active international license.");
             }
-            else
-                return false;
+
+            int addResult = await _internationalLicenseRepo.AddAsync(MapToEntity(dto));
+
+            if (addResult > 0)
+            {
+                return OperationResult<int>.Success(addResult, "International license issued successfully.");
+            }
+
+            return OperationResult<int>.Failure(ErrorCode.Conflict, "Failed to issue international license.");
         }
-        public bool UpdateByInternationalLicenseID(InternationalLicenseUpdateDTO UpdatedData)
+
+        public async Task<int> GetCountAsync()
         {
-            return repo.UpdateInternationalLicenseByInternationalLicenseID(_MapUpdateDTOToEntity(UpdatedData));
+            return await _internationalLicenseRepo.CountAsync();
         }
+
+        public async Task<OperationResult<InternationalLicenseReadDTO>> GetByIdAsync(int internationalLicenseId)
+        {
+            var data = await _internationalLicenseRepo.FindAsync(internationalLicenseId);
+            if (data == null || data.InternationalLicenseID <= 0)
+            {
+                return OperationResult<InternationalLicenseReadDTO>.Failure(ErrorCode.NotFound, "No international license data found.");
+            }
+
+            return OperationResult<InternationalLicenseReadDTO>.Success(MapToReadDTO(data), "International license data retrieved successfully.");
+        }
+
+        public async Task<OperationResult<bool>> DeleteAsync(int id)
+        {
+            if (!await _internationalLicenseRepo.ExistsAsync(id))
+            {
+                return OperationResult<bool>.Failure(ErrorCode.NotFound, "International license not found.");
+            }
+
+            bool isDeleted = await _internationalLicenseRepo.DeleteAsync(id);
+            if (!isDeleted)
+            {
+                return OperationResult<bool>.Failure(ErrorCode.Conflict, "Cannot delete international license due to database constraints.");
+            }
+
+            return OperationResult<bool>.Success(true, "International license deleted successfully.");
+        }
+
+        public async Task<OperationResult<bool>> UpdateAsync(InternationalLicenseUpdateDTO dto)
+        {
+            if (dto == null)
+            {
+                return OperationResult<bool>.Failure(ErrorCode.BadRequest, "International license data cannot be null.");
+            }
+
+            if (!await _internationalLicenseRepo.ExistsAsync(dto.InternationalLicenseID))
+            {
+                return OperationResult<bool>.Failure(ErrorCode.NotFound, $"International license with ID {dto.InternationalLicenseID} is not found.");
+            }
+
+            bool isUpdated = await _internationalLicenseRepo.UpdateAsync(MapToEntity(dto));
+            if (!isUpdated)
+            {
+                return OperationResult<bool>.Failure(ErrorCode.Conflict, "Failed to update international license.");
+            }
+
+            return OperationResult<bool>.Success(true, "International license updated successfully.");
+        }
+
         #endregion
-        #region Validations
-        private bool _ValidationBeforeAddNew(InternationalLicenseAddDTO AddDTO)
+
+        #region Domain Specific Methods
+
+        public async Task<OperationResults<InternationalLicenseReadDTO>> GetDriverInternationalLicensesAsync(int driverId)
         {
-            // Verification code (customize as needed)
-            return true;
+            var licenses = await _internationalLicenseRepo.GetDriverInternationalLicensesAsync(driverId);
+            return MapToOperationResult(licenses);
         }
-        #endregion
-        #region Private Methods
-        private OperationResults<InternationalLicenseReadDTO> _GetResultFromGetInternationalLicensesList(List<Entities.InternationalLicense> Data)
+
+        public async Task<OperationResult<int?>> GetActiveInternationalLicenseIdByDriverIdAsync(int driverId)
         {
-            if (Data == null) return OperationResults<InternationalLicenseReadDTO>.FailureDBAError(ErrorCode.rDBAError);
-            if (Data.Count == 0) return OperationResults<InternationalLicenseReadDTO>.Failure(ErrorCode.rNoData, "No InternationalLicenses Data Found.");
-            return OperationResults<InternationalLicenseReadDTO>.Success(_MapEntitiesTOReadDTOs(Data), "InternationalLicenses Data Retrieved Successfully.");
+            int? activeLicenseId = await _internationalLicenseRepo.GetActiveInternationalLicenseIdByDriverIdAsync(driverId);
+            if (!activeLicenseId.HasValue)
+            {
+                return OperationResult<int?>.Failure(ErrorCode.NotFound, "No active international license found for this driver.");
+            }
+
+            return OperationResult<int?>.Success(activeLicenseId, "Active international license retrieved successfully.");
         }
+
         #endregion
     }
 }

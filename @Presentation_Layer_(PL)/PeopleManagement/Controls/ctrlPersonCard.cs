@@ -45,7 +45,7 @@ namespace DVLDPL.PeopleManagement
             Email.Text = personData.Email;
             Phone.Text = personData.Phone;
             DateOfBirth.Text = personData.DateOfBirth.ToString("MMMM d yyyy");
-            Gender.Text = personData.Gender.ToString();
+            Gendor.Text = personData.Gendor.ToString();
             picPersonImage.Tag = personData.ImagePath;
             picPersonImage.Image = !string.IsNullOrEmpty(personData.ImagePath) && File.Exists(personData.ImagePath) ? Image.FromFile(personData.ImagePath) : Properties.Resources.user;
             Nationality.Text = personData.CountryName;

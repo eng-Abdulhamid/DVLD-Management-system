@@ -72,6 +72,7 @@ namespace DVLD.BLL.Services
         /// </returns>
         public async Task<OperationResult<int>> AddAsync(CountryAddDTO dto)
         {
+            if (dto == null) return OperationResult<int>.Failure(ErrorCode.BadRequest);
             if (await _countryRepo.ExistsByNameAsync(dto.CountryName))
             {
                 return OperationResult<int>.Failure(ErrorCode.Conflict, "Country with the same name already exists.");

@@ -1,5 +1,6 @@
 using System;
-namespace Entities
+
+namespace DVLD.DAL.Entities
 {
     public class InternationalLicense
     {
@@ -13,4 +14,3 @@ namespace Entities
         public int CreatedByUserID { get; set; }
     }
 }
-

@@ -1,197 +1,174 @@
-using DTOs;
-using DVLD.BLL;
-using Repositories;
-using RepositoriesInterfaces;
-using System.Collections.Generic;
-namespace Services
+using DVLD.BLL.DTOs;
+using DVLD.BLL.Enums;
+using DVLD.BLL.OperationResults;
+using DVLD.DAL.Interfaces.IRepositories;
+using DVLD.DAL.Repo.ADONet;
+using static DVLD.BLL.Mappers.ApplicationMapper;
+
+namespace DVLD.BLL.Services
 {
-
-    public partial class ApplicationServices : IApplicationServices
+    /// <summary>
+    /// Provides business logic services and operations for managing application entities.
+    /// </summary>
+    public class ApplicationService
     {
-        public enum enFields
-        {
-            None = 0,
-            ApplicationID,
-            ApplicantPersonID,
-            ApplicationDate,
-            ApplicationTypeID,
-            ApplicationStatus,
-            LastStatusDate,
-            PaidFees,
-            CreatedByUserID
-        }
-        #region Properties
-        private IApplicationRepository repo;
-        #endregion
         #region Constructors
-        public ApplicationServices()
+
+        private readonly IApplicationRepository _applicationRepo;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ApplicationService"/> class with the default ADO.NET repository.
+        /// </summary>
+        public ApplicationService()
         {
-            this.repo = new ApplicationRepository();
-        }
-        #endregion 
-        #region Maps
-        private ApplicationReadDTO _MapEntityToReadDTO(Entities.Application Entity)
-        {
-            if (Entity == null) return null;
-            return new ApplicationReadDTO()
-            {
-                ApplicationID = Entity.ApplicationID,
-                ApplicantPersonID = Entity.ApplicantPersonID,
-                ApplicationDate = Entity.ApplicationDate,
-                ApplicationTypeID = Entity.ApplicationTypeID,
-                ApplicationStatus = Entity.ApplicationStatus,
-                LastStatusDate = Entity.LastStatusDate,
-                PaidFees = Entity.PaidFees,
-                CreatedByUserID = Entity.CreatedByUserID,
-            };
+            _applicationRepo = new ApplicationRepositoryADO();
         }
 
-        private Entities.Application _MapAddDTOToEntity(ApplicationAddDTO AddDTO)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ApplicationService"/> class with a specified data repository.
+        /// </summary>
+        /// <param name="applicationRepo">The repository instance used for data access operations.</param>
+        public ApplicationService(IApplicationRepository applicationRepo)
         {
-            if (AddDTO == null) return null;
-            return new Entities.Application()
-            {
-                ApplicantPersonID = AddDTO.ApplicantPersonID,
-                ApplicationDate = AddDTO.ApplicationDate,
-                ApplicationTypeID = AddDTO.ApplicationTypeID,
-                ApplicationStatus = AddDTO.ApplicationStatus,
-                LastStatusDate = AddDTO.LastStatusDate,
-                PaidFees = AddDTO.PaidFees,
-                CreatedByUserID = AddDTO.CreatedByUserID,
-            };
+            _applicationRepo = applicationRepo;
         }
 
-        private Entities.Application _MapUpdateDTOToEntity(ApplicationUpdateDTO UpdateDTO)
-        {
-            if (UpdateDTO == null) return null;
-            return new Entities.Application()
-            {
-                ApplicationID = UpdateDTO.ApplicationID,
-                ApplicantPersonID = UpdateDTO.ApplicantPersonID,
-                ApplicationDate = UpdateDTO.ApplicationDate,
-                ApplicationTypeID = UpdateDTO.ApplicationTypeID,
-                ApplicationStatus = UpdateDTO.ApplicationStatus,
-                LastStatusDate = UpdateDTO.LastStatusDate,
-                PaidFees = UpdateDTO.PaidFees
-            };
-        }
-
-
-        private List<ApplicationReadDTO> _MapEntitiesTOReadDTOs(List<Entities.Application> EntitiesList)
-        {
-            List<ApplicationReadDTO> Results = new List<ApplicationReadDTO>();
-            if (EntitiesList == null) return Results;
-            foreach (var entity in EntitiesList)
-            {
-                var dto = _MapEntityToReadDTO(entity);
-                if (dto != null) Results.Add(dto);
-            }
-            return Results;
-        }
-        private Repositories.enApplicationField _MapToRepoFieldEmum(enFields Field)
-        {
-            switch (Field)
-            {
-                case enFields.ApplicationID:
-                    return Repositories.enApplicationField.ApplicationID;
-                case enFields.ApplicantPersonID:
-                    return Repositories.enApplicationField.ApplicantPersonID;
-                case enFields.ApplicationDate:
-                    return Repositories.enApplicationField.ApplicationDate;
-                case enFields.ApplicationTypeID:
-                    return Repositories.enApplicationField.ApplicationTypeID;
-                case enFields.ApplicationStatus:
-                    return Repositories.enApplicationField.ApplicationStatus;
-                case enFields.LastStatusDate:
-                    return Repositories.enApplicationField.LastStatusDate;
-                case enFields.PaidFees:
-                    return Repositories.enApplicationField.PaidFees;
-                case enFields.CreatedByUserID:
-                    return Repositories.enApplicationField.CreatedByUserID;
-                default:
-                    return Repositories.enApplicationField.ApplicationID;
-            }
-        }
-
-        private ApplicationRepository.ApplicationsSearchCriteria _MapToRepoSearchCriteria(SearchCriteria<enFields> SearchCriteria)
-        {
-            if (SearchCriteria == null) return null;
-            return new ApplicationRepository.ApplicationsSearchCriteria()
-            {
-                SearchBy = _MapToRepoFieldEmum(SearchCriteria.SearchBy),
-                OrderBy = _MapToRepoFieldEmum(SearchCriteria.OrderBy),
-                SearchText = SearchCriteria.SearchString,
-                Sorting = (Repositories.enSorting)SearchCriteria.SortingBy,
-                SearchType = (Repositories.enSearchType)SearchCriteria.SearchType
-            };
-        }
         #endregion
 
-        #region CRUD METHODS 
-        public OperationResults<ApplicationReadDTO> GetPeople(SearchCriteria<ApplicationServices.enFields> SearchCriteria)
+        #region CRUD Methods
+
+        /// <summary>
+        /// Asynchronously retrieves all application records from the data store.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="OperationResults{ApplicationReadDTO}"/> containing the list of retrieved applications on success, 
+        /// or error details if no data is found.
+        /// </returns>
+        public async Task<OperationResults<ApplicationReadDTO>> GetAllAsync()
         {
-            return _GetResultFromGetApplicationsList(repo.GetApplications(_MapToRepoSearchCriteria(SearchCriteria)));
+            return MapToOperationResult(await _applicationRepo.GetAllAsync());
         }
-        public OperationResults<ApplicationReadDTO> GetAllPeople()
+
+        /// <summary>
+        /// Asynchronously determines whether an application exists with the specified application ID.
+        /// </summary>
+        /// <param name="id">The unique identifier of the application to check.</param>
+        /// <returns>
+        /// <see langword="true"/> if the application exists; otherwise, <see langword="false"/>.
+        /// </returns>
+        public async Task<bool> ExistsAsync(int id)
         {
-            return _GetResultFromGetApplicationsList(repo.GetAllApplications());
+            return await _applicationRepo.ExistsAsync(id);
         }
-        public int AddNew(ApplicationAddDTO AddDTO)
+
+        /// <summary>
+        /// Asynchronously adds a new application record.
+        /// </summary>
+        /// <param name="dto">The data transfer object containing the new application details.</param>
+        /// <returns>
+        /// An <see cref="OperationResult{Int32}"/> containing the generated Application ID upon success, 
+        /// or a failure result if insertion fails.
+        /// </returns>
+        public async Task<OperationResult<int>> AddAsync(ApplicationAddDTO dto)
         {
-            if (!_ValidationBeforeAddNew(AddDTO)) return -1;
-            int AddResult = repo.AddNewApplication(_MapAddDTOToEntity(AddDTO));
-            if (AddResult > 0)
+            if (dto == null)
             {
-                return AddResult;
+                return OperationResult<int>.Failure(ErrorCode.BadRequest, "Application data cannot be null.");
             }
-            return AddResult;
-        }
-        public int PeopleCount(SearchCriteria<ApplicationServices.enFields> SearchCriteria)
-        {
-            return repo.GetCountOfApplicationsByFilter(_MapToRepoSearchCriteria(SearchCriteria));
-        }
-        public int GetCountOfAllWithoutFilter()
-        {
-            return repo.GetCountOfAllApplications();
-        }
-        public OperationResult<ApplicationReadDTO> FindByApplicationID(int ApplicationID)
-        {
-            var data = repo.FindApplicationByApplicationID(ApplicationID);
-            if (data == null) return OperationResult<ApplicationReadDTO>.FailureDBAError(ErrorCode.rDBAError);
-            // simple not-found check: if primary numeric and <=0 treat as not found else if all default treat not found
-            bool notFound = false;
-            if (data.ApplicationID <= 0) notFound = true;
-            if (notFound) return OperationResult<ApplicationReadDTO>.Failure(ErrorCode.rNotFound, "No Application Data Found.");
-            return OperationResult<ApplicationReadDTO>.Success(_MapEntityToReadDTO(data), "Application Data Retrieved Successfully.");
-        }
-        public bool DeleteByApplicationID(int ApplicationID)
-        {
-            if (repo.DeleteApplicationByApplicationID(ApplicationID))
+            int addResult = await _applicationRepo.AddAsync(MapToEntity(dto));
+
+            if (addResult > 0)
             {
-                return true;
+                return OperationResult<int>.Success(addResult, "Application added successfully.");
             }
-            else
-                return false;
+
+            return OperationResult<int>.Failure(ErrorCode.Conflict, "Failed to add application.");
         }
-        public bool UpdateByApplicationID(ApplicationUpdateDTO UpdatedData)
+
+        /// <summary>
+        /// Asynchronously retrieves the total count of application records in the data store.
+        /// </summary>
+        /// <returns>The total number of registered applications.</returns>
+        public async Task<int> GetCountAsync()
         {
-            return repo.UpdateApplicationByApplicationID(_MapUpdateDTOToEntity(UpdatedData));
+            return await _applicationRepo.CountAsync();
         }
-        #endregion
-        #region Validations
-        private bool _ValidationBeforeAddNew(ApplicationAddDTO AddDTO)
+
+        /// <summary>
+        /// Asynchronously retrieves an application record by its unique ID.
+        /// </summary>
+        /// <param name="applicationId">The unique identifier of the application.</param>
+        /// <returns>
+        /// An <see cref="OperationResult{ApplicationReadDTO}"/> containing the application data if found; 
+        /// otherwise, a failure result indicating the record was not found.
+        /// </returns>
+        public async Task<OperationResult<ApplicationReadDTO>> GetByIdAsync(int applicationId)
         {
-            // Verification code (customize as needed)
-            return true;
+            var data = await _applicationRepo.FindAsync(applicationId);
+            if (data == null || data.ApplicationID <= 0)
+            {
+                return OperationResult<ApplicationReadDTO>.Failure(ErrorCode.NotFound, "No Application Data Found.");
+            }
+
+            return OperationResult<ApplicationReadDTO>.Success(MapToReadDTO(data), "Application Data Retrieved Successfully.");
         }
-        #endregion
-        #region Private Methods
-        private OperationResults<ApplicationReadDTO> _GetResultFromGetApplicationsList(List<Entities.Application> Data)
+
+        /// <summary>
+        /// Asynchronously deletes an application record by its unique ID after verifying existence.
+        /// </summary>
+        /// <param name="id">The unique identifier of the application to delete.</param>
+        /// <returns>
+        /// An <see cref="OperationResult{Boolean}"/> indicating whether the deletion succeeded, 
+        /// or an error describing why deletion failed.
+        /// </returns>
+        public async Task<OperationResult<bool>> DeleteAsync(int id)
         {
-            if (Data == null) return OperationResults<ApplicationReadDTO>.FailureDBAError(ErrorCode.rDBAError);
-            if (Data.Count == 0) return OperationResults<ApplicationReadDTO>.Failure(ErrorCode.rNoData, "No Applications Data Found.");
-            return OperationResults<ApplicationReadDTO>.Success(_MapEntitiesTOReadDTOs(Data), "Applications Data Retrieved Successfully.");
+            if (!await _applicationRepo.ExistsAsync(id))
+            {
+                return OperationResult<bool>.Failure(ErrorCode.NotFound, "Application not found.");
+            }
+
+            bool isDeleted = await _applicationRepo.DeleteAsync(id);
+            if (!isDeleted)
+            {
+                return OperationResult<bool>.Failure(ErrorCode.Conflict, "Cannot delete this application because it is linked to other records.");
+            }
+
+            return OperationResult<bool>.Success(true, "Application deleted successfully.");
         }
+
+        /// <summary>
+        /// Asynchronously updates an existing application record after verifying existence.
+        /// </summary>
+        /// <param name="dto">The data transfer object containing the updated application details.</param>
+        /// <returns>
+        /// An <see cref="OperationResult{Boolean}"/> indicating whether the update operation succeeded or failed.
+        /// </returns>
+        public async Task<OperationResult<bool>> UpdateAsync(ApplicationUpdateDTO dto)
+        {
+            if (dto == null)
+            {
+                return OperationResult<bool>.Failure(ErrorCode.BadRequest, "Application data cannot be null.");
+            }
+
+            var existingApplication = await _applicationRepo.FindAsync(dto.ApplicationID);
+            if (existingApplication == null)
+            {
+                return OperationResult<bool>.Failure(ErrorCode.NotFound, $"Application with ID {dto.ApplicationID} is not found.");
+            }
+
+            var entity = MapToEntity(dto);
+            entity.CreatedByUserID = existingApplication.CreatedByUserID;
+
+            bool isUpdated = await _applicationRepo.UpdateAsync(entity);
+            if (!isUpdated)
+            {
+                return OperationResult<bool>.Failure(ErrorCode.Conflict, "Failed to update application.");
+            }
+
+            return OperationResult<bool>.Success(true, "Application updated successfully.");
+        }
+
         #endregion
     }
 }

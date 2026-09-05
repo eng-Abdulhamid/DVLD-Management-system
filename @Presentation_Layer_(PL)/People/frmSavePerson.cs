@@ -375,7 +375,7 @@ namespace DVLDPL
                 }
 
             }
-            // Validate gender
+            // Validate Gendor
             if (!rbMale.Checked && !rbFemale.Checked)
             {
                 isValid = false; 

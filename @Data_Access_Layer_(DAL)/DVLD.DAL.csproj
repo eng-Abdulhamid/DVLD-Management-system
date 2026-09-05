@@ -15,15 +15,6 @@
 
 	<ItemGroup>
 	  <Compile Remove="Common\clsCRUD.cs" />
-	  <Compile Remove="Entities\ApplicationType.cs" />
-	  <Compile Remove="Entities\DetainedLicense.cs" />
-	  <Compile Remove="Entities\InternationalLicense.cs" />
-	  <Compile Remove="Entities\License.cs" />
-	  <Compile Remove="Entities\LicenseClass.cs" />
-	  <Compile Remove="Entities\LocalDrivingLicenseApplication.cs" />
-	  <Compile Remove="Entities\Test.cs" />
-	  <Compile Remove="Entities\TestAppointment.cs" />
-	  <Compile Remove="Entities\TestType.cs" />
 	  <Compile Remove="Repositories\AdoNet\ApplicationRepository.cs" />
 	  <Compile Remove="Repositories\AdoNet\ApplicationTypeRepository.cs" />
 	  <Compile Remove="Repositories\AdoNet\DetainedLicenseRepository.cs" />
@@ -31,7 +22,6 @@
 	  <Compile Remove="Repositories\AdoNet\InternationalLicenseRepository.cs" />
 	  <Compile Remove="Repositories\AdoNet\LicenseClassRepository.cs" />
 	  <Compile Remove="Repositories\AdoNet\LicenseRepository.cs" />
-	  <Compile Remove="Repositories\AdoNet\LocalDrivingLicenseApplicationRepository.cs" />
 	  <Compile Remove="Repositories\AdoNet\TestAppointmentRepository.cs" />
 	  <Compile Remove="Repositories\AdoNet\TestRepository.cs" />
 	  <Compile Remove="Repositories\AdoNet\TestTypeRepository.cs" />

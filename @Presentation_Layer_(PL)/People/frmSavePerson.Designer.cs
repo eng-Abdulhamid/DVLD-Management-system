@@ -44,7 +44,7 @@ namespace DVLDPL
             this.txtLastName = new System.Windows.Forms.TextBox();
             this.lblNationalNo = new System.Windows.Forms.Label();
             this.txtNationalNo = new System.Windows.Forms.TextBox();
-            this.lblGender = new System.Windows.Forms.Label();
+            this.lblGendor = new System.Windows.Forms.Label();
             this.rbMale = new System.Windows.Forms.RadioButton();
             this.rbFemale = new System.Windows.Forms.RadioButton();
             this.lblDateOfBirth = new System.Windows.Forms.Label();
@@ -206,7 +206,7 @@ namespace DVLDPL
             this.pnlForm.Controls.Add(this.txtLastName);
             this.pnlForm.Controls.Add(this.lblNationalNo);
             this.pnlForm.Controls.Add(this.txtNationalNo);
-            this.pnlForm.Controls.Add(this.lblGender);
+            this.pnlForm.Controls.Add(this.lblGendor);
             this.pnlForm.Controls.Add(this.rbMale);
             this.pnlForm.Controls.Add(this.rbFemale);
             this.pnlForm.Controls.Add(this.lblDateOfBirth);
@@ -357,16 +357,16 @@ namespace DVLDPL
             this.txtNationalNo.Size = new System.Drawing.Size(200, 23);
             this.txtNationalNo.TabIndex = 4;
             // 
-            // lblGender
+            // lblGendor
             // 
-            this.lblGender.AutoSize = true;
-            this.lblGender.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblGender.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(47)))), ((int)(((byte)(62)))));
-            this.lblGender.Location = new System.Drawing.Point(238, 109);
-            this.lblGender.Name = "lblGender";
-            this.lblGender.Size = new System.Drawing.Size(57, 15);
-            this.lblGender.TabIndex = 12;
-            this.lblGender.Text = "Gender *";
+            this.lblGendor.AutoSize = true;
+            this.lblGendor.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblGendor.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(47)))), ((int)(((byte)(62)))));
+            this.lblGendor.Location = new System.Drawing.Point(238, 109);
+            this.lblGendor.Name = "lblGendor";
+            this.lblGendor.Size = new System.Drawing.Size(57, 15);
+            this.lblGendor.TabIndex = 12;
+            this.lblGendor.Text = "Gendor *";
             // 
             // rbMale
             // 
@@ -657,7 +657,7 @@ namespace DVLDPL
         private System.Windows.Forms.TextBox txtLastName;
         private System.Windows.Forms.Label lblNationalNo;
         private System.Windows.Forms.TextBox txtNationalNo;
-        private System.Windows.Forms.Label lblGender;
+        private System.Windows.Forms.Label lblGendor;
         private System.Windows.Forms.RadioButton rbMale;
         private System.Windows.Forms.RadioButton rbFemale;
         private System.Windows.Forms.Label lblDateOfBirth;

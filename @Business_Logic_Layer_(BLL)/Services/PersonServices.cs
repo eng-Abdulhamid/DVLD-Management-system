@@ -73,6 +73,8 @@ namespace DVLD.BLL.Services
         /// </returns>
         public async Task<OperationResult<int>> AddAsync(PersonAddDTO dto)
         {
+            if (dto == null) return OperationResult<int>.Failure(ErrorCode.BadRequest);
+
             if (await _personRepo.ExistsByNationalNoAsync(dto.NationalNo))
             {
                 return OperationResult<int>.Failure(ErrorCode.Conflict, "Person with the same National Number already exists.");

@@ -15,7 +15,7 @@ namespace DVLD.DAL.Mapper
         public int ThirdName { get; init; }
         public int LastName { get; init; }
         public int DateOfBirth { get; init; }
-        public int Gender { get; init; }
+        public int Gendor { get; init; }
         public int Address { get; init; }
         public int Phone { get; init; }
         public int Email { get; init; }
@@ -34,7 +34,7 @@ namespace DVLD.DAL.Mapper
                 ThirdName = reader.GetOrdinal("ThirdName"),
                 LastName = reader.GetOrdinal("LastName"),
                 DateOfBirth = reader.GetOrdinal("DateOfBirth"),
-                Gender = reader.GetOrdinal("Gender"),
+                Gendor = reader.GetOrdinal("Gendor"),
                 Address = reader.GetOrdinal("Address"),
                 Phone = reader.GetOrdinal("Phone"),
                 Email = reader.GetOrdinal("Email"),

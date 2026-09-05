@@ -10,7 +10,7 @@ namespace DVLD.BLL.DTOs
         public string ThirdName { get; set; } = string.Empty;// Nullable column
         public string LastName { get; set; } = string.Empty;
         public DateTime DateOfBirth { get; set; }
-        public Gender Gender { get; set; }
+        public Gendor Gendor { get; set; }
         public string Address { get; set; } = string.Empty;
         public string Phone { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty; // Nullable column
@@ -25,7 +25,7 @@ namespace DVLD.BLL.DTOs
             this.ThirdName = PersonReadDTO.ThirdName;
             this.LastName = PersonReadDTO.LastName;
             this.DateOfBirth = PersonReadDTO.DateOfBirth;
-            this.Gender = PersonReadDTO.Gender;
+            this.Gendor = PersonReadDTO.Gendor;
             this.Address = PersonReadDTO.Address;
             this.Phone = PersonReadDTO.Phone;
             this.Email = PersonReadDTO.Email;

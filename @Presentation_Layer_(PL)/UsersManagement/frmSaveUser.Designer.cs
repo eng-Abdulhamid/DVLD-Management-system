@@ -26,7 +26,7 @@ namespace Users
             this.pnlContent = new System.Windows.Forms.Panel();
             this.modernPanel1 = new CustomControls.ModernPanel();
             this.cbIsAcive = new CustomControls.ModernComboBox();
-            this.lblGender = new System.Windows.Forms.Label();
+            this.lblGendor = new System.Windows.Forms.Label();
             this.lblPassword = new System.Windows.Forms.Label();
             this.txtUsername = new ModernUIControls.ModernTextBoxPro();
             this.lblSecondName = new System.Windows.Forms.Label();
@@ -105,7 +105,7 @@ namespace Users
             this.modernPanel1.BorderSize = 4;
             this.modernPanel1.BorderStyle = System.Drawing.Drawing2D.DashStyle.Solid;
             this.modernPanel1.Controls.Add(this.cbIsAcive);
-            this.modernPanel1.Controls.Add(this.lblGender);
+            this.modernPanel1.Controls.Add(this.lblGendor);
             this.modernPanel1.Controls.Add(this.txtPassword);
             this.modernPanel1.Controls.Add(this.lblPassword);
             this.modernPanel1.Controls.Add(this.txtUsername);
@@ -157,16 +157,16 @@ namespace Users
             this.cbIsAcive.Size = new System.Drawing.Size(132, 26);
             this.cbIsAcive.TabIndex = 17;
             // 
-            // lblGender
+            // lblGendor
             // 
-            this.lblGender.AutoSize = true;
-            this.lblGender.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblGender.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(47)))), ((int)(((byte)(62)))));
-            this.lblGender.Location = new System.Drawing.Point(261, 52);
-            this.lblGender.Name = "lblGender";
-            this.lblGender.Size = new System.Drawing.Size(60, 15);
-            this.lblGender.TabIndex = 12;
-            this.lblGender.Text = "Is Active*";
+            this.lblGendor.AutoSize = true;
+            this.lblGendor.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblGendor.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(47)))), ((int)(((byte)(62)))));
+            this.lblGendor.Location = new System.Drawing.Point(261, 52);
+            this.lblGendor.Name = "lblGendor";
+            this.lblGendor.Size = new System.Drawing.Size(60, 15);
+            this.lblGendor.TabIndex = 12;
+            this.lblGendor.Text = "Is Active*";
             // 
             // lblPassword
             // 
@@ -550,7 +550,7 @@ namespace Users
         private System.Windows.Forms.Label lblFirstName;
         private System.Windows.Forms.Label lblSecondName;
         private System.Windows.Forms.Label lblPassword;
-        private System.Windows.Forms.Label lblGender;
+        private System.Windows.Forms.Label lblGendor;
         private System.Windows.Forms.Panel pnlButtons;
         private System.Windows.Forms.Label lblWarning;
         private System.Windows.Forms.Button btnCancel;

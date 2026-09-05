@@ -10,9 +10,9 @@ namespace DVLD.DAL.Repo.ADONet
         public async Task<int> AddAsync(Person PersonDetails)
         {
             string Query = @"INSERT INTO People 
-        (NationalNo, FirstName, SecondName, ThirdName, LastName, DateOfBirth, Gender, Address, Phone, Email, NationalityCountryID, ImagePath)
+        (NationalNo, FirstName, SecondName, ThirdName, LastName, DateOfBirth, Gendor, Address, Phone, Email, NationalityCountryID, ImagePath)
         VALUES 
-        (@NationalNo, @FirstName, @SecondName, @ThirdName, @LastName, @DateOfBirth, @Gender, @Address, @Phone, @Email, @NationalityCountryID, @ImagePath);
+        (@NationalNo, @FirstName, @SecondName, @ThirdName, @LastName, @DateOfBirth, @Gendor, @Address, @Phone, @Email, @NationalityCountryID, @ImagePath);
         SELECT SCOPE_IDENTITY();";
 
             SqlCommand Command = new(Query);
@@ -23,7 +23,7 @@ namespace DVLD.DAL.Repo.ADONet
             Command.Parameters.AddWithValue("@ThirdName", string.IsNullOrEmpty(PersonDetails.ThirdName) ? (object)DBNull.Value : PersonDetails.ThirdName);
             Command.Parameters.AddWithValue("@LastName", PersonDetails.LastName);
             Command.Parameters.AddWithValue("@DateOfBirth", PersonDetails.DateOfBirth);
-            Command.Parameters.AddWithValue("@Gender", (byte)PersonDetails.Gender);
+            Command.Parameters.AddWithValue("@Gendor", (byte)PersonDetails.Gendor);
             Command.Parameters.AddWithValue("@Address", PersonDetails.Address);
             Command.Parameters.AddWithValue("@Phone", PersonDetails.Phone);
             Command.Parameters.AddWithValue("@Email", string.IsNullOrEmpty(PersonDetails.Email) ? (object)DBNull.Value : PersonDetails.Email);
@@ -84,7 +84,7 @@ namespace DVLD.DAL.Repo.ADONet
                 ThirdName=@ThirdName,
                 LastName=@LastName,
                 DateOfBirth=@DateOfBirth,
-                Gender=@Gender,
+                Gendor=@Gendor,
                 Address=@Address,
                 Phone=@Phone,
                 Email=@Email,
@@ -99,7 +99,7 @@ namespace DVLD.DAL.Repo.ADONet
             Command.Parameters.AddWithValue("@ThirdName", string.IsNullOrEmpty(UpdatedPerson.ThirdName) ? (object)DBNull.Value : UpdatedPerson.ThirdName);
             Command.Parameters.AddWithValue("@LastName", UpdatedPerson.LastName);
             Command.Parameters.AddWithValue("@DateOfBirth", UpdatedPerson.DateOfBirth);
-            Command.Parameters.AddWithValue("@Gender", (byte)UpdatedPerson.Gender);
+            Command.Parameters.AddWithValue("@Gendor", (byte)UpdatedPerson.Gendor);
             Command.Parameters.AddWithValue("@Address", UpdatedPerson.Address);
             Command.Parameters.AddWithValue("@Phone", UpdatedPerson.Phone);
             Command.Parameters.AddWithValue("@Email", string.IsNullOrEmpty(UpdatedPerson.Email) ? (object)DBNull.Value : UpdatedPerson.Email);
@@ -171,7 +171,7 @@ namespace DVLD.DAL.Repo.ADONet
                 ThirdName=@ThirdName,
                 LastName=@LastName,
                 DateOfBirth=@DateOfBirth,
-                Gender=@Gender,
+                Gendor=@Gendor,
                 Address=@Address,
                 Phone=@Phone,
                 Email=@Email,
@@ -187,7 +187,7 @@ namespace DVLD.DAL.Repo.ADONet
                 Command.Parameters.AddWithValue("@ThirdName", string.IsNullOrEmpty(UpdatedPerson.ThirdName) ? (object)DBNull.Value : UpdatedPerson.ThirdName);
                 Command.Parameters.AddWithValue("@LastName", UpdatedPerson.LastName);
                 Command.Parameters.AddWithValue("@DateOfBirth", UpdatedPerson.DateOfBirth);
-                Command.Parameters.AddWithValue("@Gender", (byte)UpdatedPerson.Gender);
+                Command.Parameters.AddWithValue("@Gendor", (byte)UpdatedPerson.Gendor);
                 Command.Parameters.AddWithValue("@Address", UpdatedPerson.Address);
                 Command.Parameters.AddWithValue("@Phone", UpdatedPerson.Phone);
                 Command.Parameters.AddWithValue("@Email", string.IsNullOrEmpty(UpdatedPerson.Email) ? (object)DBNull.Value : UpdatedPerson.Email);

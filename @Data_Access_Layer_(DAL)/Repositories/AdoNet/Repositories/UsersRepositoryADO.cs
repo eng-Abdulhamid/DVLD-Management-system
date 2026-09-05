@@ -51,7 +51,7 @@ namespace DVLD.DAL.Repo.ADONet
                 PersonID=@PersonID,
                 UserName=@UserName,
                 Password=@Password,
-                IsActive=@IsActive,
+                IsActive=@IsActive
                 WHERE UserID=@UserID"
             };
             Command.Parameters.AddWithValue("@UserID", UpdatedUser.UserID);

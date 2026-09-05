@@ -40,7 +40,7 @@
             this.txtPhone = new NControls.NTextBox();
             this.txtAdress = new NControls.NTextBox();
             this.lbllall = new System.Windows.Forms.Label();
-            this.cmbGender = new System.Windows.Forms.ComboBox();
+            this.cmbGendor = new System.Windows.Forms.ComboBox();
             this.btnSubmit = new System.Windows.Forms.Button();
             this.epValidation = new System.Windows.Forms.ErrorProvider(this.components);
             this.dtpBirthDate = new System.Windows.Forms.DateTimePicker();
@@ -324,18 +324,18 @@
             this.lbllall.Name = "lbllall";
             this.lbllall.Size = new System.Drawing.Size(45, 15);
             this.lbllall.TabIndex = 51;
-            this.lbllall.Text = "Gender";
+            this.lbllall.Text = "Gendor";
             // 
-            // cmbGender
+            // cmbGendor
             // 
-            this.cmbGender.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbGender.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.cmbGender.FormattingEnabled = true;
-            this.cmbGender.Location = new System.Drawing.Point(549, 310);
-            this.cmbGender.Name = "cmbGender";
-            this.cmbGender.Size = new System.Drawing.Size(236, 25);
-            this.cmbGender.TabIndex = 10;
-            this.cmbGender.SelectedValueChanged += new System.EventHandler(this.ValidateControls_ValuedChanged);
+            this.cmbGendor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbGendor.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.cmbGendor.FormattingEnabled = true;
+            this.cmbGendor.Location = new System.Drawing.Point(549, 310);
+            this.cmbGendor.Name = "cmbGendor";
+            this.cmbGendor.Size = new System.Drawing.Size(236, 25);
+            this.cmbGendor.TabIndex = 10;
+            this.cmbGendor.SelectedValueChanged += new System.EventHandler(this.ValidateControls_ValuedChanged);
             // 
             // btnSubmit
             // 
@@ -556,7 +556,7 @@
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSubmit);
             this.Controls.Add(this.lbllall);
-            this.Controls.Add(this.cmbGender);
+            this.Controls.Add(this.cmbGendor);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cmbNationality);
             this.Controls.Add(this.dtpBirthDate);
@@ -602,7 +602,7 @@
         private NControls.NTextBox txtPhone;
         private NControls.NTextBox txtAdress;
         private System.Windows.Forms.Label lbllall;
-        private System.Windows.Forms.ComboBox cmbGender;
+        private System.Windows.Forms.ComboBox cmbGendor;
         private System.Windows.Forms.Button btnSubmit;
         private System.Windows.Forms.ErrorProvider epValidation;
         private System.Windows.Forms.PictureBox picPersonImage;

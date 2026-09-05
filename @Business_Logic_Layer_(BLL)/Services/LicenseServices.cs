@@ -1,218 +1,158 @@
-using DTOs;
-using DVLD.BLL;
+using DVLD.BLL.DTOs;
+using DVLD.BLL.Enums;
+using DVLD.BLL.OperationResults;
+using DVLD.DAL.Entities;
+using DVLD.DAL.Interfaces.IRepositories;
+using DVLD.DAL.Repo.ADONet;
 using Entities;
-using Repositories;
-using RepositoriesInterfaces;
+using System;
 using System.Collections.Generic;
-namespace Services
+using System.Threading.Tasks;
+using static DVLD.BLL.Mappers.LicenseMapper;
+
+namespace DVLD.BLL.Services
 {
-
-    public partial class LicenseServices : ILicenseServices
+    public class LicenseService
     {
-        public enum enFields
-        {
-            None = 0,
-            LicenseID,
-            ApplicationID,
-            DriverID,
-            LicenseClass,
-            IssueDate,
-            ExpirationDate,
-            Notes,
-            PaidFees,
-            IsActive,
-            IssueReason,
-            CreatedByUserID
-        }
-        #region Properties
-        private ILicenseRepository repo;
-        #endregion
         #region Constructors
-        public LicenseServices()
+
+        private readonly ILicenseRepository _licenseRepo;
+
+        public LicenseService()
         {
-            this.repo = new LicenseRepository();
-        }
-        #endregion 
-        #region Maps
-        private LicenseReadDTO _MapEntityToReadDTO(Entities.License Entity)
-        {
-            if (Entity == null) return null;
-            return new LicenseReadDTO()
-            {
-                LicenseID = Entity.LicenseID,
-                ApplicationID = Entity.ApplicationID,
-                DriverID = Entity.DriverID,
-                LicenseClass = Entity.LicenseClass,
-                IssueDate = Entity.IssueDate,
-                ExpirationDate = Entity.ExpirationDate,
-                Notes = Entity.Notes,
-                PaidFees = Entity.PaidFees,
-                IsActive = Entity.IsActive,
-                IssueReason = Entity.IssueReason,
-                CreatedByUserID = Entity.CreatedByUserID,
-            };
+            _licenseRepo = new LicenseRepositoryADO();
         }
 
-        private Entities.License _MapAddDTOToEntity(LicenseAddDTO AddDTO)
+        public LicenseService(ILicenseRepository licenseRepo)
         {
-            if (AddDTO == null) return null;
-            return new Entities.License()
-            {
-                ApplicationID = AddDTO.ApplicationID,
-                DriverID = AddDTO.DriverID,
-                LicenseClass = AddDTO.LicenseClass,
-                IssueDate = AddDTO.IssueDate,
-                ExpirationDate = AddDTO.ExpirationDate,
-                Notes = AddDTO.Notes,
-                PaidFees = AddDTO.PaidFees,
-                IsActive = AddDTO.IsActive,
-                IssueReason = AddDTO.IssueReason,
-                CreatedByUserID = AddDTO.CreatedByUserID,
-            };
+            _licenseRepo = licenseRepo;
         }
 
-        private Entities.License _MapUpdateDTOToEntity(LicenseUpdateDTO UpdateDTO)
-        {
-            if (UpdateDTO == null) return null;
-            return new Entities.License()
-            {
-                LicenseID = UpdateDTO.LicenseID,
-                ApplicationID = UpdateDTO.ApplicationID,
-                DriverID = UpdateDTO.DriverID,
-                LicenseClass = UpdateDTO.LicenseClass,
-                IssueDate = UpdateDTO.IssueDate,
-                ExpirationDate = UpdateDTO.ExpirationDate,
-                Notes = UpdateDTO.Notes,
-                PaidFees = UpdateDTO.PaidFees,
-                IsActive = UpdateDTO.IsActive,
-                IssueReason = UpdateDTO.IssueReason
-            };
-        }
-
-
-        private List<LicenseReadDTO> _MapEntitiesTOReadDTOs(List<Entities.License> EntitiesList)
-        {
-            List<LicenseReadDTO> Results = new List<LicenseReadDTO>();
-            if (EntitiesList == null) return Results;
-            foreach (var entity in EntitiesList)
-            {
-                var dto = _MapEntityToReadDTO(entity);
-                if (dto != null) Results.Add(dto);
-            }
-            return Results;
-        }
-        private Repositories.enLicenseField _MapToRepoFieldEmum(enFields Field)
-        {
-            switch (Field)
-            {
-                case enFields.LicenseID:
-                    return Repositories.enLicenseField.LicenseID;
-                case enFields.ApplicationID:
-                    return Repositories.enLicenseField.ApplicationID;
-                case enFields.DriverID:
-                    return Repositories.enLicenseField.DriverID;
-                case enFields.LicenseClass:
-                    return Repositories.enLicenseField.LicenseClass;
-                case enFields.IssueDate:
-                    return Repositories.enLicenseField.IssueDate;
-                case enFields.ExpirationDate:
-                    return Repositories.enLicenseField.ExpirationDate;
-                case enFields.Notes:
-                    return Repositories.enLicenseField.Notes;
-                case enFields.PaidFees:
-                    return Repositories.enLicenseField.PaidFees;
-                case enFields.IsActive:
-                    return Repositories.enLicenseField.IsActive;
-                case enFields.IssueReason:
-                    return Repositories.enLicenseField.IssueReason;
-                case enFields.CreatedByUserID:
-                    return Repositories.enLicenseField.CreatedByUserID;
-                default:
-                    return Repositories.enLicenseField.LicenseID;
-            }
-        }
-
-        private LicenseRepository.LicensesSearchCriteria _MapToRepoSearchCriteria(SearchCriteria<enFields> SearchCriteria)
-        {
-            if (SearchCriteria == null) return null;
-            return new LicenseRepository.LicensesSearchCriteria()
-            {
-                PageNumber = SearchCriteria.PageNumber,
-                PageSize = SearchCriteria.SizeInEveryPage,
-                SearchBy = _MapToRepoFieldEmum(SearchCriteria.SearchBy),
-                OrderBy = _MapToRepoFieldEmum(SearchCriteria.OrderBy),
-                SearchText = SearchCriteria.SearchString,
-                Sorting = (Repositories.enSorting)SearchCriteria.SortingBy,
-                SearchType = (Repositories.enSearchType)SearchCriteria.SearchType
-            };
-        }
         #endregion
 
-        #region CRUD METHODS 
-        public OperationResults<LicenseReadDTO> GetPeople(SearchCriteria<LicenseServices.enFields> SearchCriteria)
+        #region CRUD Methods
+
+        public async Task<OperationResults<LicenseReadDTO>> GetAllAsync()
         {
-            return _GetResultFromGetLicensesList(repo.GetLicenses(_MapToRepoSearchCriteria(SearchCriteria)));
+            return MapToOperationResult(await _licenseRepo.GetAllAsync());
         }
-        public OperationResults<LicenseReadDTO> GetAllPeople()
+
+        public async Task<bool> ExistsAsync(int id)
         {
-            return _GetResultFromGetLicensesList(repo.GetAllLicenses());
+            return await _licenseRepo.ExistsAsync(id);
         }
-        public int AddNew(LicenseAddDTO AddDTO)
+
+        public async Task<OperationResult<int>> AddAsync(LicenseAddDTO dto)
         {
-            if (!_ValidationBeforeAddNew(AddDTO)) return -1;
-            int AddResult = repo.AddNewLicense(_MapAddDTOToEntity(AddDTO));
-            if (AddResult > 0)
+            if (dto == null)
             {
-                return AddResult;
+                return OperationResult<int>.Failure(ErrorCode.BadRequest, "License data cannot be null.");
             }
-            return AddResult;
-        }
-        public int PeopleCount(SearchCriteria<LicenseServices.enFields> SearchCriteria)
-        {
-            return repo.GetCountOfLicensesByFilter(_MapToRepoSearchCriteria(SearchCriteria));
-        }
-        public int GetCountOfAllWithoutFilter()
-        {
-            return repo.GetCountOfAllLicenses();
-        }
-        public OperationResult<LicenseReadDTO> FindByLicenseID(int LicenseID)
-        {
-            var data = repo.FindLicenseByLicenseID(LicenseID);
-            if (data == null) return OperationResult<LicenseReadDTO>.FailureDBAError(ErrorCode.rDBAError);
-            // simple not-found check: if primary numeric and <=0 treat as not found else if all default treat not found
-            bool notFound = false;
-            if (data.LicenseID <= 0) notFound = true;
-            if (notFound) return OperationResult<LicenseReadDTO>.Failure(ErrorCode.rNotFound, "No License Data Found.");
-            return OperationResult<LicenseReadDTO>.Success(_MapEntityToReadDTO(data), "License Data Retrieved Successfully.");
-        }
-        public bool DeleteByLicenseID(int LicenseID)
-        {
-            if (repo.DeleteLicenseByLicenseID(LicenseID))
+
+            int addResult = await _licenseRepo.AddAsync(MapToEntity(dto));
+
+            if (addResult > 0)
             {
-                return true;
+                return OperationResult<int>.Success(addResult, "License issued successfully.");
             }
-            else
-                return false;
+
+            return OperationResult<int>.Failure(ErrorCode.Conflict, "Failed to issue license.");
         }
-        public bool UpdateByLicenseID(LicenseUpdateDTO UpdatedData)
+
+        public async Task<int> GetCountAsync()
         {
-            return repo.UpdateLicenseByLicenseID(_MapUpdateDTOToEntity(UpdatedData));
+            return await _licenseRepo.CountAsync();
         }
+
+        public async Task<OperationResult<LicenseReadDTO>> GetByIdAsync(int licenseId)
+        {
+            var data = await _licenseRepo.FindAsync(licenseId);
+            if (data == null || data.LicenseID <= 0)
+            {
+                return OperationResult<LicenseReadDTO>.Failure(ErrorCode.NotFound, "No license data found.");
+            }
+
+            return OperationResult<LicenseReadDTO>.Success(MapToReadDTO(data), "License data retrieved successfully.");
+        }
+
+        public async Task<OperationResult<bool>> DeleteAsync(int id)
+        {
+            if (!await _licenseRepo.ExistsAsync(id))
+            {
+                return OperationResult<bool>.Failure(ErrorCode.NotFound, "License not found.");
+            }
+
+            bool isDeleted = await _licenseRepo.DeleteAsync(id);
+            if (!isDeleted)
+            {
+                return OperationResult<bool>.Failure(ErrorCode.Conflict, "Cannot delete license because it has associated records (detentions or international licenses).");
+            }
+
+            return OperationResult<bool>.Success(true, "License deleted successfully.");
+        }
+
+        public async Task<OperationResult<bool>> UpdateAsync(LicenseUpdateDTO dto)
+        {
+            if (dto == null)
+            {
+                return OperationResult<bool>.Failure(ErrorCode.BadRequest, "License data cannot be null.");
+            }
+
+            var existingLicense = await _licenseRepo.FindAsync(dto.LicenseID);
+            if (existingLicense == null)
+            {
+                return OperationResult<bool>.Failure(ErrorCode.NotFound, $"License with ID {dto.LicenseID} is not found.");
+            }
+
+            var entity = MapToEntity(dto);
+            entity.CreatedByUserID = existingLicense.CreatedByUserID;
+
+            bool isUpdated = await _licenseRepo.UpdateAsync(entity);
+            if (!isUpdated)
+            {
+                return OperationResult<bool>.Failure(ErrorCode.Conflict, "Failed to update license.");
+            }
+
+            return OperationResult<bool>.Success(true, "License updated successfully.");
+        }
+
         #endregion
-        #region Validations
-        private bool _ValidationBeforeAddNew(LicenseAddDTO AddDTO)
+
+        #region Domain Specific Methods
+
+        public async Task<OperationResults<LicenseReadDTO>> GetDriverLicensesAsync(int driverId)
         {
-            // Verification code (customize as needed)
-            return true;
+            var licenses = await _licenseRepo.GetDriverLicensesAsync(driverId);
+            return MapToOperationResult(licenses);
         }
-        #endregion
-        #region Private Methods
-        private OperationResults<LicenseReadDTO> _GetResultFromGetLicensesList(List<Entities.License> Data)
+
+        public async Task<OperationResult<int?>> GetActiveLicenseIdByPersonIdAsync(int personId, int licenseClassId)
         {
-            if (Data == null) return OperationResults<LicenseReadDTO>.FailureDBAError(ErrorCode.rDBAError);
-            if (Data.Count == 0) return OperationResults<LicenseReadDTO>.Failure(ErrorCode.rNoData, "No Licenses Data Found.");
-            return OperationResults<LicenseReadDTO>.Success(_MapEntitiesTOReadDTOs(Data), "Licenses Data Retrieved Successfully.");
+            int? activeLicenseId = await _licenseRepo.GetActiveLicenseIdByPersonIdAsync(personId, licenseClassId);
+            if (!activeLicenseId.HasValue)
+            {
+                return OperationResult<int?>.Failure(ErrorCode.NotFound, "No active license found for this person and class.");
+            }
+
+            return OperationResult<int?>.Success(activeLicenseId, "Active license retrieved successfully.");
         }
+
+        public async Task<OperationResult<bool>> DeactivateLicenseAsync(int licenseId)
+        {
+            if (!await _licenseRepo.ExistsAsync(licenseId))
+            {
+                return OperationResult<bool>.Failure(ErrorCode.NotFound, "License not found.");
+            }
+
+            bool result = await _licenseRepo.DeactivateLicenseAsync(licenseId);
+            if (!result)
+            {
+                return OperationResult<bool>.Failure(ErrorCode.Conflict, "Failed to deactivate license.");
+            }
+
+            return OperationResult<bool>.Success(true, "License deactivated successfully.");
+        }
+
         #endregion
     }
 }

@@ -1,4 +1,4 @@
-namespace Entities
+namespace DVLD.DAL.Entities
 {
     public class ApplicationType
     {
@@ -7,4 +7,3 @@ namespace Entities
         public decimal ApplicationFees { get; set; }
     }
 }
-

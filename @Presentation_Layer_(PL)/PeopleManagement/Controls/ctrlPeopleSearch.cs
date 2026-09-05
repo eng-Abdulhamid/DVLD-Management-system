@@ -31,7 +31,7 @@ namespace DVLDPL.PeopleManagement
         private string letter = "";
         private string lastSearchResult = "";
         private PersonServices personServices;
-        private enGender selectedGender = enGender.Unknown;
+        private enGendor selectedGendor = enGendor.Unknown;
         private void InitializeDesign()
         {
             this.BackColor = Color.FromArgb(240, 242, 245);
@@ -89,11 +89,11 @@ namespace DVLDPL.PeopleManagement
             cbSearchByLetter.SelectedIndex = 0;
             cbSearchByLetter.DropDownStyle = ComboBoxStyle.DropDownList;
         }
-        private void InitializeSearchByGenderComboBox()
+        private void InitializeSearchByGendorComboBox()
         {
-            cbByGender.Items.AddRange(new object[] { "Both", "Male", "Female" });
-            cbByGender.SelectedIndex = 0;
-            cbByGender.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbByGendor.Items.AddRange(new object[] { "Both", "Male", "Female" });
+            cbByGendor.SelectedIndex = 0;
+            cbByGendor.DropDownStyle = ComboBoxStyle.DropDownList;
         }
         private void InitializeFilterByComboBox()
         {
@@ -110,7 +110,7 @@ namespace DVLDPL.PeopleManagement
         {
             InitializeSearchBox();
             InitializeSearchByLetterComboBox();
-            InitializeSearchByGenderComboBox();
+            InitializeSearchByGendorComboBox();
             InitializeFilterByComboBox();
         }
         private void UpdateSearchPlaceholder(string newText)
@@ -132,29 +132,29 @@ namespace DVLDPL.PeopleManagement
             }
             eventSearchResults.Invoke(this, GetSearchResults());
         }
-        private enGender GetSelectedGender()
+        private enGendor GetSelectedGendor()
         {
-            string gender = cbByGender.Text;
-            if (gender == "Male")
+            string Gendor = cbByGendor.Text;
+            if (Gendor == "Male")
             {
-                return enGender.Male;
+                return enGendor.Male;
 
             }
-            else if (gender == "Female")
+            else if (Gendor == "Female")
             {
-                return enGender.Female;
+                return enGendor.Female;
             }
             else
             {
-                return enGender.Unknown;
+                return enGendor.Unknown;
             }
 
         }
-        private void cbByGender_SelectedIndexChanged(object sender, EventArgs e)
+        private void cbByGendor_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (selectedGender != GetSelectedGender())
+            if (selectedGendor != GetSelectedGendor())
             {
-                selectedGender = GetSelectedGender();
+                selectedGendor = GetSelectedGendor();
                 eventSearchResults.Invoke(this, GetSearchResults());
             }
         }
@@ -210,7 +210,7 @@ namespace DVLDPL.PeopleManagement
                 "Nationality" => PersonServices.enFields.NationalityCountryID,
                 "Phone" => PersonServices.enFields.Phone,
                 "Email" => PersonServices.enFields.Email,
-                "Gender" => PersonServices.enFields.Gender,
+                "Gendor" => PersonServices.enFields.Gendor,
                 _ => PersonServices.enFields.None
             };
         }
@@ -237,7 +237,7 @@ namespace DVLDPL.PeopleManagement
             }
             SearchCriteria<PersonServices.enFields> searchBy = new SearchCriteria<PersonServices.enFields>
             {
-                GenderFilter = GetSelectedGender(),
+                GendorFilter = GetSelectedGendor(),
                 FilterBy = SelectCurrentFilter(),
                 SearchString = searchText,
                 SearchType = searchType

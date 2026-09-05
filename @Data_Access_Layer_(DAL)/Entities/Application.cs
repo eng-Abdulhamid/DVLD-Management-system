@@ -1,6 +1,8 @@
+using System;
+
 namespace DVLD.DAL.Entities
 {
-    public partial class Application
+    public class Application
     {
         public int ApplicationID { get; set; }
         public int ApplicantPersonID { get; set; }
@@ -12,4 +14,3 @@ namespace DVLD.DAL.Entities
         public int CreatedByUserID { get; set; }
     }
 }
-

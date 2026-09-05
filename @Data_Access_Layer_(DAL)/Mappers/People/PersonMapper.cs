@@ -19,7 +19,7 @@ namespace DVLD.DAL.Mapper
                     ThirdName = reader.IsDBNull(indices.ThirdName) ? string.Empty : reader.GetString(indices.ThirdName),
                     LastName = reader.GetString(indices.LastName),
                     DateOfBirth = reader.GetDateTime(indices.DateOfBirth),
-                    Gender = (byte)reader.GetValue(indices.Gender) == 0 ? Enums.Gender.Male : Enums.Gender.Female,
+                    Gendor = (byte)reader.GetValue(indices.Gendor) == 0 ? Enums.Gendor.Male : Enums.Gendor.Female,
                     Address = reader.GetString(indices.Address),
                     Phone = reader.GetString(indices.Phone),
                     Email = reader.IsDBNull(indices.Email) ? string.Empty : reader.GetString(indices.Email),

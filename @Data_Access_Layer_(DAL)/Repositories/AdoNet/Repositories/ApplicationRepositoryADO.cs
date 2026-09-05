@@ -26,7 +26,20 @@ namespace DVLD.DAL.Repo.ADONet
 
             return await DbExecutor.ExecuteScalarReturnInt(Command);
         }
+        public async Task<bool> UpdateStatusAsync(int applicationID, byte newStatus)
+        {
+            string query = @"UPDATE Applications 
+                     SET ApplicationStatus = @ApplicationStatus, 
+                         LastStatusDate = @LastStatusDate 
+                     WHERE ApplicationID = @ApplicationID";
 
+            SqlCommand command = new(query);
+            command.Parameters.AddWithValue("@ApplicationID", applicationID);
+            command.Parameters.AddWithValue("@ApplicationStatus", newStatus);
+            command.Parameters.AddWithValue("@LastStatusDate", DateTime.Now);
+
+            return await DbExecutor.ExecuteCommandReturnRowsAffected(command) > 0;
+        }
         public async Task<Application?> FindAsync(int ApplicationID)
         {
             string Query = "SELECT * FROM Applications WHERE ApplicationID = @ApplicationID";
@@ -53,8 +66,7 @@ namespace DVLD.DAL.Repo.ADONet
                 ApplicationTypeID = @ApplicationTypeID,
                 ApplicationStatus = @ApplicationStatus,
                 LastStatusDate = @LastStatusDate,
-                PaidFees = @PaidFees,
-                CreatedByUserID = @CreatedByUserID
+                PaidFees = @PaidFees
                 WHERE ApplicationID = @ApplicationID";
 
             SqlCommand Command = new SqlCommand(Query);
@@ -66,7 +78,6 @@ namespace DVLD.DAL.Repo.ADONet
             Command.Parameters.AddWithValue("@ApplicationStatus", UpdatedApplication.ApplicationStatus);
             Command.Parameters.AddWithValue("@LastStatusDate", UpdatedApplication.LastStatusDate);
             Command.Parameters.AddWithValue("@PaidFees", UpdatedApplication.PaidFees);
-            Command.Parameters.AddWithValue("@CreatedByUserID", UpdatedApplication.CreatedByUserID);
 
             return await DbExecutor.ExecuteCommandReturnRowsAffected(Command) > 0;
         }

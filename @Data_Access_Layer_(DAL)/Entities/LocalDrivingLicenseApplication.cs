@@ -1,4 +1,4 @@
-namespace Entities
+namespace DVLD.DAL.Entities
 {
     public class LocalDrivingLicenseApplication
     {
@@ -7,4 +7,3 @@ namespace Entities
         public int LicenseClassID { get; set; }
     }
 }
-

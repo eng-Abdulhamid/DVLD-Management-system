@@ -1,181 +1,140 @@
-using DTOs;
-using DVLD.BLL;
-using Repositories;
-using RepositoriesInterfaces;
-using System.Collections.Generic;
-namespace Services
+using System;
+using System.Threading.Tasks;
+using DVLD.BLL.DTOs;
+using DVLD.BLL.Enums;
+using DVLD.BLL.OperationResults;
+using DVLD.DAL.Entities;
+using DVLD.DAL.Interfaces.IRepositories;
+using DVLD.DAL.Repo.ADONet;
+using static DVLD.BLL.Mappers.TestMapper;
+
+namespace DVLD.BLL.Services
 {
-
-    public partial class TestServices : ITestServices
+    public class TestService
     {
-        public enum enFields
-        {
-            None = 0,
-            TestID,
-            TestAppointmentID,
-            TestResult,
-            Notes,
-            CreatedByUserID
-        }
-        #region Properties
-        private ITestRepository repo;
-        #endregion
         #region Constructors
-        public TestServices()
+
+        private readonly ITestRepository _testRepo;
+
+        public TestService()
         {
-            this.repo = new TestRepository();
-        }
-        #endregion 
-        #region Maps
-        private TestReadDTO _MapEntityToReadDTO(Entities.Test Entity)
-        {
-            if (Entity == null) return null;
-            return new TestReadDTO()
-            {
-                TestID = Entity.TestID,
-                TestAppointmentID = Entity.TestAppointmentID,
-                TestResult = Entity.TestResult,
-                Notes = Entity.Notes,
-                CreatedByUserID = Entity.CreatedByUserID,
-            };
+            _testRepo = new TestRepositoryADO();
         }
 
-        private Entities.Test _MapAddDTOToEntity(TestAddDTO AddDTO)
+        public TestService(ITestRepository testRepo)
         {
-            if (AddDTO == null) return null;
-            return new Entities.Test()
-            {
-                TestAppointmentID = AddDTO.TestAppointmentID,
-                TestResult = AddDTO.TestResult,
-                Notes = AddDTO.Notes,
-                CreatedByUserID = AddDTO.CreatedByUserID,
-            };
+            _testRepo = testRepo;
         }
 
-        private Entities.Test _MapUpdateDTOToEntity(TestUpdateDTO UpdateDTO)
-        {
-            if (UpdateDTO == null) return null;
-            return new Entities.Test()
-            {
-                TestID = UpdateDTO.TestID,
-                TestAppointmentID = UpdateDTO.TestAppointmentID,
-                TestResult = UpdateDTO.TestResult,
-                Notes = UpdateDTO.Notes
-            };
-        }
-
-
-        private List<TestReadDTO> _MapEntitiesTOReadDTOs(List<Entities.Test> EntitiesList)
-        {
-            List<TestReadDTO> Results = new List<TestReadDTO>();
-            if (EntitiesList == null) return Results;
-            foreach (var entity in EntitiesList)
-            {
-                var dto = _MapEntityToReadDTO(entity);
-                if (dto != null) Results.Add(dto);
-            }
-            return Results;
-        }
-        private Repositories.enTestField _MapToRepoFieldEmum(enFields Field)
-        {
-            switch (Field)
-            {
-                case enFields.TestID:
-                    return Repositories.enTestField.TestID;
-                case enFields.TestAppointmentID:
-                    return Repositories.enTestField.TestAppointmentID;
-                case enFields.TestResult:
-                    return Repositories.enTestField.TestResult;
-                case enFields.Notes:
-                    return Repositories.enTestField.Notes;
-                case enFields.CreatedByUserID:
-                    return Repositories.enTestField.CreatedByUserID;
-                default:
-                    return Repositories.enTestField.TestID;
-            }
-        }
-
-        private TestRepository.TestsSearchCriteria _MapToRepoSearchCriteria(SearchCriteria<enFields> SearchCriteria)
-        {
-            if (SearchCriteria == null) return null;
-            return new TestRepository.TestsSearchCriteria()
-            {
-                PageNumber = SearchCriteria.PageNumber,
-                PageSize = SearchCriteria.SizeInEveryPage,
-                SearchBy = _MapToRepoFieldEmum(SearchCriteria.SearchBy),
-                OrderBy = _MapToRepoFieldEmum(SearchCriteria.OrderBy),
-                SearchText = SearchCriteria.SearchString,
-                Sorting = (Repositories.enSorting)SearchCriteria.SortingBy,
-                SearchType = (Repositories.enSearchType)SearchCriteria.SearchType
-            };
-        }
         #endregion
 
-        #region CRUD METHODS 
-        public OperationResults<TestReadDTO> GetPeople(SearchCriteria<TestServices.enFields> SearchCriteria)
+        #region CRUD Methods
+
+        public async Task<OperationResults<TestReadDTO>> GetAllAsync()
         {
-            return _GetResultFromGetTestsList(repo.GetTests(_MapToRepoSearchCriteria(SearchCriteria)));
+            return MapToOperationResult(await _testRepo.GetAllAsync());
         }
-        public OperationResults<TestReadDTO> GetAllPeople()
+
+        public async Task<bool> ExistsAsync(int id)
         {
-            return _GetResultFromGetTestsList(repo.GetAllTests());
+            return await _testRepo.ExistsAsync(id);
         }
-        public int AddNew(TestAddDTO AddDTO)
+
+        public async Task<OperationResult<int>> AddAsync(TestAddDTO dto)
         {
-            if (!_ValidationBeforeAddNew(AddDTO)) return -1;
-            int AddResult = repo.AddNewTest(_MapAddDTOToEntity(AddDTO));
-            if (AddResult > 0)
+            if (dto == null)
             {
-                return AddResult;
+                return OperationResult<int>.Failure(ErrorCode.BadRequest, "Test data cannot be null.");
             }
-            return AddResult;
-        }
-        public int PeopleCount(SearchCriteria<TestServices.enFields> SearchCriteria)
-        {
-            return repo.GetCountOfTestsByFilter(_MapToRepoSearchCriteria(SearchCriteria));
-        }
-        public int GetCountOfAllWithoutFilter()
-        {
-            return repo.GetCountOfAllTests();
-        }
-        public OperationResult<TestReadDTO> FindByTestID(int TestID)
-        {
-            var data = repo.FindTestByTestID(TestID);
-            if (data == null) return OperationResult<TestReadDTO>.FailureDBAError(ErrorCode.rDBAError);
-            // simple not-found check: if primary numeric and <=0 treat as not found else if all default treat not found
-            bool notFound = false;
-            if (data.TestID <= 0) notFound = true;
-            if (notFound) return OperationResult<TestReadDTO>.Failure(ErrorCode.rNotFound, "No Test Data Found.");
-            return OperationResult<TestReadDTO>.Success(_MapEntityToReadDTO(data), "Test Data Retrieved Successfully.");
-        }
-        public bool DeleteByTestID(int TestID)
-        {
-            if (repo.DeleteTestByTestID(TestID))
+
+            int addResult = await _testRepo.AddAsync(MapToEntity(dto));
+
+            if (addResult > 0)
             {
-                return true;
+                return OperationResult<int>.Success(addResult, "Test record submitted successfully.");
             }
-            else
-                return false;
+
+            return OperationResult<int>.Failure(ErrorCode.Conflict, "Failed to submit test record.");
         }
-        public bool UpdateByTestID(TestUpdateDTO UpdatedData)
+
+        public async Task<int> GetCountAsync()
         {
-            return repo.UpdateTestByTestID(_MapUpdateDTOToEntity(UpdatedData));
+            return await _testRepo.CountAsync();
         }
+
+        public async Task<OperationResult<TestReadDTO>> GetByIdAsync(int testId)
+        {
+            var data = await _testRepo.FindAsync(testId);
+            if (data == null || data.TestID <= 0)
+            {
+                return OperationResult<TestReadDTO>.Failure(ErrorCode.NotFound, "No test data found.");
+            }
+
+            return OperationResult<TestReadDTO>.Success(MapToReadDTO(data), "Test data retrieved successfully.");
+        }
+
+        public async Task<OperationResult<bool>> DeleteAsync(int id)
+        {
+            if (!await _testRepo.ExistsAsync(id))
+            {
+                return OperationResult<bool>.Failure(ErrorCode.NotFound, "Test record not found.");
+            }
+
+            bool isDeleted = await _testRepo.DeleteAsync(id);
+            if (!isDeleted)
+            {
+                return OperationResult<bool>.Failure(ErrorCode.Conflict, "Failed to delete test record.");
+            }
+
+            return OperationResult<bool>.Success(true, "Test record deleted successfully.");
+        }
+
+        public async Task<OperationResult<bool>> UpdateAsync(TestUpdateDTO dto)
+        {
+            if (dto == null)
+            {
+                return OperationResult<bool>.Failure(ErrorCode.BadRequest, "Test data cannot be null.");
+            }
+
+            if (!await _testRepo.ExistsAsync(dto.TestID))
+            {
+                return OperationResult<bool>.Failure(ErrorCode.NotFound, $"Test with ID {dto.TestID} is not found.");
+            }
+
+            bool isUpdated = await _testRepo.UpdateAsync(MapToEntity(dto));
+            if (!isUpdated)
+            {
+                return OperationResult<bool>.Failure(ErrorCode.Conflict, "Failed to update test record.");
+            }
+
+            return OperationResult<bool>.Success(true, "Test record updated successfully.");
+        }
+
         #endregion
-        #region Validations
-        private bool _ValidationBeforeAddNew(TestAddDTO AddDTO)
+
+        #region Domain Specific Methods
+
+        public async Task<OperationResult<TestReadDTO>> GetByTestAppointmentIdAsync(int testAppointmentId)
         {
-            // Verification code (customize as needed)
-            return true;
+            var data = await _testRepo.FindByTestAppointmentIdAsync(testAppointmentId);
+            if (data == null || data.TestID <= 0)
+            {
+                return OperationResult<TestReadDTO>.Failure(ErrorCode.NotFound, "No test trial found for this appointment.");
+            }
+
+            return OperationResult<TestReadDTO>.Success(MapToReadDTO(data), "Test record retrieved successfully.");
         }
-        #endregion
-        #region Private Methods
-        private OperationResults<TestReadDTO> _GetResultFromGetTestsList(List<Entities.Test> Data)
+
+        public async Task<byte> GetPassedTestCountAsync(int localDrivingLicenseApplicationId)
         {
-            if (Data == null) return OperationResults<TestReadDTO>.FailureDBAError(ErrorCode.rDBAError);
-            if (Data.Count == 0) return OperationResults<TestReadDTO>.Failure(ErrorCode.rNoData, "No Tests Data Found.");
-            return OperationResults<TestReadDTO>.Success(_MapEntitiesTOReadDTOs(Data), "Tests Data Retrieved Successfully.");
+            return await _testRepo.GetPassedTestCountAsync(localDrivingLicenseApplicationId);
         }
+
+        public async Task<bool> PassedAllTestsAsync(int localDrivingLicenseApplicationId)
+        {
+            return await _testRepo.PassedAllTestsAsync(localDrivingLicenseApplicationId);
+        }
+
         #endregion
     }
 }

@@ -38,5 +38,6 @@ namespace DVLD.BLL.Enums
         /// </summary>
         [Description("You are not authorized to perform this operation.")]
         Unauthorized = 4,
+        BadRequest = 5
     }
 }

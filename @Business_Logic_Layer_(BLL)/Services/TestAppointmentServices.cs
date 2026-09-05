@@ -1,193 +1,159 @@
-using DTOs;
-using DVLD.BLL;
-using Repositories;
-using RepositoriesInterfaces;
+using System;
 using System.Collections.Generic;
-namespace Services
+using System.Threading.Tasks;
+using DVLD.BLL.DTOs;
+using DVLD.BLL.Enums;
+using DVLD.BLL.OperationResults;
+using DVLD.DAL.Entities;
+using DVLD.DAL.Interfaces.IRepositories;
+using DVLD.DAL.Repo.ADONet;
+using static DVLD.BLL.Mappers.TestAppointmentMapper;
+
+namespace DVLD.BLL.Services
 {
-
-    public partial class TestAppointmentServices : ITestAppointmentServices
+    public class TestAppointmentService
     {
-        public enum enFields
-        {
-            None = 0,
-            TestAppointmentID,
-            TestTypeID,
-            LocalDrivingLicenseApplicationID,
-            AppointmentDate,
-            PaidFees,
-            CreatedByUserID,
-            IsLocked
-        }
-        #region Properties
-        private ITestAppointmentRepository repo;
-        #endregion
         #region Constructors
-        public TestAppointmentServices()
+
+        private readonly ITestAppointmentRepository _testAppointmentRepo;
+
+        public TestAppointmentService()
         {
-            this.repo = new TestAppointmentRepository();
-        }
-        #endregion 
-        #region Maps
-        private TestAppointmentReadDTO _MapEntityToReadDTO(Entities.TestAppointment Entity)
-        {
-            if (Entity == null) return null;
-            return new TestAppointmentReadDTO()
-            {
-                TestAppointmentID = Entity.TestAppointmentID,
-                TestTypeID = Entity.TestTypeID,
-                LocalDrivingLicenseApplicationID = Entity.LocalDrivingLicenseApplicationID,
-                AppointmentDate = Entity.AppointmentDate,
-                PaidFees = Entity.PaidFees,
-                CreatedByUserID = Entity.CreatedByUserID,
-                IsLocked = Entity.IsLocked,
-            };
+            _testAppointmentRepo = new TestAppointmentRepositoryADO();
         }
 
-        private Entities.TestAppointment _MapAddDTOToEntity(TestAppointmentAddDTO AddDTO)
+        public TestAppointmentService(ITestAppointmentRepository testAppointmentRepo)
         {
-            if (AddDTO == null) return null;
-            return new Entities.TestAppointment()
-            {
-                TestTypeID = AddDTO.TestTypeID,
-                LocalDrivingLicenseApplicationID = AddDTO.LocalDrivingLicenseApplicationID,
-                AppointmentDate = AddDTO.AppointmentDate,
-                PaidFees = AddDTO.PaidFees,
-                CreatedByUserID = AddDTO.CreatedByUserID,
-                IsLocked = AddDTO.IsLocked,
-            };
+            _testAppointmentRepo = testAppointmentRepo;
         }
 
-        private Entities.TestAppointment _MapUpdateDTOToEntity(TestAppointmentUpdateDTO UpdateDTO)
-        {
-            if (UpdateDTO == null) return null;
-            return new Entities.TestAppointment()
-            {
-                TestAppointmentID = UpdateDTO.TestAppointmentID,
-                TestTypeID = UpdateDTO.TestTypeID,
-                LocalDrivingLicenseApplicationID = UpdateDTO.LocalDrivingLicenseApplicationID,
-                AppointmentDate = UpdateDTO.AppointmentDate,
-                PaidFees = UpdateDTO.PaidFees,
-                IsLocked = UpdateDTO.IsLocked,
-            };
-        }
-
-
-        private List<TestAppointmentReadDTO> _MapEntitiesTOReadDTOs(List<Entities.TestAppointment> EntitiesList)
-        {
-            List<TestAppointmentReadDTO> Results = new List<TestAppointmentReadDTO>();
-            if (EntitiesList == null) return Results;
-            foreach (var entity in EntitiesList)
-            {
-                var dto = _MapEntityToReadDTO(entity);
-                if (dto != null) Results.Add(dto);
-            }
-            return Results;
-        }
-        private Repositories.enTestAppointmentField _MapToRepoFieldEmum(enFields Field)
-        {
-            switch (Field)
-            {
-                case enFields.TestAppointmentID:
-                    return Repositories.enTestAppointmentField.TestAppointmentID;
-                case enFields.TestTypeID:
-                    return Repositories.enTestAppointmentField.TestTypeID;
-                case enFields.LocalDrivingLicenseApplicationID:
-                    return Repositories.enTestAppointmentField.LocalDrivingLicenseApplicationID;
-                case enFields.AppointmentDate:
-                    return Repositories.enTestAppointmentField.AppointmentDate;
-                case enFields.PaidFees:
-                    return Repositories.enTestAppointmentField.PaidFees;
-                case enFields.CreatedByUserID:
-                    return Repositories.enTestAppointmentField.CreatedByUserID;
-                case enFields.IsLocked:
-                    return Repositories.enTestAppointmentField.IsLocked;
-                default:
-                    return Repositories.enTestAppointmentField.TestAppointmentID;
-            }
-        }
-
-        private TestAppointmentRepository.TestAppointmentsSearchCriteria _MapToRepoSearchCriteria(SearchCriteria<enFields> SearchCriteria)
-        {
-            if (SearchCriteria == null) return null;
-            return new TestAppointmentRepository.TestAppointmentsSearchCriteria()
-            {
-                PageNumber = SearchCriteria.PageNumber,
-                PageSize = SearchCriteria.SizeInEveryPage,
-                SearchBy = _MapToRepoFieldEmum(SearchCriteria.SearchBy),
-                OrderBy = _MapToRepoFieldEmum(SearchCriteria.OrderBy),
-                SearchText = SearchCriteria.SearchString,
-                Sorting = (Repositories.enSorting)SearchCriteria.SortingBy,
-                SearchType = (Repositories.enSearchType)SearchCriteria.SearchType
-            };
-        }
         #endregion
 
-        #region CRUD METHODS 
-        public OperationResults<TestAppointmentReadDTO> GetPeople(SearchCriteria<TestAppointmentServices.enFields> SearchCriteria)
+        #region CRUD Methods
+
+        public async Task<OperationResults<TestAppointmentReadDTO>> GetAllAsync()
         {
-            return _GetResultFromGetTestAppointmentsList(repo.GetTestAppointments(_MapToRepoSearchCriteria(SearchCriteria)));
+            return MapToOperationResult(await _testAppointmentRepo.GetAllAsync());
         }
-        public OperationResults<TestAppointmentReadDTO> GetAllPeople()
+
+        public async Task<bool> ExistsAsync(int id)
         {
-            return _GetResultFromGetTestAppointmentsList(repo.GetAllTestAppointments());
+            return await _testAppointmentRepo.ExistsAsync(id);
         }
-        public int AddNew(TestAppointmentAddDTO AddDTO)
+
+        public async Task<OperationResult<int>> AddAsync(TestAppointmentAddDTO dto)
         {
-            if (!_ValidationBeforeAddNew(AddDTO)) return -1;
-            int AddResult = repo.AddNewTestAppointment(_MapAddDTOToEntity(AddDTO));
-            if (AddResult > 0)
+            if (dto == null)
             {
-                return AddResult;
+                return OperationResult<int>.Failure(ErrorCode.BadRequest, "Test appointment data cannot be null.");
             }
-            return AddResult;
-        }
-        public int PeopleCount(SearchCriteria<TestAppointmentServices.enFields> SearchCriteria)
-        {
-            return repo.GetCountOfTestAppointmentsByFilter(_MapToRepoSearchCriteria(SearchCriteria));
-        }
-        public int GetCountOfAllWithoutFilter()
-        {
-            return repo.GetCountOfAllTestAppointments();
-        }
-        public OperationResult<TestAppointmentReadDTO> FindByTestAppointmentID(int TestAppointmentID)
-        {
-            var data = repo.FindTestAppointmentByTestAppointmentID(TestAppointmentID);
-            if (data == null) return OperationResult<TestAppointmentReadDTO>.FailureDBAError(ErrorCode.rDBAError);
-            // simple not-found check: if primary numeric and <=0 treat as not found else if all default treat not found
-            bool notFound = false;
-            if (data.TestAppointmentID <= 0) notFound = true;
-            if (notFound) return OperationResult<TestAppointmentReadDTO>.Failure(ErrorCode.rNotFound, "No TestAppointment Data Found.");
-            return OperationResult<TestAppointmentReadDTO>.Success(_MapEntityToReadDTO(data), "TestAppointment Data Retrieved Successfully.");
-        }
-        public bool DeleteByTestAppointmentID(int TestAppointmentID)
-        {
-            if (repo.DeleteTestAppointmentByTestAppointmentID(TestAppointmentID))
+
+            int addResult = await _testAppointmentRepo.AddAsync(MapToEntity(dto));
+
+            if (addResult > 0)
             {
-                return true;
+                return OperationResult<int>.Success(addResult, "Test appointment scheduled successfully.");
             }
-            else
-                return false;
+
+            return OperationResult<int>.Failure(ErrorCode.Conflict, "Failed to schedule test appointment.");
         }
-        public bool UpdateByTestAppointmentID(TestAppointmentUpdateDTO UpdatedData)
+
+        public async Task<int> GetCountAsync()
         {
-            return repo.UpdateTestAppointmentByTestAppointmentID(_MapUpdateDTOToEntity(UpdatedData));
+            return await _testAppointmentRepo.CountAsync();
         }
+
+        public async Task<OperationResult<TestAppointmentReadDTO>> GetByIdAsync(int testAppointmentId)
+        {
+            var data = await _testAppointmentRepo.FindAsync(testAppointmentId);
+            if (data == null || data.TestAppointmentID <= 0)
+            {
+                return OperationResult<TestAppointmentReadDTO>.Failure(ErrorCode.NotFound, "No test appointment data found.");
+            }
+
+            return OperationResult<TestAppointmentReadDTO>.Success(MapToReadDTO(data), "Test appointment data retrieved successfully.");
+        }
+
+        public async Task<OperationResult<bool>> DeleteAsync(int id)
+        {
+            if (!await _testAppointmentRepo.ExistsAsync(id))
+            {
+                return OperationResult<bool>.Failure(ErrorCode.NotFound, "Test appointment not found.");
+            }
+
+            bool isDeleted = await _testAppointmentRepo.DeleteAsync(id);
+            if (!isDeleted)
+            {
+                return OperationResult<bool>.Failure(ErrorCode.Conflict, "Cannot delete test appointment because it is linked to completed tests.");
+            }
+
+            return OperationResult<bool>.Success(true, "Test appointment deleted successfully.");
+        }
+
+        public async Task<OperationResult<bool>> UpdateAsync(TestAppointmentUpdateDTO dto)
+        {
+            if (dto == null)
+            {
+                return OperationResult<bool>.Failure(ErrorCode.BadRequest, "Test appointment data cannot be null.");
+            }
+
+            var existingAppointment = await _testAppointmentRepo.FindAsync(dto.TestAppointmentID);
+            if (existingAppointment == null)
+            {
+                return OperationResult<bool>.Failure(ErrorCode.NotFound, $"Test appointment with ID {dto.TestAppointmentID} is not found.");
+            }
+
+            if (existingAppointment.IsLocked)
+            {
+                return OperationResult<bool>.Failure(ErrorCode.Conflict, "Cannot update a locked test appointment.");
+            }
+
+            bool isUpdated = await _testAppointmentRepo.UpdateAsync(MapToEntity(dto));
+            if (!isUpdated)
+            {
+                return OperationResult<bool>.Failure(ErrorCode.Conflict, "Failed to update test appointment.");
+            }
+
+            return OperationResult<bool>.Success(true, "Test appointment updated successfully.");
+        }
+
         #endregion
-        #region Validations
-        private bool _ValidationBeforeAddNew(TestAppointmentAddDTO AddDTO)
+
+        #region Domain Specific Methods
+
+        public async Task<OperationResults<TestAppointmentReadDTO>> GetApplicationTestAppointmentsPerTestTypeAsync(int localDrivingLicenseApplicationId, int testTypeId)
         {
-            // Verification code (customize as needed)
-            return true;
+            var list = await _testAppointmentRepo.GetApplicationTestAppointmentsPerTestTypeAsync(localDrivingLicenseApplicationId, testTypeId);
+            return MapToOperationResult(list);
         }
-        #endregion
-        #region Private Methods
-        private OperationResults<TestAppointmentReadDTO> _GetResultFromGetTestAppointmentsList(List<Entities.TestAppointment> Data)
+
+        public async Task<OperationResult<TestAppointmentReadDTO>> GetLastTestAppointmentAsync(int localDrivingLicenseApplicationId, int testTypeId)
         {
-            if (Data == null) return OperationResults<TestAppointmentReadDTO>.FailureDBAError(ErrorCode.rDBAError);
-            if (Data.Count == 0) return OperationResults<TestAppointmentReadDTO>.Failure(ErrorCode.rNoData, "No TestAppointments Data Found.");
-            return OperationResults<TestAppointmentReadDTO>.Success(_MapEntitiesTOReadDTOs(Data), "TestAppointments Data Retrieved Successfully.");
+            var appointment = await _testAppointmentRepo.GetLastTestAppointmentAsync(localDrivingLicenseApplicationId, testTypeId);
+            if (appointment == null)
+            {
+                return OperationResult<TestAppointmentReadDTO>.Failure(ErrorCode.NotFound, "No previous appointment found for this test type.");
+            }
+
+            return OperationResult<TestAppointmentReadDTO>.Success(MapToReadDTO(appointment), "Last test appointment retrieved successfully.");
         }
+
+        public async Task<OperationResult<bool>> LockAsync(int testAppointmentId)
+        {
+            if (!await _testAppointmentRepo.ExistsAsync(testAppointmentId))
+            {
+                return OperationResult<bool>.Failure(ErrorCode.NotFound, "Test appointment not found.");
+            }
+
+            bool result = await _testAppointmentRepo.LockAsync(testAppointmentId);
+            if (!result)
+            {
+                return OperationResult<bool>.Failure(ErrorCode.Conflict, "Failed to lock test appointment.");
+            }
+
+            return OperationResult<bool>.Success(true, "Test appointment locked successfully.");
+        }
+
         #endregion
     }
 }

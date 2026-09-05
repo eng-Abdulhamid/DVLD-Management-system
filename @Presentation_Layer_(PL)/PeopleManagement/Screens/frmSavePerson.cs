@@ -16,7 +16,7 @@ namespace DVLDPL.PeopleManagement
         public frmSavePerson(int PersonID = -1)
         {
             InitializeComponent();
-            InitializeGenderComboBox();
+            InitializeGendorComboBox();
             InitializeNationalityComboBox();
             cmbNationality.Items.AddRange(new object[] { "Palestine", "Jordan" });
             personServices = new PersonServices(); 
@@ -54,19 +54,19 @@ namespace DVLDPL.PeopleManagement
             txtAdress.Text = personData.Email;
             txtPhone.Text = personData.Phone;
             dtpBirthDate.Value = personData.DateOfBirth;
-            cmbGender.SelectedItem = personData.Gender.ToString();
+            cmbGendor.SelectedItem = personData.Gendor.ToString();
             picPersonImage.Tag = personData.ImagePath;
             picPersonImage.Image = !string.IsNullOrEmpty(personData.ImagePath) && File.Exists(personData.ImagePath) ? Image.FromFile(personData.ImagePath) : Properties.Resources.user;
             cmbNationality.Items.Add(personData.CountryName);
             cmbNationality.Text = personData.CountryName;
         }
         #region Initialization
-        private void InitializeGenderComboBox()
+        private void InitializeGendorComboBox()
         {
-            cmbGender.Items.Clear();
-            cmbGender.Items.AddRange(new object[] { "Male", "Female" }); 
-            if (cmbGender.Items.Count > 0)
-                cmbGender.SelectedIndex = 0;
+            cmbGendor.Items.Clear();
+            cmbGendor.Items.AddRange(new object[] { "Male", "Female" }); 
+            if (cmbGendor.Items.Count > 0)
+                cmbGendor.SelectedIndex = 0;
         }
         private void InitializeNationalityComboBox()
         {
@@ -148,9 +148,9 @@ namespace DVLDPL.PeopleManagement
 
 
         #region Maping
-        private enGender GetSelectedGender()
+        private enGendor GetSelectedGendor()
         {
-            return enGender.Unknown;
+            return enGendor.Unknown;
         }
         private int GetSelectedNationalityCountryID()
         {
@@ -177,7 +177,7 @@ namespace DVLDPL.PeopleManagement
                 ThirdName = personRead.ThirdName,
                 LastName = personRead.LastName,
                 DateOfBirth = personRead.DateOfBirth,
-                Gender = personRead.Gender,
+                Gendor = personRead.Gendor,
                 Address = personRead.Address,
                 Phone = personRead.Phone,
                 Email = personRead.Email,
@@ -196,7 +196,7 @@ namespace DVLDPL.PeopleManagement
                 ThirdName = txtThirdName.Text.Trim(),
                 LastName = txtLastName.Text.Trim(),
                 DateOfBirth = dtpBirthDate.Value,
-                Gender = GetSelectedGender(),
+                Gendor = GetSelectedGendor(),
                 Address = txtAdress.Text.Trim(),
                 Phone = txtPhone.Text.Trim(),
                 Email = txtAdress.Text.Trim(),
@@ -217,7 +217,7 @@ namespace DVLDPL.PeopleManagement
                 ThirdName = NewPersonData.ThirdName,
                 LastName = NewPersonData.LastName,
                 DateOfBirth = NewPersonData.DateOfBirth,
-                Gender = NewPersonData.Gender,
+                Gendor = NewPersonData.Gendor,
                 Address = NewPersonData.Address,
                 Phone = NewPersonData.Phone,
                 Email = NewPersonData.Email,
@@ -240,7 +240,7 @@ namespace DVLDPL.PeopleManagement
                 _StoredPersonData.Email != txtAdress.Text.Trim() ||
                 _StoredPersonData.Phone != txtPhone.Text.Trim() ||
                 _StoredPersonData.NationalNo != txtNationalNo.Text.Trim() ||
-                _StoredPersonData.Gender != GetSelectedGender() ||
+                _StoredPersonData.Gendor != GetSelectedGendor() ||
                 _StoredPersonData.ImagePath != (picPersonImage.Tag as string);
         }
 
@@ -305,13 +305,13 @@ namespace DVLDPL.PeopleManagement
                 return false;
             }
 
-            if (cmbGender.SelectedIndex < 0)
+            if (cmbGendor.SelectedIndex < 0)
             {
                 epValidation.Clear();
 
-                epValidation.SetError(cmbGender, "Please select a gender.");
-                cmbGender.Focus();
-                Shared.ShowNotificaiton("Please select a gender.", "Save Person", IconType.Warning);
+                epValidation.SetError(cmbGendor, "Please select a Gendor.");
+                cmbGendor.Focus();
+                Shared.ShowNotificaiton("Please select a Gendor.", "Save Person", IconType.Warning);
                 return false;
             }
             return true;
@@ -326,7 +326,7 @@ namespace DVLDPL.PeopleManagement
         }
         private void UpdateSubmitButtonState()
         {
-            btnSubmit.Enabled = !string.IsNullOrWhiteSpace(txtNationalNo.Text) && !string.IsNullOrWhiteSpace(txtFirstName.Text) && !string.IsNullOrWhiteSpace(txtSecondName.Text) && !string.IsNullOrWhiteSpace(txtThirdName.Text) && !string.IsNullOrWhiteSpace(txtLastName.Text) && !string.IsNullOrWhiteSpace(txtPhone.Text) && !string.IsNullOrWhiteSpace(txtAdress.Text) && cmbGender.SelectedIndex >= 0 && cmbNationality.SelectedIndex >= 0 && dtpBirthDate.Value.Date < DateTime.Now.Date;
+            btnSubmit.Enabled = !string.IsNullOrWhiteSpace(txtNationalNo.Text) && !string.IsNullOrWhiteSpace(txtFirstName.Text) && !string.IsNullOrWhiteSpace(txtSecondName.Text) && !string.IsNullOrWhiteSpace(txtThirdName.Text) && !string.IsNullOrWhiteSpace(txtLastName.Text) && !string.IsNullOrWhiteSpace(txtPhone.Text) && !string.IsNullOrWhiteSpace(txtAdress.Text) && cmbGendor.SelectedIndex >= 0 && cmbNationality.SelectedIndex >= 0 && dtpBirthDate.Value.Date < DateTime.Now.Date;
             btnSubmitAndClose.Enabled = btnSubmit.Enabled;
         }
         #endregion

@@ -10,7 +10,7 @@
         ThirdName,
         LastName,
         DateOfBirth,
-        Gender,
+        Gendor,
         Address,
         Phone,
         Email,

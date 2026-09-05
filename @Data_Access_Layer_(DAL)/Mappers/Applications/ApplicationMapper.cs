@@ -12,14 +12,14 @@ namespace DVLD.DAL.Mapper
             {
                 return new Application
                 {
-                    ApplicationID = reader.GetInt32(indices.ApplicationId),
-                    ApplicantPersonID = reader.GetInt32(indices.ApplicantPersonId),
+                    ApplicationID = reader.GetInt32(indices.ApplicationID),
+                    ApplicantPersonID = reader.GetInt32(indices.ApplicantPersonID),
                     ApplicationDate = reader.GetDateTime(indices.ApplicationDate),
-                    ApplicationTypeID = reader.GetInt32(indices.ApplicationTypeId),
+                    ApplicationTypeID = reader.GetInt32(indices.ApplicationTypeID),
                     ApplicationStatus = reader.GetByte(indices.ApplicationStatus),
                     LastStatusDate = reader.GetDateTime(indices.LastStatusDate),
                     PaidFees = reader.GetDecimal(indices.PaidFees),
-                    CreatedByUserID = reader.GetInt32(indices.CreatedByUserId)
+                    CreatedByUserID = reader.GetInt32(indices.CreatedByUserID)
                 };
             }
             catch (Exception ex)
