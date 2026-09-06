@@ -1,4 +1,4 @@
-﻿namespace DVLDPL.PeopleManagement
+﻿namespace DVLD.PL.PeopleManagement
 {
     partial class frmDeletePersonForm
     {
@@ -31,7 +31,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.ctrlPersonCard1 = new DVLDPL.PeopleManagement.ctrlPersonCard();
+            this.ctrlPersonCard1 = new DVLD.PL.PeopleManagement.ctrlPersonCard();
             this.SuspendLayout();
             // 
             // label1

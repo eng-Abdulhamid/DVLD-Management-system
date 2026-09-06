@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DVLDPL
+namespace DVLD.PL
 {
     
     internal class Shared

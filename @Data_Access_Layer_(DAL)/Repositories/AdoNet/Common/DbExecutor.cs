@@ -1,4 +1,4 @@
-﻿using DVLD.DAL.Common;
+﻿using DVLD.DAL.Settings;
 using DVLD.DAL.Entities;
 using DVLD.DAL.Mapper;
 using Microsoft.Data.SqlClient;
@@ -55,7 +55,7 @@ namespace DVLD.DAL.Repo.ADONet
 
             TEntity? result = null;
 
-            using (SqlConnection connection = new SqlConnection(Settings.ConnectionString))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.ConnectionString))
             {
                 if (command.Connection == null)
                 {
@@ -105,7 +105,7 @@ namespace DVLD.DAL.Repo.ADONet
 
             await IsValidCommand(command);
 
-            using (SqlConnection connection = new SqlConnection(Settings.ConnectionString))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.ConnectionString))
             {
                 if (command.Connection == null)
                 {
@@ -151,7 +151,7 @@ namespace DVLD.DAL.Repo.ADONet
 
             int result = -1;
 
-            using (SqlConnection connection = new SqlConnection(Settings.ConnectionString))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.ConnectionString))
             {
                 if (command.Connection == null)
                 {
@@ -191,7 +191,7 @@ namespace DVLD.DAL.Repo.ADONet
         {
             await IsValidCommand(command);
 
-            using (SqlConnection connection = new SqlConnection(Settings.ConnectionString))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.ConnectionString))
             {
                 if (command.Connection == null)
                 {
@@ -232,7 +232,7 @@ namespace DVLD.DAL.Repo.ADONet
 
             int rowsAffected = -1;
 
-            using (SqlConnection connection = new SqlConnection(Settings.ConnectionString))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.ConnectionString))
             {
                 if (command.Connection == null)
                 {

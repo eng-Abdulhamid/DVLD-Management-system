@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace DVLDPL.UsersManagement
+namespace DVLD.PL.UsersManagement
 {
     public partial class frmUsersManagement : Form
     {

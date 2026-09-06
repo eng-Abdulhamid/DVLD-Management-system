@@ -1,4 +1,4 @@
-﻿namespace DVLDPL.PeopleManagement
+﻿namespace DVLD.PL.PeopleManagement
 {
     partial class frmSavePerson
     {
@@ -499,7 +499,7 @@
             // 
             // picPersonImage
             // 
-            this.picPersonImage.Image = global::DVLDPL.Properties.Resources.user__1_;
+            this.picPersonImage.Image = global::DVLD.PL.Properties.Resources.user__1_;
             this.picPersonImage.InitialImage = null;
             this.picPersonImage.Location = new System.Drawing.Point(35, 30);
             this.picPersonImage.Name = "picPersonImage";

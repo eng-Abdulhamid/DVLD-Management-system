@@ -1,4 +1,4 @@
-﻿namespace DVLDPL.PeopleManagement
+﻿namespace DVLD.PL.PeopleManagement
 {
     partial class ctrlPeopleSearch
     {
@@ -72,7 +72,7 @@
             this.txtSearch.PlaceholderText = "";
             this.txtSearch.ShowClearButton = true;
             this.txtSearch.Size = new System.Drawing.Size(284, 46);
-            this.txtSearch.SuggestIcon = global::DVLDPL.Properties.Resources.delete_user__1_;
+            this.txtSearch.SuggestIcon = global::DVLD.PL.Properties.Resources.delete_user__1_;
             this.txtSearch.SuggestList = new string[0];
             this.txtSearch.TabIndex = 35;
             this.txtSearch.UseSystemPasswordChar = false;

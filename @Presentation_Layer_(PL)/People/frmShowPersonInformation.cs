@@ -1,5 +1,5 @@
-﻿using DVLDPL;
-using DVLDPL;
+﻿using DVLD.PL;
+using DVLD.PL;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace DVLDPL
+namespace DVLD.PL
 {
     public partial class frmShowPersonInformation : Form
     {

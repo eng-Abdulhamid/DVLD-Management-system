@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using DVLD.DAL.Common;
+using DVLD.DAL.Settings;
 using DVLD.DAL.Entities;
 using Microsoft.Data.SqlClient;
 

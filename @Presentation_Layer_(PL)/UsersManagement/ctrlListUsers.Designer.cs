@@ -1,4 +1,4 @@
-﻿namespace DVLDPL
+﻿namespace DVLD.PL
 {
     public partial class ctrlListUsers : ctrlListItemsPagenation
     {

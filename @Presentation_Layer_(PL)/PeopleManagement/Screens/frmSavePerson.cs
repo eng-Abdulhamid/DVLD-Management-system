@@ -9,7 +9,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
-namespace DVLDPL.PeopleManagement
+namespace DVLD.PL.PeopleManagement
 {
     public partial class frmSavePerson : Form
     {

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
@@ -9,22 +9,67 @@
 		<LangVersion>10.0</LangVersion>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<ApplicationManifest>app.manifest</ApplicationManifest>
 		<Deterministic>true</Deterministic>
-		<ApplicationIcon>ChatGPT Image Aug 18, 2026, 11_09_30 AM.ico</ApplicationIcon>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Content Include="ChatGPT Image Aug 18, 2026, 11_09_30 AM.ico" />
+		<Compile Remove="Management\**" />
+		<Compile Remove="PeopleManagement\**" />
+		<Compile Remove="People\**" />
+		<Compile Remove="Resources\**" />
+		<Compile Remove="UsersManagement\**" />
+		<EmbeddedResource Remove="Management\**" />
+		<EmbeddedResource Remove="PeopleManagement\**" />
+		<EmbeddedResource Remove="People\**" />
+		<EmbeddedResource Remove="Resources\**" />
+		<EmbeddedResource Remove="UsersManagement\**" />
+		<None Remove="Management\**" />
+		<None Remove="PeopleManagement\**" />
+		<None Remove="People\**" />
+		<None Remove="Resources\**" />
+		<None Remove="UsersManagement\**" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Reference Include="ApplicatinNeededControlsModern">
-	    <HintPath>..\@Custom_Controls\bin\Debug\ApplicatinNeededControlsModern.dll</HintPath>
-	  </Reference>
-	  <Reference Include="DVLD.BLL">
-	    <HintPath>..\@Business_Logic_Layer_(BLL)\bin\Debug\net10.0\DVLD.BLL.dll</HintPath>
-	  </Reference>
+		<Compile Remove="clsSearch.cs" />
+		<Compile Remove="frmDashboard.cs" />
+		<Compile Remove="frmDashboard.Designer.cs" />
+		<Compile Remove="MainScreen.cs" />
+		<Compile Remove="MainScreen.Designer.cs" />
+		<Compile Remove="Shared.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Remove="frmDashboard.resx" />
+		<EmbeddedResource Remove="MainScreen.resx" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\@Custom_Controls\Modern_Controls.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="ApplicatinNeededControlsModern">
+		  <HintPath>..\@Custom_Controls\bin\Release\ApplicatinNeededControlsModern.dll</HintPath>
+		</Reference>
+		<Reference Include="DVLD.BLL">
+			<HintPath>..\@Business_Logic_Layer_(BLL)\bin\Debug\net10.0\DVLD.BLL.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Properties\Resources.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Resources.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Update="Properties\Resources.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
 	</ItemGroup>
 
 </Project>

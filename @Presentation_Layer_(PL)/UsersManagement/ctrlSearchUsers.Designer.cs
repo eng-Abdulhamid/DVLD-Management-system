@@ -1,7 +1,7 @@
 ﻿using DTOs;
 using Services;
 
-namespace DVLDPL
+namespace DVLD.PL
 {
     public partial class ctrlUsersSearch : ctrlSearchItems
     {

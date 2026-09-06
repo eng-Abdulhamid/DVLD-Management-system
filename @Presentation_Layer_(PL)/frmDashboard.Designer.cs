@@ -1,6 +1,6 @@
-﻿using DVLDPL.Properties;
+﻿using DVLD.PL.Properties;
 
-namespace DVLDPL
+namespace DVLD.PL
 {
     partial class frmDashboard
     {
@@ -221,7 +221,7 @@ namespace DVLDPL
             // pictureBox2
             // 
             this.pictureBox2.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBox2.Image = global::DVLDPL.Properties.Resources.site_icon_238614;
+            this.pictureBox2.Image = global::DVLD.PL.Properties.Resources.site_icon_238614;
             this.pictureBox2.Location = new System.Drawing.Point(883, -1);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(36, 47);
@@ -233,7 +233,7 @@ namespace DVLDPL
             // pictureBox1
             // 
             this.pictureBox1.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.pictureBox1.Image = global::DVLDPL.Properties.Resources.ChatGPT_Image_Dec_20__2025__03_57_03_AM;
+            this.pictureBox1.Image = global::DVLD.PL.Properties.Resources.ChatGPT_Image_Dec_20__2025__03_57_03_AM;
             this.pictureBox1.Location = new System.Drawing.Point(246, -45);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(448, 286);

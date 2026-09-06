@@ -1,4 +1,4 @@
-﻿namespace DVLDPL.PeopleManagement
+﻿namespace DVLD.PL.PeopleManagement
 {
     partial class frmPeopleManagementSettings
     {

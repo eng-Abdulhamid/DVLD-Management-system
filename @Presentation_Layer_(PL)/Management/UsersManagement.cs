@@ -1,7 +1,7 @@
 ﻿using CustomControls;
 using DTOs;
 using DVLD_BusinessLogicLayer;
-using DVLDPL.Properties;
+using DVLD.PL.Properties;
 using Services;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Users;
 
-namespace DVLDPL
+namespace DVLD.PL
 {
     public class UsersManagement : absMangement<UserReadDTO>
     {

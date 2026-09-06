@@ -14,7 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace DVLDPL.PeopleManagement
+namespace DVLD.PL.PeopleManagement
 {
     public partial class ctrlPeopleSearch : UserControl
     {

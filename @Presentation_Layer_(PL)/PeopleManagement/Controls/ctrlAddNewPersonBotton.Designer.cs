@@ -1,4 +1,4 @@
-﻿namespace DVLDPL.PeopleManagement
+﻿namespace DVLD.PL.PeopleManagement
 {
     partial class ctrlAddNewPersonBotton
     {
@@ -38,7 +38,7 @@
             this.pbAdNewPerson.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.pbAdNewPerson.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pbAdNewPerson.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbAdNewPerson.Image = global::DVLDPL.Properties.Resources.business_application_addmale_useradd_insert_add_user_client_2312__2_;
+            this.pbAdNewPerson.Image = global::DVLD.PL.Properties.Resources.business_application_addmale_useradd_insert_add_user_client_2312__2_;
             this.pbAdNewPerson.Location = new System.Drawing.Point(0, 0);
             this.pbAdNewPerson.Name = "pbAdNewPerson";
             this.pbAdNewPerson.Size = new System.Drawing.Size(73, 63);

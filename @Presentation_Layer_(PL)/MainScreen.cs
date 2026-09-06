@@ -1,6 +1,6 @@
 ﻿using CustomControls;
-using DVLDPL.PeopleManagement;
-using DVLDPL.UsersManagement;
+using DVLD.PL.PeopleManagement;
+using DVLD.PL.UsersManagement;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace DVLDPL
+namespace DVLD.PL
 {
     public partial class frmMainScreen : Form
     {

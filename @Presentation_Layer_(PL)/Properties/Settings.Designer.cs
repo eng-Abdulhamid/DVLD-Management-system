@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DVLDPL.Properties
+namespace DVLD.PL.Properties
 {
 
 

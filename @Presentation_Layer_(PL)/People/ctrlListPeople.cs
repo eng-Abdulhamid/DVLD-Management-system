@@ -2,7 +2,7 @@
 using DTOs;
 using DVLD_BusinessLogicLayer;
 using DVLD_BusinessLogicLayer.ServicesInterfaces;
-using DVLDPL.Properties;
+using DVLD.PL.Properties;
 using Services;
 using System;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace DVLDPL
+namespace DVLD.PL
 {
     public partial class ctrlListPeople : ctrlListItemsPagenation
     {

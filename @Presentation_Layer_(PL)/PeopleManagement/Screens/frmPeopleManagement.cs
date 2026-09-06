@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace DVLDPL.PeopleManagement
+namespace DVLD.PL.PeopleManagement
 {
     public partial class frmPeopleManagement : Form
     {

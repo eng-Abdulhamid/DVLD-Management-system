@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
-namespace DVLDPL
+namespace DVLD.PL
 {
     public partial class ctrlUsersSearch :  ctrlSearchItems
     {

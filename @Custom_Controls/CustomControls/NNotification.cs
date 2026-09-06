@@ -6,6 +6,7 @@ using System.Linq;
 using System.Media;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using Timer = System.Windows.Forms.Timer;
 
 namespace CustomControls
 {
@@ -28,14 +29,14 @@ namespace CustomControls
 
     public class NotificationBuilder
     {
-        public string Title { get; private set; } = "";
-        public string Message { get; private set; } = "";
+        public string Title { get; private set; } = string.Empty;
+        public string Message { get; private set; } = string.Empty;
         public IconType Type { get; private set; } = IconType.Info;
         public int Duration { get; private set; } = 3;
         public NotificationPosition Position { get; private set; } = NotificationPosition.BottomRight;
         public bool ShowProgressBar { get; private set; } = true;
         public bool PlaySound { get; private set; } = false;
-        public Action OnClickAction { get; private set; } = null;
+        public Action? OnClickAction { get; private set; } = null;
 
         public NotificationBuilder WithTitle(string title)
         {
@@ -57,7 +58,7 @@ namespace CustomControls
 
         public NotificationBuilder WithDuration(int seconds)
         {
-            Duration = seconds;
+            Duration = Math.Max(1, seconds);
             return this;
         }
 
@@ -105,23 +106,26 @@ namespace CustomControls
         private enum NotificationState { FadeIn, Wait, FadeOut }
 
         private NotificationState _currentState;
-        private Timer _timerAnim;
-        private int _durationInMs;
+        private readonly Timer _timerAnim;
+        private readonly int _durationInMs;
         private int _elapsedTime;
-        private double _opacityIncrement = 0.08;
+        private const double _opacityIncrement = 0.08;
 
-        private NotificationBuilder _options;
+        private readonly NotificationBuilder _options;
         private Color _themeColor;
 
-        private Label lblTitle;
-        private Label lblMessage;
-        private PictureBox pbIcon;
-        private Label lblClose;
+        private Label lblTitle = null!;
+        private Label lblMessage = null!;
+        private PictureBox pbIcon = null!;
+        private Label lblClose = null!;
 
         public NotificationForm(NotificationBuilder options)
         {
             _options = options;
             _durationInMs = options.Duration * 1000;
+
+            _timerAnim = new Timer { Interval = 15 };
+            _timerAnim.Tick += TimerAnim_Tick;
 
             InitializeCustomComponents();
             SetupAppearance();
@@ -157,7 +161,7 @@ namespace CustomControls
             this.StartPosition = FormStartPosition.Manual;
             this.AllowTransparency = true;
             this.FormBorderStyle = FormBorderStyle.None;
-            this.Size = new Size(390, 100); // زيادة الحجم ليكون أكثر وضوحاً وأناقة
+            this.Size = new Size(390, 100);
             this.TopMost = true;
             this.ShowInTaskbar = false;
             this.DoubleBuffered = true;
@@ -224,12 +228,9 @@ namespace CustomControls
             this.Controls.Add(lblTitle);
             this.Controls.Add(lblMessage);
             this.Controls.Add(pbIcon);
-
-            _timerAnim = new Timer { Interval = 15 };
-            _timerAnim.Tick += TimerAnim_Tick;
         }
 
-        private void ExecuteAction(object sender, EventArgs e)
+        private void ExecuteAction(object? sender, EventArgs e)
         {
             _options.OnClickAction?.Invoke();
             _currentState = NotificationState.FadeOut;
@@ -237,22 +238,21 @@ namespace CustomControls
 
         private void SetupAppearance()
         {
-            // خلفية كارت حديثة وفخمة (Slate Dark) بدلاً من الأسود المعتام
             this.BackColor = Color.FromArgb(28, 30, 38);
 
             switch (_options.Type)
             {
                 case IconType.Success:
-                    _themeColor = Color.FromArgb(46, 213, 115); // Emerald Green
+                    _themeColor = Color.FromArgb(46, 213, 115);
                     break;
                 case IconType.Error:
-                    _themeColor = Color.FromArgb(255, 71, 87);  // Vibrant Coral Red
+                    _themeColor = Color.FromArgb(255, 71, 87);
                     break;
                 case IconType.Warning:
-                    _themeColor = Color.FromArgb(255, 165, 2);  // Warm Amber
+                    _themeColor = Color.FromArgb(255, 165, 2);
                     break;
                 case IconType.Info:
-                    _themeColor = Color.FromArgb(30, 144, 255); // Electric Blue
+                    _themeColor = Color.FromArgb(30, 144, 255);
                     break;
                 default:
                     _themeColor = Color.FromArgb(140, 150, 165);
@@ -344,7 +344,7 @@ namespace CustomControls
             _timerAnim.Start();
         }
 
-        private void TimerAnim_Tick(object sender, EventArgs e)
+        private void TimerAnim_Tick(object? sender, EventArgs e)
         {
             switch (_currentState)
             {
@@ -390,22 +390,19 @@ namespace CustomControls
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
+            Graphics g = e.Graphics;
+            g.SmoothingMode = SmoothingMode.AntiAlias;
 
-            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-
-            // إطار ناعم وأنيق حول الإشعار
             using (Pen borderPen = new Pen(Color.FromArgb(45, 255, 255, 255), 1))
             {
-                e.Graphics.DrawRectangle(borderPen, 0, 0, this.Width - 1, this.Height - 1);
+                g.DrawRectangle(borderPen, 0, 0, this.Width - 1, this.Height - 1);
             }
 
-            // شريط جانبي جانبي متناسق مع اللون الأساسي للإشعار
             using (SolidBrush accentBrush = new SolidBrush(_themeColor))
             {
-                e.Graphics.FillRectangle(accentBrush, 0, 0, 5, this.Height);
+                g.FillRectangle(accentBrush, 0, 0, 5, this.Height);
             }
 
-            // شريط التقدم السفلي
             if (_options.ShowProgressBar && _currentState == NotificationState.Wait)
             {
                 float progress = 1.0f - ((float)_elapsedTime / _durationInMs);
@@ -415,7 +412,7 @@ namespace CustomControls
 
                 using (SolidBrush progressBrush = new SolidBrush(Color.FromArgb(180, _themeColor)))
                 {
-                    e.Graphics.FillRectangle(progressBrush, 5, this.Height - 3, progressWidth, 3);
+                    g.FillRectangle(progressBrush, 5, this.Height - 3, progressWidth, 3);
                 }
             }
         }
@@ -487,13 +484,15 @@ namespace CustomControls
                         break;
                 }
             }
-            catch { }
+            catch
+            {
+            }
         }
 
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
-            _timerAnim?.Stop();
-            _timerAnim?.Dispose();
+            _timerAnim.Stop();
+            _timerAnim.Dispose();
 
             if (pbIcon.Image != null)
             {
@@ -505,9 +504,7 @@ namespace CustomControls
                 OpenNotifications.Remove(this);
             }
 
-            // إعادة ترتيب جميع الإشعارات المتبقية فور اختفاء هذا الإشعار
             RepositionOpenNotifications();
-
             base.OnFormClosed(e);
         }
     }

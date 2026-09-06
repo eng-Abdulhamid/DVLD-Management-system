@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace DVLDPL
+namespace DVLD.PL
 {
     public partial class frmPeopleManagment : Form
     {
@@ -30,8 +30,8 @@ namespace DVLDPL
         /// </summary>
         public void InitializeComponent()
         {
-            this.ctrlListPeople1 = new DVLDPL.ctrlListPeople();
-            this.ctrlPeopleSearch1 = new DVLDPL.ctrlPeopleSearch();
+            this.ctrlListPeople1 = new DVLD.PL.ctrlListPeople();
+            this.ctrlPeopleSearch1 = new DVLD.PL.ctrlPeopleSearch();
             this.SuspendLayout();
             // 
             // ctrlListPeople1

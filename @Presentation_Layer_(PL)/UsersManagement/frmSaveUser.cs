@@ -1,8 +1,8 @@
 ﻿using CustomControls;
 using DTOs;
 using DVLD_BusinessLogicLayer;
-using DVLDPL;
-using DVLDPL.Properties;
+using DVLD.PL;
+using DVLD.PL.Properties;
 using Services;
 using System;
 using System.Collections.Generic;

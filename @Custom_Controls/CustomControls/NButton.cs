@@ -5,157 +5,171 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.Windows.Forms;
+using Timer = System.Windows.Forms.Timer;
 
 namespace ModernUI.Controls
 {
     [DefaultEvent("Click")]
     public class NButton : Control
     {
-        private Timer _hoverTimer;
-        private Timer _rippleTimer;
+        private Timer? _hoverTimer;
+        private Timer? _rippleTimer;
         private float _hoverAlpha = 0f;
         private bool _isHovered = false;
         private bool _isPressed = false;
-        private StringFormat _textFormat;
+        private StringFormat? _textFormat;
 
         private float _rippleRadius = 0f;
         private float _rippleAlpha = 0f;
         private Point _rippleLocation;
 
+        // --- إصلاح نظام التركيز وزر الـ Tab ---
+        [Category("Behavior")]
+        [Browsable(true)]
+        [EditorBrowsable(EditorBrowsableState.Always)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public new int TabIndex { get => base.TabIndex; set => base.TabIndex = value; }
+
+        [Category("Behavior")]
+        [Browsable(true)]
+        [EditorBrowsable(EditorBrowsableState.Always)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public new bool TabStop { get => base.TabStop; set => base.TabStop = value; }
+
         [Category("1. Background")]
-        [Description("The starting color of the background gradient. Same as EndColor for a solid background.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color BackgroundStartColor { get; set; } = SystemColors.Control;
 
         [Category("1. Background")]
-        [Description("The ending color of the background gradient.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color BackgroundEndColor { get; set; } = SystemColors.Control;
 
         [Category("1. Background")]
-        [Description("The starting color of the background gradient when the mouse is over the button.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color HoverStartColor { get; set; } = Color.FromArgb(229, 241, 251);
 
         [Category("1. Background")]
-        [Description("The ending color of the background gradient when the mouse is over the button.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color HoverEndColor { get; set; } = Color.FromArgb(229, 241, 251);
 
         [Category("1. Background")]
-        [Description("The starting color of the background gradient when the button is clicked.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color PressedStartColor { get; set; } = Color.FromArgb(204, 228, 247);
 
         [Category("1. Background")]
-        [Description("The ending color of the background gradient when the button is clicked.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color PressedEndColor { get; set; } = Color.FromArgb(204, 228, 247);
 
         [Category("1. Background")]
-        [Description("The angle of the background gradient (in degrees).")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public float GradientAngle { get; set; } = 90f;
 
         [Category("2. Text")]
-        [Description("The normal color of the text.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color TextColor { get; set; } = SystemColors.ControlText;
 
         [Category("2. Text")]
-        [Description("The color of the text when the mouse is over the button or it is clicked.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color HoverTextColor { get; set; } = SystemColors.ControlText;
 
         [Category("2. Text")]
-        [Description("Shifts the text position by X and Y pixels. Useful for manual centering.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Point TextOffset { get; set; } = new Point(0, 0);
 
         [Category("3. Borders")]
-        [Description("The radius of the rounded corners. Set to 0 for a sharp rectangular button.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int BorderRadius { get; set; } = 0;
 
         [Category("3. Borders")]
-        [Description("The thickness of the border in pixels. Set to 0 to remove the border.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int BorderSize { get; set; } = 1;
 
         [Category("3. Borders")]
-        [Description("The color of the border.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color BorderColor { get; set; } = Color.DarkGray;
 
         [Category("3. Borders")]
-        [Description("The color of the border when the mouse is over the button.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color HoverBorderColor { get; set; } = Color.FromArgb(0, 120, 215);
 
         [Category("4. Icons")]
-        [Description("The image to display on the left side of the text.")]
-        public Image LeftIcon { get; set; } = null;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Image? LeftIcon { get; set; } = null;
 
         [Category("4. Icons")]
-        [Description("The image to display on the right side of the text.")]
-        public Image RightIcon { get; set; } = null;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Image? RightIcon { get; set; } = null;
 
         [Category("4. Icons")]
-        [Description("The custom size to render the icons.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Size IconSize { get; set; } = new Size(16, 16);
 
         [Category("4. Icons")]
-        [Description("If true, the icon is centered together with the text. If false, the icon is anchored to the side.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool CenterIconWithText { get; set; } = false;
 
         [Category("4. Icons")]
-        [Description("The distance in pixels from the icon to the edge of the button (used when CenterIconWithText is false).")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int IconMargin { get; set; } = 10;
 
         [Category("4. Icons")]
-        [Description("The spacing in pixels between the icon and the text.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int IconSpacing { get; set; } = 5;
 
         [Category("4. Icons")]
-        [Description("Shifts the icons position by X and Y pixels.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Point IconOffset { get; set; } = new Point(0, 0);
 
         [Category("4. Icons")]
-        [Description("If true, the original colors of the icon are replaced by IconColor.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool EnableIconTinting { get; set; } = false;
 
         [Category("4. Icons")]
-        [Description("The custom color applied to the icons if Icon Tinting is enabled.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color IconColor { get; set; } = Color.White;
 
         [Category("4. Icons")]
-        [Description("The custom color applied to the icons on hover if Icon Tinting is enabled.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color HoverIconColor { get; set; } = Color.White;
 
         [Category("5. Shadow")]
-        [Description("Enable or disable a drop shadow behind the button.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool EnableShadow { get; set; } = false;
 
         [Category("5. Shadow")]
-        [Description("The spread and blur size of the shadow.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int ShadowSize { get; set; } = 3;
 
         [Category("5. Shadow")]
-        [Description("The offset of the shadow on the X and Y axes.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Point ShadowOffset { get; set; } = new Point(1, 1);
 
         [Category("5. Shadow")]
-        [Description("The base color of the shadow (Alpha channel handles opacity automatically).")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color ShadowColor { get; set; } = Color.FromArgb(60, 0, 0, 0);
 
         [Category("6. Behavior")]
-        [Description("Enable smooth fading transitions for hover colors.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool EnableHoverAnimation { get; set; } = false;
 
         [Category("6. Behavior")]
-        [Description("The speed of the hover fade animation (higher is faster).")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int HoverAnimationSpeed { get; set; } = 20;
 
         [Category("6. Behavior")]
-        [Description("Slightly shift the content down when the button is clicked to simulate physical pressing.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool ShiftOnPress { get; set; } = false;
 
         [Category("6. Behavior")]
-        [Description("Enable a ripple effect animation originating from the cursor click position.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool EnableRippleEffect { get; set; } = false;
 
         [Category("6. Behavior")]
-        [Description("The color of the ripple effect.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color RippleColor { get; set; } = Color.FromArgb(70, 0, 0, 0);
 
         [Category("6. Behavior")]
-        [Description("The speed of the ripple expanding animation.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int RippleSpeed { get; set; } = 15;
 
         public NButton()
@@ -169,7 +183,7 @@ namespace ModernUI.Controls
             ForeColor = SystemColors.ControlText;
             Font = new Font("Segoe UI", 9F, FontStyle.Regular);
             Size = new Size(100, 30);
-            Cursor = Cursors.Default;
+            Cursor = Cursors.Hand;
 
             _textFormat = new StringFormat
             {
@@ -178,10 +192,10 @@ namespace ModernUI.Controls
                 Trimming = StringTrimming.EllipsisCharacter
             };
 
-            _hoverTimer = new Timer { Interval = 10 };
+            _hoverTimer = new Timer { Interval = 15 };
             _hoverTimer.Tick += HoverTimer_Tick;
 
-            _rippleTimer = new Timer { Interval = 10 };
+            _rippleTimer = new Timer { Interval = 15 };
             _rippleTimer.Tick += RippleTimer_Tick;
         }
 
@@ -196,11 +210,44 @@ namespace ModernUI.Controls
             base.Dispose(disposing);
         }
 
+        protected override void OnGotFocus(EventArgs e)
+        {
+            base.OnGotFocus(e);
+            Invalidate();
+        }
+
+        protected override void OnLostFocus(EventArgs e)
+        {
+            base.OnLostFocus(e);
+            Invalidate();
+        }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+            if (e.KeyCode == Keys.Space || e.KeyCode == Keys.Enter)
+            {
+                _isPressed = true;
+                Invalidate();
+            }
+        }
+
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+            base.OnKeyUp(e);
+            if (e.KeyCode == Keys.Space || e.KeyCode == Keys.Enter)
+            {
+                _isPressed = false;
+                Invalidate();
+                OnClick(EventArgs.Empty);
+            }
+        }
+
         protected override void OnMouseEnter(EventArgs e)
         {
             base.OnMouseEnter(e);
             _isHovered = true;
-            if (EnableHoverAnimation && !DesignMode) _hoverTimer.Start();
+            if (EnableHoverAnimation && !DesignMode) _hoverTimer?.Start();
             else { _hoverAlpha = 255; Invalidate(); }
         }
 
@@ -208,7 +255,7 @@ namespace ModernUI.Controls
         {
             base.OnMouseLeave(e);
             _isHovered = false;
-            if (EnableHoverAnimation && !DesignMode) _hoverTimer.Start();
+            if (EnableHoverAnimation && !DesignMode) _hoverTimer?.Start();
             else { _hoverAlpha = 0; Invalidate(); }
         }
 
@@ -218,12 +265,13 @@ namespace ModernUI.Controls
             if (e.Button == MouseButtons.Left)
             {
                 _isPressed = true;
+                Focus();
                 if (EnableRippleEffect)
                 {
                     _rippleLocation = e.Location;
                     _rippleRadius = 0;
                     _rippleAlpha = RippleColor.A;
-                    _rippleTimer.Start();
+                    _rippleTimer?.Start();
                 }
                 Invalidate();
             }
@@ -239,7 +287,7 @@ namespace ModernUI.Controls
             }
         }
 
-        private void HoverTimer_Tick(object sender, EventArgs e)
+        private void HoverTimer_Tick(object? sender, EventArgs e)
         {
             bool stopTimer = false;
             if (_isHovered)
@@ -253,10 +301,10 @@ namespace ModernUI.Controls
                 if (_hoverAlpha <= 0) { _hoverAlpha = 0; stopTimer = true; }
             }
             Invalidate();
-            if (stopTimer) _hoverTimer.Stop();
+            if (stopTimer) _hoverTimer?.Stop();
         }
 
-        private void RippleTimer_Tick(object sender, EventArgs e)
+        private void RippleTimer_Tick(object? sender, EventArgs e)
         {
             _rippleRadius += RippleSpeed;
             _rippleAlpha -= (RippleSpeed * 0.4f);
@@ -264,7 +312,7 @@ namespace ModernUI.Controls
             if (_rippleAlpha <= 0)
             {
                 _rippleAlpha = 0;
-                _rippleTimer.Stop();
+                _rippleTimer?.Stop();
             }
             Invalidate();
         }
@@ -297,6 +345,16 @@ namespace ModernUI.Controls
 
             int pressShift = (_isPressed && ShiftOnPress) ? 1 : 0;
             DrawContent(g, btnRect, pressShift);
+
+            // إظهار إطار التركيز لتجربة استخدام ممتازة بلوحة المفاتيح
+            if (Focused && ShowFocusCues)
+            {
+                Rectangle focusRect = Rectangle.Inflate(Rectangle.Round(btnRect), -2, -2);
+                using (Pen focusPen = new Pen(Color.FromArgb(120, TextColor), 1f) { DashStyle = DashStyle.Dot })
+                {
+                    g.DrawRectangle(focusPen, focusRect);
+                }
+            }
         }
 
         private void DrawShadow(Graphics g, RectangleF rect)
@@ -406,11 +464,14 @@ namespace ModernUI.Controls
                     startX += IconSize.Width + IconSpacing;
                 }
 
-                using (SolidBrush brush = new SolidBrush(currentTextColor))
+                if (_textFormat != null)
                 {
-                    RectangleF textRect = new RectangleF(startX, rect.Y + shiftY + TextOffset.Y, textWidth, rect.Height);
-                    g.DrawString(Text, Font, brush, textRect, _textFormat);
-                    startX += textWidth + IconSpacing;
+                    using (SolidBrush brush = new SolidBrush(currentTextColor))
+                    {
+                        RectangleF textRect = new RectangleF(startX, rect.Y + shiftY + TextOffset.Y, textWidth, rect.Height);
+                        g.DrawString(Text, Font, brush, textRect, _textFormat);
+                        startX += textWidth + IconSpacing;
+                    }
                 }
 
                 if (RightIcon != null)
@@ -438,10 +499,13 @@ namespace ModernUI.Controls
                     rightBound = iconRect.Left - IconSpacing;
                 }
 
-                using (SolidBrush brush = new SolidBrush(currentTextColor))
+                if (_textFormat != null)
                 {
-                    RectangleF textRect = new RectangleF(leftBound + TextOffset.X, rect.Y + shiftY + TextOffset.Y, rightBound - leftBound, rect.Height);
-                    g.DrawString(Text, Font, brush, textRect, _textFormat);
+                    using (SolidBrush brush = new SolidBrush(currentTextColor))
+                    {
+                        RectangleF textRect = new RectangleF(leftBound + TextOffset.X, rect.Y + shiftY + TextOffset.Y, rightBound - leftBound, rect.Height);
+                        g.DrawString(Text, Font, brush, textRect, _textFormat);
+                    }
                 }
             }
         }

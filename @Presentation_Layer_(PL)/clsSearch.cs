@@ -1,4 +1,4 @@
-﻿namespace DVLDPL.General
+﻿namespace DVLD.PL.General
 {
     public class clsSearch : UserControl 
     {

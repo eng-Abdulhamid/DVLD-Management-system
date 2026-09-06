@@ -1,4 +1,4 @@
-﻿using DVLD.DAL.Common;
+﻿using DVLD.DAL.Settings;
 using DVLD.DAL.Entities;
 using DVLD.DAL.Mappers;
 using Microsoft.Data.SqlClient;

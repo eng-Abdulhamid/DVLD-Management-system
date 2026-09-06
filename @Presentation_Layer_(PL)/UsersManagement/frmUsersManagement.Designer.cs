@@ -1,4 +1,4 @@
-﻿namespace DVLDPL.UsersManagement
+﻿namespace DVLD.PL.UsersManagement
 {
     partial class frmUsersManagement
     {

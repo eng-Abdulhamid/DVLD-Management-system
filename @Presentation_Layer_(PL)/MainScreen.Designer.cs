@@ -1,4 +1,4 @@
-﻿namespace DVLDPL
+﻿namespace DVLD.PL
 {
     partial class frmMainScreen
     {
@@ -88,7 +88,7 @@
             this.btnUserManagement.IconOffset = new System.Drawing.Point(1, 2);
             this.btnUserManagement.IconSize = new System.Drawing.Size(45, 40);
             this.btnUserManagement.IconSpacing = 0;
-            this.btnUserManagement.LeftIcon = global::DVLDPL.Properties.Resources.UsersManagement;
+            this.btnUserManagement.LeftIcon = global::DVLD.PL.Properties.Resources.UsersManagement;
             this.btnUserManagement.Location = new System.Drawing.Point(0, 61);
             this.btnUserManagement.Name = "btnUserManagement";
             this.btnUserManagement.PressedEndColor = System.Drawing.Color.White;
@@ -136,7 +136,7 @@
             this.btnPeopleManagement.IconOffset = new System.Drawing.Point(1, 2);
             this.btnPeopleManagement.IconSize = new System.Drawing.Size(45, 40);
             this.btnPeopleManagement.IconSpacing = 0;
-            this.btnPeopleManagement.LeftIcon = global::DVLDPL.Properties.Resources.users_clients_group_167741;
+            this.btnPeopleManagement.LeftIcon = global::DVLD.PL.Properties.Resources.users_clients_group_167741;
             this.btnPeopleManagement.Location = new System.Drawing.Point(0, 0);
             this.btnPeopleManagement.Name = "btnPeopleManagement";
             this.btnPeopleManagement.PressedEndColor = System.Drawing.Color.White;

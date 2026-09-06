@@ -1,7 +1,7 @@
 ﻿using DTOs;
 using DVLD_BusinessLogicLayer;
 
-namespace DVLDPL.PeopleManagement
+namespace DVLD.PL.PeopleManagement
 {
     partial class frmPeopleManagement
     {
@@ -57,8 +57,8 @@ namespace DVLDPL.PeopleManagement
             this.cmsPhone = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsEmail = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsGendor = new System.Windows.Forms.ToolStripMenuItem();
-            this.ctrlAddNewPersonBotton1 = new DVLDPL.PeopleManagement.ctrlAddNewPersonBotton();
-            this.ctrlPeopleSearch1 = new DVLDPL.PeopleManagement.ctrlPeopleSearch();
+            this.ctrlAddNewPersonBotton1 = new DVLD.PL.PeopleManagement.ctrlAddNewPersonBotton();
+            this.ctrlPeopleSearch1 = new DVLD.PL.PeopleManagement.ctrlPeopleSearch();
             this.btnSettings = new System.Windows.Forms.PictureBox();
             this.btnDeleteSelectedPerson = new System.Windows.Forms.PictureBox();
             this.btnUpdateSelectedPerson = new System.Windows.Forms.PictureBox();
@@ -359,8 +359,8 @@ namespace DVLDPL.PeopleManagement
             this.btnSettings.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnSettings.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.btnSettings.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnSettings.Image = global::DVLDPL.Properties.Resources.Settings;
-            this.btnSettings.InitialImage = global::DVLDPL.Properties.Resources.refresh;
+            this.btnSettings.Image = global::DVLD.PL.Properties.Resources.Settings;
+            this.btnSettings.InitialImage = global::DVLD.PL.Properties.Resources.refresh;
             this.btnSettings.Location = new System.Drawing.Point(1038, 24);
             this.btnSettings.Name = "btnSettings";
             this.btnSettings.Size = new System.Drawing.Size(40, 38);
@@ -373,8 +373,8 @@ namespace DVLDPL.PeopleManagement
             this.btnDeleteSelectedPerson.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnDeleteSelectedPerson.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.btnDeleteSelectedPerson.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnDeleteSelectedPerson.Image = global::DVLDPL.Properties.Resources.delete_user__1_1;
-            this.btnDeleteSelectedPerson.InitialImage = global::DVLDPL.Properties.Resources.refresh;
+            this.btnDeleteSelectedPerson.Image = global::DVLD.PL.Properties.Resources.delete_user__1_1;
+            this.btnDeleteSelectedPerson.InitialImage = global::DVLD.PL.Properties.Resources.refresh;
             this.btnDeleteSelectedPerson.Location = new System.Drawing.Point(196, 102);
             this.btnDeleteSelectedPerson.Name = "btnDeleteSelectedPerson";
             this.btnDeleteSelectedPerson.Size = new System.Drawing.Size(40, 38);
@@ -388,8 +388,8 @@ namespace DVLDPL.PeopleManagement
             this.btnUpdateSelectedPerson.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnUpdateSelectedPerson.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.btnUpdateSelectedPerson.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnUpdateSelectedPerson.Image = global::DVLDPL.Properties.Resources.user_edit_21991;
-            this.btnUpdateSelectedPerson.InitialImage = global::DVLDPL.Properties.Resources.refresh;
+            this.btnUpdateSelectedPerson.Image = global::DVLD.PL.Properties.Resources.user_edit_21991;
+            this.btnUpdateSelectedPerson.InitialImage = global::DVLD.PL.Properties.Resources.refresh;
             this.btnUpdateSelectedPerson.Location = new System.Drawing.Point(138, 102);
             this.btnUpdateSelectedPerson.Name = "btnUpdateSelectedPerson";
             this.btnUpdateSelectedPerson.Size = new System.Drawing.Size(40, 38);
@@ -403,8 +403,8 @@ namespace DVLDPL.PeopleManagement
             this.pictureBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.pictureBox3.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBox3.Image = global::DVLDPL.Properties.Resources.icons8_search_500;
-            this.pictureBox3.InitialImage = global::DVLDPL.Properties.Resources.refresh;
+            this.pictureBox3.Image = global::DVLD.PL.Properties.Resources.icons8_search_500;
+            this.pictureBox3.InitialImage = global::DVLD.PL.Properties.Resources.refresh;
             this.pictureBox3.Location = new System.Drawing.Point(699, 36);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(40, 38);
@@ -418,8 +418,8 @@ namespace DVLDPL.PeopleManagement
             this.btnRefresh.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnRefresh.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.btnRefresh.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnRefresh.Image = global::DVLDPL.Properties.Resources.refresh;
-            this.btnRefresh.InitialImage = global::DVLDPL.Properties.Resources.refresh;
+            this.btnRefresh.Image = global::DVLD.PL.Properties.Resources.refresh;
+            this.btnRefresh.InitialImage = global::DVLD.PL.Properties.Resources.refresh;
             this.btnRefresh.Location = new System.Drawing.Point(22, 102);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(40, 38);

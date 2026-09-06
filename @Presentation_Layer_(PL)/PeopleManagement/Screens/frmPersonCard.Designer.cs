@@ -1,4 +1,4 @@
-﻿namespace DVLDPL.PeopleManagement
+﻿namespace DVLD.PL.PeopleManagement
 {
     partial class frmPersonCard
     {
@@ -30,7 +30,7 @@
         {
             this.btnDeleteSelectedPerson = new System.Windows.Forms.PictureBox();
             this.btnUpdateSelectedPerson = new System.Windows.Forms.PictureBox();
-            this.ctrlPersonCard1 = new DVLDPL.PeopleManagement.ctrlPersonCard();
+            this.ctrlPersonCard1 = new DVLD.PL.PeopleManagement.ctrlPersonCard();
             ((System.ComponentModel.ISupportInitialize)(this.btnDeleteSelectedPerson)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnUpdateSelectedPerson)).BeginInit();
             this.SuspendLayout();
@@ -40,8 +40,8 @@
             this.btnDeleteSelectedPerson.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnDeleteSelectedPerson.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.btnDeleteSelectedPerson.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnDeleteSelectedPerson.Image = global::DVLDPL.Properties.Resources.delete_user__1_1;
-            this.btnDeleteSelectedPerson.InitialImage = global::DVLDPL.Properties.Resources.refresh;
+            this.btnDeleteSelectedPerson.Image = global::DVLD.PL.Properties.Resources.delete_user__1_1;
+            this.btnDeleteSelectedPerson.InitialImage = global::DVLD.PL.Properties.Resources.refresh;
             this.btnDeleteSelectedPerson.Location = new System.Drawing.Point(554, 233);
             this.btnDeleteSelectedPerson.Name = "btnDeleteSelectedPerson";
             this.btnDeleteSelectedPerson.Size = new System.Drawing.Size(40, 38);
@@ -55,8 +55,8 @@
             this.btnUpdateSelectedPerson.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnUpdateSelectedPerson.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.btnUpdateSelectedPerson.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnUpdateSelectedPerson.Image = global::DVLDPL.Properties.Resources.user_edit_21991;
-            this.btnUpdateSelectedPerson.InitialImage = global::DVLDPL.Properties.Resources.refresh;
+            this.btnUpdateSelectedPerson.Image = global::DVLD.PL.Properties.Resources.user_edit_21991;
+            this.btnUpdateSelectedPerson.InitialImage = global::DVLD.PL.Properties.Resources.refresh;
             this.btnUpdateSelectedPerson.Location = new System.Drawing.Point(496, 233);
             this.btnUpdateSelectedPerson.Name = "btnUpdateSelectedPerson";
             this.btnUpdateSelectedPerson.Size = new System.Drawing.Size(40, 38);

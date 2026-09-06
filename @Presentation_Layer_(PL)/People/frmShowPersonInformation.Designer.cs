@@ -1,4 +1,4 @@
-﻿namespace DVLDPL
+﻿namespace DVLD.PL
 {
     partial class frmShowPersonInformation
     {
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.ctrlPersonCard1 = new DVLDPL.ctrlPersonDetails();
+            this.ctrlPersonCard1 = new DVLD.PL.ctrlPersonDetails();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.SuspendLayout();
             // 

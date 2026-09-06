@@ -10,8 +10,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DVLDPL;
-namespace DVLDPL
+using DVLD.PL;
+namespace DVLD.PL
 {
     public partial class ctrlPersonDetails : UserControl
     {

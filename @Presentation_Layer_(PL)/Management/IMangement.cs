@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace DVLDPL
+namespace DVLD.PL
 {
     public abstract class absMangement<ReadDTO> where ReadDTO : class
     {

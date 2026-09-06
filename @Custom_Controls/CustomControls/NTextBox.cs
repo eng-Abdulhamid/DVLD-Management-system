@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
+using Timer = System.Windows.Forms.Timer;
 
 namespace NControls
 {
@@ -12,17 +13,17 @@ namespace NControls
 
     public class TextBoxIcon
     {
-        public Image Icon { get; set; }
+        public Image? Icon { get; set; }
         public IconPosition Position { get; set; }
         public int Width { get; set; } = 20;
         public int Height { get; set; } = 20;
         public bool IsClickable { get; set; } = true;
         public Cursor Cursor { get; set; } = Cursors.Hand;
-        public string ToolTip { get; set; }
+        public string ToolTip { get; set; } = string.Empty;
         public Color HoverBackColor { get; set; } = Color.FromArgb(30, 128, 128, 128);
-        public Action<NTextBox> OnClick { get; set; }
-        public Action<NTextBox> OnMouseEnter { get; set; }
-        public Action<NTextBox> OnMouseLeave { get; set; }
+        public Action<NTextBox>? OnClick { get; set; }
+        public Action<NTextBox>? OnMouseEnter { get; set; }
+        public Action<NTextBox>? OnMouseLeave { get; set; }
         internal Rectangle Bounds { get; set; }
     }
 
@@ -47,24 +48,45 @@ namespace NControls
         private int iconSpacing = 8;
 
         private List<TextBoxIcon> customIcons = new List<TextBoxIcon>();
-        private TextBoxIcon currentlyHoveredIcon = null;
+        private TextBoxIcon? currentlyHoveredIcon = null;
 
-        internal ToolStripDropDown dropDown;
-        private DropdownControl dropDownControl;
-        private string[] autoCompleteList = new string[0];
+        internal ToolStripDropDown? dropDown;
+        private DropdownControl? dropDownControl;
+        private string[] autoCompleteList = Array.Empty<string>();
         private bool enableAutoSuggest = false;
         private bool isDropdownSelecting = false;
         internal bool isDropdownOpen = false;
-        private Image suggestIcon = null;
+        private Image? suggestIcon = null;
         private int maxSuggestItems = 8;
 
         private ClickOutsideFilter clickFilter;
         private Timer searchTimer;
 
+        // --- إصلاح نظام التركيز وزر الـ Tab ---
+        [Category("Behavior")]
+        [Browsable(true)]
+        [EditorBrowsable(EditorBrowsableState.Always)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public new int TabIndex { get => base.TabIndex; set => base.TabIndex = value; }
+
+        [Category("Behavior")]
+        [Browsable(true)]
+        [EditorBrowsable(EditorBrowsableState.Always)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public new bool TabStop { get => base.TabStop; set => base.TabStop = value; }
+
+        protected override void OnEnter(EventArgs e)
+        {
+            base.OnEnter(e);
+            textBox.Visible = true;
+            textBox.Focus();
+        }
+        // ------------------------------------
+
         [Category("NTextBox - Text")]
         [Browsable(true)]
         [EditorBrowsable(EditorBrowsableState.Always)]
-        public new event EventHandler TextChanged
+        public new event EventHandler? TextChanged
         {
             add { base.TextChanged += value; }
             remove { base.TextChanged -= value; }
@@ -104,24 +126,31 @@ namespace NControls
         }
 
         [Category("NTextBox - Appearance")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int BorderRadius { get { return borderRadius; } set { borderRadius = value; Invalidate(); } }
 
         [Category("NTextBox - Appearance")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int BorderSize { get { return borderSize; } set { borderSize = value; Invalidate(); UpdateControlHeight(); } }
 
         [Category("NTextBox - Appearance")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color BorderColor { get { return borderColor; } set { borderColor = value; Invalidate(); } }
 
         [Category("NTextBox - Appearance")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color BorderFocusColor { get { return borderFocusColor; } set { borderFocusColor = value; Invalidate(); } }
 
         [Category("NTextBox - Appearance")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color FillColor { get { return fillColor; } set { fillColor = value; textBox.BackColor = value; Invalidate(); } }
 
         [Category("NTextBox - Text")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public override Color ForeColor { get { return base.ForeColor; } set { base.ForeColor = value; textBox.ForeColor = value; } }
 
         [Category("NTextBox - Text")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public override Font Font { get { return base.Font; } set { base.Font = value; textBox.Font = value; UpdateControlHeight(); } }
 
         [Category("NTextBox - Text")]
@@ -144,39 +173,50 @@ namespace NControls
         }
 
         [Category("NTextBox - Text")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string PlaceholderText { get { return placeholderText; } set { placeholderText = value; Invalidate(); } }
 
         [Category("NTextBox - Text")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color PlaceholderColor { get { return placeholderColor; } set { placeholderColor = value; Invalidate(); } }
 
         [Category("NTextBox - Text")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool UseSystemPasswordChar { get { return textBox.UseSystemPasswordChar; } set { textBox.UseSystemPasswordChar = value; Invalidate(); } }
 
         [Category("NTextBox - Icons")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool ShowClearButton { get { return showClearButton; } set { showClearButton = value; UpdateLayout(); } }
 
         [Category("NTextBox - Icons")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int IconOffsetLeft { get { return iconOffsetLeft; } set { iconOffsetLeft = value; UpdateLayout(); } }
 
         [Category("NTextBox - Icons")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int IconOffsetRight { get { return iconOffsetRight; } set { iconOffsetRight = value; UpdateLayout(); } }
 
         [Category("NTextBox - Icons")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int IconSpacing { get { return iconSpacing; } set { iconSpacing = value; UpdateLayout(); } }
 
         [Category("NTextBox - AutoSuggest")]
-        public string[] SuggestList { get { return autoCompleteList; } set { autoCompleteList = value ?? new string[0]; } }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public string[] SuggestList { get { return autoCompleteList; } set { autoCompleteList = value ?? Array.Empty<string>(); } }
 
         [Category("NTextBox - AutoSuggest")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool EnableSuggest { get { return enableAutoSuggest; } set { enableAutoSuggest = value; } }
 
         [Category("NTextBox - AutoSuggest")]
-        public Image SuggestIcon { get { return suggestIcon; } set { suggestIcon = value; } }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Image? SuggestIcon { get { return suggestIcon; } set { suggestIcon = value; } }
 
         [Category("NTextBox - AutoSuggest")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int MaxSuggestItems { get { return maxSuggestItems; } set { maxSuggestItems = Math.Max(1, value); } }
 
-        public void AddIcon(Image image, IconPosition position, int width, int height, bool isClickable = true, Action<NTextBox> onClick = null, Action<NTextBox> onMouseEnter = null, Action<NTextBox> onMouseLeave = null)
+        public void AddIcon(Image image, IconPosition position, int width, int height, bool isClickable = true, Action<NTextBox>? onClick = null, Action<NTextBox>? onMouseEnter = null, Action<NTextBox>? onMouseLeave = null)
         {
             customIcons.Add(new TextBoxIcon
             {
@@ -426,14 +466,14 @@ namespace NControls
             }
         }
 
-        private void TextBox_Enter(object sender, EventArgs e)
+        private void TextBox_Enter(object? sender, EventArgs e)
         {
             isFocused = true;
             this.Invalidate();
             RequestShowSuggest();
         }
 
-        private void TextBox_Leave(object sender, EventArgs e)
+        private void TextBox_Leave(object? sender, EventArgs e)
         {
             isFocused = false;
             this.Invalidate();
@@ -444,7 +484,7 @@ namespace NControls
             }
         }
 
-        private void SearchTimer_Tick(object sender, EventArgs e)
+        private void SearchTimer_Tick(object? sender, EventArgs e)
         {
             searchTimer.Stop();
             ShowAutoSuggest();
@@ -459,12 +499,7 @@ namespace NControls
             }
         }
 
-        protected override void OnTextChanged(EventArgs e)
-        {
-            base.OnTextChanged(e);
-        }
-
-        private void TextBox_TextChanged(object sender, EventArgs e)
+        private void TextBox_TextChanged(object? sender, EventArgs e)
         {
             base.Text = textBox.Text;
             if (showClearButton) this.Invalidate();
@@ -472,9 +507,9 @@ namespace NControls
             RequestShowSuggest();
         }
 
-        private void TextBox_KeyDown(object sender, KeyEventArgs e)
+        private void TextBox_KeyDown(object? sender, KeyEventArgs e)
         {
-            if (dropDown.Visible && dropDownControl != null)
+            if (dropDown != null && dropDown.Visible && dropDownControl != null)
             {
                 if (e.KeyCode == Keys.Down)
                 {
@@ -554,11 +589,8 @@ namespace NControls
         {
             if (disposing)
             {
-                if (searchTimer != null)
-                {
-                    searchTimer.Stop();
-                    searchTimer.Dispose();
-                }
+                searchTimer?.Stop();
+                searchTimer?.Dispose();
                 Application.RemoveMessageFilter(clickFilter);
             }
             base.Dispose(disposing);
@@ -584,7 +616,7 @@ namespace NControls
         {
             if (!enableAutoSuggest || autoCompleteList == null || autoCompleteList.Length == 0 || this.DesignMode || !isFocused)
             {
-                if (dropDown.Visible) dropDown.Close();
+                if (dropDown != null && dropDown.Visible) dropDown.Close();
                 return;
             }
 
@@ -592,13 +624,13 @@ namespace NControls
 
             if (string.IsNullOrEmpty(query))
             {
-                if (dropDown.Visible) dropDown.Close();
+                if (dropDown != null && dropDown.Visible) dropDown.Close();
                 return;
             }
 
             var filteredList = autoCompleteList.Where(item => item.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
 
-            if (filteredList.Count > 0)
+            if (filteredList.Count > 0 && dropDown != null && dropDownControl != null)
             {
                 isDropdownOpen = true;
                 this.Invalidate();
@@ -627,7 +659,7 @@ namespace NControls
             }
             else
             {
-                if (dropDown.Visible) dropDown.Close();
+                if (dropDown != null && dropDown.Visible) dropDown.Close();
             }
         }
 
@@ -636,7 +668,7 @@ namespace NControls
             isDropdownSelecting = true;
             this.Text = text;
             textBox.SelectionStart = textBox.Text.Length;
-            dropDown.Close();
+            dropDown?.Close();
             textBox.Focus();
             isDropdownSelecting = false;
         }
@@ -806,7 +838,7 @@ namespace NControls
                                 _control.dropDown.Close();
                             }
 
-                            Form parentForm = _control.FindForm();
+                            Form? parentForm = _control.FindForm();
                             if (parentForm != null)
                             {
                                 parentForm.ActiveControl = null;

@@ -1,6 +1,6 @@
-﻿using DVLDPL.Properties;
+﻿using DVLD.PL.Properties;
 
-namespace DVLDPL
+namespace DVLD.PL
 {
     partial class frmSavePerson
     {

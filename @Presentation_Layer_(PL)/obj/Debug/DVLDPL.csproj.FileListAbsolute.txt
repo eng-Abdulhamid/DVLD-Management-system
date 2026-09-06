@@ -1,8 +1,0 @@
-C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\obj\Debug\DVLDPL.csproj.AssemblyReference.cache
-C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\obj\Debug\DVLDPL.PeopleManagement.ctrlAddNewPersonBotton.resources
-C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\obj\Debug\DVLDPL.PeopleManagement.frmAddNewPersonForm.resources
-C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\obj\Debug\DVLDPL.PeopleManagement.frmPeopleManagement.resources
-C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\obj\Debug\DVLDPL.PeopleManagement.ctrlPeopleSearch.resources
-C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\obj\Debug\DVLDPL.Properties.Resources.resources
-C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\obj\Debug\DVLDPL.csproj.GenerateResource.cache
-C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Presentation_Layer_(PL)\obj\Debug\DVLDPL.csproj.CoreCompileInputs.cache

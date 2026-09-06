@@ -1,4 +1,4 @@
-﻿namespace DVLDPL.PeopleManagement
+﻿namespace DVLD.PL.PeopleManagement
 {
     partial class ctrlPersonCard
     {
@@ -250,7 +250,7 @@
             // 
             // picPersonImage
             // 
-            this.picPersonImage.Image = global::DVLDPL.Properties.Resources.user__1_;
+            this.picPersonImage.Image = global::DVLD.PL.Properties.Resources.user__1_;
             this.picPersonImage.InitialImage = null;
             this.picPersonImage.Location = new System.Drawing.Point(3, 21);
             this.picPersonImage.Name = "picPersonImage";
