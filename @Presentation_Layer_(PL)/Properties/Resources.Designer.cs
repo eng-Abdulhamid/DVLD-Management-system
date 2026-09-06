@@ -61,12 +61,52 @@ namespace DVLD.PL.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap editSquare {
+            get {
+                object obj = ResourceManager.GetObject("editSquare", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap hasFounded {
+            get {
+                object obj = ResourceManager.GetObject("hasFounded", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static System.Drawing.Icon iconLoginScreen {
+        internal static System.Drawing.Icon iconLoginIn {
             get {
-                object obj = ResourceManager.GetObject("iconLoginScreen", resourceCulture);
+                object obj = ResourceManager.GetObject("iconLoginIn", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap visibilityOff {
+            get {
+                object obj = ResourceManager.GetObject("visibilityOff", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap visibilityOn {
+            get {
+                object obj = ResourceManager.GetObject("visibilityOn", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

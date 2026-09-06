@@ -4,6 +4,9 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Media;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Timer = System.Windows.Forms.Timer;
 
@@ -62,7 +65,9 @@ namespace NControls
         private ClickOutsideFilter clickFilter;
         private Timer searchTimer;
 
-        // --- إصلاح نظام التركيز وزر الـ Tab ---
+        private bool _hasValidationError = false;
+        private bool _isShaking = false;
+
         [Category("Behavior")]
         [Browsable(true)]
         [EditorBrowsable(EditorBrowsableState.Always)]
@@ -75,13 +80,17 @@ namespace NControls
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public new bool TabStop { get => base.TabStop; set => base.TabStop = value; }
 
+        [Category("Behavior")]
+        [Description("Moves focus to the next control in TabIndex order when Enter is pressed.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public bool MoveToNextControlOnEnter { get; set; } = true;
+
         protected override void OnEnter(EventArgs e)
         {
             base.OnEnter(e);
             textBox.Visible = true;
             textBox.Focus();
         }
-        // ------------------------------------
 
         [Category("NTextBox - Text")]
         [Browsable(true)]
@@ -90,6 +99,15 @@ namespace NControls
         {
             add { base.TextChanged += value; }
             remove { base.TextChanged -= value; }
+        }
+
+        [Category("NTextBox - Behavior")]
+        [Browsable(true)]
+        [EditorBrowsable(EditorBrowsableState.Always)]
+        public new event KeyPressEventHandler? KeyPress
+        {
+            add { textBox.KeyPress += value; }
+            remove { textBox.KeyPress -= value; }
         }
 
         public NTextBox()
@@ -106,11 +124,13 @@ namespace NControls
             textBox.BackColor = this.fillColor;
             textBox.ForeColor = Color.Black;
             textBox.Font = new Font("Segoe UI", 11F);
+            textBox.MaxLength = 32767;
 
             textBox.Enter += TextBox_Enter;
             textBox.Leave += TextBox_Leave;
             textBox.TextChanged += TextBox_TextChanged;
             textBox.KeyDown += TextBox_KeyDown;
+            textBox.KeyPress += TextBox_KeyPress;
             textBox.Click += (s, e) => RequestShowSuggest();
 
             this.Controls.Add(textBox);
@@ -118,12 +138,95 @@ namespace NControls
             InitializeDropdown();
 
             searchTimer = new Timer();
-            searchTimer.Interval = 150;
+            searchTimer.Interval = 100;
             searchTimer.Tick += SearchTimer_Tick;
 
             clickFilter = new ClickOutsideFilter(this);
             Application.AddMessageFilter(clickFilter);
         }
+
+        [Category("NTextBox - Validation")]
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        [Description("Manually toggles the error state (Red border and exclamation icon).")]
+        public bool HasError
+        {
+            get => _hasValidationError;
+            set
+            {
+                _hasValidationError = value;
+                this.Invalidate();
+            }
+        }
+
+        public async void Shake()
+        {
+            if (_isShaking || this.DesignMode) return;
+            _isShaking = true;
+
+            this.HasError = true;
+            SystemSounds.Hand.Play();
+
+            int originalX = this.Location.X;
+            int originalY = this.Location.Y;
+            int amplitude = 6;
+            int[] pattern = { 1, -1, 1, -1, 1, -1, 0 };
+
+            try
+            {
+                foreach (int dir in pattern)
+                {
+                    this.Location = new Point(originalX + (dir * amplitude), originalY);
+                    await Task.Delay(35);
+                }
+            }
+            catch { }
+            finally
+            {
+                this.Location = new Point(originalX, originalY);
+                _isShaking = false;
+            }
+        }
+
+        [Category("NTextBox - Text")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public int MaxLength
+        {
+            get { return textBox.MaxLength; }
+            set { textBox.MaxLength = value; }
+        }
+
+        [Category("NTextBox - Validation")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public bool AllowEnglishCharacters { get; set; } = true;
+
+        [Category("NTextBox - Validation")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public bool AllowArabicCharacters { get; set; } = true;
+
+        [Category("NTextBox - Validation")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public bool AllowNumbers { get; set; } = true;
+
+        [Category("NTextBox - Validation")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public bool AllowSymbols { get; set; } = true;
+
+        [Category("NTextBox - Validation")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public bool AllowSpaces { get; set; } = true;
+
+        [Category("NTextBox - Validation")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public string CustomAllowedCharacters { get; set; } = string.Empty;
+
+        [Category("NTextBox - Validation")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public bool ValidateEmail { get; set; } = false;
+
+        [Category("NTextBox - Validation")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Color ErrorBorderColor { get; set; } = Color.FromArgb(239, 68, 68);
 
         [Category("NTextBox - Appearance")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
@@ -143,7 +246,7 @@ namespace NControls
 
         [Category("NTextBox - Appearance")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-        public Color FillColor { get { return fillColor; } set { fillColor = value; textBox.BackColor = value; Invalidate(); } }
+        public Color FillColor { get { return fillColor; } set { fillColor = value; textBox.BackColor = value; if (dropDownControl != null) dropDownControl.BackColor = value; Invalidate(); } }
 
         [Category("NTextBox - Text")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
@@ -246,33 +349,62 @@ namespace NControls
         {
             base.OnPaint(e);
             Graphics g = e.Graphics;
-            g.SmoothingMode = SmoothingMode.AntiAlias;
+            g.SmoothingMode = SmoothingMode.AntiAlias; // تنعيم الحواف الدائرية
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
             g.InterpolationMode = InterpolationMode.HighQualityBicubic;
             g.PixelOffsetMode = PixelOffsetMode.HighQuality;
             g.CompositingQuality = CompositingQuality.HighQuality;
 
-            int bottomOffset = isDropdownOpen ? borderSize : 0;
-            Rectangle rect = new Rectangle(0, 0, this.Width - 1, this.Height - 1 + bottomOffset);
+            int bottomOffset = isDropdownOpen ? borderRadius : 0;
 
-            using (GraphicsPath path = GetFigurePath(rect, borderRadius, isDropdownOpen))
+            Color currentBorderColor = _hasValidationError ? ErrorBorderColor : (isFocused ? borderFocusColor : borderColor);
+
+            // 1. مسار الخلفية (Surface) - بالحجم الكامل للكنترول
+            RectangleF rectSurface = new RectangleF(0, 0, this.Width, this.Height);
+
+            // 2. مسار الإطار (Border) - مزاح للداخل بمقدار نصف حجم القلم لمنع القص والتغبيش!
+            float penOffset = borderSize / 2f;
+            RectangleF rectBorder = new RectangleF(penOffset, penOffset, this.Width - borderSize, this.Height - borderSize);
+
+            using (GraphicsPath pathSurface = GetFigurePath(rectSurface, borderRadius, isDropdownOpen))
+            using (GraphicsPath pathBorder = GetFigurePath(rectBorder, borderRadius - penOffset, isDropdownOpen))
             using (SolidBrush brushFill = new SolidBrush(fillColor))
-            using (Pen borderPen = new Pen(isFocused ? borderFocusColor : borderColor, borderSize))
+            using (Pen borderPen = new Pen(currentBorderColor, borderSize))
             {
-                g.FillPath(brushFill, path);
-                g.DrawPath(borderPen, path);
+                // إزالة Inset لأنها تكسر التنعيم. نعتمد على محاذاة السنتر الافتراضية مع إزاحتنا الرياضية الدقيقة
+
+                g.FillPath(brushFill, pathSurface); // تعبئة الخلفية بالكامل
+                g.DrawPath(borderPen, pathBorder);  // رسم الإطار دقيق الحواف
             }
 
-            UpdateInternalControlsPos(rect);
-            DrawIcons(g, rect);
+            UpdateInternalControlsPos(Rectangle.Round(rectSurface));
+            DrawIcons(g, Rectangle.Round(rectSurface));
 
-            if (string.IsNullOrEmpty(textBox.Text)) DrawPlaceholder(g, rect);
+            if (string.IsNullOrEmpty(textBox.Text)) DrawPlaceholder(g, Rectangle.Round(rectSurface));
+
+            if (_hasValidationError)
+            {
+                int iconWidth = 16;
+                int iconX = (int)rectSurface.Right - iconOffsetRight - iconWidth;
+                int iconY = (int)rectSurface.Y + ((int)rectSurface.Height - iconWidth) / 2;
+
+                using (SolidBrush redBrush = new SolidBrush(ErrorBorderColor))
+                {
+                    g.FillEllipse(redBrush, iconX, iconY, iconWidth, iconWidth);
+                    TextRenderer.DrawText(g, "!", new Font("Segoe UI", 9, FontStyle.Bold), new Rectangle(iconX, iconY, iconWidth, iconWidth), Color.White, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
+                }
+            }
         }
 
         private void DrawIcons(Graphics g, Rectangle rect)
         {
             int currentLeftX = rect.X + iconOffsetLeft;
             int currentRightX = rect.Right - iconOffsetRight;
+
+            if (_hasValidationError)
+            {
+                currentRightX -= 20;
+            }
 
             foreach (var icon in customIcons.Where(icn => icn.ToolTip != "SystemClearBtn"))
             {
@@ -361,14 +493,23 @@ namespace NControls
             var rightIcons = customIcons.Where(icn => icn.Position == IconPosition.Right && icn.ToolTip != "SystemClearBtn").ToList();
             int rightCount = rightIcons.Count + (showClearButton && !string.IsNullOrEmpty(textBox.Text) ? 1 : 0);
 
+            if (_hasValidationError)
+            {
+                rightIconsWidth += 20;
+            }
+
             if (rightCount > 0)
             {
-                rightIconsWidth = iconOffsetRight + rightIcons.Sum(icn => icn.Width);
+                rightIconsWidth += iconOffsetRight + rightIcons.Sum(icn => icn.Width);
                 if (showClearButton && !string.IsNullOrEmpty(textBox.Text))
                 {
                     rightIconsWidth += 14;
                 }
                 rightIconsWidth += (rightCount - 1) * iconSpacing;
+            }
+            else if (rightIconsWidth == 0)
+            {
+                rightIconsWidth = iconOffsetRight;
             }
 
             int startX = rect.X + leftIconsWidth + this.Padding.Left;
@@ -378,16 +519,19 @@ namespace NControls
             textBox.Width = Math.Max(txtWidth, 10);
         }
 
-        private GraphicsPath GetFigurePath(Rectangle rect, int radius, bool flatBottom)
+        // تم تحويل الدالة للتعامل مع Float (الكسور) لرسم الحواف الدائرية بدقة فائقة
+        private GraphicsPath GetFigurePath(RectangleF rect, float radius, bool flatBottom)
         {
             GraphicsPath path = new GraphicsPath();
             float r = Math.Min(radius * 2, Math.Min(rect.Width, rect.Height));
+
             if (r <= 0)
             {
                 path.AddRectangle(rect);
                 return path;
             }
 
+            path.StartFigure();
             path.AddArc(rect.X, rect.Y, r, r, 180, 90);
             path.AddArc(rect.Right - r, rect.Y, r, r, 270, 90);
 
@@ -469,6 +613,7 @@ namespace NControls
         private void TextBox_Enter(object? sender, EventArgs e)
         {
             isFocused = true;
+            this.HasError = false;
             this.Invalidate();
             RequestShowSuggest();
         }
@@ -476,11 +621,45 @@ namespace NControls
         private void TextBox_Leave(object? sender, EventArgs e)
         {
             isFocused = false;
+
+            if (ValidateEmail && !string.IsNullOrWhiteSpace(textBox.Text))
+            {
+                var regex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+                this.HasError = !regex.IsMatch(textBox.Text);
+            }
+
             this.Invalidate();
 
             if (dropDown != null && dropDown.Visible && !isDropdownSelecting)
             {
                 dropDown.Close();
+            }
+        }
+
+        private void TextBox_KeyPress(object? sender, KeyPressEventArgs e)
+        {
+            if (char.IsControl(e.KeyChar)) return;
+
+            bool isEnglish = (e.KeyChar >= 'a' && e.KeyChar <= 'z') || (e.KeyChar >= 'A' && e.KeyChar <= 'Z');
+            bool isNumber = char.IsDigit(e.KeyChar);
+            bool isSymbol = char.IsPunctuation(e.KeyChar) || char.IsSymbol(e.KeyChar);
+            bool isSpace = e.KeyChar == ' ';
+            bool isArabic = e.KeyChar >= 0x0600 && e.KeyChar <= 0x06FF;
+            bool isCustom = !string.IsNullOrEmpty(CustomAllowedCharacters) && CustomAllowedCharacters.Contains(e.KeyChar);
+
+            bool isValid = false;
+
+            if (AllowEnglishCharacters && isEnglish) isValid = true;
+            if (AllowNumbers && isNumber) isValid = true;
+            if (AllowSymbols && isSymbol) isValid = true;
+            if (AllowSpaces && isSpace) isValid = true;
+            if (AllowArabicCharacters && isArabic) isValid = true;
+            if (isCustom) isValid = true;
+
+            if (!isValid)
+            {
+                e.Handled = true;
+                SystemSounds.Beep.Play();
             }
         }
 
@@ -529,6 +708,21 @@ namespace NControls
                     e.Handled = true;
                     e.SuppressKeyPress = true;
                     return;
+                }
+            }
+
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+
+                if (MoveToNextControlOnEnter)
+                {
+                    Form? parentForm = this.FindForm();
+                    if (parentForm != null)
+                    {
+                        parentForm.SelectNextControl(this, true, true, true, true);
+                    }
                 }
             }
 
@@ -607,6 +801,7 @@ namespace NControls
                 AutoClose = false
             };
             dropDownControl = new DropdownControl(this);
+            dropDownControl.BackColor = this.FillColor;
             dropDown.Items.Add(new ToolStripControlHost(dropDownControl) { Margin = Padding.Empty, Padding = Padding.Empty });
 
             dropDown.Closed += (s, e) => { isDropdownOpen = false; this.Invalidate(); };
@@ -636,25 +831,44 @@ namespace NControls
                 this.Invalidate();
 
                 dropDownControl.SetItems(filteredList);
-                dropDown.Width = this.Width;
-                dropDownControl.Width = this.Width;
 
                 int itemHeight = 35;
-                dropDown.Height = Math.Min(filteredList.Count, maxSuggestItems) * itemHeight + 15;
-                dropDownControl.Height = dropDown.Height;
+                int newHeight = Math.Min(filteredList.Count, maxSuggestItems) * itemHeight + 15;
 
-                GraphicsPath p = new GraphicsPath();
-                float r = Math.Min(borderRadius * 2, Math.Min(dropDown.Width, dropDown.Height));
-                p.AddLine(0, 0, dropDown.Width, 0);
-                p.AddLine(dropDown.Width, 0, dropDown.Width, dropDown.Height - r);
-                p.AddArc(dropDown.Width - r, dropDown.Height - r, r, r, 0, 90);
-                p.AddArc(0, dropDown.Height - r, r, r, 90, 90);
-                p.CloseFigure();
-                dropDown.Region = new Region(p);
+                if (dropDown.Height != newHeight || dropDown.Width != this.Width)
+                {
+                    dropDown.Width = this.Width;
+                    dropDownControl.Width = this.Width;
+                    dropDown.Height = newHeight;
+                    dropDownControl.Height = newHeight;
+
+                    // تحديث قائمة الاقتراحات بنفس الإزاحة الهندسية الدقيقة للإطار
+                    float offset = borderSize / 2f;
+                    RectangleF dRect = new RectangleF(offset, offset, this.Width - borderSize, newHeight - borderSize);
+
+                    GraphicsPath p = new GraphicsPath();
+                    float r = Math.Min(borderRadius * 2, Math.Min(dRect.Width, dRect.Height));
+                    float dr = r - offset;
+                    if (dr <= 0) dr = 1;
+
+                    p.AddLine(dRect.Right, dRect.Y, dRect.Right, dRect.Bottom - dr);
+                    p.AddArc(dRect.Right - dr, dRect.Bottom - dr, dr, dr, 0, 90);
+                    p.AddArc(dRect.X, dRect.Bottom - dr, dr, dr, 90, 90);
+                    p.AddLine(dRect.X, dRect.Bottom - dr, dRect.X, dRect.Y);
+                    p.CloseFigure();
+
+                    var oldRegion = dropDown.Region;
+                    dropDown.Region = new Region(p);
+                    oldRegion?.Dispose();
+                }
 
                 if (!dropDown.Visible)
                 {
                     dropDown.Show(this, new Point(0, this.Height - borderSize));
+                }
+                else
+                {
+                    dropDownControl.Invalidate();
                 }
             }
             else
@@ -685,7 +899,6 @@ namespace NControls
             {
                 this.parent = parent;
                 this.DoubleBuffered = true;
-                this.BackColor = parent.FillColor;
                 this.SetStyle(ControlStyles.Selectable, false);
             }
 
@@ -693,7 +906,6 @@ namespace NControls
             {
                 items = newItems;
                 selectedIndex = -1;
-                this.Invalidate();
             }
 
             public void SelectNext()
@@ -737,16 +949,22 @@ namespace NControls
                 }
                 else
                 {
-                    hoveredIndex = -1;
-                    this.Invalidate();
+                    if (hoveredIndex != -1)
+                    {
+                        hoveredIndex = -1;
+                        this.Invalidate();
+                    }
                 }
             }
 
             protected override void OnMouseLeave(EventArgs e)
             {
                 base.OnMouseLeave(e);
-                hoveredIndex = -1;
-                this.Invalidate();
+                if (hoveredIndex != -1)
+                {
+                    hoveredIndex = -1;
+                    this.Invalidate();
+                }
             }
 
             protected override void OnMouseDown(MouseEventArgs e)
@@ -769,14 +987,22 @@ namespace NControls
 
                 g.Clear(this.BackColor);
 
+                // تطبيق الإزاحة الدقيقة في قائمة الاقتراحات لضمان نقاء الإطار وعدم تغبيشه
+                float offset = parent.BorderSize / 2f;
+                RectangleF rectBorder = new RectangleF(offset, offset, this.Width - parent.BorderSize, this.Height - parent.BorderSize);
+
                 using (Pen borderPen = new Pen(parent.isFocused ? parent.BorderFocusColor : parent.BorderColor, parent.BorderSize))
                 {
                     float r = Math.Min(parent.BorderRadius * 2, Math.Min(this.Width, this.Height));
+                    float dr = r - offset;
+                    if (dr <= 0) dr = 1;
+
                     GraphicsPath borderPath = new GraphicsPath();
-                    borderPath.AddLine(this.Width - 1, 0, this.Width - 1, this.Height - r - 1);
-                    borderPath.AddArc(this.Width - r - 1, this.Height - r - 1, r, r, 0, 90);
-                    borderPath.AddArc(0, this.Height - r - 1, r, r, 90, 90);
-                    borderPath.AddLine(0, this.Height - r - 1, 0, 0);
+                    borderPath.AddLine(rectBorder.Right, rectBorder.Y, rectBorder.Right, rectBorder.Bottom - dr);
+                    borderPath.AddArc(rectBorder.Right - dr, rectBorder.Bottom - dr, dr, dr, 0, 90);
+                    borderPath.AddArc(rectBorder.X, rectBorder.Bottom - dr, dr, dr, 90, 90);
+                    borderPath.AddLine(rectBorder.X, rectBorder.Bottom - dr, rectBorder.X, rectBorder.Y);
+
                     g.DrawPath(borderPen, borderPath);
                 }
 

@@ -24,11 +24,17 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\@Data_Access_Layer_(DAL)\DVLD.DAL.csproj" />
+	  <Folder Include="DTOs\NewFolder\" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="DTOs\NewFolder\" />
+	  <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Reference Include="DVLD.DAL">
+	    <HintPath>..\@Data_Access_Layer_(DAL)\bin\Debug\net10.0\DVLD.DAL.dll</HintPath>
+	  </Reference>
 	</ItemGroup>
 
 </Project>

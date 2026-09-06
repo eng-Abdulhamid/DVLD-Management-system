@@ -14,12 +14,12 @@ namespace DVLD.PL
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.ThreadException += GlobalExceptionHandler;
-            //InitializeConnectionString();
+            InitializeConnectionString();
             Application.Run(new frmLoginScreen());
         }
         private static void InitializeConnectionString()
         {
-            if (!HandleConfigurationFile.AppSettingExists("ConnectionString"))
+            if (!HandleConfigurationFile.AppSettingExists("connectionString"))
             {
                 MessageBox.Show(
                     "Connection string is missing in the configuration file. Please set it up before running the application.",
@@ -30,7 +30,7 @@ namespace DVLD.PL
             }
             else
             {
-                string connectionString = HandleConfigurationFile.GetValueByKey("ConnectionString");
+                string connectionString = HandleConfigurationFile.GetValueByKey("connectionString");
                 if (string.IsNullOrWhiteSpace(connectionString))
                 {
                     MessageBox.Show(

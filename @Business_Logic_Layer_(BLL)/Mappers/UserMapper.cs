@@ -27,7 +27,6 @@ namespace DVLD.BLL.Mappers
                 UserID = entity.UserID,
                 PersonID = entity.PersonID,
                 UserName = entity.UserName,
-                Password = entity.Password,
                 IsActive = entity.IsActive
             };
         }
@@ -55,11 +54,10 @@ namespace DVLD.BLL.Mappers
                 UserID = dto.UserID,
                 PersonID = dto.PersonID,
                 UserName = dto.UserName,
-                Password = dto.Password,
                 IsActive = dto.IsActive
             };
+            
         }
-
         public static User MapToEntity(UserAddDTO dto)
         {
             if (dto == null) return null!;

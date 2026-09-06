@@ -81,5 +81,28 @@ namespace DVLD.DAL.Repo.ADONet
             SqlCommand Command = new(Query);
             return await DbExecutor.ExecuteReaderListAsync<User, UsersColumnIndices>(Command, UserMapper.FromReader);
         }
+        public async Task<User?> FindByUsernameAsync(string username)
+        {
+            string Query = "SELECT * FROM Users WHERE UserName = @UserName";
+            SqlCommand Command = new(Query);
+            Command.Parameters.AddWithValue("@UserName", username);
+            return await DbExecutor.ExecuteReaderSingleAsync<User, UsersColumnIndices>(Command, UserMapper.FromReader);
+        }
+        public async Task<bool> ChangePasswordAsync(string UserName, string newPassword)
+        {
+            string Query = "UPDATE Users SET Password = @Password WHERE UserName = @UserName";
+            SqlCommand Command = new(Query);
+            Command.Parameters.AddWithValue("@UserName", UserName);
+            Command.Parameters.AddWithValue("@Password", newPassword);
+            return await DbExecutor.ExecuteCommandReturnRowsAffected(Command) > 0;
+        }
+        public async Task<bool> ChangePasswordAsync(int UserID, string newPassword)
+        {
+            string Query = "UPDATE Users SET Password = @Password WHERE UserID = @UserID";
+            SqlCommand Command = new(Query);
+            Command.Parameters.AddWithValue("@UserID", UserID);
+            Command.Parameters.AddWithValue("@Password", newPassword);
+            return await DbExecutor.ExecuteCommandReturnRowsAffected(Command) > 0;
+        }
     }
 }

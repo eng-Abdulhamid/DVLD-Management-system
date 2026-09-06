@@ -45,6 +45,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <ProjectReference Include="..\@Custom_Controls\Modern_Controls.csproj" />
 	</ItemGroup>
 
@@ -53,7 +57,7 @@
 		  <HintPath>..\@Custom_Controls\bin\Release\ApplicatinNeededControlsModern.dll</HintPath>
 		</Reference>
 		<Reference Include="DVLD.BLL">
-			<HintPath>..\@Business_Logic_Layer_(BLL)\bin\Debug\net10.0\DVLD.BLL.dll</HintPath>
+		  <HintPath>..\@Business_Logic_Layer_(BLL)\bin\Debug\net10.0\DVLD.BLL.dll</HintPath>
 		</Reference>
 	</ItemGroup>
 

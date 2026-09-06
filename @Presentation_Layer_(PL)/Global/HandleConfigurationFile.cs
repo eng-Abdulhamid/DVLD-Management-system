@@ -71,7 +71,7 @@ namespace DVLD.PL.Configuration
             }
         }
 
-        public static bool RemoveKeySetting(string key)
+        public static bool DeleteKey(string key)
         {
             if (string.IsNullOrWhiteSpace(key))
                 return false;

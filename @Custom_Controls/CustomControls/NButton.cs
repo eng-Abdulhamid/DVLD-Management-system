@@ -14,6 +14,8 @@ namespace ModernUI.Controls
     {
         private Timer? _hoverTimer;
         private Timer? _rippleTimer;
+        private Timer? _spinnerTimer; // مؤقت دوران أيقونة التحميل
+
         private float _hoverAlpha = 0f;
         private bool _isHovered = false;
         private bool _isPressed = false;
@@ -23,7 +25,10 @@ namespace ModernUI.Controls
         private float _rippleAlpha = 0f;
         private Point _rippleLocation;
 
-        // --- إصلاح نظام التركيز وزر الـ Tab ---
+        private bool _isLoading = false;
+        private int _spinnerAngle = 0; // زاوية الدوران الحالية
+
+        // --- نظام التركيز وزر الـ Tab ---
         [Category("Behavior")]
         [Browsable(true)]
         [EditorBrowsable(EditorBrowsableState.Always)]
@@ -35,6 +40,29 @@ namespace ModernUI.Controls
         [EditorBrowsable(EditorBrowsableState.Always)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public new bool TabStop { get => base.TabStop; set => base.TabStop = value; }
+
+        // --- خاصية حالة التحميل (الجديدة) ---
+        [Category("6. Behavior")]
+        [Description("Set to true to show a loading spinner and disable clicks.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set
+            {
+                _isLoading = value;
+                if (_isLoading)
+                {
+                    _spinnerAngle = 0;
+                    _spinnerTimer?.Start();
+                }
+                else
+                {
+                    _spinnerTimer?.Stop();
+                }
+                Invalidate();
+            }
+        }
 
         [Category("1. Background")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
@@ -197,6 +225,9 @@ namespace ModernUI.Controls
 
             _rippleTimer = new Timer { Interval = 15 };
             _rippleTimer.Tick += RippleTimer_Tick;
+
+            _spinnerTimer = new Timer { Interval = 15 };
+            _spinnerTimer.Tick += SpinnerTimer_Tick;
         }
 
         protected override void Dispose(bool disposing)
@@ -205,6 +236,7 @@ namespace ModernUI.Controls
             {
                 _hoverTimer?.Dispose();
                 _rippleTimer?.Dispose();
+                _spinnerTimer?.Dispose();
                 _textFormat?.Dispose();
             }
             base.Dispose(disposing);
@@ -224,6 +256,7 @@ namespace ModernUI.Controls
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
+            if (_isLoading) return; // منع التفاعل أثناء التحميل
             base.OnKeyDown(e);
             if (e.KeyCode == Keys.Space || e.KeyCode == Keys.Enter)
             {
@@ -234,6 +267,7 @@ namespace ModernUI.Controls
 
         protected override void OnKeyUp(KeyEventArgs e)
         {
+            if (_isLoading) return; // منع التفاعل أثناء التحميل
             base.OnKeyUp(e);
             if (e.KeyCode == Keys.Space || e.KeyCode == Keys.Enter)
             {
@@ -261,6 +295,7 @@ namespace ModernUI.Controls
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
+            if (_isLoading) return; // منع التفاعل أثناء التحميل
             base.OnMouseDown(e);
             if (e.Button == MouseButtons.Left)
             {
@@ -279,6 +314,7 @@ namespace ModernUI.Controls
 
         protected override void OnMouseUp(MouseEventArgs e)
         {
+            if (_isLoading) return; // منع التفاعل أثناء التحميل
             base.OnMouseUp(e);
             if (e.Button == MouseButtons.Left)
             {
@@ -317,6 +353,12 @@ namespace ModernUI.Controls
             Invalidate();
         }
 
+        private void SpinnerTimer_Tick(object? sender, EventArgs e)
+        {
+            _spinnerAngle = (_spinnerAngle + 12) % 360; // سرعة الدوران
+            Invalidate();
+        }
+
         protected override void OnPaint(PaintEventArgs e)
         {
             if (Width <= 0 || Height <= 0) return;
@@ -340,13 +382,20 @@ namespace ModernUI.Controls
 
             DrawBackgroundAndBorder(g, btnRect);
 
-            if (EnableRippleEffect && _rippleAlpha > 0)
+            if (EnableRippleEffect && _rippleAlpha > 0 && !_isLoading)
                 DrawRipple(g, btnRect);
 
             int pressShift = (_isPressed && ShiftOnPress) ? 1 : 0;
-            DrawContent(g, btnRect, pressShift);
 
-            // إظهار إطار التركيز لتجربة استخدام ممتازة بلوحة المفاتيح
+            if (_isLoading)
+            {
+                DrawSpinner(g, btnRect, pressShift); // رسم أيقونة التحميل إذا كانت الحالة فعالة
+            }
+            else
+            {
+                DrawContent(g, btnRect, pressShift); // رسم النص العادي
+            }
+
             if (Focused && ShowFocusCues)
             {
                 Rectangle focusRect = Rectangle.Inflate(Rectangle.Round(btnRect), -2, -2);
@@ -354,6 +403,29 @@ namespace ModernUI.Controls
                 {
                     g.DrawRectangle(focusPen, focusRect);
                 }
+            }
+        }
+
+        private void DrawSpinner(Graphics g, RectangleF rect, int shiftY)
+        {
+            Color currentTextColor = _isPressed ? HoverTextColor : BlendColors(HoverTextColor, TextColor, _hoverAlpha / 255f);
+
+            // تحديد حجم الدائرة ليكون مناسباً لارتفاع الزر
+            int spinnerSize = (int)(rect.Height * 0.55);
+            if (spinnerSize > 28) spinnerSize = 28;
+
+            RectangleF spinnerRect = new RectangleF(
+                rect.X + (rect.Width - spinnerSize) / 2f,
+                rect.Y + (rect.Height - spinnerSize) / 2f + shiftY,
+                spinnerSize,
+                spinnerSize);
+
+            // رسم القوس الدوار بنعومة
+            using (Pen spinnerPen = new Pen(currentTextColor, 3f))
+            {
+                spinnerPen.StartCap = LineCap.Round;
+                spinnerPen.EndCap = LineCap.Round;
+                g.DrawArc(spinnerPen, spinnerRect, _spinnerAngle, 260); // قوس غير مكتمل (260 درجة) ليعطي شكل الـ Spinner
             }
         }
 
@@ -380,7 +452,7 @@ namespace ModernUI.Controls
             Color cEnd = BackgroundEndColor;
             Color cBorder = BorderColor;
 
-            if (_isPressed)
+            if (_isPressed || _isLoading) // إبقاء لون الضغط نشطاً أثناء التحميل
             {
                 cStart = PressedStartColor;
                 cEnd = PressedEndColor;
