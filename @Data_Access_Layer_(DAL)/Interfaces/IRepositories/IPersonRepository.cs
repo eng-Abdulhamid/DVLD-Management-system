@@ -13,8 +13,7 @@ namespace DVLD.DAL.Interfaces.IRepositories
         Task<bool> ExistsByNationalityCountryIDAsync(int NationalityCountryID);
         Task<PersonDeletionResult> DeleteAsync(int PersonID);
         Task<PersonDeletionResult> DeleteByNationalNoAsync(string NationalNo);
-        //int Count(PeopleSearchCriteria SearchCriteria);
-        //List<Person> GetAll(PeopleSearchCriteria SearchCriteria);
-
+        Task<List<Person>> SearchPagedAsync(string filterColumn, string searchValue, string letter, byte? gendor, int pageNumber, int pageSize);
+        Task<int> GetSearchCountAsync(string filterColumn, string searchValue, string letter, byte? gendor);
     }
 }

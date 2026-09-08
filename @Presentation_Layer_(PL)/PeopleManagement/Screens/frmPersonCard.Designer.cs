@@ -1,16 +1,15 @@
-﻿namespace DVLD.PL.PeopleManagement
+﻿using System.Drawing;
+using System.Windows.Forms;
+
+namespace DVLD.PL.PeopleManagement
 {
     partial class frmPersonCard
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
+        private ctrlPersonCard ctrlPersonCard1;
+        private ModernUI.Controls.NButton btnEdit;
+        private ModernUI.Controls.NButton btnDelete;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -20,88 +19,143 @@
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
-            this.btnDeleteSelectedPerson = new System.Windows.Forms.PictureBox();
-            this.btnUpdateSelectedPerson = new System.Windows.Forms.PictureBox();
-            this.ctrlPersonCard1 = new DVLD.PL.PeopleManagement.ctrlPersonCard();
-            ((System.ComponentModel.ISupportInitialize)(this.btnDeleteSelectedPerson)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.btnUpdateSelectedPerson)).BeginInit();
-            this.SuspendLayout();
+            ctrlPersonCard1 = new ctrlPersonCard();
+            btnEdit = new ModernUI.Controls.NButton();
+            btnDelete = new ModernUI.Controls.NButton();
+            SuspendLayout();
             // 
-            // btnDeleteSelectedPerson
+            // headerControl
             // 
-            this.btnDeleteSelectedPerson.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnDeleteSelectedPerson.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.btnDeleteSelectedPerson.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnDeleteSelectedPerson.Image = global::DVLD.PL.Properties.Resources.delete_user__1_1;
-            this.btnDeleteSelectedPerson.InitialImage = global::DVLD.PL.Properties.Resources.refresh;
-            this.btnDeleteSelectedPerson.Location = new System.Drawing.Point(554, 233);
-            this.btnDeleteSelectedPerson.Name = "btnDeleteSelectedPerson";
-            this.btnDeleteSelectedPerson.Size = new System.Drawing.Size(40, 38);
-            this.btnDeleteSelectedPerson.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.btnDeleteSelectedPerson.TabIndex = 30;
-            this.btnDeleteSelectedPerson.TabStop = false;
-            this.btnDeleteSelectedPerson.Click += new System.EventHandler(this.btnDeleteSelectedPerson_Click);
-            // 
-            // btnUpdateSelectedPerson
-            // 
-            this.btnUpdateSelectedPerson.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnUpdateSelectedPerson.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.btnUpdateSelectedPerson.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnUpdateSelectedPerson.Image = global::DVLD.PL.Properties.Resources.user_edit_21991;
-            this.btnUpdateSelectedPerson.InitialImage = global::DVLD.PL.Properties.Resources.refresh;
-            this.btnUpdateSelectedPerson.Location = new System.Drawing.Point(496, 233);
-            this.btnUpdateSelectedPerson.Name = "btnUpdateSelectedPerson";
-            this.btnUpdateSelectedPerson.Size = new System.Drawing.Size(40, 38);
-            this.btnUpdateSelectedPerson.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.btnUpdateSelectedPerson.TabIndex = 29;
-            this.btnUpdateSelectedPerson.TabStop = false;
-            this.btnUpdateSelectedPerson.Click += new System.EventHandler(this.btnUpdateSelectedPerson_Click);
+            headerControl.AllowMaximize = false;
+            headerControl.AllowMinimize = false;
+            headerControl.Size = new Size(826, 38);
+            headerControl.TitleText = "DVLD / People Management / Person Details";
             // 
             // ctrlPersonCard1
             // 
-            this.ctrlPersonCard1.BackColor = System.Drawing.Color.Transparent;
-            this.ctrlPersonCard1.Location = new System.Drawing.Point(3, 12);
-            this.ctrlPersonCard1.MinimumSize = new System.Drawing.Size(573, 255);
-            this.ctrlPersonCard1.Name = "ctrlPersonCard1";
-            this.ctrlPersonCard1.Size = new System.Drawing.Size(601, 255);
-            this.ctrlPersonCard1.TabIndex = 0;
+            ctrlPersonCard1.BackColor = Color.White;
+            ctrlPersonCard1.Location = new Point(25, 55);
+            ctrlPersonCard1.Name = "ctrlPersonCard1";
+            ctrlPersonCard1.Size = new Size(780, 260);
+            ctrlPersonCard1.TabIndex = 0;
+            // 
+            // btnEdit
+            // 
+            btnEdit.BackColor = Color.Transparent;
+            btnEdit.BackgroundEndColor = SystemColors.Control;
+            btnEdit.BackgroundStartColor = SystemColors.Control;
+            btnEdit.BorderColor = Color.DarkGray;
+            btnEdit.BorderRadius = 8;
+            btnEdit.BorderSize = 0;
+            btnEdit.CenterIconWithText = true;
+            btnEdit.Cursor = Cursors.Hand;
+            btnEdit.EnableHoverAnimation = false;
+            btnEdit.EnableIconTinting = false;
+            btnEdit.EnableRippleEffect = false;
+            btnEdit.EnableShadow = false;
+            btnEdit.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            btnEdit.ForeColor = SystemColors.ControlText;
+            btnEdit.GradientAngle = 90F;
+            btnEdit.HoverAnimationSpeed = 20;
+            btnEdit.HoverBorderColor = Color.FromArgb(0, 120, 215);
+            btnEdit.HoverEndColor = Color.FromArgb(229, 241, 251);
+            btnEdit.HoverIconColor = Color.White;
+            btnEdit.HoverStartColor = Color.FromArgb(229, 241, 251);
+            btnEdit.HoverTextColor = SystemColors.ControlText;
+            btnEdit.IconColor = Color.White;
+            btnEdit.IconMargin = 6;
+            btnEdit.IconOffset = new Point(0, 0);
+            btnEdit.IconSize = new Size(26, 26);
+            btnEdit.IconSpacing = 6;
+            btnEdit.IsLoading = false;
+            btnEdit.LeftIcon = null;
+            btnEdit.Location = new Point(705, 55);
+            btnEdit.MiddleIcon = Properties.Resources.edit_person;
+            btnEdit.Name = "btnEdit";
+            btnEdit.PressedEndColor = Color.FromArgb(204, 228, 247);
+            btnEdit.PressedStartColor = Color.FromArgb(204, 228, 247);
+            btnEdit.RightIcon = null;
+            btnEdit.RippleColor = Color.FromArgb(70, 0, 0, 0);
+            btnEdit.RippleSpeed = 15;
+            btnEdit.ShadowColor = Color.FromArgb(60, 0, 0, 0);
+            btnEdit.ShadowOffset = new Point(1, 1);
+            btnEdit.ShadowSize = 3;
+            btnEdit.ShiftOnPress = false;
+            btnEdit.Size = new Size(47, 38);
+            btnEdit.TabIndex = 1;
+            btnEdit.TextColor = SystemColors.ControlText;
+            btnEdit.TextOffset = new Point(0, 0);
+            // 
+            // btnDelete
+            // 
+            btnDelete.BackColor = Color.Transparent;
+            btnDelete.BackgroundEndColor = SystemColors.Control;
+            btnDelete.BackgroundStartColor = SystemColors.Control;
+            btnDelete.BorderColor = Color.DarkGray;
+            btnDelete.BorderRadius = 8;
+            btnDelete.BorderSize = 0;
+            btnDelete.CenterIconWithText = true;
+            btnDelete.Cursor = Cursors.Hand;
+            btnDelete.EnableHoverAnimation = false;
+            btnDelete.EnableIconTinting = false;
+            btnDelete.EnableRippleEffect = false;
+            btnDelete.EnableShadow = false;
+            btnDelete.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            btnDelete.ForeColor = SystemColors.ControlText;
+            btnDelete.GradientAngle = 90F;
+            btnDelete.HoverAnimationSpeed = 20;
+            btnDelete.HoverBorderColor = Color.FromArgb(0, 120, 215);
+            btnDelete.HoverEndColor = Color.FromArgb(229, 241, 251);
+            btnDelete.HoverIconColor = Color.White;
+            btnDelete.HoverStartColor = Color.FromArgb(229, 241, 251);
+            btnDelete.HoverTextColor = SystemColors.ControlText;
+            btnDelete.IconColor = Color.White;
+            btnDelete.IconMargin = 6;
+            btnDelete.IconOffset = new Point(0, 0);
+            btnDelete.IconSize = new Size(26, 26);
+            btnDelete.IconSpacing = 6;
+            btnDelete.IsLoading = false;
+            btnDelete.LeftIcon = null;
+            btnDelete.Location = new Point(758, 55);
+            btnDelete.MiddleIcon = Properties.Resources.bin;
+            btnDelete.Name = "btnDelete";
+            btnDelete.PressedEndColor = Color.FromArgb(204, 228, 247);
+            btnDelete.PressedStartColor = Color.FromArgb(204, 228, 247);
+            btnDelete.RightIcon = null;
+            btnDelete.RippleColor = Color.FromArgb(70, 0, 0, 0);
+            btnDelete.RippleSpeed = 15;
+            btnDelete.ShadowColor = Color.FromArgb(60, 0, 0, 0);
+            btnDelete.ShadowOffset = new Point(1, 1);
+            btnDelete.ShadowSize = 3;
+            btnDelete.ShiftOnPress = false;
+            btnDelete.Size = new Size(47, 38);
+            btnDelete.TabIndex = 2;
+            btnDelete.TextColor = SystemColors.ControlText;
+            btnDelete.TextOffset = new Point(0, 0);
             // 
             // frmPersonCard
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(608, 279);
-            this.Controls.Add(this.btnDeleteSelectedPerson);
-            this.Controls.Add(this.btnUpdateSelectedPerson);
-            this.Controls.Add(this.ctrlPersonCard1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
-            this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(628, 322);
-            this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(588, 322);
-            this.Name = "frmPersonCard";
-            this.ShowIcon = false;
-            this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Person Card";
-            ((System.ComponentModel.ISupportInitialize)(this.btnDeleteSelectedPerson)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.btnUpdateSelectedPerson)).EndInit();
-            this.ResumeLayout(false);
-
+            AllowMaximize = false;
+            AllowMinimize = false;
+            AllowResize = false;
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.White;
+            ClientSize = new Size(830, 333);
+            Controls.Add(btnDelete);
+            Controls.Add(btnEdit);
+            Controls.Add(ctrlPersonCard1);
+            MinimumSize = new Size(830, 333);
+            Name = "frmPersonCard";
+            Text = "DVLD / People Management / Person Details";
+            Load += frmPersonCard_Load;
+            Controls.SetChildIndex(ctrlPersonCard1, 0);
+            Controls.SetChildIndex(btnEdit, 0);
+            Controls.SetChildIndex(btnDelete, 0);
+            Controls.SetChildIndex(headerControl, 0);
+            ResumeLayout(false);
         }
-
-        #endregion
-
-        private ctrlPersonCard ctrlPersonCard1;
-        private System.Windows.Forms.PictureBox btnDeleteSelectedPerson;
-        private System.Windows.Forms.PictureBox btnUpdateSelectedPerson;
     }
 }

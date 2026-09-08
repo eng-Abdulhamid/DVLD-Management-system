@@ -1,16 +1,11 @@
-﻿using CustomControls;
-using DTOs;
-using DVLD_BusinessLogicLayer;
-using NControls;
-using Services;
+﻿using DVLD.BLL.DTOs;
+using DVLD.BLL.OperationResults;
+using DVLD.BLL.Services;
+using DVLD.PL.Global;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -18,68 +13,61 @@ namespace DVLD.PL.PeopleManagement
 {
     public partial class ctrlPeopleSearch : UserControl
     {
+        private PersonService? _personService;
+        private PersonService PersonServiceInstance => _personService ??= new PersonService();
+
+        private readonly System.Windows.Forms.Timer? _searchTimer;
+        private byte? _selectedGender = null;
+        private bool _isInitializing = true;
+
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public int PageNumber { get; set; } = 1;
+
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public int PageSize { get; set; } = 25;
+
+        public event Action<string>? SearchTextChanged;
+        public event EventHandler<OperationResults<PersonReadDTO>>? OnSearchResultsReceived;
+        public event Action<int>? OnTotalCountReceived;
+
         public ctrlPeopleSearch()
         {
             InitializeComponent();
-            personServices = new PersonServices();
-            InitializeDesign();
-            InitializeTools();
-            this.Load += (s, e) => eventSearchResults.Invoke(this, GetSearchResults());
-        }
-        public event Action<string> SearchTextChanged;
-        public event EventHandler<OperationResults<PersonReadDTO>> eventSearchResults = delegate { };
-        private string letter = "";
-        private string lastSearchResult = "";
-        private PersonServices personServices;
-        private enGendor selectedGendor = enGendor.Unknown;
-        private void InitializeDesign()
-        {
-            this.BackColor = Color.FromArgb(240, 242, 245);
-            this.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
-            this.Padding = new Padding(0);
 
-            ApplyModernStyling();
-        }
-        private void ApplyModernStyling()
-        {
-            foreach (Control control in this.Controls)
+            if (UIUtility.IsDesignMode)
+                return;
+
+            _searchTimer = new System.Windows.Forms.Timer { Interval = 300 };
+            _searchTimer.Tick += async (s, e) =>
             {
-                if (control is ComboBox comboBox)
-                {
-                    comboBox.FlatStyle = FlatStyle.Flat;
-                    comboBox.BackColor = Color.White;
-                    comboBox.ForeColor = Color.FromArgb(45, 45, 45);
-                    comboBox.Font = new Font("Segoe UI", 10F);
-                    comboBox.Margin = new Padding(8);
-                }
-                else if (control is Label label)
-                {
-                    label.ForeColor = Color.FromArgb(60, 60, 60);
-                    label.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
-                }
-            }
-        }
-        private void InitializeSearchBox()
-        {
-            txtSearch.AddIcon(
-                image: Properties.Resources.icons8_search_500,
-                position: IconPosition.Left,
-                width: 20,
-                height: 20,
-                isClickable: false
-            );
+                _searchTimer.Stop();
+                await PerformSearchAsync();
+            };
 
-            txtSearch.BorderRadius = 18;
-            txtSearch.BorderSize = 1;
-            txtSearch.BorderColor = Color.FromArgb(220, 220, 220);
-            txtSearch.FillColor = Color.White;
-            txtSearch.Font = new Font("Segoe UI", 11F);
-            txtSearch.ForeColor = Color.FromArgb(45, 45, 45);
-            txtSearch.PlaceholderText = "Search by first name...";
-            txtSearch.PlaceholderColor = Color.FromArgb(150, 150, 150);
-            txtSearch.Margin = new Padding(15, 15, 15, 10);
+            InitializeControlsData();
+            ApplyStyles();
+            _isInitializing = false;
+
+            this.Load += async (s, e) =>
+            {
+                if (UIUtility.IsDesignMode)
+                    return;
+
+                await PerformSearchAsync();
+            };
         }
-        private void InitializeSearchByLetterComboBox()
+
+        private void ApplyStyles()
+        {
+            txtSearch.ApplyStandardStyle();
+            cbSearchByLetter.ApplyStandardStyle();
+            cbByGendor.ApplyStandardStyle();
+            cbFilterBy.ApplyStandardStyle();
+        }
+
+        private void InitializeControlsData()
         {
             cbSearchByLetter.Items.AddRange(new object[]
             {
@@ -87,189 +75,169 @@ namespace DVLD.PL.PeopleManagement
                 "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"
             });
             cbSearchByLetter.SelectedIndex = 0;
-            cbSearchByLetter.DropDownStyle = ComboBoxStyle.DropDownList;
-        }
-        private void InitializeSearchByGendorComboBox()
-        {
+
             cbByGendor.Items.AddRange(new object[] { "Both", "Male", "Female" });
             cbByGendor.SelectedIndex = 0;
-            cbByGendor.DropDownStyle = ComboBoxStyle.DropDownList;
-        }
-        private void InitializeFilterByComboBox()
-        {
+
             cbFilterBy.Items.AddRange(new object[]
             {
                 "Person ID", "National no.", "First name", "Second name",
                 "Third name", "Last name", "Year of birth", "Nationality", "Phone", "Email"
             });
             cbFilterBy.SelectedIndex = 2;
-            cbFilterBy.DropDownStyle = ComboBoxStyle.DropDownList;
-            UpdateSearchPlaceholder("Search by first name...");
-        }
-        private void InitializeTools()
-        {
-            InitializeSearchBox();
-            InitializeSearchByLetterComboBox();
-            InitializeSearchByGendorComboBox();
-            InitializeFilterByComboBox();
-        }
-        private void UpdateSearchPlaceholder(string newText)
-        {
-            txtSearch.PlaceholderText = newText;
-        }
-        private void cbFilterBy_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            txtSearch.Text = string.Empty;
-            UpdateSearchPlaceholder($"Search by {cbFilterBy.Text.ToLower()}...");
-            eventSearchResults.Invoke(this, GetSearchResults());
-        }
-        private void cbSearchByLetter_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            letter = cbSearchByLetter.Text == "All" ? "" : cbSearchByLetter.Text;
-            if (letter != "")
-            {
-                txtSearch.Text = string.Empty;
-            }
-            eventSearchResults.Invoke(this, GetSearchResults());
-        }
-        private enGendor GetSelectedGendor()
-        {
-            string Gendor = cbByGendor.Text;
-            if (Gendor == "Male")
-            {
-                return enGendor.Male;
 
-            }
-            else if (Gendor == "Female")
-            {
-                return enGendor.Female;
-            }
-            else
-            {
-                return enGendor.Unknown;
-            }
+            UpdatePlaceholder();
+        }
 
-        }
-        private void cbByGendor_SelectedIndexChanged(object sender, EventArgs e)
+        private void UpdatePlaceholder()
         {
-            if (selectedGendor != GetSelectedGendor())
+            if (cbFilterBy.SelectedIndex >= 0)
             {
-                selectedGendor = GetSelectedGendor();
-                eventSearchResults.Invoke(this, GetSearchResults());
+                txtSearch.PlaceholderText = $"Search by {cbFilterBy.Text.ToLower()}...";
             }
         }
-        private void txtSearch_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                e.SuppressKeyPress = true;
-                PerformSearch();
-            }
-            else if (e.KeyCode == Keys.Escape)
-            {
-                txtSearch.Text = string.Empty;
-                e.SuppressKeyPress = true;
-            }
-        }
-        private void txtSearch_TextChanged(object sender, EventArgs e)
-        {
-            SearchTextChanged?.Invoke(txtSearch.Text);
-            if (txtSearch.Text.Length == 0)
-            {
-                txtSearch.SuggestList = new string[0];
-                eventSearchResults.Invoke(this, GetSearchResults());
-            }
-            else
-            {
-                cbSearchByLetter.SelectedIndex = 0; // Reset to "All" when typing
-                if (txtSearch.Text != lastSearchResult)
-                {
-                    OperationResults<PersonReadDTO> results = GetSearchResults();
-                    if (results.IsSuccess && results.DataList?.Count > 0)
-                    {
-                        UpdateSearchSuggestions(results.DataList);
-                    }
-                    else
-                    {
-                        txtSearch.SuggestList = new string[0];
-                    }
-                }
-            }
-        }
-        private PersonServices.enFields SelectCurrentFilter()
+
+        private string GetFilterColumnName()
         {
             return cbFilterBy.Text switch
             {
-                "Person ID" => PersonServices.enFields.PersonID,
-                "National no." => PersonServices.enFields.NationalNo,
-                "First name" => PersonServices.enFields.FirstName,
-                "Second name" => PersonServices.enFields.SecondName,
-                "Third name" => PersonServices.enFields.ThirdName,
-                "Last name" => PersonServices.enFields.LastName,
-                "Year of birth" => PersonServices.enFields.DateOfBirth,
-                "Nationality" => PersonServices.enFields.NationalityCountryID,
-                "Phone" => PersonServices.enFields.Phone,
-                "Email" => PersonServices.enFields.Email,
-                "Gendor" => PersonServices.enFields.Gendor,
-                _ => PersonServices.enFields.None
+                "Person ID" => "PersonID",
+                "National no." => "NationalNo",
+                "First name" => "FirstName",
+                "Second name" => "SecondName",
+                "Third name" => "ThirdName",
+                "Last name" => "LastName",
+                "Year of birth" => "DateOfBirth",
+                "Nationality" => "CountryName",
+                "Phone" => "Phone",
+                "Email" => "Email",
+                _ => "FirstName"
             };
         }
-        private void UpdateSearchSuggestions(List<PersonReadDTO> people)
+
+        public async Task PerformSearchAsync()
         {
-            var suggestions = people
-                .Take(8)
-                .Select(p => $"{p.FirstName}")
-                .ToArray();
-            txtSearch.SuggestList = suggestions;
-        }
-        private OperationResults<PersonReadDTO> GetSearchResults()
-        {
-            string searchText = txtSearch.Text.Trim();
-            enSearchType searchType = enSearchType.None;
-            if (string.IsNullOrWhiteSpace(txtSearch.Text) && !string.IsNullOrWhiteSpace(letter))
+            if (UIUtility.IsDesignMode) return;
+
+            string filterColumn = GetFilterColumnName();
+            string searchValue = txtSearch.Text.Trim();
+            string letter = cbSearchByLetter.Text == "All" ? string.Empty : cbSearchByLetter.Text;
+
+            int totalCount = await PersonServiceInstance.GetSearchCountAsync(filterColumn, searchValue, letter, _selectedGender);
+            OnTotalCountReceived?.Invoke(totalCount);
+
+            OperationResults<PersonReadDTO> results = await PersonServiceInstance.SearchPeoplePagedAsync(
+                filterColumn,
+                searchValue,
+                letter,
+                _selectedGender,
+                PageNumber,
+                PageSize);
+
+            if (results.IsSuccess && results.DataList != null)
             {
-                searchText = letter;
-                searchType = enSearchType.StartWith;
+                UpdateSuggestions(results.DataList);
             }
             else
             {
-                searchType = enSearchType.Contain;
+                txtSearch.SuggestList = Array.Empty<string>();
             }
-            SearchCriteria<PersonServices.enFields> searchBy = new SearchCriteria<PersonServices.enFields>
-            {
-                GendorFilter = GetSelectedGendor(),
-                FilterBy = SelectCurrentFilter(),
-                SearchString = searchText,
-                SearchType = searchType
-            };
-            return personServices.GetPeople(searchBy);
+
+            OnSearchResultsReceived?.Invoke(this, results);
         }
-        public void PerformSearch()
+
+        private void UpdateSuggestions(List<PersonReadDTO> people)
         {
-            try
-            {
-                OperationResults<PersonReadDTO> results = GetSearchResults();
-
-                if (results.IsSuccess && results.DataList?.Count > 0)
-                {
-                    lastSearchResult = txtSearch.Text;
-                    eventSearchResults.Invoke(this, GetSearchResults());
-                }
-                else
-                {
-                    txtSearch.SuggestList = new string[0];
-                    eventSearchResults.Invoke(this, null); // Nothing
-                    Shared.ShowNotificaiton("No people found matching the search criteria.", "Search Result", IconType.Info);
-
-                }
-            }
-            catch (Exception ex)
-            {
-                NotificationBuilder Notify = new NotificationBuilder();
-                Shared.ShowNotificaiton($"{ex.Message}", "Search error", IconType.Error);
-            }
+            txtSearch.SuggestList = people
+                .Take(8)
+                .Select(p => p.FirstName)
+                .Where(name => !string.IsNullOrWhiteSpace(name))
+                .Distinct()
+                .ToArray();
         }
 
+        private async void cbFilterBy_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (_isInitializing || UIUtility.IsDesignMode) return;
 
+            PageNumber = 1;
+            txtSearch.Text = string.Empty;
+            UpdatePlaceholder();
+            _searchTimer?.Stop();
+            await PerformSearchAsync();
+        }
+
+        private async void cbSearchByLetter_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (_isInitializing || UIUtility.IsDesignMode) return;
+
+            PageNumber = 1;
+            if (cbSearchByLetter.Text != "All") txtSearch.Text = string.Empty;
+            await PerformSearchAsync();
+        }
+
+        private async void cbByGendor_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (_isInitializing || UIUtility.IsDesignMode) return;
+
+            byte? newGender = cbByGendor.Text switch
+            {
+                "Male" => 0,
+                "Female" => 1,
+                _ => null
+            };
+
+            if (_selectedGender == newGender) return;
+
+            _selectedGender = newGender;
+            PageNumber = 1;
+            await PerformSearchAsync();
+        }
+
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            if (UIUtility.IsDesignMode) return;
+
+            SearchTextChanged?.Invoke(txtSearch.Text);
+
+            if (_isInitializing) return;
+
+            PageNumber = 1;
+
+            if (string.IsNullOrWhiteSpace(txtSearch.Text))
+            {
+                txtSearch.SuggestList = Array.Empty<string>();
+                _searchTimer?.Stop();
+                _ = PerformSearchAsync();
+                return;
+            }
+
+            if (cbSearchByLetter.SelectedIndex != 0)
+            {
+                cbSearchByLetter.SelectedIndex = 0;
+            }
+
+            _searchTimer?.Stop();
+            _searchTimer?.Start();
+        }
+
+        private async void txtSearch_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (UIUtility.IsDesignMode) return;
+
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+                _searchTimer?.Stop();
+                PageNumber = 1;
+                await PerformSearchAsync();
+            }
+            else if (e.KeyCode == Keys.Escape)
+            {
+                e.SuppressKeyPress = true;
+                _searchTimer?.Stop();
+                txtSearch.Text = string.Empty;
+            }
+        }
     }
 }

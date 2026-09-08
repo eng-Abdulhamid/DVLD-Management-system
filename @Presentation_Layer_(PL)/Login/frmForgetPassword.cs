@@ -1,18 +1,18 @@
 ﻿using DVLD.BLL.DTOs;
 using DVLD.BLL.OperationResults;
 using DVLD.BLL.Services;
+using DVLD.PL.Global;
 using DVLD.PL.Properties;
 using System;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static DVLD.PL.Global.UIUtility;
 
 namespace DVLD.PL.Login
 {
-    public partial class frmForgetPassword : Form
+    public partial class frmForgetPassword : frmBase
     {
         private readonly UserService _userService;
         private UserReadDTO _verifiedUser;
@@ -24,52 +24,47 @@ namespace DVLD.PL.Login
 
         private Image _eyeOnIcon;
         private Image _eyeOffIcon;
+        private ToolTip _toolTips;
+
+        public Action<string, string>? OnPasswordChange;
 
         public frmForgetPassword(string UserName = "")
         {
             InitializeComponent();
+
+            this.AllowMaximize = false;
+            this.AllowResize = false;
+
             _userService = new UserService();
+
             if (!string.IsNullOrEmpty(UserName))
             {
                 txtUserName.Text = UserName;
             }
-            InitializeUIUX();
+
+            this.Icon = Resources.iconLoginIn;
+
             PreloadIcons();
             RegisterEvents();
             SetupPasswordVisibility();
+            SetupToolTips();
+            ApplyStyles();
 
             this.Height = FORM_COLLAPSED_HEIGHT;
             pnlCreateNewPassword.Visible = false;
             SwitchToUnverifiedState();
         }
 
-        [DllImport("user32.dll")]
-        private static extern bool ReleaseCapture();
-
-        [DllImport("user32.dll")]
-        private static extern int SendMessage(IntPtr hWnd, int msg, int wParam, int lParam);
-
-        [DllImport("dwmapi.dll")]
-        private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int attrValue, int attrSize);
-
-        protected override CreateParams CreateParams
+        private void ApplyStyles()
         {
-            get
-            {
-                CreateParams cp = base.CreateParams;
-                cp.ClassStyle |= 0x00020000;
-                cp.ExStyle |= 0x02000000;
-                return cp;
-            }
-        }
+            btnVerifyUser.ApplyPrimaryStyle();
+            btnChangePassword.ApplyPrimaryStyle();
+            btnCancel.ApplySecondaryStyle();
 
-        private void InitializeUIUX()
-        {
-            int cornerPreference = 2;
-            DwmSetWindowAttribute(Handle, 33, ref cornerPreference, sizeof(int));
-
-            this.Icon = Resources.iconLoginIn;
-            this.StartPosition = FormStartPosition.CenterScreen;
+            txtUserName.ApplyStandardStyle();
+            txtOldPassword.ApplyStandardStyle();
+            txtNewPassword.ApplyStandardStyle();
+            txtConfirmPassword.ApplyStandardStyle();
         }
 
         private void PreloadIcons()
@@ -79,13 +74,31 @@ namespace DVLD.PL.Login
             _eyeOffIcon = RecolorIcon(Resources.visibilityOff, iconColor);
         }
 
+        private void SetupToolTips()
+        {
+            _toolTips = new ToolTip
+            {
+                InitialDelay = 400,
+                ReshowDelay = 100,
+                UseAnimation = true,
+                UseFading = true
+            };
+
+            _toolTips.SetToolTip(txtUserName, "Enter your registered username");
+            _toolTips.SetToolTip(btnVerifyUser, "Check if account exists");
+            _toolTips.SetToolTip(btnEditUsername, "Change username");
+            _toolTips.SetToolTip(txtOldPassword, "Enter current password");
+            _toolTips.SetToolTip(txtNewPassword, "Enter your new password");
+            _toolTips.SetToolTip(txtConfirmPassword, "Re-enter new password to match");
+            _toolTips.SetToolTip(btnChangePassword, "Save new password and login");
+            _toolTips.SetToolTip(btnCancel, "Cancel operation");
+            _toolTips.SetToolTip(lnkForgotCurrentPassword, "Send recovery link via email");
+        }
+
         private void RegisterEvents()
         {
-            btnClose.Click += (s, e) => Close();
-            btnMinimize.Click += (s, e) => WindowState = FormWindowState.Minimized;
-
-            pnlMain.MouseDown += DragWindow;
-            lblHeader.MouseDown += DragWindow;
+            EnableWindowDragging(pnlMain);
+            EnableWindowDragging(lblHeader);
 
             btnVerifyUser.Click += BtnVerifyUser_Click;
             btnEditUsername.Click += BtnEditUsername_Click;
@@ -96,24 +109,12 @@ namespace DVLD.PL.Login
             txtOldPassword.TextChanged += ClearPasswordErrors;
             txtNewPassword.TextChanged += ClearPasswordErrors;
             txtConfirmPassword.TextChanged += ClearPasswordErrors;
-
-            lnkForgotCurrentPassword.LinkClicked += (s, e) => MessageBox.Show("Email recovery will be available soon.", "Coming Soon", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        private void DragWindow(object? sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                ReleaseCapture();
-                SendMessage(Handle, 0xA1, 0x2, 0);
-            }
         }
 
         private async Task AnimateFormHeight(bool expand)
         {
             int targetHeight = expand ? FORM_EXPANDED_HEIGHT : FORM_COLLAPSED_HEIGHT;
-            int step = expand ? 25 : -25;
-
+            int step = expand ? 20 : -20;
             int centerY = this.Top + (this.Height / 2);
 
             if (expand) pnlCreateNewPassword.Visible = true;
@@ -131,53 +132,25 @@ namespace DVLD.PL.Login
             if (!expand) pnlCreateNewPassword.Visible = false;
         }
 
-        private Image RecolorIcon(Image source, Color color)
-        {
-            Bitmap bitmap = new Bitmap(source.Width, source.Height);
-            using (Graphics g = Graphics.FromImage(bitmap))
-            {
-                g.Clear(Color.Transparent);
-                ColorMatrix matrix = new ColorMatrix(new float[][]
-                {
-                    new float[] { 0, 0, 0, 0, 0 },
-                    new float[] { 0, 0, 0, 0, 0 },
-                    new float[] { 0, 0, 0, 0, 0 },
-                    new float[] { 0, 0, 0, 1, 0 },
-                    new float[] { color.R / 255f, color.G / 255f, color.B / 255f, 0, 1 }
-                });
-
-                using (ImageAttributes attributes = new ImageAttributes())
-                {
-                    attributes.SetColorMatrix(matrix);
-                    g.DrawImage(source, new Rectangle(0, 0, source.Width, source.Height), 0, 0, source.Width, source.Height, GraphicsUnit.Pixel, attributes);
-                }
-            }
-            return bitmap;
-        }
-
         private void SetupPasswordVisibility()
         {
             txtOldPassword.UseSystemPasswordChar = true;
             txtNewPassword.UseSystemPasswordChar = true;
             txtConfirmPassword.UseSystemPasswordChar = true;
 
-            txtOldPassword.AddIcon(_eyeOffIcon, NControls.IconPosition.Right, 20, 20, true, TogglePasswordVisibility);
-            txtNewPassword.AddIcon(_eyeOffIcon, NControls.IconPosition.Right, 20, 20, true, TogglePasswordVisibility);
-            txtConfirmPassword.AddIcon(_eyeOffIcon, NControls.IconPosition.Right, 20, 20, true, TogglePasswordVisibility);
-        }
+            txtOldPassword.AddIcon(_eyeOffIcon, NControls.IconPosition.Right, 20, 20, true,
+                (t) => UIUtility.TogglePasswordVisibility(t, _eyeOffIcon, _eyeOnIcon));
 
-        private void TogglePasswordVisibility(NControls.NTextBox txt)
-        {
-            txt.UseSystemPasswordChar = !txt.UseSystemPasswordChar;
-            txt.ClearIcons();
-            Image icon = txt.UseSystemPasswordChar ? _eyeOffIcon : _eyeOnIcon;
-            txt.AddIcon(icon, NControls.IconPosition.Right, 20, 20, true, TogglePasswordVisibility);
+            txtNewPassword.AddIcon(_eyeOffIcon, NControls.IconPosition.Right, 20, 20, true,
+                (t) => UIUtility.TogglePasswordVisibility(t, _eyeOffIcon, _eyeOnIcon));
+
+            txtConfirmPassword.AddIcon(_eyeOffIcon, NControls.IconPosition.Right, 20, 20, true,
+                (t) => UIUtility.TogglePasswordVisibility(t, _eyeOffIcon, _eyeOnIcon));
         }
 
         private async void SwitchToVerifiedState()
         {
             _accountVerified = true;
-
             txtUserName.Enabled = false;
             txtUserName.HasError = false;
 
@@ -194,7 +167,7 @@ namespace DVLD.PL.Login
         private async void SwitchToUnverifiedState()
         {
             _accountVerified = false;
-            _verifiedUser = new();
+            _verifiedUser = new UserReadDTO();
 
             btnVerifyUser.Visible = true;
             btnVerifyUser.Enabled = true;
@@ -237,8 +210,7 @@ namespace DVLD.PL.Login
             string username = txtUserName.Text.Trim();
             if (string.IsNullOrWhiteSpace(username))
             {
-                TriggerFieldError(txtUserName, "Please enter your username.");
-                return false;
+                return TriggerFieldError(txtUserName, "Please enter your username.");
             }
             return true;
         }
@@ -295,8 +267,6 @@ namespace DVLD.PL.Login
             btnChangePassword.Enabled = false;
             SetStatusMessage("Updating password...", Color.FromArgb(107, 114, 128));
 
-            var user = await _userService.GetByUserNameAsync(txtUserName.Text.Trim());
-
             OperationResult<bool> result = await _userService.ChangePasswordAsync(txtUserName.Text, txtOldPassword.Text, txtNewPassword.Text);
 
             _isChangingPassword = false;
@@ -309,6 +279,7 @@ namespace DVLD.PL.Login
                 return;
             }
 
+            OnPasswordChange?.Invoke(txtUserName.Text, txtNewPassword.Text);
             MessageBox.Show("Password changed successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             Close();
         }
@@ -361,11 +332,6 @@ namespace DVLD.PL.Login
 
             if (property == null || property.GetValue(user) == null) return false;
             return int.TryParse(property.GetValue(user)!.ToString(), out userId);
-        }
-
-        private void btnChangePassword_Click_1(object sender, EventArgs e)
-        {
-
         }
     }
 }

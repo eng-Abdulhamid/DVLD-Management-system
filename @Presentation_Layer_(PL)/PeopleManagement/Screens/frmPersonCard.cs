@@ -1,57 +1,97 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DVLD.PL.Global;
+using System;
 using System.Windows.Forms;
 
 namespace DVLD.PL.PeopleManagement
 {
-    public partial class frmPersonCard : Form
+    public partial class frmPersonCard : frmBase
     {
-        private readonly int personID = -1;
-        public Action<int> PersonUpdated;
-        public Action PersonDeleted;
-        public frmPersonCard(int PersonID)
+        private readonly int _personId;
+        private ToolTip? _toolTips;
+
+        public event Action<int>? PersonUpdated;
+        public event Action? PersonDeleted;
+
+        public frmPersonCard() : this(-1)
+        {
+        }
+
+        public frmPersonCard(int personId)
         {
             InitializeComponent();
-            ctrlPersonCard1.RefreshCard(PersonID);
-            personID = PersonID;
+
+            this.AllowMaximize = false;
+            this.AllowMinimize = false;
+            this.AllowResize = false;
+
+            _personId = personId;
+
+            ApplyStyles();
+            RegisterEvents();
+            SetupToolTips();
         }
 
-        private void btnDeleteSelectedPerson_Click(object sender, EventArgs e)
+        private void ApplyStyles()
         {
-            if (personID > 0)
+            btnEdit.ApplyPrimaryStyle();
+            btnDelete.ApplyDangerStyle();
+        }
+
+        private void SetupToolTips()
+        {
+            _toolTips = new ToolTip
             {
-                frmDeletePersonForm DeletePersonForm = new frmDeletePersonForm(personID);
-                DeletePersonForm.DeletedSuccessfully += PersonDeletedSuccessfullyEventHundler;
-                DeletePersonForm.ShowDialog();
-            }
-        }
-        private void PersonDeletedSuccessfullyEventHundler()
-        {
-            PersonDeleted?.Invoke();
-            this.Close();
+                InitialDelay = 300,
+                ReshowDelay = 100,
+                AutoPopDelay = 5000,
+                UseAnimation = true,
+                UseFading = true
+            };
+
+            _toolTips.SetToolTip(btnEdit, "Open edit dialog for this person");
+            _toolTips.SetToolTip(btnDelete, "Permanently delete this person record");
         }
 
-        private void btnUpdateSelectedPerson_Click(object sender, EventArgs e)
+        private async void frmPersonCard_Load(object sender, EventArgs e)
         {
-            if (personID > 0)
+            if (UIUtility.IsDesignMode) return;
+
+            if (_personId <= 0)
             {
-                frmSavePerson frm = new frmSavePerson(personID);
-
-                frm.PersonSaved += PersonSaveEventHandler;
-
-                frm.ShowDialog();
+                MessageBox.Show("Invalid person identifier.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
+                return;
             }
+
+            await ctrlPersonCard1.LoadPersonInfoAsync(_personId);
         }
-        private void PersonSaveEventHandler(int PersonID)
+
+        private void RegisterEvents()
         {
-            ctrlPersonCard1.RefreshCard(PersonID);
-            PersonUpdated?.Invoke(PersonID);
+            btnEdit.Click += (s, e) => OpenEditDialog();
+            btnDelete.Click += (s, e) => OpenDeleteDialog();
+        }
+
+        private void OpenEditDialog()
+        {
+            using frmSavePerson frm = new frmSavePerson(_personId);
+            frm.PersonSaved += async (id) =>
+            {
+                await ctrlPersonCard1.LoadPersonInfoAsync(_personId);
+                PersonUpdated?.Invoke(_personId);
+            };
+            frm.ShowDialog();
+        }
+
+        private void OpenDeleteDialog()
+        {
+            using frmDeletePersonForm frm = new frmDeletePersonForm(_personId);
+            frm.DeletedSuccessfully += () =>
+            {
+                PersonDeleted?.Invoke();
+                this.Close();
+            };
+            frm.ShowDialog();
         }
     }
 }

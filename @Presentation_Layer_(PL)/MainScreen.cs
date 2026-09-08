@@ -1,26 +1,38 @@
-﻿using CustomControls;
+﻿using DVLD.PL.Global;
 using DVLD.PL.PeopleManagement;
-using DVLD.PL.UsersManagement;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DVLD.PL
 {
-    public partial class frmMainScreen : Form
+    public partial class frmMainScreen : frmBase
     {
+        private ToolTip? _navToolTips;
+
         public frmMainScreen()
         {
             InitializeComponent();
+            this.Text = "DVLD/Home";
+
+            btnPeopleManagement.ApplyNavStyle();
+            SetupToolTips();
         }
 
-        private void btnPeopleManagement_Click_1(object sender, EventArgs e)
+        private void SetupToolTips()
+        {
+            _navToolTips = new ToolTip
+            {
+                InitialDelay = 300,
+                ReshowDelay = 100,
+                AutoPopDelay = 5000,
+                UseAnimation = true,
+                UseFading = true
+            };
+
+            _navToolTips.SetToolTip(btnPeopleManagement, "Manage all citizen records, identity data, and personal profiles");
+        }
+
+        private void btnPeopleManagement_Click(object sender, EventArgs e)
         {
             using (frmPeopleManagement frm = new frmPeopleManagement())
             {
@@ -30,10 +42,10 @@ namespace DVLD.PL
 
         private void btnUserManagement_Click(object sender, EventArgs e)
         {
-            using (frmUsersManagement frm = new frmUsersManagement())
-            {
-                frm.ShowDialog(this);
-            }
+        }
+
+        private void btnSettings_Click(object sender, EventArgs e)
+        {
         }
     }
 }

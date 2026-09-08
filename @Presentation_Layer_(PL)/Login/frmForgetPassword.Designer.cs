@@ -27,9 +27,6 @@ namespace DVLD.PL.Login
             lblStep1 = new Label();
             lblSubHeader = new Label();
             lblHeader = new Label();
-            btnMinimize = new Button();
-            btnClose = new Button();
-            label1 = new Label();
             pnlCreateNewPassword = new Panel();
             lblStep2 = new Label();
             lblOldPassword = new Label();
@@ -42,6 +39,7 @@ namespace DVLD.PL.Login
             btnChangePassword = new ModernUI.Controls.NButton();
             btnCancel = new ModernUI.Controls.NButton();
             pnlMain = new Panel();
+            ctrlFormHeader1 = new DVLD.PL.Global.ctrlFormHeader();
             pnlCreateNewPassword.SuspendLayout();
             pnlMain.SuspendLayout();
             SuspendLayout();
@@ -113,7 +111,6 @@ namespace DVLD.PL.Login
             btnVerifiedCheck.BorderRadius = 10;
             btnVerifiedCheck.BorderSize = 0;
             btnVerifiedCheck.CenterIconWithText = false;
-            btnVerifiedCheck.Enabled = false;
             btnVerifiedCheck.EnableHoverAnimation = false;
             btnVerifiedCheck.EnableIconTinting = false;
             btnVerifiedCheck.EnableRippleEffect = false;
@@ -279,45 +276,6 @@ namespace DVLD.PL.Login
             lblHeader.Size = new Size(279, 38);
             lblHeader.TabIndex = 0;
             lblHeader.Text = "Reset your password";
-            // 
-            // btnMinimize
-            // 
-            btnMinimize.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnMinimize.FlatAppearance.BorderSize = 0;
-            btnMinimize.FlatStyle = FlatStyle.Flat;
-            btnMinimize.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            btnMinimize.ForeColor = Color.FromArgb(148, 163, 184);
-            btnMinimize.Location = new Point(433, 10);
-            btnMinimize.Name = "btnMinimize";
-            btnMinimize.Size = new Size(30, 30);
-            btnMinimize.TabIndex = 11;
-            btnMinimize.Text = "—";
-            btnMinimize.UseVisualStyleBackColor = true;
-            // 
-            // btnClose
-            // 
-            btnClose.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnClose.FlatAppearance.BorderSize = 0;
-            btnClose.FlatStyle = FlatStyle.Flat;
-            btnClose.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            btnClose.ForeColor = Color.FromArgb(148, 163, 184);
-            btnClose.Location = new Point(469, 10);
-            btnClose.Name = "btnClose";
-            btnClose.Size = new Size(30, 30);
-            btnClose.TabIndex = 12;
-            btnClose.Text = "✕";
-            btnClose.UseVisualStyleBackColor = true;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
-            label1.ForeColor = Color.FromArgb(148, 163, 184);
-            label1.Location = new Point(15, 15);
-            label1.Name = "label1";
-            label1.Size = new Size(126, 17);
-            label1.TabIndex = 13;
-            label1.Text = "Password Recovery";
             // 
             // pnlCreateNewPassword
             // 
@@ -553,7 +511,6 @@ namespace DVLD.PL.Login
             btnChangePassword.Text = "Update password";
             btnChangePassword.TextColor = Color.White;
             btnChangePassword.TextOffset = new Point(0, 0);
-            btnChangePassword.Click += btnChangePassword_Click_1;
             // 
             // btnCancel
             // 
@@ -605,10 +562,8 @@ namespace DVLD.PL.Login
             // pnlMain
             // 
             pnlMain.BackColor = Color.White;
+            pnlMain.Controls.Add(ctrlFormHeader1);
             pnlMain.Controls.Add(pnlCreateNewPassword);
-            pnlMain.Controls.Add(label1);
-            pnlMain.Controls.Add(btnClose);
-            pnlMain.Controls.Add(btnMinimize);
             pnlMain.Controls.Add(lblHeader);
             pnlMain.Controls.Add(lblSubHeader);
             pnlMain.Controls.Add(lblStep1);
@@ -624,6 +579,18 @@ namespace DVLD.PL.Login
             pnlMain.Size = new Size(514, 674);
             pnlMain.TabIndex = 0;
             // 
+            // ctrlFormHeader1
+            // 
+            ctrlFormHeader1.BackColor = Color.White;
+            ctrlFormHeader1.Dock = DockStyle.Top;
+            ctrlFormHeader1.Location = new Point(0, 0);
+            ctrlFormHeader1.MaximumSize = new Size(0, 31);
+            ctrlFormHeader1.MinimumSize = new Size(210, 31);
+            ctrlFormHeader1.Name = "ctrlFormHeader1";
+            ctrlFormHeader1.Size = new Size(514, 31);
+            ctrlFormHeader1.TabIndex = 15;
+            ctrlFormHeader1.TitleText = "Forget Password";
+            // 
             // frmForgetPassword
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -631,10 +598,7 @@ namespace DVLD.PL.Login
             BackColor = Color.FromArgb(124, 58, 237);
             ClientSize = new Size(520, 680);
             Controls.Add(pnlMain);
-            FormBorderStyle = FormBorderStyle.None;
             Name = "frmForgetPassword";
-            Padding = new Padding(3);
-            StartPosition = FormStartPosition.CenterScreen;
             Text = "Reset Password";
             pnlCreateNewPassword.ResumeLayout(false);
             pnlCreateNewPassword.PerformLayout();
@@ -652,9 +616,6 @@ namespace DVLD.PL.Login
         private System.Windows.Forms.Label lblStep1;
         private System.Windows.Forms.Label lblSubHeader;
         private System.Windows.Forms.Label lblHeader;
-        private System.Windows.Forms.Button btnMinimize;
-        private System.Windows.Forms.Button btnClose;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel pnlCreateNewPassword;
         private System.Windows.Forms.Label lblStep2;
         private System.Windows.Forms.Label lblOldPassword;
@@ -667,5 +628,6 @@ namespace DVLD.PL.Login
         private ModernUI.Controls.NButton btnChangePassword;
         private ModernUI.Controls.NButton btnCancel;
         private System.Windows.Forms.Panel pnlMain;
+        private Global.ctrlFormHeader ctrlFormHeader1;
     }
 }

@@ -1,51 +1,114 @@
-﻿using CustomControls;
-using Services;
+﻿using DVLD.BLL.OperationResults;
+using DVLD.BLL.Services;
+using DVLD.PL.Global;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DVLD.PL.PeopleManagement
 {
-    public partial class frmDeletePersonForm : Form
+    public partial class frmDeletePersonForm : frmBase
     {
+        private readonly int _personId;
+        private readonly PersonService? _personService;
+        private ToolTip? _toolTips;
 
-        private readonly int personID = -1;
-        public Action DeletedSuccessfully;
-        public frmDeletePersonForm(int PersonID)
+        public event Action? DeletedSuccessfully;
+
+        public frmDeletePersonForm() : this(-1)
+        {
+        }
+
+        public frmDeletePersonForm(int personId)
         {
             InitializeComponent();
-            if (PersonID > 0)
-            {
-                personID = PersonID;
-                ctrlPersonCard1.RefreshCard(PersonID);
-            }
-            else
-            {       
-                Shared.ShowNotificaiton("Cannot load this person, please try again later.", "Delete Person", IconType.Error);
-                this.Close();
-            }
 
+            this.ApplyStandardFormTheme();
+            this.AllowMaximize = false;
+            this.AllowMinimize = false;
+            this.AllowResize = false;
+
+            _personId = personId;
+
+            if (UIUtility.IsDesignMode)
+                return;
+
+            _personService = new PersonService();
+
+            ApplyStyles();
+            RegisterEvents();
+            SetupToolTips();
         }
 
-        private void btnCancel_Click(object sender, EventArgs e)
+        private void ApplyStyles()
         {
-            this.Close();
+            btnDelete.ApplyDangerStyle();
+            btnCancel.ApplySecondaryStyle();
         }
 
-        private void btnDelete_Click(object sender, EventArgs e)
+        private async void frmDeletePersonForm_Load(object sender, EventArgs e)
         {
-            PersonServices personServices = new PersonServices();
-            if (personServices.DeleteByPersonID(personID))
+            if (UIUtility.IsDesignMode)
+                return;
+
+            if (_personId <= 0)
             {
-                Shared.ShowNotificaiton($"Person Deleted Successfully.", "Delete Person", IconType.Success);
+                UITheme.ShowErrorToast("Invalid person identifier.");
                 this.Close();
-                DeletedSuccessfully?.Invoke();
+                return;
+            }
+
+            await ctrlPersonCard1.LoadPersonInfoAsync(_personId);
+        }
+
+        private void SetupToolTips()
+        {
+            _toolTips = new ToolTip
+            {
+                InitialDelay = 350,
+                ReshowDelay = 100,
+                UseAnimation = true,
+                UseFading = true
+            };
+
+            _toolTips.SetToolTip(btnDelete, "Permanently delete this record");
+            _toolTips.SetToolTip(btnCancel, "Cancel and close this window");
+        }
+
+        private void RegisterEvents()
+        {
+            btnCancel.Click += (s, e) => this.Close();
+            btnDelete.Click += async (s, e) => await PerformDeleteAsync();
+        }
+
+        private async Task PerformDeleteAsync()
+        {
+            if (_personService == null) return;
+
+            btnDelete.IsLoading = true;
+            btnDelete.Enabled = false;
+            btnCancel.Enabled = false;
+
+            try
+            {
+                OperationResult<bool> result = await _personService.DeleteAsync(_personId);
+
+                if (result.IsSuccess)
+                {
+                    UITheme.ShowSuccessToast("Person deleted successfully.");
+                    DeletedSuccessfully?.Invoke();
+                    this.Close();
+                }
+                else
+                {
+                    UITheme.ShowWarningToast(result.Message, "Delete Failed");
+                }
+            }
+            finally
+            {
+                btnDelete.IsLoading = false;
+                btnDelete.Enabled = true;
+                btnCancel.Enabled = true;
             }
         }
     }

@@ -1,16 +1,12 @@
-﻿namespace DVLD.PL.PeopleManagement
+﻿using System.Drawing;
+using System.Windows.Forms;
+
+namespace DVLD.PL.PeopleManagement
 {
     partial class ctrlPersonCard
     {
-        /// <summary> 
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary> 
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -20,299 +16,299 @@
             base.Dispose(disposing);
         }
 
-        #region Component Designer generated code
-
-        /// <summary> 
-        /// Required method for Designer support - do not modify 
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
-            this.lblPersonID = new System.Windows.Forms.Label();
-            this.lblNationalNo = new System.Windows.Forms.Label();
-            this.lblFullName = new System.Windows.Forms.Label();
-            this.lblDateOfBirth = new System.Windows.Forms.Label();
-            this.lblGendor = new System.Windows.Forms.Label();
-            this.lblAddress = new System.Windows.Forms.Label();
-            this.lblPhone = new System.Windows.Forms.Label();
-            this.lblEmail = new System.Windows.Forms.Label();
-            this.lblNationlity = new System.Windows.Forms.Label();
-            this.PersonID = new System.Windows.Forms.Label();
-            this.NationalNo = new System.Windows.Forms.Label();
-            this.FullName = new System.Windows.Forms.Label();
-            this.Email = new System.Windows.Forms.Label();
-            this.Phone = new System.Windows.Forms.Label();
-            this.DateOfBirth = new System.Windows.Forms.Label();
-            this.Nationality = new System.Windows.Forms.Label();
-            this.Gendor = new System.Windows.Forms.Label();
-            this.Address = new System.Windows.Forms.Label();
-            this.picPersonImage = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.picPersonImage)).BeginInit();
-            this.SuspendLayout();
+            pnlMain = new Panel();
+            tlpDetails = new TableLayoutPanel();
+            lblTitleID = new Label();
+            lblPersonID = new Label();
+            lblTitleNationalNo = new Label();
+            lblNationalNo = new Label();
+            lblTitleGender = new Label();
+            lblGender = new Label();
+            lblTitleDOB = new Label();
+            lblDateOfBirth = new Label();
+            lblTitlePhone = new Label();
+            lblPhone = new Label();
+            lblTitleEmail = new Label();
+            lblEmail = new Label();
+            lblTitleCountry = new Label();
+            lblCountry = new Label();
+            lblTitleAddress = new Label();
+            lblAddress = new Label();
+            lblFullName = new Label();
+            pbPersonImage = new PictureBox();
+            pnlMain.SuspendLayout();
+            tlpDetails.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pbPersonImage).BeginInit();
+            SuspendLayout();
+            // 
+            // pnlMain
+            // 
+            pnlMain.BackColor = Color.White;
+            pnlMain.Controls.Add(tlpDetails);
+            pnlMain.Controls.Add(lblFullName);
+            pnlMain.Controls.Add(pbPersonImage);
+            pnlMain.Dock = DockStyle.Fill;
+            pnlMain.Location = new Point(0, 0);
+            pnlMain.Name = "pnlMain";
+            pnlMain.Padding = new Padding(20);
+            pnlMain.Size = new Size(780, 260);
+            pnlMain.TabIndex = 0;
+            // 
+            // tlpDetails
+            // 
+            tlpDetails.ColumnCount = 4;
+            tlpDetails.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 110F));
+            tlpDetails.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tlpDetails.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 110F));
+            tlpDetails.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tlpDetails.Controls.Add(lblTitleID, 0, 0);
+            tlpDetails.Controls.Add(lblPersonID, 1, 0);
+            tlpDetails.Controls.Add(lblTitleNationalNo, 2, 0);
+            tlpDetails.Controls.Add(lblNationalNo, 3, 0);
+            tlpDetails.Controls.Add(lblTitleGender, 0, 1);
+            tlpDetails.Controls.Add(lblGender, 1, 1);
+            tlpDetails.Controls.Add(lblTitleDOB, 2, 1);
+            tlpDetails.Controls.Add(lblDateOfBirth, 3, 1);
+            tlpDetails.Controls.Add(lblTitlePhone, 0, 2);
+            tlpDetails.Controls.Add(lblPhone, 1, 2);
+            tlpDetails.Controls.Add(lblTitleEmail, 2, 2);
+            tlpDetails.Controls.Add(lblEmail, 3, 2);
+            tlpDetails.Controls.Add(lblTitleCountry, 0, 3);
+            tlpDetails.Controls.Add(lblCountry, 1, 3);
+            tlpDetails.Controls.Add(lblTitleAddress, 2, 3);
+            tlpDetails.Controls.Add(lblAddress, 3, 3);
+            tlpDetails.Location = new Point(204, 70);
+            tlpDetails.Name = "tlpDetails";
+            tlpDetails.RowCount = 4;
+            tlpDetails.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            tlpDetails.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            tlpDetails.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            tlpDetails.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            tlpDetails.Size = new Size(550, 160);
+            tlpDetails.TabIndex = 2;
+            // 
+            // lblTitleID
+            // 
+            lblTitleID.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            lblTitleID.ForeColor = Color.FromArgb(107, 114, 128);
+            lblTitleID.Location = new Point(3, 0);
+            lblTitleID.Name = "lblTitleID";
+            lblTitleID.Size = new Size(100, 23);
+            lblTitleID.TabIndex = 0;
+            lblTitleID.Text = "Person ID:";
             // 
             // lblPersonID
             // 
-            this.lblPersonID.AutoSize = true;
-            this.lblPersonID.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPersonID.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(80)))), ((int)(((byte)(95)))));
-            this.lblPersonID.Location = new System.Drawing.Point(147, 6);
-            this.lblPersonID.Name = "lblPersonID";
-            this.lblPersonID.Size = new System.Drawing.Size(61, 15);
-            this.lblPersonID.TabIndex = 61;
-            this.lblPersonID.Text = "Person ID";
+            lblPersonID.Font = new Font("Segoe UI", 10.5F);
+            lblPersonID.ForeColor = Color.FromArgb(31, 41, 55);
+            lblPersonID.Location = new Point(113, 0);
+            lblPersonID.Name = "lblPersonID";
+            lblPersonID.Size = new Size(100, 23);
+            lblPersonID.TabIndex = 1;
+            lblPersonID.Text = "[????]";
+            // 
+            // lblTitleNationalNo
+            // 
+            lblTitleNationalNo.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            lblTitleNationalNo.ForeColor = Color.FromArgb(107, 114, 128);
+            lblTitleNationalNo.Location = new Point(278, 0);
+            lblTitleNationalNo.Name = "lblTitleNationalNo";
+            lblTitleNationalNo.Size = new Size(100, 23);
+            lblTitleNationalNo.TabIndex = 2;
+            lblTitleNationalNo.Text = "National No:";
             // 
             // lblNationalNo
             // 
-            this.lblNationalNo.AutoSize = true;
-            this.lblNationalNo.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNationalNo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(80)))), ((int)(((byte)(95)))));
-            this.lblNationalNo.Location = new System.Drawing.Point(299, 6);
-            this.lblNationalNo.Name = "lblNationalNo";
-            this.lblNationalNo.Size = new System.Drawing.Size(69, 15);
-            this.lblNationalNo.TabIndex = 62;
-            this.lblNationalNo.Text = "NationalNo";
+            lblNationalNo.Font = new Font("Segoe UI", 10.5F);
+            lblNationalNo.ForeColor = Color.FromArgb(31, 41, 55);
+            lblNationalNo.Location = new Point(388, 0);
+            lblNationalNo.Name = "lblNationalNo";
+            lblNationalNo.Size = new Size(100, 23);
+            lblNationalNo.TabIndex = 3;
+            lblNationalNo.Text = "[????]";
             // 
-            // lblFullName
+            // lblTitleGender
             // 
-            this.lblFullName.AutoSize = true;
-            this.lblFullName.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblFullName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(80)))), ((int)(((byte)(95)))));
-            this.lblFullName.Location = new System.Drawing.Point(147, 53);
-            this.lblFullName.Name = "lblFullName";
-            this.lblFullName.Size = new System.Drawing.Size(60, 15);
-            this.lblFullName.TabIndex = 63;
-            this.lblFullName.Text = "Full name";
+            lblTitleGender.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            lblTitleGender.ForeColor = Color.FromArgb(107, 114, 128);
+            lblTitleGender.Location = new Point(3, 40);
+            lblTitleGender.Name = "lblTitleGender";
+            lblTitleGender.Size = new Size(100, 23);
+            lblTitleGender.TabIndex = 4;
+            lblTitleGender.Text = "Gender:";
+            // 
+            // lblGender
+            // 
+            lblGender.Font = new Font("Segoe UI", 10.5F);
+            lblGender.ForeColor = Color.FromArgb(31, 41, 55);
+            lblGender.Location = new Point(113, 40);
+            lblGender.Name = "lblGender";
+            lblGender.Size = new Size(100, 23);
+            lblGender.TabIndex = 5;
+            lblGender.Text = "[????]";
+            // 
+            // lblTitleDOB
+            // 
+            lblTitleDOB.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            lblTitleDOB.ForeColor = Color.FromArgb(107, 114, 128);
+            lblTitleDOB.Location = new Point(278, 40);
+            lblTitleDOB.Name = "lblTitleDOB";
+            lblTitleDOB.Size = new Size(100, 23);
+            lblTitleDOB.TabIndex = 6;
+            lblTitleDOB.Text = "Date Of Birth:";
             // 
             // lblDateOfBirth
             // 
-            this.lblDateOfBirth.AutoSize = true;
-            this.lblDateOfBirth.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDateOfBirth.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(80)))), ((int)(((byte)(95)))));
-            this.lblDateOfBirth.Location = new System.Drawing.Point(477, 6);
-            this.lblDateOfBirth.Name = "lblDateOfBirth";
-            this.lblDateOfBirth.Size = new System.Drawing.Size(77, 15);
-            this.lblDateOfBirth.TabIndex = 64;
-            this.lblDateOfBirth.Text = "DateOfBIrth";
+            lblDateOfBirth.Font = new Font("Segoe UI", 10.5F);
+            lblDateOfBirth.ForeColor = Color.FromArgb(31, 41, 55);
+            lblDateOfBirth.Location = new Point(388, 40);
+            lblDateOfBirth.Name = "lblDateOfBirth";
+            lblDateOfBirth.Size = new Size(100, 23);
+            lblDateOfBirth.TabIndex = 7;
+            lblDateOfBirth.Text = "[????]";
             // 
-            // lblGendor
+            // lblTitlePhone
             // 
-            this.lblGendor.AutoSize = true;
-            this.lblGendor.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblGendor.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(80)))), ((int)(((byte)(95)))));
-            this.lblGendor.Location = new System.Drawing.Point(388, 160);
-            this.lblGendor.Name = "lblGendor";
-            this.lblGendor.Size = new System.Drawing.Size(49, 15);
-            this.lblGendor.TabIndex = 65;
-            this.lblGendor.Text = "Gendor";
-            // 
-            // lblAddress
-            // 
-            this.lblAddress.AutoSize = true;
-            this.lblAddress.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblAddress.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(80)))), ((int)(((byte)(95)))));
-            this.lblAddress.Location = new System.Drawing.Point(148, 210);
-            this.lblAddress.Name = "lblAddress";
-            this.lblAddress.Size = new System.Drawing.Size(51, 15);
-            this.lblAddress.TabIndex = 66;
-            this.lblAddress.Text = "Address";
+            lblTitlePhone.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            lblTitlePhone.ForeColor = Color.FromArgb(107, 114, 128);
+            lblTitlePhone.Location = new Point(3, 80);
+            lblTitlePhone.Name = "lblTitlePhone";
+            lblTitlePhone.Size = new Size(100, 23);
+            lblTitlePhone.TabIndex = 8;
+            lblTitlePhone.Text = "Phone:";
             // 
             // lblPhone
             // 
-            this.lblPhone.AutoSize = true;
-            this.lblPhone.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPhone.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(80)))), ((int)(((byte)(95)))));
-            this.lblPhone.Location = new System.Drawing.Point(388, 103);
-            this.lblPhone.Name = "lblPhone";
-            this.lblPhone.Size = new System.Drawing.Size(42, 15);
-            this.lblPhone.TabIndex = 67;
-            this.lblPhone.Text = "Phone";
+            lblPhone.Font = new Font("Segoe UI", 10.5F);
+            lblPhone.ForeColor = Color.FromArgb(31, 41, 55);
+            lblPhone.Location = new Point(113, 80);
+            lblPhone.Name = "lblPhone";
+            lblPhone.Size = new Size(100, 23);
+            lblPhone.TabIndex = 9;
+            lblPhone.Text = "[????]";
+            // 
+            // lblTitleEmail
+            // 
+            lblTitleEmail.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            lblTitleEmail.ForeColor = Color.FromArgb(107, 114, 128);
+            lblTitleEmail.Location = new Point(278, 80);
+            lblTitleEmail.Name = "lblTitleEmail";
+            lblTitleEmail.Size = new Size(100, 23);
+            lblTitleEmail.TabIndex = 10;
+            lblTitleEmail.Text = "Email:";
             // 
             // lblEmail
             // 
-            this.lblEmail.AutoSize = true;
-            this.lblEmail.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblEmail.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(80)))), ((int)(((byte)(95)))));
-            this.lblEmail.Location = new System.Drawing.Point(148, 103);
-            this.lblEmail.Name = "lblEmail";
-            this.lblEmail.Size = new System.Drawing.Size(41, 15);
-            this.lblEmail.TabIndex = 68;
-            this.lblEmail.Text = "E-Mail";
+            lblEmail.Font = new Font("Segoe UI", 10.5F);
+            lblEmail.ForeColor = Color.FromArgb(31, 41, 55);
+            lblEmail.Location = new Point(388, 80);
+            lblEmail.Name = "lblEmail";
+            lblEmail.Size = new Size(100, 23);
+            lblEmail.TabIndex = 11;
+            lblEmail.Text = "[????]";
             // 
-            // lblNationlity
+            // lblTitleCountry
             // 
-            this.lblNationlity.AutoSize = true;
-            this.lblNationlity.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNationlity.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(80)))), ((int)(((byte)(95)))));
-            this.lblNationlity.Location = new System.Drawing.Point(148, 160);
-            this.lblNationlity.Name = "lblNationlity";
-            this.lblNationlity.Size = new System.Drawing.Size(61, 15);
-            this.lblNationlity.TabIndex = 69;
-            this.lblNationlity.Text = "Nationlity";
+            lblTitleCountry.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            lblTitleCountry.ForeColor = Color.FromArgb(107, 114, 128);
+            lblTitleCountry.Location = new Point(3, 120);
+            lblTitleCountry.Name = "lblTitleCountry";
+            lblTitleCountry.Size = new Size(100, 23);
+            lblTitleCountry.TabIndex = 12;
+            lblTitleCountry.Text = "Country:";
             // 
-            // PersonID
+            // lblCountry
             // 
-            this.PersonID.AutoSize = true;
-            this.PersonID.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PersonID.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(80)))), ((int)(((byte)(95)))));
-            this.PersonID.Location = new System.Drawing.Point(147, 21);
-            this.PersonID.Name = "PersonID";
-            this.PersonID.Size = new System.Drawing.Size(77, 20);
-            this.PersonID.TabIndex = 70;
-            this.PersonID.Text = "Person ID";
+            lblCountry.Font = new Font("Segoe UI", 10.5F);
+            lblCountry.ForeColor = Color.FromArgb(31, 41, 55);
+            lblCountry.Location = new Point(113, 120);
+            lblCountry.Name = "lblCountry";
+            lblCountry.Size = new Size(100, 23);
+            lblCountry.TabIndex = 13;
+            lblCountry.Text = "[????]";
             // 
-            // NationalNo
+            // lblTitleAddress
             // 
-            this.NationalNo.AutoSize = true;
-            this.NationalNo.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.NationalNo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(80)))), ((int)(((byte)(95)))));
-            this.NationalNo.Location = new System.Drawing.Point(298, 21);
-            this.NationalNo.Name = "NationalNo";
-            this.NationalNo.Size = new System.Drawing.Size(77, 20);
-            this.NationalNo.TabIndex = 71;
-            this.NationalNo.Text = "Person ID";
+            lblTitleAddress.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            lblTitleAddress.ForeColor = Color.FromArgb(107, 114, 128);
+            lblTitleAddress.Location = new Point(278, 120);
+            lblTitleAddress.Name = "lblTitleAddress";
+            lblTitleAddress.Size = new Size(100, 23);
+            lblTitleAddress.TabIndex = 14;
+            lblTitleAddress.Text = "Address:";
             // 
-            // FullName
+            // lblAddress
             // 
-            this.FullName.AutoSize = true;
-            this.FullName.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FullName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(80)))), ((int)(((byte)(95)))));
-            this.FullName.Location = new System.Drawing.Point(147, 68);
-            this.FullName.Name = "FullName";
-            this.FullName.Size = new System.Drawing.Size(77, 20);
-            this.FullName.TabIndex = 72;
-            this.FullName.Text = "Person ID";
+            lblAddress.Font = new Font("Segoe UI", 10.5F);
+            lblAddress.ForeColor = Color.FromArgb(31, 41, 55);
+            lblAddress.Location = new Point(388, 120);
+            lblAddress.Name = "lblAddress";
+            lblAddress.Size = new Size(100, 23);
+            lblAddress.TabIndex = 15;
+            lblAddress.Text = "[????]";
             // 
-            // Email
+            // lblFullName
             // 
-            this.Email.AutoSize = true;
-            this.Email.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Email.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(80)))), ((int)(((byte)(95)))));
-            this.Email.Location = new System.Drawing.Point(147, 118);
-            this.Email.Name = "Email";
-            this.Email.Size = new System.Drawing.Size(77, 20);
-            this.Email.TabIndex = 73;
-            this.Email.Text = "Person ID";
+            lblFullName.AutoSize = true;
+            lblFullName.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
+            lblFullName.ForeColor = Color.FromArgb(17, 24, 39);
+            lblFullName.Location = new Point(200, 20);
+            lblFullName.Name = "lblFullName";
+            lblFullName.Size = new Size(213, 30);
+            lblFullName.TabIndex = 1;
+            lblFullName.Text = "No Person Selected";
             // 
-            // Phone
+            // pbPersonImage
             // 
-            this.Phone.AutoSize = true;
-            this.Phone.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Phone.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(80)))), ((int)(((byte)(95)))));
-            this.Phone.Location = new System.Drawing.Point(387, 118);
-            this.Phone.Name = "Phone";
-            this.Phone.Size = new System.Drawing.Size(77, 20);
-            this.Phone.TabIndex = 74;
-            this.Phone.Text = "Person ID";
-            // 
-            // DateOfBirth
-            // 
-            this.DateOfBirth.AutoSize = true;
-            this.DateOfBirth.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DateOfBirth.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(80)))), ((int)(((byte)(95)))));
-            this.DateOfBirth.Location = new System.Drawing.Point(476, 21);
-            this.DateOfBirth.Name = "DateOfBirth";
-            this.DateOfBirth.Size = new System.Drawing.Size(77, 20);
-            this.DateOfBirth.TabIndex = 75;
-            this.DateOfBirth.Text = "Person ID";
-            // 
-            // Nationality
-            // 
-            this.Nationality.AutoSize = true;
-            this.Nationality.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Nationality.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(80)))), ((int)(((byte)(95)))));
-            this.Nationality.Location = new System.Drawing.Point(147, 175);
-            this.Nationality.Name = "Nationality";
-            this.Nationality.Size = new System.Drawing.Size(77, 20);
-            this.Nationality.TabIndex = 76;
-            this.Nationality.Text = "Person ID";
-            // 
-            // Gendor
-            // 
-            this.Gendor.AutoSize = true;
-            this.Gendor.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Gendor.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(80)))), ((int)(((byte)(95)))));
-            this.Gendor.Location = new System.Drawing.Point(387, 175);
-            this.Gendor.Name = "Gendor";
-            this.Gendor.Size = new System.Drawing.Size(77, 20);
-            this.Gendor.TabIndex = 77;
-            this.Gendor.Text = "Person ID";
-            // 
-            // Address
-            // 
-            this.Address.AutoSize = true;
-            this.Address.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Address.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(80)))), ((int)(((byte)(95)))));
-            this.Address.Location = new System.Drawing.Point(147, 225);
-            this.Address.Name = "Address";
-            this.Address.Size = new System.Drawing.Size(77, 20);
-            this.Address.TabIndex = 78;
-            this.Address.Text = "Person ID";
-            // 
-            // picPersonImage
-            // 
-            this.picPersonImage.Image = global::DVLD.PL.Properties.Resources.user__1_;
-            this.picPersonImage.InitialImage = null;
-            this.picPersonImage.Location = new System.Drawing.Point(3, 21);
-            this.picPersonImage.Name = "picPersonImage";
-            this.picPersonImage.Size = new System.Drawing.Size(125, 125);
-            this.picPersonImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picPersonImage.TabIndex = 53;
-            this.picPersonImage.TabStop = false;
-            this.picPersonImage.Tag = "";
+            pbPersonImage.BackColor = Color.FromArgb(250, 250, 252);
+            pbPersonImage.Image = Properties.Resources.User;
+            pbPersonImage.Location = new Point(20, 30);
+            pbPersonImage.Name = "pbPersonImage";
+            pbPersonImage.Size = new Size(160, 180);
+            pbPersonImage.SizeMode = PictureBoxSizeMode.Zoom;
+            pbPersonImage.TabIndex = 0;
+            pbPersonImage.TabStop = false;
             // 
             // ctrlPersonCard
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Transparent;
-            this.Controls.Add(this.Address);
-            this.Controls.Add(this.Gendor);
-            this.Controls.Add(this.Nationality);
-            this.Controls.Add(this.DateOfBirth);
-            this.Controls.Add(this.Phone);
-            this.Controls.Add(this.Email);
-            this.Controls.Add(this.FullName);
-            this.Controls.Add(this.NationalNo);
-            this.Controls.Add(this.PersonID);
-            this.Controls.Add(this.lblNationlity);
-            this.Controls.Add(this.lblEmail);
-            this.Controls.Add(this.lblPhone);
-            this.Controls.Add(this.lblAddress);
-            this.Controls.Add(this.lblGendor);
-            this.Controls.Add(this.lblDateOfBirth);
-            this.Controls.Add(this.lblFullName);
-            this.Controls.Add(this.lblNationalNo);
-            this.Controls.Add(this.lblPersonID);
-            this.Controls.Add(this.picPersonImage);
-            this.MinimumSize = new System.Drawing.Size(573, 255);
-            this.Name = "ctrlPersonCard";
-            this.Size = new System.Drawing.Size(629, 255);
-            ((System.ComponentModel.ISupportInitialize)(this.picPersonImage)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.Transparent;
+            Controls.Add(pnlMain);
+            Name = "ctrlPersonCard";
+            Size = new Size(780, 260);
+            pnlMain.ResumeLayout(false);
+            pnlMain.PerformLayout();
+            tlpDetails.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pbPersonImage).EndInit();
+            ResumeLayout(false);
         }
 
-        #endregion
-
-        private System.Windows.Forms.PictureBox picPersonImage;
-        private System.Windows.Forms.Label lblPersonID;
-        private System.Windows.Forms.Label lblNationalNo;
+        private System.Windows.Forms.Panel pnlMain;
+        private System.Windows.Forms.PictureBox pbPersonImage;
         private System.Windows.Forms.Label lblFullName;
+        private System.Windows.Forms.TableLayoutPanel tlpDetails;
+
+        private System.Windows.Forms.Label lblTitleID;
+        private System.Windows.Forms.Label lblPersonID;
+        private System.Windows.Forms.Label lblTitleNationalNo;
+        private System.Windows.Forms.Label lblNationalNo;
+
+        private System.Windows.Forms.Label lblTitleGender;
+        private System.Windows.Forms.Label lblGender;
+        private System.Windows.Forms.Label lblTitleDOB;
         private System.Windows.Forms.Label lblDateOfBirth;
-        private System.Windows.Forms.Label lblGendor;
-        private System.Windows.Forms.Label lblAddress;
+
+        private System.Windows.Forms.Label lblTitlePhone;
         private System.Windows.Forms.Label lblPhone;
+        private System.Windows.Forms.Label lblTitleEmail;
         private System.Windows.Forms.Label lblEmail;
-        private System.Windows.Forms.Label lblNationlity;
-        private System.Windows.Forms.Label PersonID;
-        private System.Windows.Forms.Label NationalNo;
-        private System.Windows.Forms.Label FullName;
-        private System.Windows.Forms.Label Email;
-        private System.Windows.Forms.Label Phone;
-        private System.Windows.Forms.Label DateOfBirth;
-        private System.Windows.Forms.Label Nationality;
-        private System.Windows.Forms.Label Gendor;
-        private System.Windows.Forms.Label Address;
+
+        private System.Windows.Forms.Label lblTitleCountry;
+        private System.Windows.Forms.Label lblCountry;
+        private System.Windows.Forms.Label lblTitleAddress;
+        private System.Windows.Forms.Label lblAddress;
     }
 }

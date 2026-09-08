@@ -1,4 +1,4 @@
-﻿namespace DVLD.PL
+﻿namespace DVLD.PL.Global
 {
     public static class AppSession
     {

@@ -2,15 +2,8 @@
 {
     partial class frmSavePerson
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -20,605 +13,733 @@
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.txtPersonID = new NControls.NTextBox();
-            this.txtNationalNo = new NControls.NTextBox();
-            this.txtFirstName = new NControls.NTextBox();
-            this.txtSecondName = new NControls.NTextBox();
-            this.txtThirdName = new NControls.NTextBox();
-            this.txtLastName = new NControls.NTextBox();
-            this.cmbNationality = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.txtPhone = new NControls.NTextBox();
-            this.txtAdress = new NControls.NTextBox();
-            this.lbllall = new System.Windows.Forms.Label();
-            this.cmbGendor = new System.Windows.Forms.ComboBox();
-            this.btnSubmit = new System.Windows.Forms.Button();
-            this.epValidation = new System.Windows.Forms.ErrorProvider(this.components);
-            this.dtpBirthDate = new System.Windows.Forms.DateTimePicker();
-            this.btnCancel = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.lblUploadNewPicutre = new System.Windows.Forms.LinkLabel();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.picPersonImage = new System.Windows.Forms.PictureBox();
-            this.lblDeletePicture = new System.Windows.Forms.LinkLabel();
-            this.btnSubmitAndClose = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.epValidation)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picPersonImage)).BeginInit();
-            this.SuspendLayout();
+            pnlContainer = new Panel();
+            pbPersonPhoto = new PictureBox();
+            lnkUploadPhoto = new LinkLabel();
+            lnkRemovePhoto = new LinkLabel();
+            lblPersonID = new Label();
+            txtPersonID = new NControls.NTextBox();
+            lblNationalNo = new Label();
+            txtNationalNo = new NControls.NTextBox();
+            lblFirstName = new Label();
+            txtFirstName = new NControls.NTextBox();
+            lblSecondName = new Label();
+            txtSecondName = new NControls.NTextBox();
+            lblThirdName = new Label();
+            txtThirdName = new NControls.NTextBox();
+            lblLastName = new Label();
+            txtLastName = new NControls.NTextBox();
+            lblGender = new Label();
+            cmbGender = new ComboBox();
+            lblDateOfBirth = new Label();
+            dtpBirthDate = new DateTimePicker();
+            lblCountry = new Label();
+            cmbCountry = new ComboBox();
+            lblPhone = new Label();
+            txtPhone = new NControls.NTextBox();
+            lblEmail = new Label();
+            txtEmail = new NControls.NTextBox();
+            lblAddress = new Label();
+            txtAddress = new NControls.NTextBox();
+            btnSave = new ModernUI.Controls.NButton();
+            btnCancel = new ModernUI.Controls.NButton();
+            pnlContainer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pbPersonPhoto).BeginInit();
+            SuspendLayout();
+            // 
+            // headerControl
+            // 
+            headerControl.Size = new Size(816, 31);
+            headerControl.TitleText = "DVLD/Home/People Management/Save person";
+            // 
+            // pnlContainer
+            // 
+            pnlContainer.BackColor = Color.White;
+            pnlContainer.Controls.Add(pbPersonPhoto);
+            pnlContainer.Controls.Add(lnkUploadPhoto);
+            pnlContainer.Controls.Add(lnkRemovePhoto);
+            pnlContainer.Controls.Add(lblPersonID);
+            pnlContainer.Controls.Add(txtPersonID);
+            pnlContainer.Controls.Add(lblNationalNo);
+            pnlContainer.Controls.Add(txtNationalNo);
+            pnlContainer.Controls.Add(lblFirstName);
+            pnlContainer.Controls.Add(txtFirstName);
+            pnlContainer.Controls.Add(lblSecondName);
+            pnlContainer.Controls.Add(txtSecondName);
+            pnlContainer.Controls.Add(lblThirdName);
+            pnlContainer.Controls.Add(txtThirdName);
+            pnlContainer.Controls.Add(lblLastName);
+            pnlContainer.Controls.Add(txtLastName);
+            pnlContainer.Controls.Add(lblGender);
+            pnlContainer.Controls.Add(cmbGender);
+            pnlContainer.Controls.Add(lblDateOfBirth);
+            pnlContainer.Controls.Add(dtpBirthDate);
+            pnlContainer.Controls.Add(lblCountry);
+            pnlContainer.Controls.Add(cmbCountry);
+            pnlContainer.Controls.Add(lblPhone);
+            pnlContainer.Controls.Add(txtPhone);
+            pnlContainer.Controls.Add(lblEmail);
+            pnlContainer.Controls.Add(txtEmail);
+            pnlContainer.Controls.Add(lblAddress);
+            pnlContainer.Controls.Add(txtAddress);
+            pnlContainer.Location = new Point(20, 60);
+            pnlContainer.Name = "pnlContainer";
+            pnlContainer.Size = new Size(780, 420);
+            pnlContainer.TabIndex = 1;
+            // 
+            // pbPersonPhoto
+            // 
+            pbPersonPhoto.BackColor = Color.FromArgb(248, 250, 252);
+            pbPersonPhoto.Location = new Point(630, 20);
+            pbPersonPhoto.Name = "pbPersonPhoto";
+            pbPersonPhoto.Size = new Size(130, 140);
+            pbPersonPhoto.SizeMode = PictureBoxSizeMode.Zoom;
+            pbPersonPhoto.TabIndex = 0;
+            pbPersonPhoto.TabStop = false;
+            // 
+            // lnkUploadPhoto
+            // 
+            lnkUploadPhoto.AutoSize = true;
+            lnkUploadPhoto.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            lnkUploadPhoto.LinkColor = Color.FromArgb(124, 58, 237);
+            lnkUploadPhoto.Location = new Point(632, 168);
+            lnkUploadPhoto.Name = "lnkUploadPhoto";
+            lnkUploadPhoto.Size = new Size(80, 15);
+            lnkUploadPhoto.TabIndex = 1;
+            lnkUploadPhoto.TabStop = true;
+            lnkUploadPhoto.Text = "Upload Photo";
+            // 
+            // lnkRemovePhoto
+            // 
+            lnkRemovePhoto.AutoSize = true;
+            lnkRemovePhoto.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            lnkRemovePhoto.LinkColor = Color.FromArgb(239, 68, 68);
+            lnkRemovePhoto.Location = new Point(712, 168);
+            lnkRemovePhoto.Name = "lnkRemovePhoto";
+            lnkRemovePhoto.Size = new Size(50, 15);
+            lnkRemovePhoto.TabIndex = 2;
+            lnkRemovePhoto.TabStop = true;
+            lnkRemovePhoto.Text = "Remove";
+            // 
+            // lblPersonID
+            // 
+            lblPersonID.AutoSize = true;
+            lblPersonID.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            lblPersonID.ForeColor = Color.FromArgb(71, 85, 105);
+            lblPersonID.Location = new Point(20, 15);
+            lblPersonID.Name = "lblPersonID";
+            lblPersonID.Size = new Size(59, 15);
+            lblPersonID.TabIndex = 3;
+            lblPersonID.Text = "Person ID";
             // 
             // txtPersonID
             // 
-            this.txtPersonID.BackColor = System.Drawing.Color.Transparent;
-            this.txtPersonID.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(213)))), ((int)(((byte)(221)))));
-            this.txtPersonID.BorderFocusColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
-            this.txtPersonID.BorderRadius = 16;
-            this.txtPersonID.BorderSize = 1;
-            this.txtPersonID.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtPersonID.Enabled = false;
-            this.txtPersonID.EnableSuggest = true;
-            this.txtPersonID.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(243)))), ((int)(((byte)(246)))));
-            this.txtPersonID.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.txtPersonID.IconOffsetLeft = 10;
-            this.txtPersonID.IconOffsetRight = 10;
-            this.txtPersonID.IconSpacing = 10;
-            this.txtPersonID.Location = new System.Drawing.Point(180, 46);
-            this.txtPersonID.MaxSuggestItems = 4;
-            this.txtPersonID.Name = "txtPersonID";
-            this.txtPersonID.Padding = new System.Windows.Forms.Padding(8);
-            this.txtPersonID.PlaceholderColor = System.Drawing.Color.DarkGray;
-            this.txtPersonID.PlaceholderText = "Person ID";
-            this.txtPersonID.ShowClearButton = true;
-            this.txtPersonID.Size = new System.Drawing.Size(285, 38);
-            this.txtPersonID.SuggestIcon = null;
-            this.txtPersonID.SuggestList = new string[0];
-            this.txtPersonID.TabIndex = 100;
-            this.txtPersonID.UseSystemPasswordChar = false;
+            txtPersonID.AllowArabicCharacters = true;
+            txtPersonID.AllowEnglishCharacters = true;
+            txtPersonID.AllowNumbers = true;
+            txtPersonID.AllowSpaces = true;
+            txtPersonID.AllowSymbols = true;
+            txtPersonID.BackColor = Color.Transparent;
+            txtPersonID.BorderColor = Color.FromArgb(220, 220, 220);
+            txtPersonID.BorderFocusColor = Color.FromArgb(200, 200, 200);
+            txtPersonID.BorderRadius = 24;
+            txtPersonID.BorderSize = 1;
+            txtPersonID.CustomAllowedCharacters = "";
+            txtPersonID.Enabled = false;
+            txtPersonID.EnableSuggest = false;
+            txtPersonID.ErrorBorderColor = Color.FromArgb(239, 68, 68);
+            txtPersonID.FillColor = Color.White;
+            txtPersonID.HasError = false;
+            txtPersonID.IconOffsetLeft = 10;
+            txtPersonID.IconOffsetRight = 10;
+            txtPersonID.IconSpacing = 8;
+            txtPersonID.Location = new Point(20, 35);
+            txtPersonID.MaxLength = 32767;
+            txtPersonID.MaxSuggestItems = 8;
+            txtPersonID.MoveToNextControlOnEnter = true;
+            txtPersonID.Name = "txtPersonID";
+            txtPersonID.Padding = new Padding(8, 12, 8, 12);
+            txtPersonID.PlaceholderColor = Color.DarkGray;
+            txtPersonID.PlaceholderText = "";
+            txtPersonID.ShowClearButton = false;
+            txtPersonID.Size = new Size(260, 40);
+            txtPersonID.SuggestIcon = null;
+            txtPersonID.TabIndex = 4;
+            txtPersonID.UseSystemPasswordChar = false;
+            txtPersonID.ValidateEmail = false;
+            // 
+            // lblNationalNo
+            // 
+            lblNationalNo.AutoSize = true;
+            lblNationalNo.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            lblNationalNo.ForeColor = Color.FromArgb(71, 85, 105);
+            lblNationalNo.Location = new Point(310, 15);
+            lblNationalNo.Name = "lblNationalNo";
+            lblNationalNo.Size = new Size(74, 15);
+            lblNationalNo.TabIndex = 5;
+            lblNationalNo.Text = "National No.";
             // 
             // txtNationalNo
             // 
-            this.txtNationalNo.BackColor = System.Drawing.Color.Transparent;
-            this.txtNationalNo.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(213)))), ((int)(((byte)(221)))));
-            this.txtNationalNo.BorderFocusColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
-            this.txtNationalNo.BorderRadius = 16;
-            this.txtNationalNo.BorderSize = 1;
-            this.txtNationalNo.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtNationalNo.EnableSuggest = true;
-            this.txtNationalNo.FillColor = System.Drawing.Color.White;
-            this.txtNationalNo.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.txtNationalNo.IconOffsetLeft = 10;
-            this.txtNationalNo.IconOffsetRight = 10;
-            this.txtNationalNo.IconSpacing = 10;
-            this.txtNationalNo.Location = new System.Drawing.Point(495, 45);
-            this.txtNationalNo.MaxSuggestItems = 4;
-            this.txtNationalNo.Name = "txtNationalNo";
-            this.txtNationalNo.Padding = new System.Windows.Forms.Padding(8);
-            this.txtNationalNo.PlaceholderColor = System.Drawing.Color.DarkGray;
-            this.txtNationalNo.PlaceholderText = "National no.";
-            this.txtNationalNo.ShowClearButton = true;
-            this.txtNationalNo.Size = new System.Drawing.Size(290, 38);
-            this.txtNationalNo.SuggestIcon = null;
-            this.txtNationalNo.SuggestList = new string[0];
-            this.txtNationalNo.TabIndex = 1;
-            this.txtNationalNo.Tag = "National No";
-            this.txtNationalNo.UseSystemPasswordChar = false;
-            this.txtNationalNo.TextChanged += new System.EventHandler(this.ValidateControls_ValuedChanged);
+            txtNationalNo.AllowArabicCharacters = true;
+            txtNationalNo.AllowEnglishCharacters = true;
+            txtNationalNo.AllowNumbers = true;
+            txtNationalNo.AllowSpaces = true;
+            txtNationalNo.AllowSymbols = true;
+            txtNationalNo.BackColor = Color.Transparent;
+            txtNationalNo.BorderColor = Color.FromArgb(220, 220, 220);
+            txtNationalNo.BorderFocusColor = Color.FromArgb(200, 200, 200);
+            txtNationalNo.BorderRadius = 24;
+            txtNationalNo.BorderSize = 1;
+            txtNationalNo.CustomAllowedCharacters = "";
+            txtNationalNo.EnableSuggest = false;
+            txtNationalNo.ErrorBorderColor = Color.FromArgb(239, 68, 68);
+            txtNationalNo.FillColor = Color.White;
+            txtNationalNo.HasError = false;
+            txtNationalNo.IconOffsetLeft = 10;
+            txtNationalNo.IconOffsetRight = 10;
+            txtNationalNo.IconSpacing = 8;
+            txtNationalNo.Location = new Point(310, 35);
+            txtNationalNo.MaxLength = 32767;
+            txtNationalNo.MaxSuggestItems = 8;
+            txtNationalNo.MoveToNextControlOnEnter = true;
+            txtNationalNo.Name = "txtNationalNo";
+            txtNationalNo.Padding = new Padding(8, 12, 8, 12);
+            txtNationalNo.PlaceholderColor = Color.DarkGray;
+            txtNationalNo.PlaceholderText = "National Number";
+            txtNationalNo.ShowClearButton = false;
+            txtNationalNo.Size = new Size(280, 40);
+            txtNationalNo.SuggestIcon = null;
+            txtNationalNo.TabIndex = 6;
+            txtNationalNo.UseSystemPasswordChar = false;
+            txtNationalNo.ValidateEmail = false;
+            // 
+            // lblFirstName
+            // 
+            lblFirstName.AutoSize = true;
+            lblFirstName.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            lblFirstName.ForeColor = Color.FromArgb(71, 85, 105);
+            lblFirstName.Location = new Point(20, 85);
+            lblFirstName.Name = "lblFirstName";
+            lblFirstName.Size = new Size(64, 15);
+            lblFirstName.TabIndex = 7;
+            lblFirstName.Text = "First Name";
             // 
             // txtFirstName
             // 
-            this.txtFirstName.BackColor = System.Drawing.Color.Transparent;
-            this.txtFirstName.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(213)))), ((int)(((byte)(221)))));
-            this.txtFirstName.BorderFocusColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
-            this.txtFirstName.BorderRadius = 16;
-            this.txtFirstName.BorderSize = 1;
-            this.txtFirstName.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtFirstName.EnableSuggest = true;
-            this.txtFirstName.FillColor = System.Drawing.Color.White;
-            this.txtFirstName.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.txtFirstName.IconOffsetLeft = 10;
-            this.txtFirstName.IconOffsetRight = 10;
-            this.txtFirstName.IconSpacing = 10;
-            this.txtFirstName.Location = new System.Drawing.Point(35, 234);
-            this.txtFirstName.MaxSuggestItems = 4;
-            this.txtFirstName.Name = "txtFirstName";
-            this.txtFirstName.Padding = new System.Windows.Forms.Padding(8);
-            this.txtFirstName.PlaceholderColor = System.Drawing.Color.DarkGray;
-            this.txtFirstName.PlaceholderText = "First name";
-            this.txtFirstName.ShowClearButton = true;
-            this.txtFirstName.Size = new System.Drawing.Size(172, 38);
-            this.txtFirstName.SuggestIcon = null;
-            this.txtFirstName.SuggestList = new string[0];
-            this.txtFirstName.TabIndex = 4;
-            this.txtFirstName.Tag = "First name";
-            this.txtFirstName.UseSystemPasswordChar = false;
-            this.txtFirstName.TextChanged += new System.EventHandler(this.ValidateControls_ValuedChanged);
+            txtFirstName.AllowArabicCharacters = true;
+            txtFirstName.AllowEnglishCharacters = true;
+            txtFirstName.AllowNumbers = true;
+            txtFirstName.AllowSpaces = true;
+            txtFirstName.AllowSymbols = true;
+            txtFirstName.BackColor = Color.Transparent;
+            txtFirstName.BorderColor = Color.FromArgb(220, 220, 220);
+            txtFirstName.BorderFocusColor = Color.FromArgb(200, 200, 200);
+            txtFirstName.BorderRadius = 24;
+            txtFirstName.BorderSize = 1;
+            txtFirstName.CustomAllowedCharacters = "";
+            txtFirstName.EnableSuggest = false;
+            txtFirstName.ErrorBorderColor = Color.FromArgb(239, 68, 68);
+            txtFirstName.FillColor = Color.White;
+            txtFirstName.HasError = false;
+            txtFirstName.IconOffsetLeft = 10;
+            txtFirstName.IconOffsetRight = 10;
+            txtFirstName.IconSpacing = 8;
+            txtFirstName.Location = new Point(20, 105);
+            txtFirstName.MaxLength = 32767;
+            txtFirstName.MaxSuggestItems = 8;
+            txtFirstName.MoveToNextControlOnEnter = true;
+            txtFirstName.Name = "txtFirstName";
+            txtFirstName.Padding = new Padding(8, 12, 8, 12);
+            txtFirstName.PlaceholderColor = Color.DarkGray;
+            txtFirstName.PlaceholderText = "First Name";
+            txtFirstName.ShowClearButton = false;
+            txtFirstName.Size = new Size(130, 40);
+            txtFirstName.SuggestIcon = null;
+            txtFirstName.TabIndex = 8;
+            txtFirstName.UseSystemPasswordChar = false;
+            txtFirstName.ValidateEmail = false;
+            // 
+            // lblSecondName
+            // 
+            lblSecondName.AutoSize = true;
+            lblSecondName.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            lblSecondName.ForeColor = Color.FromArgb(71, 85, 105);
+            lblSecondName.Location = new Point(165, 85);
+            lblSecondName.Name = "lblSecondName";
+            lblSecondName.Size = new Size(82, 15);
+            lblSecondName.TabIndex = 9;
+            lblSecondName.Text = "Second Name";
             // 
             // txtSecondName
             // 
-            this.txtSecondName.BackColor = System.Drawing.Color.Transparent;
-            this.txtSecondName.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(213)))), ((int)(((byte)(221)))));
-            this.txtSecondName.BorderFocusColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
-            this.txtSecondName.BorderRadius = 16;
-            this.txtSecondName.BorderSize = 1;
-            this.txtSecondName.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtSecondName.EnableSuggest = true;
-            this.txtSecondName.FillColor = System.Drawing.Color.White;
-            this.txtSecondName.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.txtSecondName.IconOffsetLeft = 10;
-            this.txtSecondName.IconOffsetRight = 10;
-            this.txtSecondName.IconSpacing = 10;
-            this.txtSecondName.Location = new System.Drawing.Point(227, 234);
-            this.txtSecondName.MaxSuggestItems = 4;
-            this.txtSecondName.Name = "txtSecondName";
-            this.txtSecondName.Padding = new System.Windows.Forms.Padding(8);
-            this.txtSecondName.PlaceholderColor = System.Drawing.Color.DarkGray;
-            this.txtSecondName.PlaceholderText = "Second name";
-            this.txtSecondName.ShowClearButton = true;
-            this.txtSecondName.Size = new System.Drawing.Size(172, 38);
-            this.txtSecondName.SuggestIcon = null;
-            this.txtSecondName.SuggestList = new string[0];
-            this.txtSecondName.TabIndex = 5;
-            this.txtSecondName.Tag = "Second name";
-            this.txtSecondName.UseSystemPasswordChar = false;
-            this.txtSecondName.TextChanged += new System.EventHandler(this.ValidateControls_ValuedChanged);
+            txtSecondName.AllowArabicCharacters = true;
+            txtSecondName.AllowEnglishCharacters = true;
+            txtSecondName.AllowNumbers = true;
+            txtSecondName.AllowSpaces = true;
+            txtSecondName.AllowSymbols = true;
+            txtSecondName.BackColor = Color.Transparent;
+            txtSecondName.BorderColor = Color.FromArgb(220, 220, 220);
+            txtSecondName.BorderFocusColor = Color.FromArgb(200, 200, 200);
+            txtSecondName.BorderRadius = 24;
+            txtSecondName.BorderSize = 1;
+            txtSecondName.CustomAllowedCharacters = "";
+            txtSecondName.EnableSuggest = false;
+            txtSecondName.ErrorBorderColor = Color.FromArgb(239, 68, 68);
+            txtSecondName.FillColor = Color.White;
+            txtSecondName.HasError = false;
+            txtSecondName.IconOffsetLeft = 10;
+            txtSecondName.IconOffsetRight = 10;
+            txtSecondName.IconSpacing = 8;
+            txtSecondName.Location = new Point(165, 105);
+            txtSecondName.MaxLength = 32767;
+            txtSecondName.MaxSuggestItems = 8;
+            txtSecondName.MoveToNextControlOnEnter = true;
+            txtSecondName.Name = "txtSecondName";
+            txtSecondName.Padding = new Padding(8, 12, 8, 12);
+            txtSecondName.PlaceholderColor = Color.DarkGray;
+            txtSecondName.PlaceholderText = "Second Name";
+            txtSecondName.ShowClearButton = false;
+            txtSecondName.Size = new Size(130, 40);
+            txtSecondName.SuggestIcon = null;
+            txtSecondName.TabIndex = 10;
+            txtSecondName.UseSystemPasswordChar = false;
+            txtSecondName.ValidateEmail = false;
+            // 
+            // lblThirdName
+            // 
+            lblThirdName.AutoSize = true;
+            lblThirdName.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            lblThirdName.ForeColor = Color.FromArgb(71, 85, 105);
+            lblThirdName.Location = new Point(310, 85);
+            lblThirdName.Name = "lblThirdName";
+            lblThirdName.Size = new Size(70, 15);
+            lblThirdName.TabIndex = 11;
+            lblThirdName.Text = "Third Name";
             // 
             // txtThirdName
             // 
-            this.txtThirdName.BackColor = System.Drawing.Color.Transparent;
-            this.txtThirdName.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(213)))), ((int)(((byte)(221)))));
-            this.txtThirdName.BorderFocusColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
-            this.txtThirdName.BorderRadius = 16;
-            this.txtThirdName.BorderSize = 1;
-            this.txtThirdName.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtThirdName.EnableSuggest = true;
-            this.txtThirdName.FillColor = System.Drawing.Color.White;
-            this.txtThirdName.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.txtThirdName.IconOffsetLeft = 10;
-            this.txtThirdName.IconOffsetRight = 10;
-            this.txtThirdName.IconSpacing = 10;
-            this.txtThirdName.Location = new System.Drawing.Point(419, 234);
-            this.txtThirdName.MaxSuggestItems = 4;
-            this.txtThirdName.Name = "txtThirdName";
-            this.txtThirdName.Padding = new System.Windows.Forms.Padding(8);
-            this.txtThirdName.PlaceholderColor = System.Drawing.Color.DarkGray;
-            this.txtThirdName.PlaceholderText = "Third name";
-            this.txtThirdName.ShowClearButton = true;
-            this.txtThirdName.Size = new System.Drawing.Size(172, 38);
-            this.txtThirdName.SuggestIcon = null;
-            this.txtThirdName.SuggestList = new string[0];
-            this.txtThirdName.TabIndex = 6;
-            this.txtThirdName.Tag = "Third name";
-            this.txtThirdName.UseSystemPasswordChar = false;
-            this.txtThirdName.TextChanged += new System.EventHandler(this.ValidateControls_ValuedChanged);
+            txtThirdName.AllowArabicCharacters = true;
+            txtThirdName.AllowEnglishCharacters = true;
+            txtThirdName.AllowNumbers = true;
+            txtThirdName.AllowSpaces = true;
+            txtThirdName.AllowSymbols = true;
+            txtThirdName.BackColor = Color.Transparent;
+            txtThirdName.BorderColor = Color.FromArgb(220, 220, 220);
+            txtThirdName.BorderFocusColor = Color.FromArgb(200, 200, 200);
+            txtThirdName.BorderRadius = 24;
+            txtThirdName.BorderSize = 1;
+            txtThirdName.CustomAllowedCharacters = "";
+            txtThirdName.EnableSuggest = false;
+            txtThirdName.ErrorBorderColor = Color.FromArgb(239, 68, 68);
+            txtThirdName.FillColor = Color.White;
+            txtThirdName.HasError = false;
+            txtThirdName.IconOffsetLeft = 10;
+            txtThirdName.IconOffsetRight = 10;
+            txtThirdName.IconSpacing = 8;
+            txtThirdName.Location = new Point(310, 105);
+            txtThirdName.MaxLength = 32767;
+            txtThirdName.MaxSuggestItems = 8;
+            txtThirdName.MoveToNextControlOnEnter = true;
+            txtThirdName.Name = "txtThirdName";
+            txtThirdName.Padding = new Padding(8, 12, 8, 12);
+            txtThirdName.PlaceholderColor = Color.DarkGray;
+            txtThirdName.PlaceholderText = "Third Name";
+            txtThirdName.ShowClearButton = false;
+            txtThirdName.Size = new Size(130, 40);
+            txtThirdName.SuggestIcon = null;
+            txtThirdName.TabIndex = 12;
+            txtThirdName.UseSystemPasswordChar = false;
+            txtThirdName.ValidateEmail = false;
+            // 
+            // lblLastName
+            // 
+            lblLastName.AutoSize = true;
+            lblLastName.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            lblLastName.ForeColor = Color.FromArgb(71, 85, 105);
+            lblLastName.Location = new Point(455, 85);
+            lblLastName.Name = "lblLastName";
+            lblLastName.Size = new Size(63, 15);
+            lblLastName.TabIndex = 13;
+            lblLastName.Text = "Last Name";
             // 
             // txtLastName
             // 
-            this.txtLastName.BackColor = System.Drawing.Color.Transparent;
-            this.txtLastName.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(213)))), ((int)(((byte)(221)))));
-            this.txtLastName.BorderFocusColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
-            this.txtLastName.BorderRadius = 16;
-            this.txtLastName.BorderSize = 1;
-            this.txtLastName.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtLastName.EnableSuggest = true;
-            this.txtLastName.FillColor = System.Drawing.Color.White;
-            this.txtLastName.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.txtLastName.IconOffsetLeft = 10;
-            this.txtLastName.IconOffsetRight = 10;
-            this.txtLastName.IconSpacing = 10;
-            this.txtLastName.Location = new System.Drawing.Point(611, 234);
-            this.txtLastName.MaxSuggestItems = 4;
-            this.txtLastName.Name = "txtLastName";
-            this.txtLastName.Padding = new System.Windows.Forms.Padding(8);
-            this.txtLastName.PlaceholderColor = System.Drawing.Color.DarkGray;
-            this.txtLastName.PlaceholderText = "Last name";
-            this.txtLastName.ShowClearButton = true;
-            this.txtLastName.Size = new System.Drawing.Size(174, 38);
-            this.txtLastName.SuggestIcon = null;
-            this.txtLastName.SuggestList = new string[0];
-            this.txtLastName.TabIndex = 7;
-            this.txtLastName.Tag = "Last name";
-            this.txtLastName.UseSystemPasswordChar = false;
-            this.txtLastName.TextChanged += new System.EventHandler(this.ValidateControls_ValuedChanged);
+            txtLastName.AllowArabicCharacters = true;
+            txtLastName.AllowEnglishCharacters = true;
+            txtLastName.AllowNumbers = true;
+            txtLastName.AllowSpaces = true;
+            txtLastName.AllowSymbols = true;
+            txtLastName.BackColor = Color.Transparent;
+            txtLastName.BorderColor = Color.FromArgb(220, 220, 220);
+            txtLastName.BorderFocusColor = Color.FromArgb(200, 200, 200);
+            txtLastName.BorderRadius = 24;
+            txtLastName.BorderSize = 1;
+            txtLastName.CustomAllowedCharacters = "";
+            txtLastName.EnableSuggest = false;
+            txtLastName.ErrorBorderColor = Color.FromArgb(239, 68, 68);
+            txtLastName.FillColor = Color.White;
+            txtLastName.HasError = false;
+            txtLastName.IconOffsetLeft = 10;
+            txtLastName.IconOffsetRight = 10;
+            txtLastName.IconSpacing = 8;
+            txtLastName.Location = new Point(455, 105);
+            txtLastName.MaxLength = 32767;
+            txtLastName.MaxSuggestItems = 8;
+            txtLastName.MoveToNextControlOnEnter = true;
+            txtLastName.Name = "txtLastName";
+            txtLastName.Padding = new Padding(8, 12, 8, 12);
+            txtLastName.PlaceholderColor = Color.DarkGray;
+            txtLastName.PlaceholderText = "Last Name";
+            txtLastName.ShowClearButton = false;
+            txtLastName.Size = new Size(135, 40);
+            txtLastName.SuggestIcon = null;
+            txtLastName.TabIndex = 14;
+            txtLastName.UseSystemPasswordChar = false;
+            txtLastName.ValidateEmail = false;
             // 
-            // cmbNationality
+            // lblGender
             // 
-            this.cmbNationality.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbNationality.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.cmbNationality.FormattingEnabled = true;
-            this.cmbNationality.Location = new System.Drawing.Point(292, 310);
-            this.cmbNationality.Name = "cmbNationality";
-            this.cmbNationality.Size = new System.Drawing.Size(236, 25);
-            this.cmbNationality.TabIndex = 9;
-            this.cmbNationality.SelectedValueChanged += new System.EventHandler(this.ValidateControls_ValuedChanged);
+            lblGender.AutoSize = true;
+            lblGender.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            lblGender.ForeColor = Color.FromArgb(71, 85, 105);
+            lblGender.Location = new Point(20, 160);
+            lblGender.Name = "lblGender";
+            lblGender.Size = new Size(45, 15);
+            lblGender.TabIndex = 15;
+            lblGender.Text = "Gender";
             // 
-            // label1
+            // cmbGender
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(80)))), ((int)(((byte)(95)))));
-            this.label1.Location = new System.Drawing.Point(292, 294);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(65, 15);
-            this.label1.TabIndex = 47;
-            this.label1.Text = "Nationality";
+            cmbGender.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbGender.Font = new Font("Segoe UI", 10F);
+            cmbGender.Location = new Point(20, 180);
+            cmbGender.Name = "cmbGender";
+            cmbGender.Size = new Size(170, 25);
+            cmbGender.TabIndex = 16;
             // 
-            // txtPhone
+            // lblDateOfBirth
             // 
-            this.txtPhone.BackColor = System.Drawing.Color.Transparent;
-            this.txtPhone.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(213)))), ((int)(((byte)(221)))));
-            this.txtPhone.BorderFocusColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
-            this.txtPhone.BorderRadius = 16;
-            this.txtPhone.BorderSize = 1;
-            this.txtPhone.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtPhone.EnableSuggest = true;
-            this.txtPhone.FillColor = System.Drawing.Color.White;
-            this.txtPhone.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.txtPhone.IconOffsetLeft = 10;
-            this.txtPhone.IconOffsetRight = 10;
-            this.txtPhone.IconSpacing = 10;
-            this.txtPhone.Location = new System.Drawing.Point(495, 117);
-            this.txtPhone.MaxSuggestItems = 4;
-            this.txtPhone.Name = "txtPhone";
-            this.txtPhone.Padding = new System.Windows.Forms.Padding(8);
-            this.txtPhone.PlaceholderColor = System.Drawing.Color.DarkGray;
-            this.txtPhone.PlaceholderText = "Phone";
-            this.txtPhone.ShowClearButton = true;
-            this.txtPhone.Size = new System.Drawing.Size(290, 38);
-            this.txtPhone.SuggestIcon = null;
-            this.txtPhone.SuggestList = new string[0];
-            this.txtPhone.TabIndex = 3;
-            this.txtPhone.Tag = "Phone number";
-            this.txtPhone.UseSystemPasswordChar = false;
-            this.txtPhone.TextChanged += new System.EventHandler(this.ValidateControls_ValuedChanged);
-            // 
-            // txtAdress
-            // 
-            this.txtAdress.BackColor = System.Drawing.Color.Transparent;
-            this.txtAdress.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(213)))), ((int)(((byte)(221)))));
-            this.txtAdress.BorderFocusColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
-            this.txtAdress.BorderRadius = 16;
-            this.txtAdress.BorderSize = 1;
-            this.txtAdress.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtAdress.EnableSuggest = true;
-            this.txtAdress.FillColor = System.Drawing.Color.White;
-            this.txtAdress.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.txtAdress.IconOffsetLeft = 10;
-            this.txtAdress.IconOffsetRight = 10;
-            this.txtAdress.IconSpacing = 10;
-            this.txtAdress.Location = new System.Drawing.Point(180, 117);
-            this.txtAdress.MaxSuggestItems = 4;
-            this.txtAdress.Name = "txtAdress";
-            this.txtAdress.Padding = new System.Windows.Forms.Padding(8);
-            this.txtAdress.PlaceholderColor = System.Drawing.Color.DarkGray;
-            this.txtAdress.PlaceholderText = "Email";
-            this.txtAdress.ShowClearButton = true;
-            this.txtAdress.Size = new System.Drawing.Size(285, 38);
-            this.txtAdress.SuggestIcon = null;
-            this.txtAdress.SuggestList = new string[0];
-            this.txtAdress.TabIndex = 2;
-            this.txtAdress.Tag = "Email";
-            this.txtAdress.UseSystemPasswordChar = false;
-            this.txtAdress.TextChanged += new System.EventHandler(this.ValidateControls_ValuedChanged);
-            // 
-            // lbllall
-            // 
-            this.lbllall.AutoSize = true;
-            this.lbllall.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbllall.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(80)))), ((int)(((byte)(95)))));
-            this.lbllall.Location = new System.Drawing.Point(549, 294);
-            this.lbllall.Name = "lbllall";
-            this.lbllall.Size = new System.Drawing.Size(45, 15);
-            this.lbllall.TabIndex = 51;
-            this.lbllall.Text = "Gendor";
-            // 
-            // cmbGendor
-            // 
-            this.cmbGendor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbGendor.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.cmbGendor.FormattingEnabled = true;
-            this.cmbGendor.Location = new System.Drawing.Point(549, 310);
-            this.cmbGendor.Name = "cmbGendor";
-            this.cmbGendor.Size = new System.Drawing.Size(236, 25);
-            this.cmbGendor.TabIndex = 10;
-            this.cmbGendor.SelectedValueChanged += new System.EventHandler(this.ValidateControls_ValuedChanged);
-            // 
-            // btnSubmit
-            // 
-            this.btnSubmit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
-            this.btnSubmit.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnSubmit.Enabled = false;
-            this.btnSubmit.FlatAppearance.BorderSize = 0;
-            this.btnSubmit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSubmit.Font = new System.Drawing.Font("Segoe UI Semibold", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSubmit.ForeColor = System.Drawing.Color.White;
-            this.btnSubmit.Location = new System.Drawing.Point(485, 365);
-            this.btnSubmit.Name = "btnSubmit";
-            this.btnSubmit.Size = new System.Drawing.Size(145, 42);
-            this.btnSubmit.TabIndex = 12;
-            this.btnSubmit.Text = "Submit";
-            this.btnSubmit.UseVisualStyleBackColor = false;
-            this.btnSubmit.Click += new System.EventHandler(this.btnAdd_Click);
-            // 
-            // epValidation
-            // 
-            this.epValidation.ContainerControl = this;
+            lblDateOfBirth.AutoSize = true;
+            lblDateOfBirth.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            lblDateOfBirth.ForeColor = Color.FromArgb(71, 85, 105);
+            lblDateOfBirth.Location = new Point(215, 160);
+            lblDateOfBirth.Name = "lblDateOfBirth";
+            lblDateOfBirth.Size = new Size(74, 15);
+            lblDateOfBirth.TabIndex = 17;
+            lblDateOfBirth.Text = "Date of Birth";
             // 
             // dtpBirthDate
             // 
-            this.dtpBirthDate.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dtpBirthDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpBirthDate.Location = new System.Drawing.Point(35, 310);
-            this.dtpBirthDate.Name = "dtpBirthDate";
-            this.dtpBirthDate.Size = new System.Drawing.Size(236, 25);
-            this.dtpBirthDate.TabIndex = 8;
-            this.dtpBirthDate.ValueChanged += new System.EventHandler(this.ValidateControls_ValuedChanged);
+            dtpBirthDate.Font = new Font("Segoe UI", 10F);
+            dtpBirthDate.Format = DateTimePickerFormat.Short;
+            dtpBirthDate.Location = new Point(215, 180);
+            dtpBirthDate.Name = "dtpBirthDate";
+            dtpBirthDate.Size = new Size(170, 25);
+            dtpBirthDate.TabIndex = 18;
+            // 
+            // lblCountry
+            // 
+            lblCountry.AutoSize = true;
+            lblCountry.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            lblCountry.ForeColor = Color.FromArgb(71, 85, 105);
+            lblCountry.Location = new Point(410, 160);
+            lblCountry.Name = "lblCountry";
+            lblCountry.Size = new Size(49, 15);
+            lblCountry.TabIndex = 19;
+            lblCountry.Text = "Country";
+            // 
+            // cmbCountry
+            // 
+            cmbCountry.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbCountry.Font = new Font("Segoe UI", 10F);
+            cmbCountry.Location = new Point(410, 180);
+            cmbCountry.Name = "cmbCountry";
+            cmbCountry.Size = new Size(180, 25);
+            cmbCountry.TabIndex = 20;
+            // 
+            // lblPhone
+            // 
+            lblPhone.AutoSize = true;
+            lblPhone.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            lblPhone.ForeColor = Color.FromArgb(71, 85, 105);
+            lblPhone.Location = new Point(20, 225);
+            lblPhone.Name = "lblPhone";
+            lblPhone.Size = new Size(41, 15);
+            lblPhone.TabIndex = 21;
+            lblPhone.Text = "Phone";
+            // 
+            // txtPhone
+            // 
+            txtPhone.AllowArabicCharacters = true;
+            txtPhone.AllowEnglishCharacters = true;
+            txtPhone.AllowNumbers = true;
+            txtPhone.AllowSpaces = true;
+            txtPhone.AllowSymbols = true;
+            txtPhone.BackColor = Color.Transparent;
+            txtPhone.BorderColor = Color.FromArgb(220, 220, 220);
+            txtPhone.BorderFocusColor = Color.FromArgb(200, 200, 200);
+            txtPhone.BorderRadius = 24;
+            txtPhone.BorderSize = 1;
+            txtPhone.CustomAllowedCharacters = "";
+            txtPhone.EnableSuggest = false;
+            txtPhone.ErrorBorderColor = Color.FromArgb(239, 68, 68);
+            txtPhone.FillColor = Color.White;
+            txtPhone.HasError = false;
+            txtPhone.IconOffsetLeft = 10;
+            txtPhone.IconOffsetRight = 10;
+            txtPhone.IconSpacing = 8;
+            txtPhone.Location = new Point(20, 245);
+            txtPhone.MaxLength = 32767;
+            txtPhone.MaxSuggestItems = 8;
+            txtPhone.MoveToNextControlOnEnter = true;
+            txtPhone.Name = "txtPhone";
+            txtPhone.Padding = new Padding(8, 12, 8, 12);
+            txtPhone.PlaceholderColor = Color.DarkGray;
+            txtPhone.PlaceholderText = "Phone Number";
+            txtPhone.ShowClearButton = false;
+            txtPhone.Size = new Size(260, 40);
+            txtPhone.SuggestIcon = null;
+            txtPhone.TabIndex = 22;
+            txtPhone.UseSystemPasswordChar = false;
+            txtPhone.ValidateEmail = false;
+            // 
+            // lblEmail
+            // 
+            lblEmail.AutoSize = true;
+            lblEmail.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            lblEmail.ForeColor = Color.FromArgb(71, 85, 105);
+            lblEmail.Location = new Point(310, 225);
+            lblEmail.Name = "lblEmail";
+            lblEmail.Size = new Size(36, 15);
+            lblEmail.TabIndex = 23;
+            lblEmail.Text = "Email";
+            // 
+            // txtEmail
+            // 
+            txtEmail.AllowArabicCharacters = true;
+            txtEmail.AllowEnglishCharacters = true;
+            txtEmail.AllowNumbers = true;
+            txtEmail.AllowSpaces = true;
+            txtEmail.AllowSymbols = true;
+            txtEmail.BackColor = Color.Transparent;
+            txtEmail.BorderColor = Color.FromArgb(220, 220, 220);
+            txtEmail.BorderFocusColor = Color.FromArgb(200, 200, 200);
+            txtEmail.BorderRadius = 24;
+            txtEmail.BorderSize = 1;
+            txtEmail.CustomAllowedCharacters = "";
+            txtEmail.EnableSuggest = false;
+            txtEmail.ErrorBorderColor = Color.FromArgb(239, 68, 68);
+            txtEmail.FillColor = Color.White;
+            txtEmail.HasError = false;
+            txtEmail.IconOffsetLeft = 10;
+            txtEmail.IconOffsetRight = 10;
+            txtEmail.IconSpacing = 8;
+            txtEmail.Location = new Point(310, 245);
+            txtEmail.MaxLength = 32767;
+            txtEmail.MaxSuggestItems = 8;
+            txtEmail.MoveToNextControlOnEnter = true;
+            txtEmail.Name = "txtEmail";
+            txtEmail.Padding = new Padding(8, 12, 8, 12);
+            txtEmail.PlaceholderColor = Color.DarkGray;
+            txtEmail.PlaceholderText = "Email Address";
+            txtEmail.ShowClearButton = false;
+            txtEmail.Size = new Size(450, 40);
+            txtEmail.SuggestIcon = null;
+            txtEmail.TabIndex = 24;
+            txtEmail.UseSystemPasswordChar = false;
+            txtEmail.ValidateEmail = false;
+            // 
+            // lblAddress
+            // 
+            lblAddress.AutoSize = true;
+            lblAddress.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            lblAddress.ForeColor = Color.FromArgb(71, 85, 105);
+            lblAddress.Location = new Point(20, 300);
+            lblAddress.Name = "lblAddress";
+            lblAddress.Size = new Size(49, 15);
+            lblAddress.TabIndex = 25;
+            lblAddress.Text = "Address";
+            // 
+            // txtAddress
+            // 
+            txtAddress.AllowArabicCharacters = true;
+            txtAddress.AllowEnglishCharacters = true;
+            txtAddress.AllowNumbers = true;
+            txtAddress.AllowSpaces = true;
+            txtAddress.AllowSymbols = true;
+            txtAddress.BackColor = Color.Transparent;
+            txtAddress.BorderColor = Color.FromArgb(220, 220, 220);
+            txtAddress.BorderFocusColor = Color.FromArgb(200, 200, 200);
+            txtAddress.BorderRadius = 24;
+            txtAddress.BorderSize = 1;
+            txtAddress.CustomAllowedCharacters = "";
+            txtAddress.EnableSuggest = false;
+            txtAddress.ErrorBorderColor = Color.FromArgb(239, 68, 68);
+            txtAddress.FillColor = Color.White;
+            txtAddress.HasError = false;
+            txtAddress.IconOffsetLeft = 10;
+            txtAddress.IconOffsetRight = 10;
+            txtAddress.IconSpacing = 8;
+            txtAddress.Location = new Point(20, 320);
+            txtAddress.MaxLength = 32767;
+            txtAddress.MaxSuggestItems = 8;
+            txtAddress.MoveToNextControlOnEnter = true;
+            txtAddress.Name = "txtAddress";
+            txtAddress.Padding = new Padding(8, 12, 8, 12);
+            txtAddress.PlaceholderColor = Color.DarkGray;
+            txtAddress.PlaceholderText = "Full Address";
+            txtAddress.ShowClearButton = false;
+            txtAddress.Size = new Size(740, 40);
+            txtAddress.SuggestIcon = null;
+            txtAddress.TabIndex = 26;
+            txtAddress.UseSystemPasswordChar = false;
+            txtAddress.ValidateEmail = false;
+            // 
+            // btnSave
+            // 
+            btnSave.BackColor = Color.Transparent;
+            btnSave.BackgroundEndColor = SystemColors.Control;
+            btnSave.BackgroundStartColor = SystemColors.Control;
+            btnSave.BorderColor = Color.DarkGray;
+            btnSave.BorderRadius = 0;
+            btnSave.BorderSize = 1;
+            btnSave.CenterIconWithText = false;
+            btnSave.EnableHoverAnimation = false;
+            btnSave.EnableIconTinting = false;
+            btnSave.EnableRippleEffect = false;
+            btnSave.EnableShadow = false;
+            btnSave.Font = new Font("Segoe UI", 9F);
+            btnSave.ForeColor = SystemColors.ControlText;
+            btnSave.GradientAngle = 90F;
+            btnSave.HoverAnimationSpeed = 20;
+            btnSave.HoverBorderColor = Color.FromArgb(0, 120, 215);
+            btnSave.HoverEndColor = Color.FromArgb(229, 241, 251);
+            btnSave.HoverIconColor = Color.White;
+            btnSave.HoverStartColor = Color.FromArgb(229, 241, 251);
+            btnSave.HoverTextColor = SystemColors.ControlText;
+            btnSave.IconColor = Color.White;
+            btnSave.IconMargin = 10;
+            btnSave.IconOffset = new Point(0, 0);
+            btnSave.IconSize = new Size(16, 16);
+            btnSave.IconSpacing = 5;
+            btnSave.IsLoading = false;
+            btnSave.LeftIcon = null;
+            btnSave.Location = new Point(540, 500);
+            btnSave.Name = "btnSave";
+            btnSave.PressedEndColor = Color.FromArgb(204, 228, 247);
+            btnSave.PressedStartColor = Color.FromArgb(204, 228, 247);
+            btnSave.RightIcon = null;
+            btnSave.RippleColor = Color.FromArgb(70, 0, 0, 0);
+            btnSave.RippleSpeed = 15;
+            btnSave.ShadowColor = Color.FromArgb(60, 0, 0, 0);
+            btnSave.ShadowOffset = new Point(1, 1);
+            btnSave.ShadowSize = 3;
+            btnSave.ShiftOnPress = false;
+            btnSave.Size = new Size(125, 42);
+            btnSave.TabIndex = 2;
+            btnSave.Text = "Save Person";
+            btnSave.TextColor = SystemColors.ControlText;
+            btnSave.TextOffset = new Point(0, 0);
             // 
             // btnCancel
             // 
-            this.btnCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(244)))), ((int)(((byte)(246)))));
-            this.btnCancel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnCancel.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(213)))), ((int)(((byte)(219)))));
-            this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCancel.Font = new System.Drawing.Font("Segoe UI Semibold", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCancel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(65)))), ((int)(((byte)(81)))));
-            this.btnCancel.Location = new System.Drawing.Point(640, 365);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(145, 42);
-            this.btnCancel.TabIndex = 13;
-            this.btnCancel.Text = "Cancel";
-            this.btnCancel.UseVisualStyleBackColor = false;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(80)))), ((int)(((byte)(95)))));
-            this.label2.Location = new System.Drawing.Point(35, 220);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(64, 15);
-            this.label2.TabIndex = 55;
-            this.label2.Text = "First Name";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(80)))), ((int)(((byte)(95)))));
-            this.label3.Location = new System.Drawing.Point(227, 220);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(82, 15);
-            this.label3.TabIndex = 56;
-            this.label3.Text = "Second Name";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(80)))), ((int)(((byte)(95)))));
-            this.label4.Location = new System.Drawing.Point(419, 220);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(70, 15);
-            this.label4.TabIndex = 57;
-            this.label4.Text = "Third Name";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(80)))), ((int)(((byte)(95)))));
-            this.label5.Location = new System.Drawing.Point(611, 220);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(63, 15);
-            this.label5.TabIndex = 58;
-            this.label5.Text = "Last Name";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(80)))), ((int)(((byte)(95)))));
-            this.label6.Location = new System.Drawing.Point(495, 26);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(99, 15);
-            this.label6.TabIndex = 59;
-            this.label6.Text = "National Number";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(80)))), ((int)(((byte)(95)))));
-            this.label7.Location = new System.Drawing.Point(180, 26);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(59, 15);
-            this.label7.TabIndex = 60;
-            this.label7.Text = "Person ID";
-            // 
-            // lblUploadNewPicutre
-            // 
-            this.lblUploadNewPicutre.AutoSize = true;
-            this.lblUploadNewPicutre.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblUploadNewPicutre.LinkColor = System.Drawing.Color.Blue;
-            this.lblUploadNewPicutre.Location = new System.Drawing.Point(35, 158);
-            this.lblUploadNewPicutre.Name = "lblUploadNewPicutre";
-            this.lblUploadNewPicutre.Size = new System.Drawing.Size(126, 17);
-            this.lblUploadNewPicutre.TabIndex = 11;
-            this.lblUploadNewPicutre.TabStop = true;
-            this.lblUploadNewPicutre.Text = "Upload new picture";
-            this.lblUploadNewPicutre.VisitedLinkColor = System.Drawing.Color.Black;
-            this.lblUploadNewPicutre.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblUploadNewPicutre_LinkClicked);
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(80)))), ((int)(((byte)(95)))));
-            this.label8.Location = new System.Drawing.Point(32, 294);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(74, 15);
-            this.label8.TabIndex = 62;
-            this.label8.Text = "Date of Birth";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(80)))), ((int)(((byte)(95)))));
-            this.label9.Location = new System.Drawing.Point(180, 100);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(79, 15);
-            this.label9.TabIndex = 63;
-            this.label9.Text = "Email address";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(80)))), ((int)(((byte)(95)))));
-            this.label10.Location = new System.Drawing.Point(495, 100);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(86, 15);
-            this.label10.TabIndex = 64;
-            this.label10.Text = "Phone number";
-            // 
-            // picPersonImage
-            // 
-            this.picPersonImage.Image = global::DVLD.PL.Properties.Resources.user__1_;
-            this.picPersonImage.InitialImage = null;
-            this.picPersonImage.Location = new System.Drawing.Point(35, 30);
-            this.picPersonImage.Name = "picPersonImage";
-            this.picPersonImage.Size = new System.Drawing.Size(125, 125);
-            this.picPersonImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picPersonImage.TabIndex = 52;
-            this.picPersonImage.TabStop = false;
-            this.picPersonImage.Tag = "";
-            // 
-            // lblDeletePicture
-            // 
-            this.lblDeletePicture.AutoSize = true;
-            this.lblDeletePicture.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDeletePicture.LinkColor = System.Drawing.Color.Red;
-            this.lblDeletePicture.Location = new System.Drawing.Point(29, 182);
-            this.lblDeletePicture.Name = "lblDeletePicture";
-            this.lblDeletePicture.Size = new System.Drawing.Size(142, 17);
-            this.lblDeletePicture.TabIndex = 102;
-            this.lblDeletePicture.TabStop = true;
-            this.lblDeletePicture.Text = "Delete Current Picutre";
-            this.lblDeletePicture.VisitedLinkColor = System.Drawing.Color.Black;
-            this.lblDeletePicture.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblDeletePicture_LinkClicked);
-            // 
-            // btnSubmitAndClose
-            // 
-            this.btnSubmitAndClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
-            this.btnSubmitAndClose.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnSubmitAndClose.Enabled = false;
-            this.btnSubmitAndClose.FlatAppearance.BorderSize = 0;
-            this.btnSubmitAndClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSubmitAndClose.Font = new System.Drawing.Font("Segoe UI Semibold", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSubmitAndClose.ForeColor = System.Drawing.Color.White;
-            this.btnSubmitAndClose.Location = new System.Drawing.Point(260, 365);
-            this.btnSubmitAndClose.Name = "btnSubmitAndClose";
-            this.btnSubmitAndClose.Size = new System.Drawing.Size(219, 42);
-            this.btnSubmitAndClose.TabIndex = 103;
-            this.btnSubmitAndClose.Text = "Submit and Close the window";
-            this.btnSubmitAndClose.UseVisualStyleBackColor = false;
-            this.btnSubmitAndClose.Click += new System.EventHandler(this.btnSubmitAndClose_Click);
+            btnCancel.BackColor = Color.Transparent;
+            btnCancel.BackgroundEndColor = SystemColors.Control;
+            btnCancel.BackgroundStartColor = SystemColors.Control;
+            btnCancel.BorderColor = Color.DarkGray;
+            btnCancel.BorderRadius = 0;
+            btnCancel.BorderSize = 1;
+            btnCancel.CenterIconWithText = false;
+            btnCancel.EnableHoverAnimation = false;
+            btnCancel.EnableIconTinting = false;
+            btnCancel.EnableRippleEffect = false;
+            btnCancel.EnableShadow = false;
+            btnCancel.Font = new Font("Segoe UI", 9F);
+            btnCancel.ForeColor = SystemColors.ControlText;
+            btnCancel.GradientAngle = 90F;
+            btnCancel.HoverAnimationSpeed = 20;
+            btnCancel.HoverBorderColor = Color.FromArgb(0, 120, 215);
+            btnCancel.HoverEndColor = Color.FromArgb(229, 241, 251);
+            btnCancel.HoverIconColor = Color.White;
+            btnCancel.HoverStartColor = Color.FromArgb(229, 241, 251);
+            btnCancel.HoverTextColor = SystemColors.ControlText;
+            btnCancel.IconColor = Color.White;
+            btnCancel.IconMargin = 10;
+            btnCancel.IconOffset = new Point(0, 0);
+            btnCancel.IconSize = new Size(16, 16);
+            btnCancel.IconSpacing = 5;
+            btnCancel.IsLoading = false;
+            btnCancel.LeftIcon = null;
+            btnCancel.Location = new Point(675, 500);
+            btnCancel.Name = "btnCancel";
+            btnCancel.PressedEndColor = Color.FromArgb(204, 228, 247);
+            btnCancel.PressedStartColor = Color.FromArgb(204, 228, 247);
+            btnCancel.RightIcon = null;
+            btnCancel.RippleColor = Color.FromArgb(70, 0, 0, 0);
+            btnCancel.RippleSpeed = 15;
+            btnCancel.ShadowColor = Color.FromArgb(60, 0, 0, 0);
+            btnCancel.ShadowOffset = new Point(1, 1);
+            btnCancel.ShadowSize = 3;
+            btnCancel.ShiftOnPress = false;
+            btnCancel.Size = new Size(125, 42);
+            btnCancel.TabIndex = 3;
+            btnCancel.Text = "Cancel";
+            btnCancel.TextColor = SystemColors.ControlText;
+            btnCancel.TextOffset = new Point(0, 0);
             // 
             // frmSavePerson
             // 
-            this.AcceptButton = this.btnSubmit;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
-            this.ClientSize = new System.Drawing.Size(820, 428);
-            this.Controls.Add(this.btnSubmitAndClose);
-            this.Controls.Add(this.lblDeletePicture);
-            this.Controls.Add(this.label10);
-            this.Controls.Add(this.label9);
-            this.Controls.Add(this.label8);
-            this.Controls.Add(this.lblUploadNewPicutre);
-            this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.btnSubmit);
-            this.Controls.Add(this.lbllall);
-            this.Controls.Add(this.cmbGendor);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.cmbNationality);
-            this.Controls.Add(this.dtpBirthDate);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.txtLastName);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.txtThirdName);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.txtSecondName);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.txtFirstName);
-            this.Controls.Add(this.txtPhone);
-            this.Controls.Add(this.txtAdress);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.txtNationalNo);
-            this.Controls.Add(this.label7);
-            this.Controls.Add(this.txtPersonID);
-            this.Controls.Add(this.picPersonImage);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.MaximumSize = new System.Drawing.Size(836, 467);
-            this.MinimumSize = new System.Drawing.Size(836, 467);
-            this.Name = "frmSavePerson";
-            this.ShowIcon = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Add New Person Form";
-            ((System.ComponentModel.ISupportInitialize)(this.epValidation)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picPersonImage)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(248, 250, 252);
+            ClientSize = new Size(820, 560);
+            Controls.Add(btnCancel);
+            Controls.Add(btnSave);
+            Controls.Add(pnlContainer);
+            Name = "frmSavePerson";
+            Text = "DVLD/Home/People Management/Save person";
+            Load += frmSavePerson_Load;
+            Controls.SetChildIndex(pnlContainer, 0);
+            Controls.SetChildIndex(btnSave, 0);
+            Controls.SetChildIndex(btnCancel, 0);
+            Controls.SetChildIndex(headerControl, 0);
+            pnlContainer.ResumeLayout(false);
+            pnlContainer.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pbPersonPhoto).EndInit();
+            ResumeLayout(false);
         }
-
-        #endregion
-
+        private System.Windows.Forms.Panel pnlContainer;
+        private System.Windows.Forms.PictureBox pbPersonPhoto;
+        private System.Windows.Forms.LinkLabel lnkUploadPhoto;
+        private System.Windows.Forms.LinkLabel lnkRemovePhoto;
+        private System.Windows.Forms.Label lblPersonID;
         private NControls.NTextBox txtPersonID;
+        private System.Windows.Forms.Label lblNationalNo;
         private NControls.NTextBox txtNationalNo;
+        private System.Windows.Forms.Label lblFirstName;
         private NControls.NTextBox txtFirstName;
+        private System.Windows.Forms.Label lblSecondName;
         private NControls.NTextBox txtSecondName;
+        private System.Windows.Forms.Label lblThirdName;
         private NControls.NTextBox txtThirdName;
+        private System.Windows.Forms.Label lblLastName;
         private NControls.NTextBox txtLastName;
-        private System.Windows.Forms.ComboBox cmbNationality;
-        private System.Windows.Forms.Label label1;
-        private NControls.NTextBox txtPhone;
-        private NControls.NTextBox txtAdress;
-        private System.Windows.Forms.Label lbllall;
-        private System.Windows.Forms.ComboBox cmbGendor;
-        private System.Windows.Forms.Button btnSubmit;
-        private System.Windows.Forms.ErrorProvider epValidation;
-        private System.Windows.Forms.PictureBox picPersonImage;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Label lblGender;
+        private System.Windows.Forms.ComboBox cmbGender;
+        private System.Windows.Forms.Label lblDateOfBirth;
         private System.Windows.Forms.DateTimePicker dtpBirthDate;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.LinkLabel lblUploadNewPicutre;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.LinkLabel lblDeletePicture;
-        private System.Windows.Forms.Button btnSubmitAndClose;
+        private System.Windows.Forms.Label lblCountry;
+        private System.Windows.Forms.ComboBox cmbCountry;
+        private System.Windows.Forms.Label lblPhone;
+        private NControls.NTextBox txtPhone;
+        private System.Windows.Forms.Label lblEmail;
+        private NControls.NTextBox txtEmail;
+        private System.Windows.Forms.Label lblAddress;
+        private NControls.NTextBox txtAddress;
+        private ModernUI.Controls.NButton btnSave;
+        private ModernUI.Controls.NButton btnCancel;
     }
 }

@@ -9,8 +9,17 @@ namespace DVLD.PL.Login
         private System.Windows.Forms.Panel pnlRightCanvas;
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.Label lblSubtitle;
-        private System.Windows.Forms.Button btnClose;
-        private System.Windows.Forms.Button btnMinimize;
+        private System.Windows.Forms.Label lblUserName;
+        private NControls.NTextBox txtUserName;
+        private System.Windows.Forms.Label lblPassword;
+        private NControls.NTextBox txtPassword;
+        private NControls.NCheckBox chkRememberMe;
+        private System.Windows.Forms.LinkLabel lnkForgotPassword;
+        private ModernUI.Controls.NButton btnLogin;
+        private System.Windows.Forms.Label lblSignUpPrompt;
+        private System.Windows.Forms.LinkLabel lnkSignUp;
+        private System.Windows.Forms.Label lblAttemptsCounter;
+        private System.Windows.Forms.Label lblAttemptMessage;
 
         protected override void Dispose(bool disposing)
         {
@@ -36,9 +45,6 @@ namespace DVLD.PL.Login
             chkRememberMe = new NControls.NCheckBox();
             lnkForgotPassword = new LinkLabel();
             btnLogin = new ModernUI.Controls.NButton();
-            label1 = new Label();
-            btnClose = new Button();
-            btnMinimize = new Button();
             lblTitle = new Label();
             lblSubtitle = new Label();
             pnlRightCanvas.SuspendLayout();
@@ -59,9 +65,6 @@ namespace DVLD.PL.Login
             pnlRightCanvas.Controls.Add(chkRememberMe);
             pnlRightCanvas.Controls.Add(lnkForgotPassword);
             pnlRightCanvas.Controls.Add(btnLogin);
-            pnlRightCanvas.Controls.Add(label1);
-            pnlRightCanvas.Controls.Add(btnClose);
-            pnlRightCanvas.Controls.Add(btnMinimize);
             pnlRightCanvas.Controls.Add(lblTitle);
             pnlRightCanvas.Controls.Add(lblSubtitle);
             pnlRightCanvas.Name = "pnlRightCanvas";
@@ -267,29 +270,6 @@ namespace DVLD.PL.Login
             btnLogin.TextOffset = new Point(0, 0);
             btnLogin.Click += btnLogin_Click;
             // 
-            // label1
-            // 
-            resources.ApplyResources(label1, "label1");
-            label1.BackColor = Color.Transparent;
-            label1.ForeColor = Color.FromArgb(148, 163, 184);
-            label1.Name = "label1";
-            // 
-            // btnClose
-            // 
-            resources.ApplyResources(btnClose, "btnClose");
-            btnClose.FlatAppearance.BorderSize = 0;
-            btnClose.ForeColor = Color.FromArgb(148, 163, 184);
-            btnClose.Name = "btnClose";
-            btnClose.UseVisualStyleBackColor = true;
-            // 
-            // btnMinimize
-            // 
-            resources.ApplyResources(btnMinimize, "btnMinimize");
-            btnMinimize.FlatAppearance.BorderSize = 0;
-            btnMinimize.ForeColor = Color.FromArgb(148, 163, 184);
-            btnMinimize.Name = "btnMinimize";
-            btnMinimize.UseVisualStyleBackColor = true;
-            // 
             // lblTitle
             // 
             resources.ApplyResources(lblTitle, "lblTitle");
@@ -310,26 +290,13 @@ namespace DVLD.PL.Login
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(124, 58, 237);
             Controls.Add(pnlRightCanvas);
-            FormBorderStyle = FormBorderStyle.None;
             Name = "frmLoginScreen";
             Load += LoginScreen_Load;
+            Controls.SetChildIndex(pnlRightCanvas, 0);
+            Controls.SetChildIndex(headerControl, 0);
             pnlRightCanvas.ResumeLayout(false);
             pnlRightCanvas.PerformLayout();
             ResumeLayout(false);
-
         }
-
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label lblUserName;
-        private NControls.NTextBox txtUserName;
-        private System.Windows.Forms.Label lblPassword;
-        private NControls.NTextBox txtPassword;
-        private NControls.NCheckBox chkRememberMe;
-        private System.Windows.Forms.LinkLabel lnkForgotPassword;
-        private ModernUI.Controls.NButton btnLogin;
-        private System.Windows.Forms.Label lblSignUpPrompt;
-        private System.Windows.Forms.LinkLabel lnkSignUp;
-        private System.Windows.Forms.Label lblAttemptsCounter;
-        private System.Windows.Forms.Label lblAttemptMessage;
     }
 }

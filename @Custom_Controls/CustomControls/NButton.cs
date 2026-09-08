@@ -14,7 +14,7 @@ namespace ModernUI.Controls
     {
         private Timer? _hoverTimer;
         private Timer? _rippleTimer;
-        private Timer? _spinnerTimer; // مؤقت دوران أيقونة التحميل
+        private Timer? _spinnerTimer;
 
         private float _hoverAlpha = 0f;
         private bool _isHovered = false;
@@ -26,9 +26,8 @@ namespace ModernUI.Controls
         private Point _rippleLocation;
 
         private bool _isLoading = false;
-        private int _spinnerAngle = 0; // زاوية الدوران الحالية
+        private int _spinnerAngle = 0;
 
-        // --- نظام التركيز وزر الـ Tab ---
         [Category("Behavior")]
         [Browsable(true)]
         [EditorBrowsable(EditorBrowsableState.Always)]
@@ -41,7 +40,6 @@ namespace ModernUI.Controls
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public new bool TabStop { get => base.TabStop; set => base.TabStop = value; }
 
-        // --- خاصية حالة التحميل (الجديدة) ---
         [Category("6. Behavior")]
         [Description("Set to true to show a loading spinner and disable clicks.")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
@@ -126,6 +124,10 @@ namespace ModernUI.Controls
 
         [Category("4. Icons")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Image? MiddleIcon { get; set; } = null;
+
+        [Category("4. Icons")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Image? RightIcon { get; set; } = null;
 
         [Category("4. Icons")]
@@ -149,6 +151,7 @@ namespace ModernUI.Controls
         public Point IconOffset { get; set; } = new Point(0, 0);
 
         [Category("4. Icons")]
+        [Description("Enables solid recoloring of the icon to the target color regardless of the original icon's colors.")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool EnableIconTinting { get; set; } = false;
 
@@ -256,7 +259,7 @@ namespace ModernUI.Controls
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            if (_isLoading) return; // منع التفاعل أثناء التحميل
+            if (_isLoading) return;
             base.OnKeyDown(e);
             if (e.KeyCode == Keys.Space || e.KeyCode == Keys.Enter)
             {
@@ -267,7 +270,7 @@ namespace ModernUI.Controls
 
         protected override void OnKeyUp(KeyEventArgs e)
         {
-            if (_isLoading) return; // منع التفاعل أثناء التحميل
+            if (_isLoading) return;
             base.OnKeyUp(e);
             if (e.KeyCode == Keys.Space || e.KeyCode == Keys.Enter)
             {
@@ -295,7 +298,7 @@ namespace ModernUI.Controls
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
-            if (_isLoading) return; // منع التفاعل أثناء التحميل
+            if (_isLoading) return;
             base.OnMouseDown(e);
             if (e.Button == MouseButtons.Left)
             {
@@ -314,7 +317,7 @@ namespace ModernUI.Controls
 
         protected override void OnMouseUp(MouseEventArgs e)
         {
-            if (_isLoading) return; // منع التفاعل أثناء التحميل
+            if (_isLoading) return;
             base.OnMouseUp(e);
             if (e.Button == MouseButtons.Left)
             {
@@ -355,7 +358,7 @@ namespace ModernUI.Controls
 
         private void SpinnerTimer_Tick(object? sender, EventArgs e)
         {
-            _spinnerAngle = (_spinnerAngle + 12) % 360; // سرعة الدوران
+            _spinnerAngle = (_spinnerAngle + 12) % 360;
             Invalidate();
         }
 
@@ -389,11 +392,11 @@ namespace ModernUI.Controls
 
             if (_isLoading)
             {
-                DrawSpinner(g, btnRect, pressShift); // رسم أيقونة التحميل إذا كانت الحالة فعالة
+                DrawSpinner(g, btnRect, pressShift);
             }
             else
             {
-                DrawContent(g, btnRect, pressShift); // رسم النص العادي
+                DrawContent(g, btnRect, pressShift);
             }
 
             if (Focused && ShowFocusCues)
@@ -410,7 +413,6 @@ namespace ModernUI.Controls
         {
             Color currentTextColor = _isPressed ? HoverTextColor : BlendColors(HoverTextColor, TextColor, _hoverAlpha / 255f);
 
-            // تحديد حجم الدائرة ليكون مناسباً لارتفاع الزر
             int spinnerSize = (int)(rect.Height * 0.55);
             if (spinnerSize > 28) spinnerSize = 28;
 
@@ -420,12 +422,11 @@ namespace ModernUI.Controls
                 spinnerSize,
                 spinnerSize);
 
-            // رسم القوس الدوار بنعومة
             using (Pen spinnerPen = new Pen(currentTextColor, 3f))
             {
                 spinnerPen.StartCap = LineCap.Round;
                 spinnerPen.EndCap = LineCap.Round;
-                g.DrawArc(spinnerPen, spinnerRect, _spinnerAngle, 260); // قوس غير مكتمل (260 درجة) ليعطي شكل الـ Spinner
+                g.DrawArc(spinnerPen, spinnerRect, _spinnerAngle, 260);
             }
         }
 
@@ -452,7 +453,7 @@ namespace ModernUI.Controls
             Color cEnd = BackgroundEndColor;
             Color cBorder = BorderColor;
 
-            if (_isPressed || _isLoading) // إبقاء لون الضغط نشطاً أثناء التحميل
+            if (_isPressed || _isLoading)
             {
                 cStart = PressedStartColor;
                 cEnd = PressedEndColor;
@@ -518,6 +519,13 @@ namespace ModernUI.Controls
 
             float centerY = rect.Y + (rect.Height - IconSize.Height) / 2f + shiftY + IconOffset.Y;
 
+            if (MiddleIcon != null)
+            {
+                float centerX = rect.X + (rect.Width - IconSize.Width) / 2f + IconOffset.X;
+                RectangleF midRect = new RectangleF(centerX, centerY, IconSize.Width, IconSize.Height);
+                DrawCrispIcon(g, MiddleIcon, midRect, currentIconColor);
+            }
+
             if (CenterIconWithText)
             {
                 int totalWidth = 0;
@@ -532,7 +540,7 @@ namespace ModernUI.Controls
                 if (LeftIcon != null)
                 {
                     RectangleF iconRect = new RectangleF(startX + IconOffset.X, centerY, IconSize.Width, IconSize.Height);
-                    DrawIcon(g, LeftIcon, iconRect, currentIconColor);
+                    DrawCrispIcon(g, LeftIcon, iconRect, currentIconColor);
                     startX += IconSize.Width + IconSpacing;
                 }
 
@@ -549,7 +557,7 @@ namespace ModernUI.Controls
                 if (RightIcon != null)
                 {
                     RectangleF iconRect = new RectangleF(startX + IconOffset.X, centerY, IconSize.Width, IconSize.Height);
-                    DrawIcon(g, RightIcon, iconRect, currentIconColor);
+                    DrawCrispIcon(g, RightIcon, iconRect, currentIconColor);
                 }
             }
             else
@@ -560,14 +568,14 @@ namespace ModernUI.Controls
                 if (LeftIcon != null)
                 {
                     RectangleF iconRect = new RectangleF(rect.X + IconMargin + IconOffset.X, centerY, IconSize.Width, IconSize.Height);
-                    DrawIcon(g, LeftIcon, iconRect, currentIconColor);
+                    DrawCrispIcon(g, LeftIcon, iconRect, currentIconColor);
                     leftBound = iconRect.Right + IconSpacing;
                 }
 
                 if (RightIcon != null)
                 {
                     RectangleF iconRect = new RectangleF(rect.Right - IconSize.Width - IconMargin + IconOffset.X, centerY, IconSize.Width, IconSize.Height);
-                    DrawIcon(g, RightIcon, iconRect, currentIconColor);
+                    DrawCrispIcon(g, RightIcon, iconRect, currentIconColor);
                     rightBound = iconRect.Left - IconSpacing;
                 }
 
@@ -582,32 +590,55 @@ namespace ModernUI.Controls
             }
         }
 
-        private void DrawIcon(Graphics g, Image img, RectangleF rect, Color tint)
+        private void DrawCrispIcon(Graphics g, Image img, RectangleF rect, Color tint)
         {
+            int ix = (int)Math.Round(rect.X);
+            int iy = (int)Math.Round(rect.Y);
+            int iw = (int)Math.Round(rect.Width);
+            int ih = (int)Math.Round(rect.Height);
+            Rectangle destRect = new Rectangle(ix, iy, iw, ih);
+
+            InterpolationMode prevInterp = g.InterpolationMode;
+            PixelOffsetMode prevOffset = g.PixelOffsetMode;
+            SmoothingMode prevSmooth = g.SmoothingMode;
+            CompositingQuality prevComp = g.CompositingQuality;
+
+            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            g.SmoothingMode = SmoothingMode.HighQuality;
+            g.CompositingQuality = CompositingQuality.HighQuality;
+
             if (!EnableIconTinting || tint == Color.Transparent || tint == Color.Empty)
             {
-                g.DrawImage(img, rect);
-                return;
+                g.DrawImage(img, destRect, 0, 0, img.Width, img.Height, GraphicsUnit.Pixel);
+            }
+            else
+            {
+                float r = tint.R / 255f;
+                float gr = tint.G / 255f;
+                float b = tint.B / 255f;
+                float a = tint.A / 255f;
+
+                ColorMatrix cm = new ColorMatrix(new float[][]
+                {
+                    new float[] { 0, 0, 0, 0, 0 },
+                    new float[] { 0, 0, 0, 0, 0 },
+                    new float[] { 0, 0, 0, 0, 0 },
+                    new float[] { 0, 0, 0, a, 0 },
+                    new float[] { r, gr, b, 0, 1 }
+                });
+
+                using (ImageAttributes ia = new ImageAttributes())
+                {
+                    ia.SetColorMatrix(cm, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
+                    g.DrawImage(img, destRect, 0, 0, img.Width, img.Height, GraphicsUnit.Pixel, ia);
+                }
             }
 
-            float r = tint.R / 255f;
-            float gr = tint.G / 255f;
-            float b = tint.B / 255f;
-
-            ColorMatrix cm = new ColorMatrix(new float[][]
-            {
-                new float[] {r, 0, 0, 0, 0},
-                new float[] {0, gr, 0, 0, 0},
-                new float[] {0, 0, b, 0, 0},
-                new float[] {0, 0, 0, 1, 0},
-                new float[] {0, 0, 0, 0, 1}
-            });
-
-            using (ImageAttributes ia = new ImageAttributes())
-            {
-                ia.SetColorMatrix(cm);
-                g.DrawImage(img, new Rectangle((int)rect.X, (int)rect.Y, (int)rect.Width, (int)rect.Height), 0, 0, img.Width, img.Height, GraphicsUnit.Pixel, ia);
-            }
+            g.InterpolationMode = prevInterp;
+            g.PixelOffsetMode = prevOffset;
+            g.SmoothingMode = prevSmooth;
+            g.CompositingQuality = prevComp;
         }
 
         private GraphicsPath GetRoundedPath(RectangleF rect, float radius)

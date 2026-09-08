@@ -118,6 +118,25 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="headerControl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="headerControl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>504, 39</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="ctrlFormHeader1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="ctrlFormHeader1.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>0, 31</value>
+  </data>
+  <data name="ctrlFormHeader1.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>210, 31</value>
+  </data>
+  <data name="ctrlFormHeader1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>504, 31</value>
+  </data>
   <data name="lblAttemptsCounter.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9.5pt, style=Bold</value>
   </data>
@@ -172,12 +191,6 @@
   </data>
   <data name="txtPassword.Size" type="System.Drawing.Size, System.Drawing">
     <value>340, 43</value>
-  </data>
-  <data name="btnClose.Location" type="System.Drawing.Point, System.Drawing">
-    <value>472, 3</value>
-  </data>
-  <data name="btnMinimize.Location" type="System.Drawing.Point, System.Drawing">
-    <value>436, 3</value>
   </data>
   <data name="pnlRightCanvas.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 3</value>

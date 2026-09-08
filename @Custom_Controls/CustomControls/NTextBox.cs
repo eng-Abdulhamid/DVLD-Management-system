@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Media;
 using System.Text.RegularExpressions;
@@ -24,6 +25,9 @@ namespace NControls
         public Cursor Cursor { get; set; } = Cursors.Hand;
         public string ToolTip { get; set; } = string.Empty;
         public Color HoverBackColor { get; set; } = Color.FromArgb(30, 128, 128, 128);
+        public Color? IconColor { get; set; } = null;
+        public Color? HoverIconColor { get; set; } = null;
+        public bool? EnableIconTinting { get; set; } = null;
         public Action<NTextBox>? OnClick { get; set; }
         public Action<NTextBox>? OnMouseEnter { get; set; }
         public Action<NTextBox>? OnMouseLeave { get; set; }
@@ -49,6 +53,14 @@ namespace NControls
         private int iconOffsetLeft = 10;
         private int iconOffsetRight = 10;
         private int iconSpacing = 8;
+
+        private Image? _leftIcon = null;
+        private Image? _rightIcon = null;
+        private Size _iconSize = new Size(20, 20);
+        private bool _leftIconClickable = false;
+        private bool _rightIconClickable = false;
+        private TextBoxIcon? _dedicatedLeftIcon = null;
+        private TextBoxIcon? _dedicatedRightIcon = null;
 
         private List<TextBoxIcon> customIcons = new List<TextBoxIcon>();
         private TextBoxIcon? currentlyHoveredIcon = null;
@@ -303,6 +315,97 @@ namespace NControls
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int IconSpacing { get { return iconSpacing; } set { iconSpacing = value; UpdateLayout(); } }
 
+        [Category("NTextBox - Icons")]
+        [Description("The icon displayed on the left side.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Image? LeftIcon
+        {
+            get => _leftIcon;
+            set
+            {
+                _leftIcon = value;
+                SyncDedicatedIcons();
+                UpdateLayout();
+            }
+        }
+
+        [Category("NTextBox - Icons")]
+        [Description("The icon displayed on the right side.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Image? RightIcon
+        {
+            get => _rightIcon;
+            set
+            {
+                _rightIcon = value;
+                SyncDedicatedIcons();
+                UpdateLayout();
+            }
+        }
+
+        [Category("NTextBox - Icons")]
+        [Description("The size of the left and right icons.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Size IconSize
+        {
+            get => _iconSize;
+            set
+            {
+                _iconSize = value;
+                SyncDedicatedIcons();
+                UpdateLayout();
+            }
+        }
+
+        [Category("NTextBox - Icons")]
+        [Description("Enables hover effect and hand cursor for the left icon.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public bool LeftIconClickable
+        {
+            get => _leftIconClickable;
+            set
+            {
+                _leftIconClickable = value;
+                SyncDedicatedIcons();
+                UpdateLayout();
+            }
+        }
+
+        [Category("NTextBox - Icons")]
+        [Description("Enables hover effect and hand cursor for the right icon.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public bool RightIconClickable
+        {
+            get => _rightIconClickable;
+            set
+            {
+                _rightIconClickable = value;
+                SyncDedicatedIcons();
+                UpdateLayout();
+            }
+        }
+
+        [Category("NTextBox - Icons")]
+        [Description("Enables recoloring the icons to a solid color regardless of the original icon image colors.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public bool EnableIconTinting { get; set; } = false;
+
+        [Category("NTextBox - Icons")]
+        [Description("The color applied to the icons when tinting is enabled.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Color IconColor { get; set; } = Color.FromArgb(148, 163, 184);
+
+        [Category("NTextBox - Icons")]
+        [Description("The color applied to the icons on hover when tinting is enabled.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Color HoverIconColor { get; set; } = Color.FromArgb(15, 23, 42);
+
+        [Category("NTextBox - Icons")]
+        public event EventHandler? LeftIconClick;
+
+        [Category("NTextBox - Icons")]
+        public event EventHandler? RightIconClick;
+
         [Category("NTextBox - AutoSuggest")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string[] SuggestList { get { return autoCompleteList; } set { autoCompleteList = value ?? Array.Empty<string>(); } }
@@ -318,6 +421,79 @@ namespace NControls
         [Category("NTextBox - AutoSuggest")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int MaxSuggestItems { get { return maxSuggestItems; } set { maxSuggestItems = Math.Max(1, value); } }
+
+        private void SyncDedicatedIcons()
+        {
+            if (_leftIcon != null)
+            {
+                bool canClick = _leftIconClickable || LeftIconClick != null;
+                if (_dedicatedLeftIcon == null)
+                {
+                    _dedicatedLeftIcon = new TextBoxIcon
+                    {
+                        ToolTip = "SystemLeftIcon",
+                        Position = IconPosition.Left,
+                        OnClick = (t) =>
+                        {
+                            if (LeftIconClick != null)
+                                LeftIconClick.Invoke(t, EventArgs.Empty);
+                            else
+                            {
+                                t.textBox.Visible = true;
+                                t.textBox.Focus();
+                            }
+                        }
+                    };
+                    customIcons.Insert(0, _dedicatedLeftIcon);
+                }
+                _dedicatedLeftIcon.Icon = _leftIcon;
+                _dedicatedLeftIcon.Width = _iconSize.Width;
+                _dedicatedLeftIcon.Height = _iconSize.Height;
+                _dedicatedLeftIcon.IsClickable = canClick;
+                _dedicatedLeftIcon.Cursor = canClick ? Cursors.Hand : Cursors.IBeam;
+            }
+            else if (_dedicatedLeftIcon != null)
+            {
+                customIcons.Remove(_dedicatedLeftIcon);
+                if (currentlyHoveredIcon == _dedicatedLeftIcon) currentlyHoveredIcon = null;
+                _dedicatedLeftIcon = null;
+            }
+
+            if (_rightIcon != null)
+            {
+                bool canClick = _rightIconClickable || RightIconClick != null;
+                if (_dedicatedRightIcon == null)
+                {
+                    _dedicatedRightIcon = new TextBoxIcon
+                    {
+                        ToolTip = "SystemRightIcon",
+                        Position = IconPosition.Right,
+                        OnClick = (t) =>
+                        {
+                            if (RightIconClick != null)
+                                RightIconClick.Invoke(t, EventArgs.Empty);
+                            else
+                            {
+                                t.textBox.Visible = true;
+                                t.textBox.Focus();
+                            }
+                        }
+                    };
+                    customIcons.Add(_dedicatedRightIcon);
+                }
+                _dedicatedRightIcon.Icon = _rightIcon;
+                _dedicatedRightIcon.Width = _iconSize.Width;
+                _dedicatedRightIcon.Height = _iconSize.Height;
+                _dedicatedRightIcon.IsClickable = canClick;
+                _dedicatedRightIcon.Cursor = canClick ? Cursors.Hand : Cursors.IBeam;
+            }
+            else if (_dedicatedRightIcon != null)
+            {
+                customIcons.Remove(_dedicatedRightIcon);
+                if (currentlyHoveredIcon == _dedicatedRightIcon) currentlyHoveredIcon = null;
+                _dedicatedRightIcon = null;
+            }
+        }
 
         public void AddIcon(Image image, IconPosition position, int width, int height, bool isClickable = true, Action<NTextBox>? onClick = null, Action<NTextBox>? onMouseEnter = null, Action<NTextBox>? onMouseLeave = null)
         {
@@ -337,8 +513,8 @@ namespace NControls
 
         public void ClearIcons()
         {
-            customIcons.RemoveAll(icn => icn.ToolTip != "SystemClearBtn");
-            if (currentlyHoveredIcon != null && currentlyHoveredIcon.ToolTip != "SystemClearBtn")
+            customIcons.RemoveAll(icn => icn.ToolTip != "SystemClearBtn" && icn.ToolTip != "SystemLeftIcon" && icn.ToolTip != "SystemRightIcon");
+            if (currentlyHoveredIcon != null && currentlyHoveredIcon.ToolTip != "SystemClearBtn" && currentlyHoveredIcon.ToolTip != "SystemLeftIcon" && currentlyHoveredIcon.ToolTip != "SystemRightIcon")
             {
                 currentlyHoveredIcon = null;
             }
@@ -349,20 +525,16 @@ namespace NControls
         {
             base.OnPaint(e);
             Graphics g = e.Graphics;
-            g.SmoothingMode = SmoothingMode.AntiAlias; // تنعيم الحواف الدائرية
+            g.SmoothingMode = SmoothingMode.AntiAlias;
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
             g.InterpolationMode = InterpolationMode.HighQualityBicubic;
             g.PixelOffsetMode = PixelOffsetMode.HighQuality;
             g.CompositingQuality = CompositingQuality.HighQuality;
 
-            int bottomOffset = isDropdownOpen ? borderRadius : 0;
-
             Color currentBorderColor = _hasValidationError ? ErrorBorderColor : (isFocused ? borderFocusColor : borderColor);
 
-            // 1. مسار الخلفية (Surface) - بالحجم الكامل للكنترول
             RectangleF rectSurface = new RectangleF(0, 0, this.Width, this.Height);
 
-            // 2. مسار الإطار (Border) - مزاح للداخل بمقدار نصف حجم القلم لمنع القص والتغبيش!
             float penOffset = borderSize / 2f;
             RectangleF rectBorder = new RectangleF(penOffset, penOffset, this.Width - borderSize, this.Height - borderSize);
 
@@ -371,10 +543,8 @@ namespace NControls
             using (SolidBrush brushFill = new SolidBrush(fillColor))
             using (Pen borderPen = new Pen(currentBorderColor, borderSize))
             {
-                // إزالة Inset لأنها تكسر التنعيم. نعتمد على محاذاة السنتر الافتراضية مع إزاحتنا الرياضية الدقيقة
-
-                g.FillPath(brushFill, pathSurface); // تعبئة الخلفية بالكامل
-                g.DrawPath(borderPen, pathBorder);  // رسم الإطار دقيق الحواف
+                g.FillPath(brushFill, pathSurface);
+                g.DrawPath(borderPen, pathBorder);
             }
 
             UpdateInternalControlsPos(Rectangle.Round(rectSurface));
@@ -463,8 +633,64 @@ namespace NControls
 
             if (icon.Icon != null)
             {
-                g.DrawImage(icon.Icon, icon.Bounds);
+                bool enableTint = icon.EnableIconTinting ?? this.EnableIconTinting;
+                Color tintColor = (icon == currentlyHoveredIcon && icon.IsClickable)
+                    ? (icon.HoverIconColor ?? this.HoverIconColor)
+                    : (icon.IconColor ?? this.IconColor);
+
+                DrawCrispIcon(g, icon.Icon, icon.Bounds, tintColor, enableTint);
             }
+        }
+
+        private void DrawCrispIcon(Graphics g, Image img, Rectangle bounds, Color tint, bool enableTint)
+        {
+            int ix = bounds.X;
+            int iy = bounds.Y;
+            int iw = bounds.Width;
+            int ih = bounds.Height;
+            Rectangle destRect = new Rectangle(ix, iy, iw, ih);
+
+            InterpolationMode prevInterp = g.InterpolationMode;
+            PixelOffsetMode prevOffset = g.PixelOffsetMode;
+            SmoothingMode prevSmooth = g.SmoothingMode;
+            CompositingQuality prevComp = g.CompositingQuality;
+
+            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            g.SmoothingMode = SmoothingMode.HighQuality;
+            g.CompositingQuality = CompositingQuality.HighQuality;
+
+            if (!enableTint || tint == Color.Transparent || tint == Color.Empty)
+            {
+                g.DrawImage(img, destRect, 0, 0, img.Width, img.Height, GraphicsUnit.Pixel);
+            }
+            else
+            {
+                float r = tint.R / 255f;
+                float gr = tint.G / 255f;
+                float b = tint.B / 255f;
+                float a = tint.A / 255f;
+
+                ColorMatrix cm = new ColorMatrix(new float[][]
+                {
+                    new float[] { 0, 0, 0, 0, 0 },
+                    new float[] { 0, 0, 0, 0, 0 },
+                    new float[] { 0, 0, 0, 0, 0 },
+                    new float[] { 0, 0, 0, a, 0 },
+                    new float[] { r, gr, b, 0, 1 }
+                });
+
+                using (ImageAttributes ia = new ImageAttributes())
+                {
+                    ia.SetColorMatrix(cm, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
+                    g.DrawImage(img, destRect, 0, 0, img.Width, img.Height, GraphicsUnit.Pixel, ia);
+                }
+            }
+
+            g.InterpolationMode = prevInterp;
+            g.PixelOffsetMode = prevOffset;
+            g.SmoothingMode = prevSmooth;
+            g.CompositingQuality = prevComp;
         }
 
         private void DrawIconHoverEffect(Graphics g, TextBoxIcon icon)
@@ -519,7 +745,6 @@ namespace NControls
             textBox.Width = Math.Max(txtWidth, 10);
         }
 
-        // تم تحويل الدالة للتعامل مع Float (الكسور) لرسم الحواف الدائرية بدقة فائقة
         private GraphicsPath GetFigurePath(RectangleF rect, float radius, bool flatBottom)
         {
             GraphicsPath path = new GraphicsPath();
@@ -560,6 +785,20 @@ namespace NControls
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
+
+            if (_dedicatedLeftIcon != null)
+            {
+                bool canClick = _leftIconClickable || LeftIconClick != null;
+                _dedicatedLeftIcon.IsClickable = canClick;
+                _dedicatedLeftIcon.Cursor = canClick ? Cursors.Hand : Cursors.IBeam;
+            }
+            if (_dedicatedRightIcon != null)
+            {
+                bool canClick = _rightIconClickable || RightIconClick != null;
+                _dedicatedRightIcon.IsClickable = canClick;
+                _dedicatedRightIcon.Cursor = canClick ? Cursors.Hand : Cursors.IBeam;
+            }
+
             var hovered = customIcons.FirstOrDefault(icn => icn.IsClickable && icn.Bounds.Contains(e.Location));
 
             if (currentlyHoveredIcon != hovered)
@@ -842,7 +1081,6 @@ namespace NControls
                     dropDown.Height = newHeight;
                     dropDownControl.Height = newHeight;
 
-                    // تحديث قائمة الاقتراحات بنفس الإزاحة الهندسية الدقيقة للإطار
                     float offset = borderSize / 2f;
                     RectangleF dRect = new RectangleF(offset, offset, this.Width - borderSize, newHeight - borderSize);
 
@@ -987,7 +1225,6 @@ namespace NControls
 
                 g.Clear(this.BackColor);
 
-                // تطبيق الإزاحة الدقيقة في قائمة الاقتراحات لضمان نقاء الإطار وعدم تغبيشه
                 float offset = parent.BorderSize / 2f;
                 RectangleF rectBorder = new RectangleF(offset, offset, this.Width - parent.BorderSize, this.Height - parent.BorderSize);
 
@@ -1026,7 +1263,8 @@ namespace NControls
                     if (parent.SuggestIcon != null)
                     {
                         int iconSize = 16;
-                        g.DrawImage(parent.SuggestIcon, new Rectangle(15, itemRect.Y + (itemHeight - iconSize) / 2, iconSize, iconSize));
+                        int iy = itemRect.Y + (itemHeight - iconSize) / 2;
+                        g.DrawImage(parent.SuggestIcon, new Rectangle(15, iy, iconSize, iconSize), 0, 0, parent.SuggestIcon.Width, parent.SuggestIcon.Height, GraphicsUnit.Pixel);
                         textX = 40;
                     }
 

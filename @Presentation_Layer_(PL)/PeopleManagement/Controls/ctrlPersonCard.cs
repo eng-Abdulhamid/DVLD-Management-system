@@ -1,56 +1,143 @@
-﻿using DTOs;
-using DVLD_BusinessLogicLayer;
-using Services;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using DVLD.BLL.DTOs;
+using DVLD.BLL.Enums;
+using DVLD.BLL.OperationResults;
+using DVLD.BLL.Services;
+using DVLD.PL.Global;
+using DVLD.PL.Properties;
 using System.Drawing;
-using System.Linq;
-using System.Text;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.IO;
+
 namespace DVLD.PL.PeopleManagement
 {
     public partial class ctrlPersonCard : UserControl
     {
-        private int personID = -1;
-        private readonly PersonServices personServices = new PersonServices();
+        private int _personId = -1;
+        private PersonService? _personService;
+        private PersonService PersonServiceInstance => _personService ??= new PersonService();
+
+        public int PersonID => _personId;
+        public PersonReadDTO? SelectedPersonInfo { get; private set; }
 
         public ctrlPersonCard()
         {
             InitializeComponent();
+            ResetCard();
+
+            if (UIUtility.IsDesignMode)
+                return;
         }
-        public void RefreshCard(int PersonID)
+
+        public async Task LoadPersonInfoAsync(int personId)
         {
-            personID = PersonID;
-            if (PersonID > 0)
+            if (UIUtility.IsDesignMode) return;
+
+            _personId = personId;
+
+            if (personId <= 0)
             {
-                OperationResult<PersonReadDTO> personDetailsResults = personServices.FindByPersonID(PersonID);
-                if (personDetailsResults.IsSuccess)
-                {
-                    // Populate the form with the retrieved person data
-                    PopulateCard(personDetailsResults.Data);
-                }
+                ResetCard();
+                return;
             }
 
-        }
-        private void PopulateCard(PersonReadDTO personData)
-        {
-            if (personData == null) return;
-            PersonID.Text = personData.PersonID.ToString();
-            NationalNo.Text = personData.NationalNo;
-            FullName.Text = $"{personData.FirstName} {personData.SecondName} {personData.ThirdName} {personData.LastName}";
-            Email.Text = personData.Email;
-            Phone.Text = personData.Phone;
-            DateOfBirth.Text = personData.DateOfBirth.ToString("MMMM d yyyy");
-            Gendor.Text = personData.Gendor.ToString();
-            picPersonImage.Tag = personData.ImagePath;
-            picPersonImage.Image = !string.IsNullOrEmpty(personData.ImagePath) && File.Exists(personData.ImagePath) ? Image.FromFile(personData.ImagePath) : Properties.Resources.user;
-            Nationality.Text = personData.CountryName;
+            lblFullName.Text = "Loading details...";
+
+            OperationResult<PersonReadDTO> result = await PersonServiceInstance.GetByIdAsync(personId);
+
+            if (result.IsSuccess && result.Data != null)
+            {
+                SelectedPersonInfo = result.Data;
+                PopulateCard(SelectedPersonInfo);
+            }
+            else
+            {
+                ResetCard();
+            }
         }
 
-        
+        public async Task LoadPersonInfoByNationalNoAsync(string nationalNo)
+        {
+            if (UIUtility.IsDesignMode) return;
+
+            if (string.IsNullOrWhiteSpace(nationalNo))
+            {
+                ResetCard();
+                return;
+            }
+
+            lblFullName.Text = "Loading details...";
+
+            OperationResult<PersonReadDTO> result = await PersonServiceInstance.GetByNationalNoAsync(nationalNo);
+
+            if (result.IsSuccess && result.Data != null)
+            {
+                _personId = result.Data.PersonID;
+                SelectedPersonInfo = result.Data;
+                PopulateCard(SelectedPersonInfo);
+            }
+            else
+            {
+                ResetCard();
+            }
+        }
+
+        private void PopulateCard(PersonReadDTO personData)
+        {
+            lblPersonID.Text = personData.PersonID.ToString();
+            lblNationalNo.Text = personData.NationalNo;
+            lblFullName.Text = personData.FullName;
+            lblEmail.Text = string.IsNullOrWhiteSpace(personData.Email) ? "Not Provided" : personData.Email;
+            lblPhone.Text = personData.Phone;
+            lblDateOfBirth.Text = $"{personData.DateOfBirth:dd MMM yyyy} ({personData.Age} years)";
+            lblGender.Text = personData.Gendor.ToString();
+            lblCountry.Text = personData.CountryName;
+            lblAddress.Text = personData.Address;
+
+            LoadPersonImage(personData.ImagePath, personData.Gendor == Gendor.Male);
+        }
+
+        private void LoadPersonImage(string imagePath, bool isMale)
+        {
+            if (!string.IsNullOrWhiteSpace(imagePath) && File.Exists(imagePath))
+            {
+                using (var stream = new FileStream(imagePath, FileMode.Open, FileAccess.Read))
+                {
+                    pbPersonImage.Image = Image.FromStream(stream);
+                }
+            }
+            else
+            {
+                pbPersonImage.Image = Resources.User;
+            }
+        }
+
+        public void ResetCard()
+        {
+            _personId = -1;
+            SelectedPersonInfo = null;
+
+            lblPersonID.Text = "[????]";
+            lblNationalNo.Text = "[????]";
+            lblFullName.Text = "No Person Selected";
+            lblEmail.Text = "[????]";
+            lblPhone.Text = "[????]";
+            lblDateOfBirth.Text = "[????]";
+            lblGender.Text = "[????]";
+            lblCountry.Text = "[????]";
+            lblAddress.Text = "[????]";
+
+            pbPersonImage.Image = Resources.User;
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+
+            using (Pen borderPen = new Pen(Color.FromArgb(226, 232, 240), 1))
+            {
+                e.Graphics.DrawRectangle(borderPen, 0, 0, this.Width - 1, this.Height - 1);
+            }
+        }
     }
 }

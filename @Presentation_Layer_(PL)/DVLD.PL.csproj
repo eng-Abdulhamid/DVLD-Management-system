@@ -14,17 +14,14 @@
 
 	<ItemGroup>
 		<Compile Remove="Management\**" />
-		<Compile Remove="PeopleManagement\**" />
 		<Compile Remove="People\**" />
 		<Compile Remove="Resources\**" />
 		<Compile Remove="UsersManagement\**" />
 		<EmbeddedResource Remove="Management\**" />
-		<EmbeddedResource Remove="PeopleManagement\**" />
 		<EmbeddedResource Remove="People\**" />
 		<EmbeddedResource Remove="Resources\**" />
 		<EmbeddedResource Remove="UsersManagement\**" />
 		<None Remove="Management\**" />
-		<None Remove="PeopleManagement\**" />
 		<None Remove="People\**" />
 		<None Remove="Resources\**" />
 		<None Remove="UsersManagement\**" />
@@ -34,14 +31,11 @@
 		<Compile Remove="clsSearch.cs" />
 		<Compile Remove="frmDashboard.cs" />
 		<Compile Remove="frmDashboard.Designer.cs" />
-		<Compile Remove="MainScreen.cs" />
-		<Compile Remove="MainScreen.Designer.cs" />
 		<Compile Remove="Shared.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<EmbeddedResource Remove="frmDashboard.resx" />
-		<EmbeddedResource Remove="MainScreen.resx" />
 	</ItemGroup>
 
 	<ItemGroup>

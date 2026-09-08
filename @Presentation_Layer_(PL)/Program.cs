@@ -1,6 +1,7 @@
 ﻿using DVLD.PL;
 using DVLD.PL.Configuration;
 using DVLD.PL.Login;
+using DVLD.PL.PeopleManagement;
 namespace DVLD.PL
 {
     internal static class Program

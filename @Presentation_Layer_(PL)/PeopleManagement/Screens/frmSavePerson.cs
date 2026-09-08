@@ -1,410 +1,318 @@
-﻿using CustomControls;
-using DTOs;
-using DVLD_BusinessLogicLayer;
-using NControls;
-using Services;
+﻿using DVLD.BLL.DTOs;
+using DVLD.BLL.Enums;
+using DVLD.BLL.OperationResults;
+using DVLD.BLL.Services;
+using DVLD.PL.Global;
+using DVLD.PL.Properties;
 using System;
-using System.ComponentModel;
 using System.Drawing;
 using System.IO;
+using System.Net.Mail;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DVLD.PL.PeopleManagement
 {
-    public partial class frmSavePerson : Form
+    public partial class frmSavePerson : frmBase
     {
-        public frmSavePerson(int PersonID = -1)
+        private enum Mode { AddNew = 0, UpdateExisting = 1 }
+
+        private Mode _mode;
+        private int _personId;
+        private readonly PersonService _personService;
+        private PersonReadDTO? _existingPerson;
+        private ToolTip _toolTips;
+
+        public event Action<int>? PersonSaved;
+
+        public frmSavePerson(int personId = -1)
         {
             InitializeComponent();
-            InitializeGendorComboBox();
-            InitializeNationalityComboBox();
-            cmbNationality.Items.AddRange(new object[] { "Palestine", "Jordan" });
-            personServices = new PersonServices(); 
-            if (PersonID > 0)
+
+            this.AllowMaximize = false;
+            this.AllowResize = false;
+
+            _personId = personId;
+            _mode = (_personId <= 0) ? Mode.AddNew : Mode.UpdateExisting;
+            _personService = new PersonService();
+
+            ApplyStyles();
+            RegisterEvents();
+            SetupToolTips();
+        }
+
+        private void ApplyStyles()
+        {
+            btnSave.ApplyPrimaryStyle();
+            btnCancel.ApplySecondaryStyle();
+
+            txtPersonID.ApplyStandardStyle();
+            txtNationalNo.ApplyStandardStyle();
+            txtFirstName.ApplyStandardStyle();
+            txtSecondName.ApplyStandardStyle();
+            txtThirdName.ApplyStandardStyle();
+            txtLastName.ApplyStandardStyle();
+            txtPhone.ApplyStandardStyle();
+            txtEmail.ApplyStandardStyle();
+            txtAddress.ApplyStandardStyle();
+
+            cmbGender.ApplyStandardStyle();
+            cmbCountry.ApplyStandardStyle();
+        }
+
+        private async void frmSavePerson_Load(object sender, EventArgs e)
+        {
+            PopulateInitialDropdowns();
+
+            if (_mode == Mode.AddNew)
             {
-                OperationResult<PersonReadDTO> personDetailsResults = personServices.FindByPersonID(PersonID);
-                if (personDetailsResults.IsSuccess)
-                {
-                    // Populate the form with the retrieved person data
-                    PopulateForm(personDetailsResults.Data);
-                    Mode = enMode.UpdateExisting;
-                    _StoredPersonData = ConvertFromReadPersonToAddPersonDTO(personDetailsResults.Data);
-                }
+                txtPersonID.Text = "Auto Assigned";
+                dtpBirthDate.MaxDate = DateTime.Today.AddYears(-18);
+                dtpBirthDate.Value = dtpBirthDate.MaxDate;
+            }
+            else
+            {
+                await LoadPersonDataAsync();
             }
         }
-        enum enMode
-        {
-            AddNew,
-            UpdateExisting
-        }
-        public event Action<int> PersonSaved;
-        private enMode Mode = enMode.AddNew;
-        PersonAddDTO _StoredPersonData = new PersonAddDTO();
-        private readonly PersonServices personServices;
 
-        private void PopulateForm(PersonReadDTO personData)
+        private void SetupToolTips()
         {
-            if (personData == null) return;
-            txtPersonID.Text = personData.PersonID.ToString();
-            txtNationalNo.Text = personData.NationalNo;
-            txtFirstName.Text = personData.FirstName;
-            txtSecondName.Text = personData.SecondName;
-            txtThirdName.Text = personData.ThirdName;
-            txtLastName.Text = personData.LastName;
-            txtAdress.Text = personData.Email;
-            txtPhone.Text = personData.Phone;
-            dtpBirthDate.Value = personData.DateOfBirth;
-            cmbGendor.SelectedItem = personData.Gendor.ToString();
-            picPersonImage.Tag = personData.ImagePath;
-            picPersonImage.Image = !string.IsNullOrEmpty(personData.ImagePath) && File.Exists(personData.ImagePath) ? Image.FromFile(personData.ImagePath) : Properties.Resources.user;
-            cmbNationality.Items.Add(personData.CountryName);
-            cmbNationality.Text = personData.CountryName;
-        }
-        #region Initialization
-        private void InitializeGendorComboBox()
-        {
-            cmbGendor.Items.Clear();
-            cmbGendor.Items.AddRange(new object[] { "Male", "Female" }); 
-            if (cmbGendor.Items.Count > 0)
-                cmbGendor.SelectedIndex = 0;
-        }
-        private void InitializeNationalityComboBox()
-        {
-            cmbNationality.Items.Clear();
-
-
-            if (cmbNationality.Items.Count > 0)
-                cmbNationality.SelectedIndex = 0;
-        }
-        #endregion
-
-
-        #region Events
-        private void ValidateControls_ValuedChanged(object sender, EventArgs e)
-        {
-            UpdateSubmitButtonState();
-        }
-        private void lblUploadNewPicutre_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            _toolTips = new ToolTip
             {
-                openFileDialog.Filter = "Image Files (*.jpg; *.jpeg; *.png; *.bmp; *.gif)|*.jpg;*.jpeg;*.png;*.bmp;*.gif";
-                openFileDialog.Title = "Select Person Image";
-                openFileDialog.Multiselect = false;
+                InitialDelay = 400,
+                ReshowDelay = 100,
+                UseAnimation = true,
+                UseFading = true
+            };
 
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    string selectedFilePath = openFileDialog.FileName;
-
-                    try
-                    {
-                        picPersonImage.Image?.Dispose();
-
-                        using (var stream = new FileStream(selectedFilePath, FileMode.Open, FileAccess.Read))
-                        {
-                            picPersonImage.Image = Image.FromStream(stream);
-                        }
-
-                        picPersonImage.Tag = selectedFilePath;
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"Could not load the image: {ex.Message}", "Image Load Error",
-                                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
-            }
+            _toolTips.SetToolTip(txtNationalNo, "Unique national identification number");
+            _toolTips.SetToolTip(txtFirstName, "Enter primary name");
+            _toolTips.SetToolTip(txtPhone, "Contact phone number");
+            _toolTips.SetToolTip(txtEmail, "Personal or business email address");
+            _toolTips.SetToolTip(btnSave, "Save and commit changes");
+            _toolTips.SetToolTip(btnCancel, "Discard changes and exit");
         }
-        private void btnAdd_Click(object sender, EventArgs e)
+
+        private void RegisterEvents()
         {
-            Save();
+            btnCancel.Click += (s, e) => this.Close();
+            btnSave.Click += async (s, e) => await PerformSaveAsync();
+
+            lnkUploadPhoto.LinkClicked += (s, e) => SelectProfileImage();
+            lnkRemovePhoto.LinkClicked += (s, e) => RemoveProfileImage();
         }
-        private void btnSubmitAndClose_Click(object sender, EventArgs e)
+
+        private void PopulateInitialDropdowns()
         {
-            if (Save())
+            cmbGender.Items.Clear();
+            cmbGender.Items.AddRange(new object[] { "Male", "Female" });
+            cmbGender.SelectedIndex = 0;
+
+            cmbCountry.Items.Clear();
+            cmbCountry.Items.AddRange(new object[] { "Palestine", "Jordan", "Egypt", "Syria", "Lebanon" });
+            cmbCountry.SelectedIndex = 0;
+        }
+
+        private async Task LoadPersonDataAsync()
+        {
+            OperationResult<PersonReadDTO> result = await _personService.GetByIdAsync(_personId);
+
+            if (!result.IsSuccess || result.Data == null)
             {
+                MessageBox.Show("Failed to load person data.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.Close();
+                return;
             }
-        }
 
-        private void btnCancel_Click(object sender, EventArgs e)
-        {
-            Shared.ShowNotificaiton("User cancelled the operation.", "Save Person", IconType.Info);
-            this.Close();
-        }
-        private void MockDataForTesting_Click(object sender, EventArgs e)
-        {
-            txtFirstName.Text = "Abdulhamid";
-            txtSecondName.Text = "Hani";
-            txtThirdName.Text = "Abdulhamid";
-            txtLastName.Text = "Abusaada";
-            txtAdress.Text = "bodisaada@gmail.com";
-            txtPhone.Text = "0597508160";
-            txtNationalNo.Text = "424321651";
-            dtpBirthDate.Value = new DateTime(2006, 10, 31);
-            cmbNationality.SelectedIndex = 0;
-        }
-        #endregion
+            _existingPerson = result.Data;
 
+            txtPersonID.Text = _existingPerson.PersonID.ToString();
+            txtNationalNo.Text = _existingPerson.NationalNo;
+            txtFirstName.Text = _existingPerson.FirstName;
+            txtSecondName.Text = _existingPerson.SecondName;
+            txtThirdName.Text = _existingPerson.ThirdName;
+            txtLastName.Text = _existingPerson.LastName;
+            txtPhone.Text = _existingPerson.Phone;
+            txtEmail.Text = _existingPerson.Email;
+            txtAddress.Text = _existingPerson.Address;
+            dtpBirthDate.Value = _existingPerson.DateOfBirth;
+            cmbGender.SelectedItem = _existingPerson.Gendor.ToString();
 
-        #region Maping
-        private enGendor GetSelectedGendor()
-        {
-            return enGendor.Unknown;
-        }
-        private int GetSelectedNationalityCountryID()
-        {
-            return 1;
-        }
-        private int GetThePersonID()
-        {
-            if (txtPersonID.Text.Trim().Length > 0)
+            if (!string.IsNullOrWhiteSpace(_existingPerson.CountryName))
             {
-                int personID;
-                if (int.TryParse(txtPersonID.Text.Trim(), out personID))
+                if (!cmbCountry.Items.Contains(_existingPerson.CountryName))
                 {
-                    return personID;
+                    cmbCountry.Items.Add(_existingPerson.CountryName);
                 }
+                cmbCountry.SelectedItem = _existingPerson.CountryName;
             }
-            return -1;
-        }
-        private PersonAddDTO ConvertFromReadPersonToAddPersonDTO(PersonReadDTO personRead)
-        {
-            return new PersonAddDTO
-            {
-                FirstName = personRead.FirstName,
-                SecondName = personRead.SecondName,
-                ThirdName = personRead.ThirdName,
-                LastName = personRead.LastName,
-                DateOfBirth = personRead.DateOfBirth,
-                Gendor = personRead.Gendor,
-                Address = personRead.Address,
-                Phone = personRead.Phone,
-                Email = personRead.Email,
-                NationalityCountryID = personRead.NationalityCountryID,
-                ImagePath = personRead.ImagePath,
-                NationalNo = personRead.NationalNo
-            };
-        }
-        private PersonAddDTO CreatePersonAddDTO()
-        {
-            PersonAddDTO NewPersonData = new PersonAddDTO
-            {
-                NationalNo = txtNationalNo.Text.Trim(),
-                FirstName = txtFirstName.Text.Trim(),
-                SecondName = txtSecondName.Text.Trim(),
-                ThirdName = txtThirdName.Text.Trim(),
-                LastName = txtLastName.Text.Trim(),
-                DateOfBirth = dtpBirthDate.Value,
-                Gendor = GetSelectedGendor(),
-                Address = txtAdress.Text.Trim(),
-                Phone = txtPhone.Text.Trim(),
-                Email = txtAdress.Text.Trim(),
-                NationalityCountryID = GetSelectedNationalityCountryID(),
-                ImagePath = picPersonImage.Tag as string
-            };
-            return NewPersonData;
 
-        }
-        private PersonUpdateDTO CreatePersonUpdateDTO()
-        {
-            PersonAddDTO NewPersonData = CreatePersonAddDTO();
-            return new PersonUpdateDTO
+            if (!string.IsNullOrWhiteSpace(_existingPerson.ImagePath) && File.Exists(_existingPerson.ImagePath))
             {
-                PersonID = GetThePersonID(),
-                FirstName = NewPersonData.FirstName,
-                SecondName = NewPersonData.SecondName,
-                ThirdName = NewPersonData.ThirdName,
-                LastName = NewPersonData.LastName,
-                DateOfBirth = NewPersonData.DateOfBirth,
-                Gendor = NewPersonData.Gendor,
-                Address = NewPersonData.Address,
-                Phone = NewPersonData.Phone,
-                Email = NewPersonData.Email,
-                NationalityCountryID= NewPersonData.NationalityCountryID,
-                ImagePath = picPersonImage.Tag as string,
-                NationalNo = NewPersonData.NationalNo
-            };
-        }
-        #endregion
-        
-        
-        #region Validation
-        private bool ValidateWhetherDataNeedsUpdateOrNot()
-        {
-            return
-                _StoredPersonData.FirstName != txtFirstName.Text.Trim() ||
-                _StoredPersonData.SecondName != txtSecondName.Text.Trim() ||
-                _StoredPersonData.ThirdName != txtThirdName.Text.Trim() ||
-                _StoredPersonData.LastName != txtLastName.Text.Trim() ||
-                _StoredPersonData.Email != txtAdress.Text.Trim() ||
-                _StoredPersonData.Phone != txtPhone.Text.Trim() ||
-                _StoredPersonData.NationalNo != txtNationalNo.Text.Trim() ||
-                _StoredPersonData.Gendor != GetSelectedGendor() ||
-                _StoredPersonData.ImagePath != (picPersonImage.Tag as string);
+                using var stream = new FileStream(_existingPerson.ImagePath, FileMode.Open, FileAccess.Read);
+                pbPersonPhoto.Image = Image.FromStream(stream);
+                pbPersonPhoto.Tag = _existingPerson.ImagePath;
+            }
+            else
+            {
+                pbPersonPhoto.Image = Resources.User;
+                pbPersonPhoto.Tag = string.Empty;
+            }
         }
 
-        private bool ValidateConstraintnsColumns()
+        private void SelectProfileImage()
         {
-            if (txtNationalNo.Text != _StoredPersonData.NationalNo)
+            using OpenFileDialog dialog = new OpenFileDialog
             {
-                if (personServices.IsNationalNoExists(txtNationalNo.Text))
+                Filter = "Image Files (*.jpg; *.jpeg; *.png; *.bmp)|*.jpg;*.jpeg;*.png;*.bmp",
+                Title = "Select Person Photo"
+            };
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                using var stream = new FileStream(dialog.FileName, FileMode.Open, FileAccess.Read);
+                pbPersonPhoto.Image = Image.FromStream(stream);
+                pbPersonPhoto.Tag = dialog.FileName;
+            }
+        }
+
+        private void RemoveProfileImage()
+        {
+            pbPersonPhoto.Image = Resources.User;
+            pbPersonPhoto.Tag = string.Empty;
+        }
+
+        private bool ValidateFormInputs()
+        {
+            if (string.IsNullOrWhiteSpace(txtNationalNo.Text))
+            {
+                txtNationalNo.Shake();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtFirstName.Text))
+            {
+                txtFirstName.Shake();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtSecondName.Text))
+            {
+                txtSecondName.Shake();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtLastName.Text))
+            {
+                txtLastName.Shake();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtPhone.Text))
+            {
+                txtPhone.Shake();
+                return false;
+            }
+
+            if (!string.IsNullOrWhiteSpace(txtEmail.Text))
+            {
+                try
                 {
-                        Shared.ShowNotificaiton("National number already exists.", "Save Person", IconType.Warning);
-                    epValidation.SetError(txtNationalNo, "Please enter another National no.");
-                    txtNationalNo.Focus();
+                    var addr = new MailAddress(txtEmail.Text.Trim());
+                    if (addr.Address != txtEmail.Text.Trim())
+                    {
+                        txtEmail.Shake();
+                        return false;
+                    }
+                }
+                catch
+                {
+                    txtEmail.Shake();
                     return false;
                 }
             }
-            return true;
-        }
-        private bool ValidateDateOfBirth()
-        {
-            if (dtpBirthDate.Value.Date >= DateTime.Now.Date)
-            {
-                epValidation.Clear();
-                epValidation.SetError(dtpBirthDate, "Please enter a valid birth date.");
-                dtpBirthDate.Focus();
-                Shared.ShowNotificaiton("Please enter a valid birth date.", "Save Person", IconType.Warning);
-                return false;
-            }
-            return true;
-        }
-        private bool ValidateEmail()
-        {
-            try
-            {
-                var email = new System.Net.Mail.MailAddress(txtAdress.Text.Trim());
 
-                if (email.Address != txtAdress.Text.Trim())
+            return true;
+        }
+
+        private async Task PerformSaveAsync()
+        {
+            if (!ValidateFormInputs()) return;
+
+            btnSave.IsLoading = true;
+            btnSave.Enabled = false;
+
+            Gendor selectedGender = (cmbGender.Text == "Female") ? Gendor.Female : Gendor.Male;
+            string photoPath = pbPersonPhoto.Tag?.ToString() ?? string.Empty;
+
+            if (_mode == Mode.AddNew)
+            {
+                PersonAddDTO addDto = new PersonAddDTO(
+                    txtNationalNo.Text.Trim(),
+                    txtFirstName.Text.Trim(),
+                    txtSecondName.Text.Trim(),
+                    txtThirdName.Text.Trim(),
+                    txtLastName.Text.Trim(),
+                    dtpBirthDate.Value,
+                    selectedGender,
+                    txtAddress.Text.Trim(),
+                    txtPhone.Text.Trim(),
+                    txtEmail.Text.Trim(),
+                    cmbCountry.SelectedIndex + 1,
+                    photoPath);
+
+                OperationResult<int> result = await _personService.AddAsync(addDto);
+
+                btnSave.IsLoading = false;
+                btnSave.Enabled = true;
+
+                if (result.IsSuccess && result.Data > 0)
                 {
-                    epValidation.Clear();
-                    epValidation.SetError(txtAdress, "Invalid Email Address.");
-                    txtAdress.Focus();
-                    Shared.ShowNotificaiton("Invalid Email Address.", "Save Person", IconType.Warning);
-                    return false;
+                    MessageBox.Show("Person added successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    PersonSaved?.Invoke(result.Data);
+                    this.Close();
                 }
-            }
-            catch
-            {
-                epValidation.SetError(txtAdress, "Invalid Email Address. ");
-                txtAdress.Focus();
-                Shared.ShowNotificaiton("Invalid Email Address. Please try again with this format: username@domain.com", "Save Person", IconType.Warning);
-                return false;
-            }
-            return true;
-        }
-        private bool ValidateComboBoxes()
-        {
-            if (cmbNationality.SelectedIndex < 0)
-            {
-                epValidation.Clear();
-                epValidation.SetError(cmbNationality, "Please select a nationality.");
-                cmbNationality.Focus();
-                Shared.ShowNotificaiton("Please select a nationality.", "Save Person", IconType.Warning);
-                return false;
-            }
-
-            if (cmbGendor.SelectedIndex < 0)
-            {
-                epValidation.Clear();
-
-                epValidation.SetError(cmbGendor, "Please select a Gendor.");
-                cmbGendor.Focus();
-                Shared.ShowNotificaiton("Please select a Gendor.", "Save Person", IconType.Warning);
-                return false;
-            }
-            return true;
-
-
-        }
-        private bool ValidateDataBeforeSubmit()
-        {
-            epValidation.Clear();
-            
-            return ValidateDateOfBirth() && ValidateEmail() && ValidateComboBoxes() && ValidateConstraintnsColumns();
-        }
-        private void UpdateSubmitButtonState()
-        {
-            btnSubmit.Enabled = !string.IsNullOrWhiteSpace(txtNationalNo.Text) && !string.IsNullOrWhiteSpace(txtFirstName.Text) && !string.IsNullOrWhiteSpace(txtSecondName.Text) && !string.IsNullOrWhiteSpace(txtThirdName.Text) && !string.IsNullOrWhiteSpace(txtLastName.Text) && !string.IsNullOrWhiteSpace(txtPhone.Text) && !string.IsNullOrWhiteSpace(txtAdress.Text) && cmbGendor.SelectedIndex >= 0 && cmbNationality.SelectedIndex >= 0 && dtpBirthDate.Value.Date < DateTime.Now.Date;
-            btnSubmitAndClose.Enabled = btnSubmit.Enabled;
-        }
-        #endregion
-
-
-        #region Save Person
-        private bool PerformAddNewPerson()
-        {
-            bool IsAddSuccessfully = false;
-            int personID = personServices.AddNew(CreatePersonAddDTO());
-            if (personID > 0)
-            {
-                txtPersonID.Text = personID.ToString();
-                Shared.ShowNotificaiton("Person added successfully!", "Save Person", IconType.Success);
-                this.Text = $"Update Person {personID} Details";
-                Mode = enMode.UpdateExisting;
-                _StoredPersonData = CreatePersonAddDTO();
-                IsAddSuccessfully = true;
-                PersonSaved?.Invoke(personID);
-            }
-            else
-            {
-                Shared.ShowNotificaiton("Failed to add person. Please check the details and try again.", "Save Person", IconType.Error);
-            }
-            return IsAddSuccessfully;
-
-        }
-        private bool PerformUpdateExistingPerson()
-        {
-            bool IsUpdatedSuccessfully = false;
-            int personID = GetThePersonID();
-            if (personID <= 0)
-            {
-                Shared.ShowNotificaiton("Please check the details and try again.", "Save Person", IconType.Error);
-                return IsUpdatedSuccessfully;
-            }
-            IsUpdatedSuccessfully = personServices.UpdateByPersonID(CreatePersonUpdateDTO());
-            if (IsUpdatedSuccessfully)
-            {
-                Shared.ShowNotificaiton("Person updated successfully!", "Save Person", IconType.Success);
-                PersonSaved?.Invoke(personID);
-                _StoredPersonData = CreatePersonAddDTO();
-
-            }
-            else
-            {
-                Shared.ShowNotificaiton("Failed to update person. Please check the details and try again.", "Save Person", IconType.Error);
-            }
-            return IsUpdatedSuccessfully;
-        }
-
-        private bool Save()
-        {
-            bool IsSaved = false;
-            if (!(ValidateDataBeforeSubmit())) return IsSaved;
-
-            if (Mode == enMode.AddNew)
-            {
-                IsSaved = PerformAddNewPerson();
-            }
-            else
-            {
-                if (ValidateWhetherDataNeedsUpdateOrNot())
-                    IsSaved = PerformUpdateExistingPerson();
                 else
-                    IsSaved = true;
+                {
+                    MessageBox.Show(result.Message, "Save Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
-            return IsSaved;
+            else
+            {
+                PersonUpdateDTO updateDto = new PersonUpdateDTO
+                {
+                    PersonID = _personId,
+                    NationalNo = txtNationalNo.Text.Trim(),
+                    FirstName = txtFirstName.Text.Trim(),
+                    SecondName = txtSecondName.Text.Trim(),
+                    ThirdName = txtThirdName.Text.Trim(),
+                    LastName = txtLastName.Text.Trim(),
+                    DateOfBirth = dtpBirthDate.Value,
+                    Gendor = selectedGender,
+                    Address = txtAddress.Text.Trim(),
+                    Phone = txtPhone.Text.Trim(),
+                    Email = txtEmail.Text.Trim(),
+                    NationalityCountryID = cmbCountry.SelectedIndex + 1,
+                    ImagePath = photoPath
+                };
 
+                OperationResult<bool> result = await _personService.UpdateAsync(updateDto);
+
+                btnSave.IsLoading = false;
+                btnSave.Enabled = true;
+
+                if (result.IsSuccess)
+                {
+                    MessageBox.Show("Person updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    PersonSaved?.Invoke(_personId);
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show(result.Message, "Update Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
         }
-        #endregion
-
-        private void lblDeletePicture_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            picPersonImage.Image = Properties.Resources.user;
-            picPersonImage.Tag = "";
-        }
-
-        
     }
 }
