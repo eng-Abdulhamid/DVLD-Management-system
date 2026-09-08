@@ -8,7 +8,6 @@ using System.Drawing;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static DVLD.PL.Global.UIUtility;
 
 namespace DVLD.PL.Login
 {
@@ -22,9 +21,7 @@ namespace DVLD.PL.Login
         private const int FORM_COLLAPSED_HEIGHT = 310;
         private const int FORM_EXPANDED_HEIGHT = 680;
 
-        private Image _eyeOnIcon;
-        private Image _eyeOffIcon;
-        private ToolTip _toolTips;
+        private ToolTip? _toolTips;
 
         public Action<string, string>? OnPasswordChange;
 
@@ -32,6 +29,7 @@ namespace DVLD.PL.Login
         {
             InitializeComponent();
 
+            this.ApplyStandardFormTheme();
             this.AllowMaximize = false;
             this.AllowResize = false;
 
@@ -44,7 +42,6 @@ namespace DVLD.PL.Login
 
             this.Icon = Resources.iconLoginIn;
 
-            PreloadIcons();
             RegisterEvents();
             SetupPasswordVisibility();
             SetupToolTips();
@@ -60,18 +57,24 @@ namespace DVLD.PL.Login
             btnVerifyUser.ApplyPrimaryStyle();
             btnChangePassword.ApplyPrimaryStyle();
             btnCancel.ApplySecondaryStyle();
+            btnEditUsername.ApplySecondaryStyle();
 
             txtUserName.ApplyStandardStyle();
             txtOldPassword.ApplyStandardStyle();
             txtNewPassword.ApplyStandardStyle();
             txtConfirmPassword.ApplyStandardStyle();
-        }
 
-        private void PreloadIcons()
-        {
-            Color iconColor = Color.FromArgb(71, 85, 105);
-            _eyeOnIcon = RecolorIcon(Resources.visibilityOn, iconColor);
-            _eyeOffIcon = RecolorIcon(Resources.visibilityOff, iconColor);
+            txtUserName.IconColor = Color.FromArgb(148, 163, 184);
+            txtUserName.HoverIconColor = UITheme.Primary;
+            txtOldPassword.IconColor = Color.FromArgb(148, 163, 184);
+            txtOldPassword.HoverIconColor = UITheme.Primary;
+            txtNewPassword.IconColor = Color.FromArgb(148, 163, 184);
+            txtNewPassword.HoverIconColor = UITheme.Primary;
+            txtConfirmPassword.IconColor = Color.FromArgb(148, 163, 184);
+            txtConfirmPassword.HoverIconColor = UITheme.Primary;
+
+            btnEditUsername.IconColor = UITheme.NeutralText;
+            btnEditUsername.HoverIconColor = UITheme.TextPrimary;
         }
 
         private void SetupToolTips()
@@ -85,14 +88,14 @@ namespace DVLD.PL.Login
             };
 
             _toolTips.SetToolTip(txtUserName, "Enter your registered username");
-            _toolTips.SetToolTip(btnVerifyUser, "Check if account exists");
+            _toolTips.SetToolTip(btnVerifyUser, "Verify account existence");
             _toolTips.SetToolTip(btnEditUsername, "Change username");
             _toolTips.SetToolTip(txtOldPassword, "Enter current password");
-            _toolTips.SetToolTip(txtNewPassword, "Enter your new password");
-            _toolTips.SetToolTip(txtConfirmPassword, "Re-enter new password to match");
-            _toolTips.SetToolTip(btnChangePassword, "Save new password and login");
-            _toolTips.SetToolTip(btnCancel, "Cancel operation");
-            _toolTips.SetToolTip(lnkForgotCurrentPassword, "Send recovery link via email");
+            _toolTips.SetToolTip(txtNewPassword, "Enter a new secure password");
+            _toolTips.SetToolTip(txtConfirmPassword, "Re-enter new password");
+            _toolTips.SetToolTip(btnChangePassword, "Commit new password");
+            _toolTips.SetToolTip(btnCancel, "Cancel operation and return");
+            _toolTips.SetToolTip(lnkForgotCurrentPassword, "Request password recovery");
         }
 
         private void RegisterEvents()
@@ -114,7 +117,7 @@ namespace DVLD.PL.Login
         private async Task AnimateFormHeight(bool expand)
         {
             int targetHeight = expand ? FORM_EXPANDED_HEIGHT : FORM_COLLAPSED_HEIGHT;
-            int step = expand ? 20 : -20;
+            int step = expand ? 24 : -24;
             int centerY = this.Top + (this.Height / 2);
 
             if (expand) pnlCreateNewPassword.Visible = true;
@@ -134,18 +137,24 @@ namespace DVLD.PL.Login
 
         private void SetupPasswordVisibility()
         {
-            txtOldPassword.UseSystemPasswordChar = true;
-            txtNewPassword.UseSystemPasswordChar = true;
-            txtConfirmPassword.UseSystemPasswordChar = true;
+            HookPasswordToggle(txtOldPassword);
+            HookPasswordToggle(txtNewPassword);
+            HookPasswordToggle(txtConfirmPassword);
+        }
 
-            txtOldPassword.AddIcon(_eyeOffIcon, NControls.IconPosition.Right, 20, 20, true,
-                (t) => UIUtility.TogglePasswordVisibility(t, _eyeOffIcon, _eyeOnIcon));
+        private void HookPasswordToggle(NControls.NTextBox box)
+        {
+            box.UseSystemPasswordChar = true;
+            box.RightIcon = Resources.visibilityOff;
+            box.RightIconClickable = true;
 
-            txtNewPassword.AddIcon(_eyeOffIcon, NControls.IconPosition.Right, 20, 20, true,
-                (t) => UIUtility.TogglePasswordVisibility(t, _eyeOffIcon, _eyeOnIcon));
-
-            txtConfirmPassword.AddIcon(_eyeOffIcon, NControls.IconPosition.Right, 20, 20, true,
-                (t) => UIUtility.TogglePasswordVisibility(t, _eyeOffIcon, _eyeOnIcon));
+            box.RightIconClick += (s, e) =>
+            {
+                box.UseSystemPasswordChar = !box.UseSystemPasswordChar;
+                box.RightIcon = box.UseSystemPasswordChar
+                    ? Resources.visibilityOff
+                    : Resources.visibilityOn;
+            };
         }
 
         private async void SwitchToVerifiedState()
@@ -158,7 +167,7 @@ namespace DVLD.PL.Login
             btnVerifiedCheck.Visible = true;
             btnEditUsername.Visible = true;
 
-            SetStatusMessage("Account verified successfully.", Color.FromArgb(22, 163, 74));
+            SetStatusMessage("Account verified successfully.", Color.FromArgb(16, 137, 62));
 
             await AnimateFormHeight(true);
             txtOldPassword.Focus();
@@ -227,7 +236,7 @@ namespace DVLD.PL.Login
             if (_accountVerified || !ValidateUsernameField()) return;
 
             ToggleLoadingState(true);
-            SetStatusMessage("Verifying...", Color.FromArgb(107, 114, 128));
+            SetStatusMessage("Verifying account...", Color.FromArgb(100, 116, 139));
 
             string username = txtUserName.Text.Trim();
             var result = await _userService.GetByUserNameAsync(username);
@@ -243,7 +252,7 @@ namespace DVLD.PL.Login
 
             if (!TryGetUserId(result.Data, out int userId))
             {
-                SetStatusMessage("Error reading account data.", Color.FromArgb(220, 38, 38));
+                SetStatusMessage("Error reading account details.", Color.FromArgb(220, 38, 38));
                 txtUserName.Enabled = true;
                 btnVerifyUser.Enabled = true;
                 return;
@@ -265,9 +274,9 @@ namespace DVLD.PL.Login
             _isChangingPassword = true;
             btnChangePassword.IsLoading = true;
             btnChangePassword.Enabled = false;
-            SetStatusMessage("Updating password...", Color.FromArgb(107, 114, 128));
+            SetStatusMessage("Updating password...", Color.FromArgb(100, 116, 139));
 
-            OperationResult<bool> result = await _userService.ChangePasswordAsync(txtUserName.Text, txtOldPassword.Text, txtNewPassword.Text);
+            OperationResult<bool> result = await _userService.ChangePasswordAsync(txtUserName.Text.Trim(), txtOldPassword.Text, txtNewPassword.Text);
 
             _isChangingPassword = false;
             btnChangePassword.IsLoading = false;
@@ -279,8 +288,8 @@ namespace DVLD.PL.Login
                 return;
             }
 
-            OnPasswordChange?.Invoke(txtUserName.Text, txtNewPassword.Text);
-            MessageBox.Show("Password changed successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            OnPasswordChange?.Invoke(txtUserName.Text.Trim(), txtNewPassword.Text);
+            UITheme.ShowSuccessToast("Your password has been changed successfully.", "Security Updated");
             Close();
         }
 
@@ -293,6 +302,7 @@ namespace DVLD.PL.Login
             else
             {
                 SetStatusMessage(message ?? "Failed to update.", Color.FromArgb(220, 38, 38));
+                UITheme.ShowErrorToast(message ?? "Failed to update password.", "Update Failed");
             }
         }
 

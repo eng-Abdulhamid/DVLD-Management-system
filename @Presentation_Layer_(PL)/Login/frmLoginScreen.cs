@@ -18,12 +18,13 @@ namespace DVLD.PL.Login
         private int _failedAttempts = 0;
         private int _lockoutSecondsRemaining = 0;
         private readonly UserService _userService;
-        private ToolTip _toolTips;
+        private ToolTip? _toolTips;
 
         public frmLoginScreen()
         {
             InitializeComponent();
 
+            this.ApplyStandardFormTheme();
             this.AllowMaximize = false;
             this.AllowResize = false;
 
@@ -34,6 +35,7 @@ namespace DVLD.PL.Login
         private void LoginScreen_Load(object sender, EventArgs e)
         {
             LoadRememberedCredentials();
+            CheckTextBoxsAreNotEmpty();
         }
 
         private void InitializeUI()
@@ -54,6 +56,11 @@ namespace DVLD.PL.Login
             txtUserName.ApplyStandardStyle();
             txtPassword.ApplyStandardStyle();
             chkRememberMe.ApplyStandardStyle();
+
+            txtUserName.IconColor = Color.FromArgb(148, 163, 184);
+            txtUserName.HoverIconColor = UITheme.Primary;
+            txtPassword.IconColor = Color.FromArgb(148, 163, 184);
+            txtPassword.HoverIconColor = UITheme.Primary;
         }
 
         private void SetupToolTips()
@@ -68,16 +75,17 @@ namespace DVLD.PL.Login
 
             _toolTips.SetToolTip(txtUserName, "Enter your registered username");
             _toolTips.SetToolTip(txtPassword, "Enter your password");
-            _toolTips.SetToolTip(btnLogin, "Securely log in to the system");
-            _toolTips.SetToolTip(chkRememberMe, "Save credentials for future logins");
-            _toolTips.SetToolTip(lnkForgotPassword, "Reset your password");
-            _toolTips.SetToolTip(lnkSignUp, "Create a new account");
+            _toolTips.SetToolTip(btnLogin, "Securely sign in to the system");
+            _toolTips.SetToolTip(chkRememberMe, "Remember credentials on this device");
+            _toolTips.SetToolTip(lnkForgotPassword, "Reset your account password");
+            _toolTips.SetToolTip(lnkSignUp, "Register a new profile");
         }
 
         private void RegisterEvents()
         {
             EnableWindowDragging(this);
             EnableWindowDragging(pnlRightCanvas);
+            EnableWindowDragging(lblTitle);
         }
 
         private void LoadRememberedCredentials()
@@ -96,17 +104,22 @@ namespace DVLD.PL.Login
         private void SetupPasswordVisibility()
         {
             txtPassword.UseSystemPasswordChar = true;
-            Image eyeOff = UIUtility.RecolorIcon(Resources.visibilityOn, Color.FromArgb(71, 85, 105));
-            Image eyeOn = UIUtility.RecolorIcon(Resources.visibilityOff, Color.FromArgb(71, 85, 105));
+            txtPassword.RightIcon = Resources.visibilityOff;
+            txtPassword.RightIconClickable = true;
 
-            txtPassword.AddIcon(eyeOn, NControls.IconPosition.Right, 20, 20, true,
-                (t) => UIUtility.TogglePasswordVisibility(t, eyeOn, eyeOff));
+            txtPassword.RightIconClick += (s, e) =>
+            {
+                txtPassword.UseSystemPasswordChar = !txtPassword.UseSystemPasswordChar;
+                txtPassword.RightIcon = txtPassword.UseSystemPasswordChar
+                    ? Resources.visibilityOff
+                    : Resources.visibilityOn;
+            };
         }
 
         private void CheckTextBoxsAreNotEmpty()
         {
             if (_lockoutSecondsRemaining > 0) return;
-            btnLogin.Enabled = txtUserName.Text.Length > 0 && txtPassword.Text.Length > 0;
+            btnLogin.Enabled = txtUserName.Text.Trim().Length > 0 && txtPassword.Text.Length > 0;
         }
 
         private void HandleFailedAttempt(int maxAttempts)
@@ -122,7 +135,7 @@ namespace DVLD.PL.Login
             {
                 lblAttemptMessage.Visible = true;
                 lblAttemptsCounter.Visible = false;
-                lblAttemptMessage.Text = $"Invalid username or password. Attempts left: {maxAttempts - _failedAttempts}";
+                lblAttemptMessage.Text = $"Invalid credentials. Attempts left: {maxAttempts - _failedAttempts}";
                 txtUserName.Focus();
             }
         }
@@ -138,6 +151,8 @@ namespace DVLD.PL.Login
 
             lblAttemptMessage.Text = "Too many failed attempts. System locked.";
             lblAttemptsCounter.Text = $"Please wait {_lockoutSecondsRemaining} seconds...";
+
+            UITheme.ShowWarningToast("Too many failed attempts. System access temporarily locked.", "Security Notice");
 
             _lockoutTimer?.Start();
         }
@@ -171,12 +186,12 @@ namespace DVLD.PL.Login
 
             try
             {
-                OperationResult<bool> loginResults = await _userService.AuthenticateUserAsync(txtUserName.Text, txtPassword.Text);
+                OperationResult<bool> loginResults = await _userService.AuthenticateUserAsync(txtUserName.Text.Trim(), txtPassword.Text);
 
                 if (loginResults.IsSuccess)
                 {
                     _failedAttempts = 0;
-                    var user = await _userService.GetByUserNameAsync(txtUserName.Text);
+                    var user = await _userService.GetByUserNameAsync(txtUserName.Text.Trim());
                     CurrentUser = user.Data;
 
                     lblAttemptMessage.Visible = false;
@@ -208,7 +223,7 @@ namespace DVLD.PL.Login
         {
             if (chkRememberMe.Checked)
             {
-                HandleConfigurationFile.SetKeyAndValue("RememberedUserName", txtUserName.Text);
+                HandleConfigurationFile.SetKeyAndValue("RememberedUserName", txtUserName.Text.Trim());
                 HandleConfigurationFile.SetKeyAndValue("RememberedPassword", txtPassword.Text);
             }
             else
@@ -230,7 +245,7 @@ namespace DVLD.PL.Login
 
         private void lnkForgotPassword_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            using frmForgetPassword resetPasswordScreen = new frmForgetPassword(txtUserName.Text);
+            using frmForgetPassword resetPasswordScreen = new frmForgetPassword(txtUserName.Text.Trim());
             resetPasswordScreen.OnPasswordChange = (username, newPassword) =>
             {
                 txtUserName.Text = username;

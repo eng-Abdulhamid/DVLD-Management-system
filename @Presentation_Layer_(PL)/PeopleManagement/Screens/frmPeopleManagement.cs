@@ -267,7 +267,6 @@ namespace DVLD.PL.PeopleManagement
             try
             {
                 await ctrlPeopleSearch1.PerformSearchAsync();
-                UITheme.ShowSuccessToast("People records reloaded successfully.");
             }
             finally
             {
@@ -318,25 +317,14 @@ namespace DVLD.PL.PeopleManagement
         private void InitializeRowContextMenu()
         {
             cmsRowActions.Items.Clear();
-            cmsRowActions.RenderMode = ToolStripRenderMode.System;
 
-            var itemDetails = new ToolStripMenuItem("Show Details", Properties.Resources.details, (s, e) => OpenViewPersonCardDialog())
-            {
-                Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold)
-            };
+            cmsRowActions.Items.Add("Show Details", Properties.Resources.details, (s, e) => OpenViewPersonCardDialog());
 
-            var itemEdit = new ToolStripMenuItem("Edit Person", Properties.Resources.edit_person, (s, e) => OpenUpdateSelectedPersonDialog());
-            var itemDelete = new ToolStripMenuItem("Delete Person", Properties.Resources.bin, (s, e) => OpenDeleteSelectedPersonDialog());
-            var itemAdd = new ToolStripMenuItem("Add New Person", Properties.Resources.add_person, (s, e) => OpenAddNewPersonDialog());
-            var itemRefresh = new ToolStripMenuItem("Refresh", Properties.Resources.refresh, async (s, e) => await HandleManualRefreshAsync());
+            cmsRowActions.Items.Add("Edit Person", Properties.Resources.edit_person, (s, e) => OpenUpdateSelectedPersonDialog());
+            cmsRowActions.Items.Add("Delete Person", Properties.Resources.bin, (s, e) => OpenDeleteSelectedPersonDialog());
 
-            cmsRowActions.Items.Add(itemDetails);
-            cmsRowActions.Items.Add(new ToolStripSeparator());
-            cmsRowActions.Items.Add(itemEdit);
-            cmsRowActions.Items.Add(itemDelete);
-            cmsRowActions.Items.Add(new ToolStripSeparator());
-            cmsRowActions.Items.Add(itemAdd);
-            cmsRowActions.Items.Add(itemRefresh);
+            cmsRowActions.Items.Add("Add New Person", Properties.Resources.add_person, (s, e) => OpenAddNewPersonDialog());
+            cmsRowActions.Items.Add("Refresh", Properties.Resources.refresh, async (s, e) => await HandleManualRefreshAsync());
         }
 
         private void DgvResults_MouseDown(object? sender, MouseEventArgs e)
@@ -550,6 +538,11 @@ namespace DVLD.PL.PeopleManagement
         {
             using frmPeopleManagementSettings frm = new frmPeopleManagementSettings();
             frm.ShowDialog();
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

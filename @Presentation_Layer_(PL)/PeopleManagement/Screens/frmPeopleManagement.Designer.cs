@@ -23,7 +23,6 @@ namespace DVLD.PL.PeopleManagement
         private ModernUI.Controls.NButton btnNextPage;
         private NControls.NDataGrid dgvResults;
         private ContextMenuStrip cmsColumns;
-        private ContextMenuStrip cmsRowActions;
 
         private Panel pnlEmptyState;
         private Label lblEmptyIcon;
@@ -45,13 +44,13 @@ namespace DVLD.PL.PeopleManagement
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             pnlMain = new Panel();
+            pnlLoadingOverlay = new Panel();
+            btnLoadingSpinner = new ModernUI.Controls.NButton();
             pnlEmptyState = new Panel();
             btnClearFilter = new ModernUI.Controls.NButton();
             lblEmptyDesc = new Label();
             lblEmptyTitle = new Label();
             lblEmptyIcon = new Label();
-            pnlLoadingOverlay = new Panel();
-            btnLoadingSpinner = new ModernUI.Controls.NButton();
             dgvResults = new NControls.NDataGrid();
             pnlTopBar = new Panel();
             pnlPagination = new Panel();
@@ -70,8 +69,8 @@ namespace DVLD.PL.PeopleManagement
             cmsColumns = new ContextMenuStrip(components);
             cmsRowActions = new ContextMenuStrip(components);
             pnlMain.SuspendLayout();
-            pnlEmptyState.SuspendLayout();
             pnlLoadingOverlay.SuspendLayout();
+            pnlEmptyState.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvResults).BeginInit();
             pnlTopBar.SuspendLayout();
             pnlPagination.SuspendLayout();
@@ -87,14 +86,71 @@ namespace DVLD.PL.PeopleManagement
             // 
             pnlMain.BackColor = Color.FromArgb(248, 250, 252);
             pnlMain.Controls.Add(pnlLoadingOverlay);
+            pnlMain.Controls.Add(pnlEmptyState);
             pnlMain.Controls.Add(dgvResults);
             pnlMain.Controls.Add(pnlTopBar);
-            pnlMain.Controls.Add(pnlEmptyState);
             pnlMain.Dock = DockStyle.Fill;
             pnlMain.Location = new Point(2, 2);
             pnlMain.Name = "pnlMain";
             pnlMain.Size = new Size(1116, 716);
             pnlMain.TabIndex = 0;
+            // 
+            // pnlLoadingOverlay
+            // 
+            pnlLoadingOverlay.BackColor = Color.Transparent;
+            pnlLoadingOverlay.Controls.Add(btnLoadingSpinner);
+            pnlLoadingOverlay.Location = new Point(528, 340);
+            pnlLoadingOverlay.Name = "pnlLoadingOverlay";
+            pnlLoadingOverlay.Size = new Size(60, 60);
+            pnlLoadingOverlay.TabIndex = 3;
+            pnlLoadingOverlay.Visible = false;
+            // 
+            // btnLoadingSpinner
+            // 
+            btnLoadingSpinner.BackColor = Color.Transparent;
+            btnLoadingSpinner.BackgroundEndColor = Color.White;
+            btnLoadingSpinner.BackgroundStartColor = Color.White;
+            btnLoadingSpinner.BorderColor = Color.FromArgb(226, 232, 240);
+            btnLoadingSpinner.BorderRadius = 30;
+            btnLoadingSpinner.BorderSize = 1;
+            btnLoadingSpinner.CenterIconWithText = false;
+            btnLoadingSpinner.Dock = DockStyle.Fill;
+            btnLoadingSpinner.EnableHoverAnimation = false;
+            btnLoadingSpinner.EnableIconTinting = false;
+            btnLoadingSpinner.EnableRippleEffect = false;
+            btnLoadingSpinner.EnableShadow = true;
+            btnLoadingSpinner.Font = new Font("Segoe UI", 9F);
+            btnLoadingSpinner.ForeColor = Color.FromArgb(124, 58, 237);
+            btnLoadingSpinner.GradientAngle = 90F;
+            btnLoadingSpinner.HoverAnimationSpeed = 20;
+            btnLoadingSpinner.HoverBorderColor = Color.FromArgb(226, 232, 240);
+            btnLoadingSpinner.HoverEndColor = Color.White;
+            btnLoadingSpinner.HoverIconColor = Color.White;
+            btnLoadingSpinner.HoverStartColor = Color.White;
+            btnLoadingSpinner.HoverTextColor = Color.FromArgb(124, 58, 237);
+            btnLoadingSpinner.IconColor = Color.White;
+            btnLoadingSpinner.IconMargin = 10;
+            btnLoadingSpinner.IconOffset = new Point(0, 0);
+            btnLoadingSpinner.IconSize = new Size(16, 16);
+            btnLoadingSpinner.IconSpacing = 5;
+            btnLoadingSpinner.IsLoading = true;
+            btnLoadingSpinner.LeftIcon = null;
+            btnLoadingSpinner.Location = new Point(0, 0);
+            btnLoadingSpinner.MiddleIcon = null;
+            btnLoadingSpinner.Name = "btnLoadingSpinner";
+            btnLoadingSpinner.PressedEndColor = Color.FromArgb(204, 228, 247);
+            btnLoadingSpinner.PressedStartColor = Color.FromArgb(204, 228, 247);
+            btnLoadingSpinner.RightIcon = null;
+            btnLoadingSpinner.RippleColor = Color.Transparent;
+            btnLoadingSpinner.RippleSpeed = 15;
+            btnLoadingSpinner.ShadowColor = Color.FromArgb(40, 15, 23, 42);
+            btnLoadingSpinner.ShadowOffset = new Point(0, 3);
+            btnLoadingSpinner.ShadowSize = 5;
+            btnLoadingSpinner.ShiftOnPress = false;
+            btnLoadingSpinner.Size = new Size(60, 60);
+            btnLoadingSpinner.TabIndex = 0;
+            btnLoadingSpinner.TextColor = Color.FromArgb(124, 58, 237);
+            btnLoadingSpinner.TextOffset = new Point(0, 0);
             // 
             // pnlEmptyState
             // 
@@ -123,7 +179,7 @@ namespace DVLD.PL.PeopleManagement
             btnClearFilter.EnableIconTinting = false;
             btnClearFilter.EnableRippleEffect = false;
             btnClearFilter.EnableShadow = false;
-            btnClearFilter.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnClearFilter.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
             btnClearFilter.ForeColor = SystemColors.ControlText;
             btnClearFilter.GradientAngle = 90F;
             btnClearFilter.HoverAnimationSpeed = 20;
@@ -189,63 +245,6 @@ namespace DVLD.PL.PeopleManagement
             lblEmptyIcon.TabIndex = 0;
             lblEmptyIcon.Text = "🔍";
             lblEmptyIcon.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // pnlLoadingOverlay
-            // 
-            pnlLoadingOverlay.BackColor = Color.FromArgb(180, 255, 255, 255);
-            pnlLoadingOverlay.Controls.Add(btnLoadingSpinner);
-            pnlLoadingOverlay.Location = new Point(340, 260);
-            pnlLoadingOverlay.Name = "pnlLoadingOverlay";
-            pnlLoadingOverlay.Size = new Size(420, 160);
-            pnlLoadingOverlay.TabIndex = 3;
-            pnlLoadingOverlay.Visible = false;
-            // 
-            // btnLoadingSpinner
-            // 
-            btnLoadingSpinner.BackColor = Color.Transparent;
-            btnLoadingSpinner.BackgroundEndColor = Color.Transparent;
-            btnLoadingSpinner.BackgroundStartColor = Color.Transparent;
-            btnLoadingSpinner.BorderColor = Color.Transparent;
-            btnLoadingSpinner.BorderRadius = 0;
-            btnLoadingSpinner.BorderSize = 0;
-            btnLoadingSpinner.CenterIconWithText = false;
-            btnLoadingSpinner.Dock = DockStyle.Fill;
-            btnLoadingSpinner.EnableHoverAnimation = false;
-            btnLoadingSpinner.EnableIconTinting = false;
-            btnLoadingSpinner.EnableRippleEffect = false;
-            btnLoadingSpinner.EnableShadow = false;
-            btnLoadingSpinner.Font = new Font("Segoe UI Semibold", 10.5F, FontStyle.Bold);
-            btnLoadingSpinner.ForeColor = Color.Transparent;
-            btnLoadingSpinner.GradientAngle = 90F;
-            btnLoadingSpinner.HoverAnimationSpeed = 20;
-            btnLoadingSpinner.HoverBorderColor = Color.Transparent;
-            btnLoadingSpinner.HoverEndColor = Color.Transparent;
-            btnLoadingSpinner.HoverIconColor = Color.White;
-            btnLoadingSpinner.HoverStartColor = Color.Transparent;
-            btnLoadingSpinner.HoverTextColor = Color.Transparent;
-            btnLoadingSpinner.IconColor = Color.White;
-            btnLoadingSpinner.IconMargin = 10;
-            btnLoadingSpinner.IconOffset = new Point(0, 0);
-            btnLoadingSpinner.IconSize = new Size(16, 16);
-            btnLoadingSpinner.IconSpacing = 5;
-            btnLoadingSpinner.IsLoading = true;
-            btnLoadingSpinner.LeftIcon = null;
-            btnLoadingSpinner.Location = new Point(0, 0);
-            btnLoadingSpinner.MiddleIcon = null;
-            btnLoadingSpinner.Name = "btnLoadingSpinner";
-            btnLoadingSpinner.PressedEndColor = Color.Transparent;
-            btnLoadingSpinner.PressedStartColor = Color.Transparent;
-            btnLoadingSpinner.RightIcon = null;
-            btnLoadingSpinner.RippleColor = Color.FromArgb(70, 0, 0, 0);
-            btnLoadingSpinner.RippleSpeed = 15;
-            btnLoadingSpinner.ShadowColor = Color.FromArgb(60, 0, 0, 0);
-            btnLoadingSpinner.ShadowOffset = new Point(1, 1);
-            btnLoadingSpinner.ShadowSize = 3;
-            btnLoadingSpinner.ShiftOnPress = false;
-            btnLoadingSpinner.Size = new Size(420, 160);
-            btnLoadingSpinner.TabIndex = 0;
-            btnLoadingSpinner.TextColor = SystemColors.ControlText;
-            btnLoadingSpinner.TextOffset = new Point(0, 0);
             // 
             // dgvResults
             // 
@@ -333,13 +332,13 @@ namespace DVLD.PL.PeopleManagement
             btnPrevPage.ForeColor = SystemColors.ControlText;
             btnPrevPage.GradientAngle = 90F;
             btnPrevPage.HoverAnimationSpeed = 20;
-            btnPrevPage.HoverBorderColor = Color.FromArgb(0, 120, 215);
-            btnPrevPage.HoverEndColor = Color.FromArgb(229, 241, 251);
-            btnPrevPage.HoverIconColor = Color.White;
-            btnPrevPage.HoverStartColor = Color.FromArgb(229, 241, 251);
+            btnPrevPage.HoverBorderColor = Color.WhiteSmoke;
+            btnPrevPage.HoverEndColor = Color.WhiteSmoke;
+            btnPrevPage.HoverIconColor = Color.DarkGray;
+            btnPrevPage.HoverStartColor = Color.WhiteSmoke;
             btnPrevPage.HoverTextColor = SystemColors.ControlText;
-            btnPrevPage.IconColor = Color.White;
-            btnPrevPage.IconMargin = 10;
+            btnPrevPage.IconColor = Color.Black;
+            btnPrevPage.IconMargin = 0;
             btnPrevPage.IconOffset = new Point(0, 0);
             btnPrevPage.IconSize = new Size(16, 16);
             btnPrevPage.IconSpacing = 5;
@@ -348,8 +347,8 @@ namespace DVLD.PL.PeopleManagement
             btnPrevPage.Location = new Point(269, 3);
             btnPrevPage.MiddleIcon = Properties.Resources.back;
             btnPrevPage.Name = "btnPrevPage";
-            btnPrevPage.PressedEndColor = Color.FromArgb(204, 228, 247);
-            btnPrevPage.PressedStartColor = Color.FromArgb(204, 228, 247);
+            btnPrevPage.PressedEndColor = Color.WhiteSmoke;
+            btnPrevPage.PressedStartColor = Color.WhiteSmoke;
             btnPrevPage.RightIcon = null;
             btnPrevPage.RippleColor = Color.FromArgb(70, 0, 0, 0);
             btnPrevPage.RippleSpeed = 15;
@@ -380,13 +379,13 @@ namespace DVLD.PL.PeopleManagement
             btnNextPage.ForeColor = SystemColors.ControlText;
             btnNextPage.GradientAngle = 90F;
             btnNextPage.HoverAnimationSpeed = 20;
-            btnNextPage.HoverBorderColor = Color.FromArgb(0, 120, 215);
-            btnNextPage.HoverEndColor = Color.FromArgb(229, 241, 251);
-            btnNextPage.HoverIconColor = Color.White;
-            btnNextPage.HoverStartColor = Color.FromArgb(229, 241, 251);
+            btnNextPage.HoverBorderColor = Color.WhiteSmoke;
+            btnNextPage.HoverEndColor = Color.WhiteSmoke;
+            btnNextPage.HoverIconColor = Color.DarkGray;
+            btnNextPage.HoverStartColor = Color.WhiteSmoke;
             btnNextPage.HoverTextColor = SystemColors.ControlText;
-            btnNextPage.IconColor = Color.White;
-            btnNextPage.IconMargin = 10;
+            btnNextPage.IconColor = Color.Black;
+            btnNextPage.IconMargin = 0;
             btnNextPage.IconOffset = new Point(0, 0);
             btnNextPage.IconSize = new Size(16, 16);
             btnNextPage.IconSpacing = 5;
@@ -395,8 +394,8 @@ namespace DVLD.PL.PeopleManagement
             btnNextPage.Location = new Point(313, 3);
             btnNextPage.MiddleIcon = Properties.Resources.forward;
             btnNextPage.Name = "btnNextPage";
-            btnNextPage.PressedEndColor = Color.FromArgb(204, 228, 247);
-            btnNextPage.PressedStartColor = Color.FromArgb(204, 228, 247);
+            btnNextPage.PressedEndColor = Color.WhiteSmoke;
+            btnNextPage.PressedStartColor = Color.WhiteSmoke;
             btnNextPage.RightIcon = null;
             btnNextPage.RippleColor = Color.FromArgb(70, 0, 0, 0);
             btnNextPage.RippleSpeed = 15;
@@ -469,7 +468,7 @@ namespace DVLD.PL.PeopleManagement
             btnAddNewPerson.EnableIconTinting = false;
             btnAddNewPerson.EnableRippleEffect = false;
             btnAddNewPerson.EnableShadow = false;
-            btnAddNewPerson.Font = new Font("Segoe UI", 9F);
+            btnAddNewPerson.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             btnAddNewPerson.ForeColor = SystemColors.ControlText;
             btnAddNewPerson.GradientAngle = 90F;
             btnAddNewPerson.HoverAnimationSpeed = 20;
@@ -481,7 +480,7 @@ namespace DVLD.PL.PeopleManagement
             btnAddNewPerson.IconColor = Color.White;
             btnAddNewPerson.IconMargin = 10;
             btnAddNewPerson.IconOffset = new Point(0, 0);
-            btnAddNewPerson.IconSize = new Size(24, 24);
+            btnAddNewPerson.IconSize = new Size(20, 20);
             btnAddNewPerson.IconSpacing = 5;
             btnAddNewPerson.IsLoading = false;
             btnAddNewPerson.LeftIcon = null;
@@ -528,7 +527,7 @@ namespace DVLD.PL.PeopleManagement
             btnUpdate.IconColor = Color.White;
             btnUpdate.IconMargin = 10;
             btnUpdate.IconOffset = new Point(0, 0);
-            btnUpdate.IconSize = new Size(24, 24);
+            btnUpdate.IconSize = new Size(20, 20);
             btnUpdate.IconSpacing = 5;
             btnUpdate.IsLoading = false;
             btnUpdate.LeftIcon = null;
@@ -575,7 +574,7 @@ namespace DVLD.PL.PeopleManagement
             btnDelete.IconColor = Color.White;
             btnDelete.IconMargin = 10;
             btnDelete.IconOffset = new Point(0, 0);
-            btnDelete.IconSize = new Size(24, 24);
+            btnDelete.IconSize = new Size(20, 20);
             btnDelete.IconSpacing = 5;
             btnDelete.IsLoading = false;
             btnDelete.LeftIcon = null;
@@ -622,7 +621,7 @@ namespace DVLD.PL.PeopleManagement
             btnRefresh.IconColor = Color.White;
             btnRefresh.IconMargin = 10;
             btnRefresh.IconOffset = new Point(0, 0);
-            btnRefresh.IconSize = new Size(24, 24);
+            btnRefresh.IconSize = new Size(20, 20);
             btnRefresh.IconSpacing = 5;
             btnRefresh.IsLoading = false;
             btnRefresh.LeftIcon = null;
@@ -642,6 +641,7 @@ namespace DVLD.PL.PeopleManagement
             btnRefresh.TabIndex = 3;
             btnRefresh.TextColor = SystemColors.ControlText;
             btnRefresh.TextOffset = new Point(0, 0);
+            btnRefresh.Click += btnRefresh_Click;
             // 
             // btnSettings
             // 
@@ -669,7 +669,7 @@ namespace DVLD.PL.PeopleManagement
             btnSettings.IconColor = Color.White;
             btnSettings.IconMargin = 10;
             btnSettings.IconOffset = new Point(0, 0);
-            btnSettings.IconSize = new Size(24, 24);
+            btnSettings.IconSize = new Size(20, 20);
             btnSettings.IconSpacing = 5;
             btnSettings.IsLoading = false;
             btnSettings.LeftIcon = null;
@@ -725,8 +725,8 @@ namespace DVLD.PL.PeopleManagement
             Controls.SetChildIndex(pnlMain, 0);
             Controls.SetChildIndex(headerControl, 0);
             pnlMain.ResumeLayout(false);
-            pnlEmptyState.ResumeLayout(false);
             pnlLoadingOverlay.ResumeLayout(false);
+            pnlEmptyState.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvResults).EndInit();
             pnlTopBar.ResumeLayout(false);
             pnlPagination.ResumeLayout(false);
@@ -734,5 +734,7 @@ namespace DVLD.PL.PeopleManagement
             panel1.ResumeLayout(false);
             ResumeLayout(false);
         }
+
+        private ContextMenuStrip cmsRowActions;
     }
 }

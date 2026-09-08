@@ -9,6 +9,7 @@ namespace DVLD.PL.PeopleManagement
         {
             InitializeComponent();
 
+            this.ApplyStandardFormTheme();
             this.AllowMaximize = false;
             this.AllowMinimize = false;
             this.AllowResize = false;
@@ -21,7 +22,7 @@ namespace DVLD.PL.PeopleManagement
             btnCancel.Click += (s, e) => this.Close();
             btnSave.Click += (s, e) =>
             {
-                MessageBox.Show("Settings saved successfully.", "Preferences", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                UITheme.ShowSuccessToast("Settings saved successfully.", "Preferences");
                 this.Close();
             };
         }

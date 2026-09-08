@@ -36,7 +36,7 @@ namespace DVLD.PL.PeopleManagement
             // ctrlPersonCard1
             // 
             ctrlPersonCard1.BackColor = Color.White;
-            ctrlPersonCard1.Location = new Point(25, 55);
+            ctrlPersonCard1.Location = new Point(22, 54);
             ctrlPersonCard1.Name = "ctrlPersonCard1";
             ctrlPersonCard1.Size = new Size(780, 260);
             ctrlPersonCard1.TabIndex = 0;
@@ -65,13 +65,13 @@ namespace DVLD.PL.PeopleManagement
             btnEdit.HoverStartColor = Color.FromArgb(229, 241, 251);
             btnEdit.HoverTextColor = SystemColors.ControlText;
             btnEdit.IconColor = Color.White;
-            btnEdit.IconMargin = 6;
+            btnEdit.IconMargin = 10;
             btnEdit.IconOffset = new Point(0, 0);
-            btnEdit.IconSize = new Size(26, 26);
-            btnEdit.IconSpacing = 6;
+            btnEdit.IconSize = new Size(20, 20);
+            btnEdit.IconSpacing = 5;
             btnEdit.IsLoading = false;
             btnEdit.LeftIcon = null;
-            btnEdit.Location = new Point(705, 55);
+            btnEdit.Location = new Point(712, 54);
             btnEdit.MiddleIcon = Properties.Resources.edit_person;
             btnEdit.Name = "btnEdit";
             btnEdit.PressedEndColor = Color.FromArgb(204, 228, 247);
@@ -83,7 +83,7 @@ namespace DVLD.PL.PeopleManagement
             btnEdit.ShadowOffset = new Point(1, 1);
             btnEdit.ShadowSize = 3;
             btnEdit.ShiftOnPress = false;
-            btnEdit.Size = new Size(47, 38);
+            btnEdit.Size = new Size(42, 38);
             btnEdit.TabIndex = 1;
             btnEdit.TextColor = SystemColors.ControlText;
             btnEdit.TextOffset = new Point(0, 0);
@@ -112,13 +112,13 @@ namespace DVLD.PL.PeopleManagement
             btnDelete.HoverStartColor = Color.FromArgb(229, 241, 251);
             btnDelete.HoverTextColor = SystemColors.ControlText;
             btnDelete.IconColor = Color.White;
-            btnDelete.IconMargin = 6;
+            btnDelete.IconMargin = 10;
             btnDelete.IconOffset = new Point(0, 0);
-            btnDelete.IconSize = new Size(26, 26);
-            btnDelete.IconSpacing = 6;
+            btnDelete.IconSize = new Size(20, 20);
+            btnDelete.IconSpacing = 5;
             btnDelete.IsLoading = false;
             btnDelete.LeftIcon = null;
-            btnDelete.Location = new Point(758, 55);
+            btnDelete.Location = new Point(760, 54);
             btnDelete.MiddleIcon = Properties.Resources.bin;
             btnDelete.Name = "btnDelete";
             btnDelete.PressedEndColor = Color.FromArgb(204, 228, 247);
@@ -130,7 +130,7 @@ namespace DVLD.PL.PeopleManagement
             btnDelete.ShadowOffset = new Point(1, 1);
             btnDelete.ShadowSize = 3;
             btnDelete.ShiftOnPress = false;
-            btnDelete.Size = new Size(47, 38);
+            btnDelete.Size = new Size(42, 38);
             btnDelete.TabIndex = 2;
             btnDelete.TextColor = SystemColors.ControlText;
             btnDelete.TextOffset = new Point(0, 0);
@@ -143,11 +143,11 @@ namespace DVLD.PL.PeopleManagement
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(830, 333);
+            ClientSize = new Size(830, 335);
             Controls.Add(btnDelete);
             Controls.Add(btnEdit);
             Controls.Add(ctrlPersonCard1);
-            MinimumSize = new Size(830, 333);
+            MinimumSize = new Size(830, 335);
             Name = "frmPersonCard";
             Text = "DVLD / People Management / Person Details";
             Load += frmPersonCard_Load;

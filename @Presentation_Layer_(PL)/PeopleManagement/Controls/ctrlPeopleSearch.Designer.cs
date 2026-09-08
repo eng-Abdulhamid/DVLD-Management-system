@@ -1,8 +1,18 @@
-﻿namespace DVLD.PL.PeopleManagement
+﻿using System.Drawing;
+using System.Windows.Forms;
+
+namespace DVLD.PL.PeopleManagement
 {
     partial class ctrlPeopleSearch
     {
         private System.ComponentModel.IContainer components = null;
+        private Label label2;
+        private ComboBox cbFilterBy;
+        private ComboBox cbSearchByLetter;
+        private ComboBox cbByGendor;
+        private Label label1;
+        private NControls.NTextBox txtSearch;
+        private Label label4;
 
         protected override void Dispose(bool disposing)
         {
@@ -29,7 +39,7 @@
             label2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            label2.ForeColor = Color.Black;
+            label2.ForeColor = Color.FromArgb(71, 85, 105);
             label2.Location = new Point(443, 23);
             label2.Margin = new Padding(4, 0, 4, 0);
             label2.Name = "label2";
@@ -84,7 +94,7 @@
             label1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            label1.ForeColor = Color.Black;
+            label1.ForeColor = Color.FromArgb(71, 85, 105);
             label1.Location = new Point(360, 23);
             label1.Margin = new Padding(4, 0, 4, 0);
             label1.Name = "label1";
@@ -100,31 +110,40 @@
             txtSearch.AllowSpaces = true;
             txtSearch.AllowSymbols = true;
             txtSearch.BackColor = Color.Transparent;
-            txtSearch.BorderColor = Color.WhiteSmoke;
-            txtSearch.BorderFocusColor = SystemColors.ActiveCaption;
-            txtSearch.BorderRadius = 30;
+            txtSearch.BorderColor = Color.FromArgb(226, 232, 240);
+            txtSearch.BorderFocusColor = Color.FromArgb(124, 58, 237);
+            txtSearch.BorderRadius = 8;
             txtSearch.BorderSize = 1;
             txtSearch.Cursor = Cursors.IBeam;
             txtSearch.CustomAllowedCharacters = "";
+            txtSearch.EnableIconTinting = true;
             txtSearch.EnableSuggest = true;
             txtSearch.ErrorBorderColor = Color.FromArgb(239, 68, 68);
             txtSearch.FillColor = Color.White;
-            txtSearch.Font = new Font("Segoe UI", 11F);
+            txtSearch.Font = new Font("Segoe UI", 10F);
+            txtSearch.ForeColor = Color.FromArgb(15, 23, 42);
             txtSearch.HasError = false;
+            txtSearch.HoverIconColor = Color.FromArgb(148, 163, 184);
+            txtSearch.IconColor = Color.FromArgb(15, 23, 42);
             txtSearch.IconOffsetLeft = 10;
             txtSearch.IconOffsetRight = 10;
-            txtSearch.IconSpacing = 0;
-            txtSearch.Location = new Point(15, 16);
+            txtSearch.IconSize = new Size(26, 26);
+            txtSearch.IconSpacing = 10;
+            txtSearch.LeftIcon = Properties.Resources.search;
+            txtSearch.LeftIconClickable = false;
+            txtSearch.Location = new Point(15, 25);
             txtSearch.Margin = new Padding(4, 3, 4, 3);
-            txtSearch.MaxLength = 32767;
-            txtSearch.MaxSuggestItems = 4;
+            txtSearch.MaxLength = 50;
+            txtSearch.MaxSuggestItems = 6;
             txtSearch.MoveToNextControlOnEnter = true;
             txtSearch.Name = "txtSearch";
-            txtSearch.Padding = new Padding(9, 14, 9, 14);
-            txtSearch.PlaceholderColor = Color.DarkGray;
+            txtSearch.Padding = new Padding(9, 12, 9, 12);
+            txtSearch.PlaceholderColor = Color.FromArgb(148, 163, 184);
             txtSearch.PlaceholderText = "";
+            txtSearch.RightIcon = null;
+            txtSearch.RightIconClickable = false;
             txtSearch.ShowClearButton = true;
-            txtSearch.Size = new Size(331, 53);
+            txtSearch.Size = new Size(331, 44);
             txtSearch.SuggestIcon = null;
             txtSearch.TabIndex = 35;
             txtSearch.UseSystemPasswordChar = false;
@@ -137,7 +156,7 @@
             label4.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             label4.AutoSize = true;
             label4.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            label4.ForeColor = Color.Black;
+            label4.ForeColor = Color.FromArgb(71, 85, 105);
             label4.Location = new Point(602, 23);
             label4.Margin = new Padding(4, 0, 4, 0);
             label4.Name = "label4";
@@ -164,13 +183,5 @@
             ResumeLayout(false);
             PerformLayout();
         }
-
-        private Label label2;
-        private ComboBox cbFilterBy;
-        private ComboBox cbSearchByLetter;
-        private ComboBox cbByGendor;
-        private Label label1;
-        private NControls.NTextBox txtSearch;
-        private Label label4;
     }
 }

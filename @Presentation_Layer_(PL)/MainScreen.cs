@@ -14,7 +14,7 @@ namespace DVLD.PL
             InitializeComponent();
             this.Text = "DVLD/Home";
 
-            btnPeopleManagement.ApplyNavStyle();
+            btnPeopleManagement.ApplyPrimaryStyle();
             SetupToolTips();
         }
 

@@ -21,7 +21,7 @@ namespace DVLD.PL.PeopleManagement
         private int _personId;
         private readonly PersonService _personService;
         private PersonReadDTO? _existingPerson;
-        private ToolTip _toolTips;
+        private ToolTip? _toolTips;
 
         public event Action<int>? PersonSaved;
 
@@ -29,6 +29,7 @@ namespace DVLD.PL.PeopleManagement
         {
             InitializeComponent();
 
+            this.ApplyStandardFormTheme();
             this.AllowMaximize = false;
             this.AllowResize = false;
 
@@ -120,7 +121,7 @@ namespace DVLD.PL.PeopleManagement
 
             if (!result.IsSuccess || result.Data == null)
             {
-                MessageBox.Show("Failed to load person data.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                UITheme.ShowErrorToast("Failed to load person data.");
                 this.Close();
                 return;
             }
@@ -269,13 +270,13 @@ namespace DVLD.PL.PeopleManagement
 
                 if (result.IsSuccess && result.Data > 0)
                 {
-                    MessageBox.Show("Person added successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    UITheme.ShowSuccessToast("Person added successfully.");
                     PersonSaved?.Invoke(result.Data);
                     this.Close();
                 }
                 else
                 {
-                    MessageBox.Show(result.Message, "Save Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    UITheme.ShowWarningToast(result.Message, "Save Failed");
                 }
             }
             else
@@ -304,13 +305,13 @@ namespace DVLD.PL.PeopleManagement
 
                 if (result.IsSuccess)
                 {
-                    MessageBox.Show("Person updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    UITheme.ShowSuccessToast("Person updated successfully.");
                     PersonSaved?.Invoke(_personId);
                     this.Close();
                 }
                 else
                 {
-                    MessageBox.Show(result.Message, "Update Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    UITheme.ShowWarningToast(result.Message, "Update Failed");
                 }
             }
         }

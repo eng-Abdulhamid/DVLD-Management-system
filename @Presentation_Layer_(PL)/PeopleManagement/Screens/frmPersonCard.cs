@@ -20,8 +20,8 @@ namespace DVLD.PL.PeopleManagement
         {
             InitializeComponent();
 
+            this.ApplyStandardFormTheme();
             this.AllowMaximize = false;
-            this.AllowMinimize = false;
             this.AllowResize = false;
 
             _personId = personId;
@@ -48,8 +48,8 @@ namespace DVLD.PL.PeopleManagement
                 UseFading = true
             };
 
-            _toolTips.SetToolTip(btnEdit, "Open edit dialog for this person");
-            _toolTips.SetToolTip(btnDelete, "Permanently delete this person record");
+            _toolTips.SetToolTip(btnEdit, "Edit person details");
+            _toolTips.SetToolTip(btnDelete, "Delete person record");
         }
 
         private async void frmPersonCard_Load(object sender, EventArgs e)
@@ -58,7 +58,7 @@ namespace DVLD.PL.PeopleManagement
 
             if (_personId <= 0)
             {
-                MessageBox.Show("Invalid person identifier.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                UITheme.ShowErrorToast("Invalid person identifier.");
                 this.Close();
                 return;
             }

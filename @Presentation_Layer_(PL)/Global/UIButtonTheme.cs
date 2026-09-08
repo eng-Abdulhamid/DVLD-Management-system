@@ -7,10 +7,6 @@ namespace DVLD.PL.Global
 {
     public static class UITheme
     {
-        // ----------------------------------------------------
-        // Brand & Palette Constants
-        // ----------------------------------------------------
-
         public static readonly Color Primary = Color.FromArgb(124, 58, 237);
         public static readonly Color PrimaryHover = Color.FromArgb(135, 72, 240);
         public static readonly Color PrimaryPressed = Color.FromArgb(112, 48, 222);
@@ -40,18 +36,10 @@ namespace DVLD.PL.Global
         public static readonly Color TextMuted = Color.FromArgb(148, 163, 184);
         public static readonly Color SurfaceWhite = Color.White;
 
-        // ----------------------------------------------------
-        // Global Design & Sizing Tokens
-        // ----------------------------------------------------
-
         public static readonly Color FormBackgroundColor = Color.FromArgb(248, 250, 252);
         public static int DefaultBorderRadius { get; set; } = 8;
         public static bool EnableSystemAnimations { get; set; } = true;
         public static string SystemFontFamily { get; set; } = "Segoe UI";
-
-        // ----------------------------------------------------
-        // Global Icon Configurations
-        // ----------------------------------------------------
 
         public static Color IconDefaultColor { get; set; } = Color.FromArgb(100, 116, 139);
         public static Color IconHoverColor { get; set; } = Color.FromArgb(15, 23, 42);
@@ -60,11 +48,7 @@ namespace DVLD.PL.Global
         public static Color IconDangerColor { get; set; } = Color.FromArgb(239, 68, 68);
         public static Color IconSuccessColor { get; set; } = Color.FromArgb(16, 185, 129);
         public static Size IconStandardSize { get; set; } = new Size(18, 18);
-        public static Size IconActionSize { get; set; } = new Size(24, 24);
-
-        // ----------------------------------------------------
-        // Global Notification Preferences
-        // ----------------------------------------------------
+        public static Size IconActionSize { get; set; } = new Size(20, 20);
 
         public static bool NotificationsEnabled { get; set; } = true;
         public static bool NotificationPlaySound { get; set; } = false;
@@ -72,23 +56,10 @@ namespace DVLD.PL.Global
         public static int NotificationDefaultDuration { get; set; } = 4;
         public static NotificationPosition NotificationDefaultPosition { get; set; } = NotificationPosition.BottomRight;
 
-        public static Color NotificationSuccessAccent { get; set; } = Color.FromArgb(16, 137, 62);
-        public static Color NotificationErrorAccent { get; set; } = Color.FromArgb(196, 43, 28);
-        public static Color NotificationWarningAccent { get; set; } = Color.FromArgb(157, 93, 0);
-        public static Color NotificationInfoAccent { get; set; } = Color.FromArgb(0, 103, 192);
-
-        // ----------------------------------------------------
-        // Form Extensions
-        // ----------------------------------------------------
-
         public static void ApplyStandardFormTheme(this Form frm)
         {
             frm.BackColor = FormBackgroundColor;
         }
-
-        // ----------------------------------------------------
-        // Toast Notification Helpers
-        // ----------------------------------------------------
 
         public static void ShowSuccessToast(string message, string title = "Success")
         {
@@ -149,10 +120,6 @@ namespace DVLD.PL.Global
                 .WithSound(NotificationPlaySound)
                 .Show();
         }
-
-        // ----------------------------------------------------
-        // NButton Extensions
-        // ----------------------------------------------------
 
         public static void ApplyPrimaryStyle(this ModernUI.Controls.NButton btn)
         {
@@ -223,33 +190,6 @@ namespace DVLD.PL.Global
             btn.HoverIconColor = IconLightColor;
         }
 
-        public static void ApplyNavStyle(this ModernUI.Controls.NButton btn)
-        {
-            btn.BackgroundStartColor = Color.FromArgb(30, 41, 59);
-            btn.BackgroundEndColor = Color.FromArgb(30, 41, 59);
-            btn.BorderColor = Color.FromArgb(51, 65, 85);
-            btn.BorderRadius = DefaultBorderRadius;
-            btn.BorderSize = 1;
-            btn.HoverBorderColor = Primary;
-            btn.HoverStartColor = Primary;
-            btn.HoverEndColor = PrimaryHover;
-            btn.PressedStartColor = PrimaryPressed;
-            btn.PressedEndColor = PrimaryPressed;
-            btn.TextColor = SurfaceWhite;
-            btn.HoverTextColor = SurfaceWhite;
-            btn.Cursor = Cursors.Hand;
-            btn.EnableHoverAnimation = EnableSystemAnimations;
-            btn.EnableRippleEffect = EnableSystemAnimations;
-            btn.RippleColor = Color.FromArgb(40, 255, 255, 255);
-            btn.EnableIconTinting = true;
-            btn.IconColor = IconLightColor;
-            btn.HoverIconColor = IconLightColor;
-        }
-
-        // ----------------------------------------------------
-        // NTextBox Extensions
-        // ----------------------------------------------------
-
         public static void ApplyStandardStyle(this NControls.NTextBox txt)
         {
             txt.BorderRadius = DefaultBorderRadius;
@@ -266,10 +206,6 @@ namespace DVLD.PL.Global
             txt.IconColor = IconDefaultColor;
             txt.HoverIconColor = IconHoverColor;
         }
-
-        // ----------------------------------------------------
-        // ComboBox & CheckBox Extensions
-        // ----------------------------------------------------
 
         public static void ApplyStandardStyle(this ComboBox cb)
         {
@@ -291,10 +227,6 @@ namespace DVLD.PL.Global
             chk.Cursor = Cursors.Hand;
             chk.EnableAnimation = EnableSystemAnimations;
         }
-
-        // ----------------------------------------------------
-        // DataGridView Extensions
-        // ----------------------------------------------------
 
         public static void ApplyModernStyle(this DataGridView dgv)
         {

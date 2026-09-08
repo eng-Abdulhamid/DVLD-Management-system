@@ -6,6 +6,30 @@ namespace DVLD.PL.PeopleManagement
     partial class ctrlPersonCard
     {
         private System.ComponentModel.IContainer components = null;
+        private System.Windows.Forms.Panel pnlMain;
+        private System.Windows.Forms.PictureBox pbPersonImage;
+        private System.Windows.Forms.Label lblFullName;
+        private System.Windows.Forms.TableLayoutPanel tlpDetails;
+
+        private System.Windows.Forms.Label lblTitleID;
+        private System.Windows.Forms.Label lblPersonID;
+        private System.Windows.Forms.Label lblTitleNationalNo;
+        private System.Windows.Forms.Label lblNationalNo;
+
+        private System.Windows.Forms.Label lblTitleGender;
+        private System.Windows.Forms.Label lblGender;
+        private System.Windows.Forms.Label lblTitleDOB;
+        private System.Windows.Forms.Label lblDateOfBirth;
+
+        private System.Windows.Forms.Label lblTitlePhone;
+        private System.Windows.Forms.Label lblPhone;
+        private System.Windows.Forms.Label lblTitleEmail;
+        private System.Windows.Forms.Label lblEmail;
+
+        private System.Windows.Forms.Label lblTitleCountry;
+        private System.Windows.Forms.Label lblCountry;
+        private System.Windows.Forms.Label lblTitleAddress;
+        private System.Windows.Forms.Label lblAddress;
 
         protected override void Dispose(bool disposing)
         {
@@ -285,30 +309,5 @@ namespace DVLD.PL.PeopleManagement
             ((System.ComponentModel.ISupportInitialize)pbPersonImage).EndInit();
             ResumeLayout(false);
         }
-
-        private System.Windows.Forms.Panel pnlMain;
-        private System.Windows.Forms.PictureBox pbPersonImage;
-        private System.Windows.Forms.Label lblFullName;
-        private System.Windows.Forms.TableLayoutPanel tlpDetails;
-
-        private System.Windows.Forms.Label lblTitleID;
-        private System.Windows.Forms.Label lblPersonID;
-        private System.Windows.Forms.Label lblTitleNationalNo;
-        private System.Windows.Forms.Label lblNationalNo;
-
-        private System.Windows.Forms.Label lblTitleGender;
-        private System.Windows.Forms.Label lblGender;
-        private System.Windows.Forms.Label lblTitleDOB;
-        private System.Windows.Forms.Label lblDateOfBirth;
-
-        private System.Windows.Forms.Label lblTitlePhone;
-        private System.Windows.Forms.Label lblPhone;
-        private System.Windows.Forms.Label lblTitleEmail;
-        private System.Windows.Forms.Label lblEmail;
-
-        private System.Windows.Forms.Label lblTitleCountry;
-        private System.Windows.Forms.Label lblCountry;
-        private System.Windows.Forms.Label lblTitleAddress;
-        private System.Windows.Forms.Label lblAddress;
     }
 }
