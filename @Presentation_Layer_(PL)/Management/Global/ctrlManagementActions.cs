@@ -107,7 +107,6 @@ namespace DVLD.PL.Management
             set
             {
                 btnAddNew.Enabled = value;
-                ApplyButtonEnabledStyle(btnAddNew, value, isDanger: false);
             }
         }
 
@@ -122,7 +121,6 @@ namespace DVLD.PL.Management
             set
             {
                 btnUpdate.Enabled = value;
-                ApplyButtonEnabledStyle(btnUpdate, value, isDanger: false);
             }
         }
 
@@ -137,7 +135,6 @@ namespace DVLD.PL.Management
             set
             {
                 btnDelete.Enabled = value;
-                ApplyButtonEnabledStyle(btnDelete, value, isDanger: true);
             }
         }
 
@@ -152,7 +149,6 @@ namespace DVLD.PL.Management
             set
             {
                 btnRefresh.Enabled = value;
-                ApplyButtonEnabledStyle(btnRefresh, value, isDanger: false);
             }
         }
 
@@ -181,7 +177,7 @@ namespace DVLD.PL.Management
             btnAddNew.ApplySecondaryStyle();
             btnRefresh.ApplySecondaryStyle();
             btnUpdate.ApplySecondaryStyle();
-            btnDelete.ApplyDangerStyle();
+            btnDelete.ApplySecondaryStyle();
         }
 
         private void SetupToolTips()
@@ -204,29 +200,6 @@ namespace DVLD.PL.Management
             btnDelete.VisibleChanged += (s, e) => RearrangeButtons();
             btnRefresh.VisibleChanged += (s, e) => RearrangeButtons();
         }
-
-        private void ApplyButtonEnabledStyle(NButton btn, bool enabled, bool isDanger = false)
-        {
-            if (enabled)
-            {
-                if (isDanger)
-                    btn.ApplyDangerStyle();
-                else
-                    btn.ApplySecondaryStyle();
-            }
-            else
-            {
-                Color disabledBg = Color.FromArgb(241, 245, 249);
-                Color disabledText = Color.FromArgb(203, 213, 225);
-
-                btn.BackgroundStartColor = disabledBg;
-                btn.BackgroundEndColor = disabledBg;
-                btn.TextColor = disabledText;
-                btn.BorderColor = disabledText;
-                btn.IconColor = disabledText;
-            }
-        }
-
         public void RearrangeButtons()
         {
             this.SuspendLayout();

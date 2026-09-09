@@ -3,18 +3,36 @@ using DVLD.BLL.OperationResults;
 using DVLD.BLL.Services;
 using DVLD.PL.Global;
 using DVLD.PL.Management;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using static DVLD.PL.Global.UITheme;
+
 namespace DVLD.PL.PeopleManagement
 {
     public partial class frmPeopleManagement : frmBase
     {
+        public enum enMode
+        {
+            ManagePeople = 0,
+            SelectPerson = 1
+        }
+
+        private readonly enMode _mode;
         private readonly PersonService _personService = new PersonService();
         private readonly List<DataGridColumnDefinition> _columnDefinitions;
 
-        public frmPeopleManagement()
+        public event Action<int>? OnPersonSelected;
+        public int SelectedPersonID { get; private set; } = -1;
+
+        public frmPeopleManagement(enMode mode = enMode.ManagePeople)
         {
             InitializeComponent();
             this.ApplyStandardFormTheme();
+
+            _mode = mode;
 
             _columnDefinitions = new List<DataGridColumnDefinition>
             {
@@ -29,16 +47,60 @@ namespace DVLD.PL.PeopleManagement
             };
 
             ctrlManagementDataGrid1.InitializeColumns(_columnDefinitions);
+            ConfigureModeSettings();
             InitializeRowContextMenu();
             RegisterEvents();
-            ApplyStyles();
 
             CenterOverlays();
         }
 
-        private void ApplyStyles()
+        private void ConfigureModeSettings()
         {
-            btnSettings.ApplySecondaryStyle();
+            if (_mode == enMode.SelectPerson)
+            {
+                this.Text = "DVLD / Select Person";
+                headerControl.TitleText = "DVLD / Select Person";
+
+                ctrlManagementActions1.AddVisible = true;
+                ctrlManagementActions1.RefreshVisible = true;
+                ctrlManagementActions1.EditVisible = false;
+                ctrlManagementActions1.DeleteVisible = false;
+
+                btnSelect.Visible = true;
+                btnSelect.Location = new Point(ctrlManagementActions1.Right + 10, 92);
+
+                UpdateSelectButtonState(false);
+            }
+            else
+            {
+                this.Text = "DVLD / People Management";
+                headerControl.TitleText = "DVLD / People Management";
+
+                ctrlManagementActions1.AddVisible = true;
+                ctrlManagementActions1.RefreshVisible = true;
+                ctrlManagementActions1.EditVisible = true;
+                ctrlManagementActions1.DeleteVisible = true;
+
+                btnSelect.Visible = false;
+            }
+        }
+
+        private void UpdateSelectButtonState(bool hasSelection)
+        {
+            if (_mode != enMode.SelectPerson) return;
+
+            btnSelect.Enabled = hasSelection;
+
+            if (hasSelection)
+            {
+                btnSelect.ApplyPrimaryStyle();
+            }
+            else
+            {
+                btnSelect.ApplyDisabledStyle();
+            }
+
+            btnSelect.Update();
         }
 
         private void CenterOverlays()
@@ -58,7 +120,6 @@ namespace DVLD.PL.PeopleManagement
 
         private void RegisterEvents()
         {
-            // Search Control Events
             ctrlPeopleSearch1.OnSearchResultsReceived += PopulateDataGrid;
             ctrlPeopleSearch1.OnTotalCountReceived += (total) =>
             {
@@ -66,7 +127,6 @@ namespace DVLD.PL.PeopleManagement
                 ctrlPagination1.UpdateUI();
             };
 
-            // Pagination Events
             ctrlPagination1.OnPageChanged += async (s, e) =>
             {
                 ctrlPeopleSearch1.PageNumber = ctrlPagination1.CurrentPage;
@@ -80,24 +140,34 @@ namespace DVLD.PL.PeopleManagement
                 await ctrlPeopleSearch1.PerformSearchAsync();
             };
 
-            // Grid Actions
             ctrlManagementActions1.OnAddClick += (s, e) => OpenAddNewPersonDialog();
             ctrlManagementActions1.OnEditClick += (s, e) => OpenUpdateSelectedPersonDialog();
             ctrlManagementActions1.OnDeleteClick += (s, e) => OpenDeleteSelectedPersonDialog();
             ctrlManagementActions1.OnRefreshClick += async (s, e) => await HandleManualRefreshAsync();
 
-            // Grid Selection & Row Events
+            btnSelect.Click += (s, e) => SelectCurrentPerson();
+
             ctrlManagementDataGrid1.SelectionChanged += (s, e) =>
             {
-                ctrlManagementActions1.UpdateButtonsState(ctrlManagementDataGrid1.HasSelection);
+                bool hasSelection = ctrlManagementDataGrid1.HasSelection;
+                ctrlManagementActions1.UpdateButtonsState(hasSelection);
+                UpdateSelectButtonState(hasSelection);
             };
 
             ctrlManagementDataGrid1.CellDoubleClick += (s, e) =>
             {
-                if (e.RowIndex >= 0) OpenViewPersonCardDialog();
+                if (e.RowIndex < 0) return;
+
+                if (_mode == enMode.SelectPerson)
+                {
+                    SelectCurrentPerson();
+                }
+                else
+                {
+                    OpenViewPersonCardDialog();
+                }
             };
 
-            // Empty State Handling
             ctrlNotFound1.OnClearFilterClick += async (s, e) =>
             {
                 var txtSearch = ctrlPeopleSearch1.Controls.Find("txtSearch", true);
@@ -108,11 +178,6 @@ namespace DVLD.PL.PeopleManagement
                 await ctrlPeopleSearch1.PerformSearchAsync();
             };
 
-            btnSettings.Click += (s, e) =>
-            {
-                using frmPeopleManagementSettings frm = new frmPeopleManagementSettings();
-                frm.ShowDialog();
-            };
         }
 
         private void InitializeRowContextMenu()
@@ -120,34 +185,72 @@ namespace DVLD.PL.PeopleManagement
             var menu = ctrlManagementDataGrid1.RowActionsContextMenu;
             menu.Items.Clear();
 
-            menu.Items.Add(new ToolStripMenuItem("Show Details", Properties.Resources.details, (s, e) => OpenViewPersonCardDialog()));
-            menu.Items.Add(new ToolStripSeparator());
-
-            var editItem = new ToolStripMenuItem("Edit Person", Properties.Resources.edit_person, (s, e) => OpenUpdateSelectedPersonDialog())
+            if (_mode == enMode.SelectPerson)
             {
-                ShortcutKeys = Keys.Control | Keys.E
-            };
-            menu.Items.Add(editItem);
+                var selectItem = new ToolStripMenuItem("Select Person", Properties.Resources.hasFounded, (s, e) => SelectCurrentPerson())
+                {
+                    ShortcutKeyDisplayString = "Enter"
+                };
+                menu.Items.Add(selectItem);
+                menu.Items.Add(new ToolStripSeparator());
 
-            var deleteItem = new ToolStripMenuItem("Delete Person", Properties.Resources.bin, (s, e) => OpenDeleteSelectedPersonDialog())
+                menu.Items.Add(new ToolStripMenuItem("Show Details", Properties.Resources.details, (s, e) => OpenViewPersonCardDialog()));
+                menu.Items.Add(new ToolStripSeparator());
+
+                var addItem = new ToolStripMenuItem("Add New Person", Properties.Resources.add_person, (s, e) => OpenAddNewPersonDialog())
+                {
+                    ShortcutKeys = Keys.Control | Keys.N
+                };
+                menu.Items.Add(addItem);
+
+                var refreshItem = new ToolStripMenuItem("Refresh", Properties.Resources.refresh, async (s, e) => await HandleManualRefreshAsync())
+                {
+                    ShortcutKeys = Keys.F5
+                };
+                menu.Items.Add(refreshItem);
+            }
+            else
             {
-                ShortcutKeys = Keys.Delete
-            };
-            menu.Items.Add(deleteItem);
+                menu.Items.Add(new ToolStripMenuItem("Show Details", Properties.Resources.details, (s, e) => OpenViewPersonCardDialog()));
+                menu.Items.Add(new ToolStripSeparator());
 
-            menu.Items.Add(new ToolStripSeparator());
+                var editItem = new ToolStripMenuItem("Edit Person", Properties.Resources.edit_person, (s, e) => OpenUpdateSelectedPersonDialog())
+                {
+                    ShortcutKeys = Keys.Control | Keys.E
+                };
+                menu.Items.Add(editItem);
 
-            var addItem = new ToolStripMenuItem("Add New Person", Properties.Resources.add_person, (s, e) => OpenAddNewPersonDialog())
+                var deleteItem = new ToolStripMenuItem("Delete Person", Properties.Resources.bin, (s, e) => OpenDeleteSelectedPersonDialog())
+                {
+                    ShortcutKeys = Keys.Delete
+                };
+                menu.Items.Add(deleteItem);
+
+                menu.Items.Add(new ToolStripSeparator());
+
+                var addItem = new ToolStripMenuItem("Add New Person", Properties.Resources.add_person, (s, e) => OpenAddNewPersonDialog())
+                {
+                    ShortcutKeys = Keys.Control | Keys.N
+                };
+                menu.Items.Add(addItem);
+
+                var refreshItem = new ToolStripMenuItem("Refresh", Properties.Resources.refresh, async (s, e) => await HandleManualRefreshAsync())
+                {
+                    ShortcutKeys = Keys.F5
+                };
+                menu.Items.Add(refreshItem);
+            }
+        }
+
+        private void SelectCurrentPerson()
+        {
+            if (ctrlManagementDataGrid1.TryGetSelectedInt("PersonID", out int id))
             {
-                ShortcutKeys = Keys.Control | Keys.N
-            };
-            menu.Items.Add(addItem);
-
-            var refreshItem = new ToolStripMenuItem("Refresh", Properties.Resources.refresh, async (s, e) => await HandleManualRefreshAsync())
-            {
-                ShortcutKeys = Keys.F5
-            };
-            menu.Items.Add(refreshItem);
+                SelectedPersonID = id;
+                OnPersonSelected?.Invoke(id);
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+            }
         }
 
         private void PopulateDataGrid(object? sender, OperationResults<PersonReadDTO> results)
@@ -159,6 +262,7 @@ namespace DVLD.PL.PeopleManagement
                 ctrlNotFound1.Visible = true;
                 ctrlNotFound1.BringToFront();
                 ctrlManagementActions1.UpdateButtonsState(false);
+                UpdateSelectButtonState(false);
                 return;
             }
 
@@ -182,6 +286,7 @@ namespace DVLD.PL.PeopleManagement
 
             ctrlManagementDataGrid1.ClearSelection();
             ctrlManagementActions1.UpdateButtonsState(false);
+            UpdateSelectButtonState(false);
         }
 
         private async Task HandleManualRefreshAsync()
@@ -199,6 +304,8 @@ namespace DVLD.PL.PeopleManagement
 
         private void OpenUpdateSelectedPersonDialog()
         {
+            if (_mode == enMode.SelectPerson) return;
+
             if (ctrlManagementDataGrid1.TryGetSelectedInt("PersonID", out int id))
             {
                 using frmSavePerson frm = new frmSavePerson(id);
@@ -209,6 +316,8 @@ namespace DVLD.PL.PeopleManagement
 
         private void OpenDeleteSelectedPersonDialog()
         {
+            if (_mode == enMode.SelectPerson) return;
+
             if (ctrlManagementDataGrid1.TryGetSelectedInt("PersonID", out int id))
             {
                 using frmDeletePersonForm frm = new frmDeletePersonForm(id);
@@ -230,10 +339,23 @@ namespace DVLD.PL.PeopleManagement
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
+            if (_mode == enMode.SelectPerson)
+            {
+                if (keyData == Keys.Enter && ctrlManagementDataGrid1.HasSelection)
+                {
+                    SelectCurrentPerson();
+                    return true;
+                }
+            }
+            else
+            {
+                if (keyData == (Keys.Control | Keys.E)) { OpenUpdateSelectedPersonDialog(); return true; }
+                if (keyData == Keys.Delete || keyData == (Keys.Control | Keys.D)) { OpenDeleteSelectedPersonDialog(); return true; }
+            }
+
             if (keyData == (Keys.Control | Keys.N)) { OpenAddNewPersonDialog(); return true; }
-            if (keyData == (Keys.Control | Keys.E)) { OpenUpdateSelectedPersonDialog(); return true; }
-            if (keyData == Keys.Delete || keyData == (Keys.Control | Keys.D)) { OpenDeleteSelectedPersonDialog(); return true; }
             if (keyData == Keys.F5 || keyData == (Keys.Control | Keys.R)) { _ = HandleManualRefreshAsync(); return true; }
+
             return base.ProcessCmdKey(ref msg, keyData);
         }
     }

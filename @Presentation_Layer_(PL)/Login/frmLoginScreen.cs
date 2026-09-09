@@ -9,6 +9,7 @@ using DVLD.PL.Global;
 using DVLD.PL.Properties;
 using Timer = System.Windows.Forms.Timer;
 using static DVLD.PL.Global.AppSession;
+using System.Configuration;
 
 namespace DVLD.PL.Login
 {
@@ -27,7 +28,7 @@ namespace DVLD.PL.Login
             this.ApplyStandardFormTheme();
             this.AllowMaximize = false;
             this.AllowResize = false;
-
+            AppSession.TitlePath += " / Login";
             _userService = new UserService();
             InitializeUI();
         }
@@ -201,6 +202,7 @@ namespace DVLD.PL.Login
                     this.Hide();
                     using (frmMainScreen mainScreen = new frmMainScreen())
                     {
+                        AppSession.TitlePath = "DVLD / Main Screen";
                         mainScreen.ShowDialog();
                     }
                     this.Close();
@@ -251,6 +253,7 @@ namespace DVLD.PL.Login
                 txtUserName.Text = username;
                 txtPassword.Text = newPassword;
             };
+            AppSession.TitlePath += " / Reset Password";
             resetPasswordScreen.ShowDialog();
         }
     }

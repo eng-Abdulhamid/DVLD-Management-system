@@ -4,6 +4,7 @@ using DVLD.BLL.Services;
 using DVLD.PL.Global;
 using DVLD.PL.Properties;
 using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -14,9 +15,11 @@ namespace DVLD.PL.Login
     public partial class frmForgetPassword : frmBase
     {
         private readonly UserService _userService;
-        private UserReadDTO _verifiedUser;
+        private UserReadDTO _verifiedUser = new UserReadDTO();
         private bool _accountVerified = false;
         private bool _isChangingPassword = false;
+        private readonly string _initialUsername;
+        private bool _allowEditUsername = false;
 
         private const int FORM_COLLAPSED_HEIGHT = 310;
         private const int FORM_EXPANDED_HEIGHT = 680;
@@ -25,7 +28,23 @@ namespace DVLD.PL.Login
 
         public Action<string, string>? OnPasswordChange;
 
-        public frmForgetPassword(string UserName = "")
+        [Category("Behavior")]
+        [DefaultValue(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public bool AllowEditUsername
+        {
+            get => _allowEditUsername;
+            set
+            {
+                _allowEditUsername = value;
+                if (_accountVerified)
+                {
+                    btnEditUsername.Visible = string.IsNullOrWhiteSpace(_initialUsername) || _allowEditUsername;
+                }
+            }
+        }
+
+        public frmForgetPassword(string userName = "", string customTitle = "Forget Password", bool allowEditUsername = true)
         {
             InitializeComponent();
 
@@ -33,11 +52,21 @@ namespace DVLD.PL.Login
             this.AllowMaximize = false;
             this.AllowResize = false;
 
-            _userService = new UserService();
 
-            if (!string.IsNullOrEmpty(UserName))
+            _userService = new UserService();
+            _initialUsername = userName;
+            _allowEditUsername = allowEditUsername;
+            btnVerifiedCheck.Enabled = false;
+            if (!string.IsNullOrWhiteSpace(customTitle))
             {
-                txtUserName.Text = UserName;
+                this.Text = customTitle;
+                headerControl.TitleText = customTitle;
+                lblHeader.Text = customTitle;
+            }
+
+            if (!string.IsNullOrEmpty(userName))
+            {
+                txtUserName.Text = userName;
             }
 
             this.Icon = Resources.iconLoginIn;
@@ -50,6 +79,16 @@ namespace DVLD.PL.Login
             this.Height = FORM_COLLAPSED_HEIGHT;
             pnlCreateNewPassword.Visible = false;
             SwitchToUnverifiedState();
+
+            this.Load += async (s, e) =>
+            {
+                if (UIUtility.IsDesignMode) return;
+
+                if (!string.IsNullOrWhiteSpace(_initialUsername))
+                {
+                    await VerifyAccountAsync(_initialUsername);
+                }
+            };
         }
 
         private void ApplyStyles()
@@ -103,7 +142,7 @@ namespace DVLD.PL.Login
             EnableWindowDragging(pnlMain);
             EnableWindowDragging(lblHeader);
 
-            btnVerifyUser.Click += BtnVerifyUser_Click;
+            btnVerifyUser.Click += async (s, e) => await VerifyAccountAsync(txtUserName.Text.Trim());
             btnEditUsername.Click += BtnEditUsername_Click;
             btnChangePassword.Click += BtnChangePassword_Click;
             btnCancel.Click += (s, e) => Close();
@@ -165,7 +204,7 @@ namespace DVLD.PL.Login
 
             btnVerifyUser.Visible = false;
             btnVerifiedCheck.Visible = true;
-            btnEditUsername.Visible = true;
+            btnEditUsername.Visible = string.IsNullOrWhiteSpace(_initialUsername) || _allowEditUsername;
 
             SetStatusMessage("Account verified successfully.", Color.FromArgb(16, 137, 62));
 
@@ -231,14 +270,13 @@ namespace DVLD.PL.Login
             txtUserName.Enabled = !isLoading;
         }
 
-        private async void BtnVerifyUser_Click(object? sender, EventArgs e)
+        private async Task VerifyAccountAsync(string username)
         {
             if (_accountVerified || !ValidateUsernameField()) return;
 
             ToggleLoadingState(true);
             SetStatusMessage("Verifying account...", Color.FromArgb(100, 116, 139));
 
-            string username = txtUserName.Text.Trim();
             var result = await _userService.GetByUserNameAsync(username);
 
             ToggleLoadingState(false);
@@ -250,7 +288,7 @@ namespace DVLD.PL.Login
                 return;
             }
 
-            if (!TryGetUserId(result.Data, out int userId))
+            if (!TryGetUserId(result.Data, out _))
             {
                 SetStatusMessage("Error reading account details.", Color.FromArgb(220, 38, 38));
                 txtUserName.Enabled = true;

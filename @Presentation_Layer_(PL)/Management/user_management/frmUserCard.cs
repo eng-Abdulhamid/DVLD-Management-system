@@ -19,6 +19,7 @@ namespace DVLD.PL.Management.user_management
         {
             InitializeComponent();
             _userID = UserID;
+
             ctrlUserCard1?.LoadUserInfoAsync(_userID);
             ctrlUserManagementControls.OnDeleteClick += CtrlManagementActions1_OnDeleteClick;
             ctrlUserManagementControls.OnEditClick += CtrlManagementActions1_OnEditClick;

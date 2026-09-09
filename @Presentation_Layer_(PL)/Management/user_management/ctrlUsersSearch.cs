@@ -1,6 +1,7 @@
 ﻿using DVLD.PL.Global;
 using System;
 using System.ComponentModel;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace DVLD.PL.UsersManagement
@@ -8,7 +9,7 @@ namespace DVLD.PL.UsersManagement
     [DefaultEvent("OnFilterChanged")]
     public partial class ctrlUsersSearch : UserControl
     {
-        private readonly System.Windows.Forms.Timer _searchTimer;
+        private readonly System.Windows.Forms.Timer? _searchTimer;
         private bool _isInitializing = true;
 
         [Category("Filter Events")]
@@ -101,7 +102,7 @@ namespace DVLD.PL.UsersManagement
             txtSearch.AllowArabicCharacters = false;
             txtSearch.AllowSpaces = false;
             txtSearch.AllowSymbols = false;
-            txtSearch.MaxLength = isNumeric ? 10 : 20;
+            txtSearch.MaxLength = isNumeric ? 10 : 30;
         }
 
         private void TriggerFilterChanged()
@@ -117,7 +118,7 @@ namespace DVLD.PL.UsersManagement
             txtSearch.Text = string.Empty;
             UpdatePlaceholder();
             ConfigureInputConstraints(cbFilterBy.Text);
-            _searchTimer.Stop();
+            _searchTimer?.Stop();
             TriggerFilterChanged();
         }
 
@@ -130,8 +131,8 @@ namespace DVLD.PL.UsersManagement
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
             if (_isInitializing || UIUtility.IsDesignMode) return;
-            _searchTimer.Stop();
-            _searchTimer.Start();
+            _searchTimer?.Stop();
+            _searchTimer?.Start();
         }
 
         private void txtSearch_KeyDown(object sender, KeyEventArgs e)
@@ -141,20 +142,20 @@ namespace DVLD.PL.UsersManagement
             if (e.KeyCode == Keys.Enter)
             {
                 e.SuppressKeyPress = true;
-                _searchTimer.Stop();
+                _searchTimer?.Stop();
                 TriggerFilterChanged();
             }
             else if (e.KeyCode == Keys.Escape)
             {
                 e.SuppressKeyPress = true;
-                _searchTimer.Stop();
+                _searchTimer?.Stop();
                 txtSearch.Text = string.Empty;
             }
         }
 
         public void FocusSearchBox()
         {
-            if (txtSearch.Visible)
+            if (txtSearch.CanFocus)
             {
                 txtSearch.Focus();
             }

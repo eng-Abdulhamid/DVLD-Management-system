@@ -67,8 +67,58 @@ namespace DVLD.PL.Global
             {
                 headerControl.SendToBack();
                 headerControl.TitleText = this.Text;
+                headerControl.AllowClose = _allowClose;
+                headerControl.AllowMaximize = _allowMaximize;
+                headerControl.AllowMinimize = _allowMinimize;
             }
         }
+
+        #region Standard Windows Form Properties (Shadowed)
+
+        [Category("Window Style")]
+        [Description("Controls whether the window can be maximized and shows the maximize button on the header.")]
+        [DefaultValue(true)]
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public new bool MaximizeBox
+        {
+            get => _allowMaximize;
+            set
+            {
+                _allowMaximize = value;
+                base.MaximizeBox = value;
+
+                if (headerControl != null)
+                {
+                    headerControl.AllowMaximize = value;
+                }
+            }
+        }
+
+        [Category("Window Style")]
+        [Description("Controls whether the window can be minimized and shows the minimize button on the header.")]
+        [DefaultValue(true)]
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public new bool MinimizeBox
+        {
+            get => _allowMinimize;
+            set
+            {
+                _allowMinimize = value;
+                base.MinimizeBox = value;
+
+                if (headerControl != null)
+                {
+                    headerControl.AllowMinimize = value;
+                }
+            }
+        }
+
+        #endregion
+
+        #region Custom Properties
+
         [Category("Window Frame")]
         [Description("Enables or disables resizing the form from its edges.")]
         [DefaultValue(true)]
@@ -143,15 +193,8 @@ namespace DVLD.PL.Global
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool AllowMaximize
         {
-            get => _allowMaximize;
-            set
-            {
-                _allowMaximize = value;
-                if (headerControl != null)
-                {
-                    headerControl.AllowMaximize = value;
-                }
-            }
+            get => MaximizeBox;
+            set => MaximizeBox = value;
         }
 
         [Category("Window Header Setup")]
@@ -161,16 +204,11 @@ namespace DVLD.PL.Global
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool AllowMinimize
         {
-            get => _allowMinimize;
-            set
-            {
-                _allowMinimize = value;
-                if (headerControl != null)
-                {
-                    headerControl.AllowMinimize = value;
-                }
-            }
+            get => MinimizeBox;
+            set => MinimizeBox = value;
         }
+
+        #endregion
 
         protected override void OnLoad(EventArgs e)
         {
@@ -187,6 +225,7 @@ namespace DVLD.PL.Global
                 headerControl.AllowMinimize = _allowMinimize;
             }
         }
+
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);

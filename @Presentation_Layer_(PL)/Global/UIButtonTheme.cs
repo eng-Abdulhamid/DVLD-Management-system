@@ -1,4 +1,6 @@
 ﻿using NControls;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace DVLD.PL.Global
 {
@@ -22,6 +24,11 @@ namespace DVLD.PL.Global
         public static readonly Color Success = Color.FromArgb(16, 185, 129);
         public static readonly Color Warning = Color.FromArgb(245, 158, 11);
         public static readonly Color Info = Color.FromArgb(14, 165, 233);
+
+        public static readonly Color DisabledBackground = Color.FromArgb(241, 245, 249);
+        public static readonly Color DisabledBorder = Color.FromArgb(203, 213, 225);
+        public static readonly Color DisabledText = Color.FromArgb(203, 213, 225);
+        public static readonly Color DisabledIcon = Color.FromArgb(203, 213, 225);
 
         public static readonly Color TextPrimary = Color.FromArgb(15, 23, 42);
         public static readonly Color TextMuted = Color.FromArgb(148, 163, 184);
@@ -98,11 +105,13 @@ namespace DVLD.PL.Global
             btn.EnableIconTinting = true;
             btn.IconColor = IconLightColor;
             btn.HoverIconColor = IconLightColor;
+            btn.Invalidate();
         }
 
         public static void ApplySecondaryStyle(this NButton btn)
         {
             if (btn == null) return;
+
             btn.BackgroundStartColor = NeutralBackground;
             btn.BackgroundEndColor = NeutralBackground;
             btn.HoverStartColor = NeutralHover;
@@ -122,10 +131,13 @@ namespace DVLD.PL.Global
             btn.EnableIconTinting = true;
             btn.IconColor = IconDefaultColor;
             btn.HoverIconColor = IconHoverColor;
+            btn.Invalidate();
         }
 
         public static void ApplyDangerStyle(this NButton btn)
         {
+            if (btn == null) return;
+
             btn.BackgroundStartColor = Danger;
             btn.BackgroundEndColor = Danger;
             btn.HoverStartColor = DangerHover;
@@ -145,6 +157,39 @@ namespace DVLD.PL.Global
             btn.EnableIconTinting = true;
             btn.IconColor = IconLightColor;
             btn.HoverIconColor = IconLightColor;
+
+            btn.Invalidate();
+        }
+
+        public static void ApplyDisabledStyle(this NButton btn)
+        {
+            if (btn == null) return;
+
+            // Flat muted background without borders to prevent pixel jitter
+            btn.BackgroundStartColor = DisabledBackground;
+            btn.BackgroundEndColor = DisabledBackground;
+            btn.HoverStartColor = DisabledBackground;
+            btn.HoverEndColor = DisabledBackground;
+            btn.PressedStartColor = DisabledBackground;
+            btn.PressedEndColor = DisabledBackground;
+
+            btn.BorderColor = Color.Transparent;
+            btn.HoverBorderColor = Color.Transparent;
+            btn.BorderSize = 0;
+            btn.BorderRadius = DefaultBorderRadius;
+
+            // Muted typography and icons
+            btn.TextColor = DisabledText;
+            btn.HoverTextColor = DisabledText;
+            btn.IconColor = DisabledIcon;
+            btn.HoverIconColor = DisabledIcon;
+
+            // Disable all micro-interactions and elevations
+            btn.EnableHoverAnimation = false;
+            btn.EnableRippleEffect = false;
+            btn.EnableShadow = false;
+
+            btn.Invalidate();
         }
 
         public static void ApplyStandardStyle(this NControls.NTextBox txt)
@@ -162,6 +207,7 @@ namespace DVLD.PL.Global
             txt.EnableIconTinting = true;
             txt.IconColor = IconDefaultColor;
             txt.HoverIconColor = IconHoverColor;
+
         }
 
         public static void ApplyStandardStyle(this ComboBox cb)

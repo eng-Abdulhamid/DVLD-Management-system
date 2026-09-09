@@ -11,6 +11,7 @@ namespace DVLD.PL.Management
     public partial class ctrlManagementDataGrid : UserControl
     {
         private readonly List<DataGridColumnDefinition> _columnDefinitions = new();
+        private bool _suppressSelectionEvents = false;
 
         public event DataGridViewCellEventHandler? CellDoubleClick;
         public event EventHandler? SelectionChanged;
@@ -57,7 +58,6 @@ namespace DVLD.PL.Management
             cmsColumns.AutoClose = true;
             cmsRowActions.AutoClose = true;
 
-            // إضافة مسافات وخيارات قياسية لتحسين مظهر القائمة الافتراضية
             cmsColumns.ShowImageMargin = true;
             cmsRowActions.ShowImageMargin = true;
             cmsColumns.Font = new Font("Segoe UI", 9.5F);
@@ -94,7 +94,12 @@ namespace DVLD.PL.Management
             };
 
             dgvResults.CellDoubleClick += (s, e) => CellDoubleClick?.Invoke(s, e);
-            dgvResults.SelectionChanged += (s, e) => SelectionChanged?.Invoke(s, e);
+
+            dgvResults.SelectionChanged += (s, e) =>
+            {
+                if (_suppressSelectionEvents) return;
+                SelectionChanged?.Invoke(this, EventArgs.Empty);
+            };
         }
 
         [Browsable(false)]
@@ -110,10 +115,15 @@ namespace DVLD.PL.Management
         public ContextMenuStrip RowActionsContextMenu => cmsRowActions;
 
         [Browsable(false)]
-        public bool HasSelection => dgvResults.SelectedRows.Count > 0;
+        public bool HasSelection =>
+            dgvResults.Rows.Count > 0 &&
+            dgvResults.CurrentCell != null &&
+            dgvResults.SelectedRows.Count > 0 &&
+            dgvResults.SelectedRows[0].Index >= 0 &&
+            dgvResults.SelectedRows[0].Index < dgvResults.Rows.Count;
 
         [Browsable(false)]
-        public int SelectedRowIndex => dgvResults.SelectedRows.Count > 0 ? dgvResults.SelectedRows[0].Index : -1;
+        public int SelectedRowIndex => HasSelection ? dgvResults.SelectedRows[0].Index : -1;
 
         public void InitializeColumns(IEnumerable<DataGridColumnDefinition> columns)
         {
@@ -122,35 +132,43 @@ namespace DVLD.PL.Management
             _columnDefinitions.Clear();
             _columnDefinitions.AddRange(columns);
 
-            dgvResults.Columns.Clear();
-            cmsColumns.Items.Clear();
-
-            foreach (DataGridColumnDefinition def in _columnDefinitions)
+            _suppressSelectionEvents = true;
+            try
             {
-                dgvResults.Columns.Add(new DataGridViewTextBoxColumn
-                {
-                    Name = def.Key,
-                    HeaderText = def.HeaderText,
-                    DataPropertyName = def.DataPropertyName,
-                    Width = def.Width,
-                    ReadOnly = true
-                });
+                dgvResults.Columns.Clear();
+                cmsColumns.Items.Clear();
 
-                ToolStripMenuItem menuItem = new ToolStripMenuItem(def.HeaderText)
+                foreach (DataGridColumnDefinition def in _columnDefinitions)
                 {
-                    Checked = true,
-                    CheckOnClick = true,
-                    Tag = def.Key
-                };
+                    dgvResults.Columns.Add(new DataGridViewTextBoxColumn
+                    {
+                        Name = def.Key,
+                        HeaderText = def.HeaderText,
+                        DataPropertyName = def.DataPropertyName,
+                        Width = def.Width,
+                        ReadOnly = true
+                    });
 
-                menuItem.CheckedChanged += (s, e) =>
-                {
-                    if (s is ToolStripMenuItem item && item.Tag is string key && dgvResults.Columns.Contains(key))
-                        dgvResults.Columns[key].Visible = item.Checked;
-                };
+                    ToolStripMenuItem menuItem = new ToolStripMenuItem(def.HeaderText)
+                    {
+                        Checked = true,
+                        CheckOnClick = true,
+                        Tag = def.Key
+                    };
 
-                def.ToolStripItem = menuItem;
-                cmsColumns.Items.Add(menuItem);
+                    menuItem.CheckedChanged += (s, e) =>
+                    {
+                        if (s is ToolStripMenuItem item && item.Tag is string key && dgvResults.Columns.Contains(key))
+                            dgvResults.Columns[key].Visible = item.Checked;
+                    };
+
+                    def.ToolStripItem = menuItem;
+                    cmsColumns.Items.Add(menuItem);
+                }
+            }
+            finally
+            {
+                _suppressSelectionEvents = false;
             }
         }
 
@@ -158,20 +176,88 @@ namespace DVLD.PL.Management
         {
             if (rowIndex < 0 || rowIndex >= dgvResults.Rows.Count) return;
 
-            dgvResults.ClearSelection();
-            dgvResults.Rows[rowIndex].Selected = true;
+            _suppressSelectionEvents = true;
+            try
+            {
+                dgvResults.ClearSelection();
+                dgvResults.Rows[rowIndex].Selected = true;
 
-            if (dgvResults.Columns.Count > 0)
-                dgvResults.CurrentCell = dgvResults.Rows[rowIndex].Cells[0];
+                if (dgvResults.Columns.Count > 0)
+                    dgvResults.CurrentCell = dgvResults.Rows[rowIndex].Cells[0];
+            }
+            finally
+            {
+                _suppressSelectionEvents = false;
+            }
+
+            SelectionChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        public void ClearSelection() => dgvResults.ClearSelection();
-        public void ClearRows() => dgvResults.Rows.Clear();
-        public int AddRow(params object[] values) => dgvResults.Rows.Add(values);
+        public void ClearSelection()
+        {
+            _suppressSelectionEvents = true;
+            try
+            {
+                dgvResults.CurrentCell = null;
+                dgvResults.ClearSelection();
+            }
+            finally
+            {
+                _suppressSelectionEvents = false;
+            }
+
+            SelectionChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void ClearRows()
+        {
+            _suppressSelectionEvents = true;
+            try
+            {
+                dgvResults.Rows.Clear();
+                dgvResults.CurrentCell = null;
+            }
+            finally
+            {
+                _suppressSelectionEvents = false;
+            }
+
+            SelectionChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        public int AddRow(params object[] values)
+        {
+            _suppressSelectionEvents = true;
+            int newRowIndex = -1;
+            try
+            {
+                newRowIndex = dgvResults.Rows.Add(values);
+            }
+            finally
+            {
+                _suppressSelectionEvents = false;
+            }
+
+            return newRowIndex;
+        }
 
         public void RemoveSelectedRow()
         {
-            if (HasSelection) dgvResults.Rows.Remove(dgvResults.SelectedRows[0]);
+            if (!HasSelection) return;
+
+            _suppressSelectionEvents = true;
+            try
+            {
+                dgvResults.Rows.Remove(dgvResults.SelectedRows[0]);
+                dgvResults.CurrentCell = null;
+                dgvResults.ClearSelection();
+            }
+            finally
+            {
+                _suppressSelectionEvents = false;
+            }
+
+            SelectionChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public bool TryGetSelectedInt(string columnName, out int value)

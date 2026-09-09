@@ -14,7 +14,7 @@ namespace DVLD.PL.PeopleManagement
         private DVLD.PL.Management.ctrlManagementActions ctrlManagementActions1;
         private DVLD.PL.Management.ctrlPagination ctrlPagination1;
         private DVLD.PL.Management.ctrlNotFound ctrlNotFound1;
-        private NButton btnSettings;
+        private NButton btnSelect;
 
         protected override void Dispose(bool disposing)
         {
@@ -25,13 +25,13 @@ namespace DVLD.PL.PeopleManagement
         private void InitializeComponent()
         {
             pnlMain = new Panel();
+            ctrlNotFound1 = new DVLD.PL.Management.ctrlNotFound();
+            ctrlManagementDataGrid1 = new DVLD.PL.Management.ctrlManagementDataGrid();
             pnlTopBar = new Panel();
             ctrlPeopleSearch1 = new ctrlPeopleSearch();
             ctrlManagementActions1 = new DVLD.PL.Management.ctrlManagementActions();
+            btnSelect = new NButton();
             ctrlPagination1 = new DVLD.PL.Management.ctrlPagination();
-            btnSettings = new NButton();
-            ctrlManagementDataGrid1 = new DVLD.PL.Management.ctrlManagementDataGrid();
-            ctrlNotFound1 = new DVLD.PL.Management.ctrlNotFound();
             pnlMain.SuspendLayout();
             pnlTopBar.SuspendLayout();
             SuspendLayout();
@@ -53,12 +53,31 @@ namespace DVLD.PL.PeopleManagement
             pnlMain.Size = new Size(1116, 678);
             pnlMain.TabIndex = 1;
             // 
+            // ctrlNotFound1
+            // 
+            ctrlNotFound1.BackColor = Color.Transparent;
+            ctrlNotFound1.Location = new Point(318, 220);
+            ctrlNotFound1.Name = "ctrlNotFound1";
+            ctrlNotFound1.Size = new Size(480, 240);
+            ctrlNotFound1.TabIndex = 2;
+            ctrlNotFound1.Visible = false;
+            // 
+            // ctrlManagementDataGrid1
+            // 
+            ctrlManagementDataGrid1.BackColor = Color.Transparent;
+            ctrlManagementDataGrid1.Dock = DockStyle.Fill;
+            ctrlManagementDataGrid1.Location = new Point(0, 136);
+            ctrlManagementDataGrid1.Margin = new Padding(0);
+            ctrlManagementDataGrid1.Name = "ctrlManagementDataGrid1";
+            ctrlManagementDataGrid1.Size = new Size(1116, 542);
+            ctrlManagementDataGrid1.TabIndex = 1;
+            // 
             // pnlTopBar
             // 
             pnlTopBar.BackColor = Color.White;
             pnlTopBar.Controls.Add(ctrlPeopleSearch1);
             pnlTopBar.Controls.Add(ctrlManagementActions1);
-            pnlTopBar.Controls.Add(btnSettings);
+            pnlTopBar.Controls.Add(btnSelect);
             pnlTopBar.Controls.Add(ctrlPagination1);
             pnlTopBar.Dock = DockStyle.Top;
             pnlTopBar.Location = new Point(0, 0);
@@ -71,6 +90,8 @@ namespace DVLD.PL.PeopleManagement
             ctrlPeopleSearch1.BackColor = Color.Transparent;
             ctrlPeopleSearch1.Dock = DockStyle.Top;
             ctrlPeopleSearch1.Location = new Point(0, 0);
+            ctrlPeopleSearch1.Margin = new Padding(4, 3, 4, 3);
+            ctrlPeopleSearch1.MinimumSize = new Size(715, 86);
             ctrlPeopleSearch1.Name = "ctrlPeopleSearch1";
             ctrlPeopleSearch1.Size = new Size(1116, 86);
             ctrlPeopleSearch1.TabIndex = 0;
@@ -78,48 +99,71 @@ namespace DVLD.PL.PeopleManagement
             // ctrlManagementActions1
             // 
             ctrlManagementActions1.BackColor = Color.Transparent;
+            ctrlManagementActions1.DeleteEnabled = true;
+            ctrlManagementActions1.EditEnabled = true;
             ctrlManagementActions1.Location = new Point(12, 90);
             ctrlManagementActions1.Name = "ctrlManagementActions1";
-            ctrlManagementActions1.Size = new Size(175, 42);
+            ctrlManagementActions1.Size = new Size(170, 42);
             ctrlManagementActions1.TabIndex = 1;
             // 
-            // btnSettings
+            // btnSelect
             // 
-            btnSettings.BackColor = Color.Transparent;
-            btnSettings.BorderRadius = 8;
-            btnSettings.Cursor = Cursors.Hand;
-            btnSettings.Location = new Point(190, 93);
-            btnSettings.MiddleIcon = Properties.Resources.setting;
-            btnSettings.Name = "btnSettings";
-            btnSettings.Size = new Size(38, 36);
-            btnSettings.TabIndex = 2;
+            btnSelect.BackColor = Color.Transparent;
+            btnSelect.BackgroundEndColor = SystemColors.Control;
+            btnSelect.BackgroundStartColor = SystemColors.Control;
+            btnSelect.BorderColor = Color.DarkGray;
+            btnSelect.BorderRadius = 8;
+            btnSelect.BorderSize = 1;
+            btnSelect.CenterIconWithText = false;
+            btnSelect.Cursor = Cursors.Hand;
+            btnSelect.EnableHoverAnimation = false;
+            btnSelect.EnableIconTinting = false;
+            btnSelect.EnableRippleEffect = false;
+            btnSelect.EnableShadow = false;
+            btnSelect.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            btnSelect.ForeColor = SystemColors.ControlText;
+            btnSelect.GradientAngle = 90F;
+            btnSelect.HoverAnimationSpeed = 20;
+            btnSelect.HoverBorderColor = Color.FromArgb(0, 120, 215);
+            btnSelect.HoverEndColor = Color.FromArgb(229, 241, 251);
+            btnSelect.HoverIconColor = Color.White;
+            btnSelect.HoverStartColor = Color.FromArgb(229, 241, 251);
+            btnSelect.HoverTextColor = SystemColors.ControlText;
+            btnSelect.IconColor = Color.White;
+            btnSelect.IconMargin = 10;
+            btnSelect.IconOffset = new Point(0, 0);
+            btnSelect.IconSize = new Size(16, 16);
+            btnSelect.IconSpacing = 5;
+            btnSelect.IsLoading = false;
+            btnSelect.LeftIcon = null;
+            btnSelect.Location = new Point(190, 92);
+            btnSelect.MiddleIcon = null;
+            btnSelect.Name = "btnSelect";
+            btnSelect.PressedEndColor = Color.FromArgb(204, 228, 247);
+            btnSelect.PressedStartColor = Color.FromArgb(204, 228, 247);
+            btnSelect.RightIcon = null;
+            btnSelect.RippleColor = Color.FromArgb(70, 0, 0, 0);
+            btnSelect.RippleSpeed = 15;
+            btnSelect.ShadowColor = Color.FromArgb(60, 0, 0, 0);
+            btnSelect.ShadowOffset = new Point(1, 1);
+            btnSelect.ShadowSize = 3;
+            btnSelect.ShiftOnPress = false;
+            btnSelect.Size = new Size(100, 38);
+            btnSelect.TabIndex = 2;
+            btnSelect.Text = "Select";
+            btnSelect.TextColor = SystemColors.ControlText;
+            btnSelect.TextOffset = new Point(0, 0);
+            btnSelect.Visible = false;
             // 
             // ctrlPagination1
             // 
             ctrlPagination1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             ctrlPagination1.BackColor = Color.Transparent;
             ctrlPagination1.Location = new Point(764, 92);
+            ctrlPagination1.MinimumSize = new Size(340, 38);
             ctrlPagination1.Name = "ctrlPagination1";
             ctrlPagination1.Size = new Size(340, 38);
-            ctrlPagination1.TabIndex = 3;
-            // 
-            // ctrlManagementDataGrid1
-            // 
-            ctrlManagementDataGrid1.BackColor = Color.Transparent;
-            ctrlManagementDataGrid1.Dock = DockStyle.Fill;
-            ctrlManagementDataGrid1.Location = new Point(0, 136);
-            ctrlManagementDataGrid1.Name = "ctrlManagementDataGrid1";
-            ctrlManagementDataGrid1.Size = new Size(1116, 542);
-            ctrlManagementDataGrid1.TabIndex = 1;
-            // 
-            // ctrlNotFound1
-            // 
-            ctrlNotFound1.BackColor = Color.Transparent;
-            ctrlNotFound1.Location = new Point(318, 220);
-            ctrlNotFound1.Name = "ctrlNotFound1";
-            ctrlNotFound1.Size = new Size(480, 240);
-            ctrlNotFound1.TabIndex = 2;
-            ctrlNotFound1.Visible = false;
+            ctrlPagination1.TabIndex = 4;
             // 
             // frmPeopleManagement
             // 

@@ -23,12 +23,12 @@ namespace DVLD.PL.UsersManagement
         private void InitializeComponent()
         {
             pnlMain = new Panel();
+            ctrlNotFound1 = new DVLD.PL.Management.ctrlNotFound();
+            ctrlManagementDataGrid1 = new DVLD.PL.Management.ctrlManagementDataGrid();
             pnlTopBar = new Panel();
             ctrlUsersSearch1 = new ctrlUsersSearch();
             ctrlManagementActions1 = new DVLD.PL.Management.ctrlManagementActions();
             ctrlPagination1 = new DVLD.PL.Management.ctrlPagination();
-            ctrlManagementDataGrid1 = new DVLD.PL.Management.ctrlManagementDataGrid();
-            ctrlNotFound1 = new DVLD.PL.Management.ctrlNotFound();
             pnlMain.SuspendLayout();
             pnlTopBar.SuspendLayout();
             SuspendLayout();
@@ -50,6 +50,25 @@ namespace DVLD.PL.UsersManagement
             pnlMain.Size = new Size(1116, 678);
             pnlMain.TabIndex = 1;
             // 
+            // ctrlNotFound1
+            // 
+            ctrlNotFound1.BackColor = Color.Transparent;
+            ctrlNotFound1.Location = new Point(318, 220);
+            ctrlNotFound1.Name = "ctrlNotFound1";
+            ctrlNotFound1.Size = new Size(480, 240);
+            ctrlNotFound1.TabIndex = 2;
+            ctrlNotFound1.Visible = false;
+            // 
+            // ctrlManagementDataGrid1
+            // 
+            ctrlManagementDataGrid1.BackColor = Color.Transparent;
+            ctrlManagementDataGrid1.Dock = DockStyle.Fill;
+            ctrlManagementDataGrid1.Location = new Point(0, 144);
+            ctrlManagementDataGrid1.Margin = new Padding(0);
+            ctrlManagementDataGrid1.Name = "ctrlManagementDataGrid1";
+            ctrlManagementDataGrid1.Size = new Size(1116, 534);
+            ctrlManagementDataGrid1.TabIndex = 1;
+            // 
             // pnlTopBar
             // 
             pnlTopBar.BackColor = Color.White;
@@ -59,7 +78,7 @@ namespace DVLD.PL.UsersManagement
             pnlTopBar.Dock = DockStyle.Top;
             pnlTopBar.Location = new Point(0, 0);
             pnlTopBar.Name = "pnlTopBar";
-            pnlTopBar.Size = new Size(1116, 108);
+            pnlTopBar.Size = new Size(1116, 144);
             pnlTopBar.TabIndex = 0;
             // 
             // ctrlUsersSearch1
@@ -67,45 +86,31 @@ namespace DVLD.PL.UsersManagement
             ctrlUsersSearch1.BackColor = Color.Transparent;
             ctrlUsersSearch1.Dock = DockStyle.Top;
             ctrlUsersSearch1.Location = new Point(0, 0);
+            ctrlUsersSearch1.Margin = new Padding(4, 3, 4, 3);
             ctrlUsersSearch1.MinimumSize = new Size(715, 54);
             ctrlUsersSearch1.Name = "ctrlUsersSearch1";
-            ctrlUsersSearch1.Size = new Size(1116, 54);
+            ctrlUsersSearch1.Size = new Size(1116, 80);
             ctrlUsersSearch1.TabIndex = 0;
             // 
             // ctrlManagementActions1
             // 
             ctrlManagementActions1.BackColor = Color.Transparent;
-            ctrlManagementActions1.Location = new Point(12, 58);
+            ctrlManagementActions1.DeleteEnabled = true;
+            ctrlManagementActions1.EditEnabled = true;
+            ctrlManagementActions1.Location = new Point(21, 95);
             ctrlManagementActions1.Name = "ctrlManagementActions1";
-            ctrlManagementActions1.Size = new Size(175, 42);
+            ctrlManagementActions1.Size = new Size(170, 42);
             ctrlManagementActions1.TabIndex = 1;
             // 
             // ctrlPagination1
             // 
             ctrlPagination1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             ctrlPagination1.BackColor = Color.Transparent;
-            ctrlPagination1.Location = new Point(764, 60);
+            ctrlPagination1.Location = new Point(761, 95);
+            ctrlPagination1.MinimumSize = new Size(340, 38);
             ctrlPagination1.Name = "ctrlPagination1";
             ctrlPagination1.Size = new Size(340, 38);
             ctrlPagination1.TabIndex = 2;
-            // 
-            // ctrlManagementDataGrid1
-            // 
-            ctrlManagementDataGrid1.BackColor = Color.Transparent;
-            ctrlManagementDataGrid1.Dock = DockStyle.Fill;
-            ctrlManagementDataGrid1.Location = new Point(0, 108);
-            ctrlManagementDataGrid1.Name = "ctrlManagementDataGrid1";
-            ctrlManagementDataGrid1.Size = new Size(1116, 570);
-            ctrlManagementDataGrid1.TabIndex = 1;
-            // 
-            // ctrlNotFound1
-            // 
-            ctrlNotFound1.BackColor = Color.Transparent;
-            ctrlNotFound1.Location = new Point(318, 220);
-            ctrlNotFound1.Name = "ctrlNotFound1";
-            ctrlNotFound1.Size = new Size(480, 240);
-            ctrlNotFound1.TabIndex = 2;
-            ctrlNotFound1.Visible = false;
             // 
             // frmUserManagement
             // 

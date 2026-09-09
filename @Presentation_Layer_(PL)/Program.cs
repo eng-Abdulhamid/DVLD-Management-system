@@ -1,5 +1,6 @@
 ﻿using DVLD.PL;
 using DVLD.PL.Configuration;
+using DVLD.PL.Global;
 using DVLD.PL.Login;
 using DVLD.PL.PeopleManagement;
 namespace DVLD.PL
@@ -16,6 +17,7 @@ namespace DVLD.PL
             Application.SetCompatibleTextRenderingDefault(false);
             Application.ThreadException += GlobalExceptionHandler;
             InitializeConnectionString();
+            AppSession.TitlePath += "DVLD";
             Application.Run(new frmLoginScreen());
         }
         private static void InitializeConnectionString()

@@ -191,7 +191,7 @@ namespace DVLD.PL.UsersManagement
 
         private void OpenAddNewUserDialog()
         {
-            using frmSaveUser frm = new frmSaveUser();
+            using frmSaveUser frm = new frmSaveUser(-1, "User Management");
             frm.UserSaved += async (id) => await LoadUsersDataAsync();
             frm.ShowDialog();
         }
@@ -200,7 +200,7 @@ namespace DVLD.PL.UsersManagement
         {
             if (ctrlManagementDataGrid1.TryGetSelectedInt("UserID", out int id))
             {
-                using frmSaveUser frm = new frmSaveUser(id);
+                using frmSaveUser frm = new frmSaveUser(id, "User Management");
                 frm.UserSaved += async (savedId) => await LoadUsersDataAsync();
                 frm.ShowDialog();
             }
@@ -210,7 +210,7 @@ namespace DVLD.PL.UsersManagement
         {
             if (ctrlManagementDataGrid1.TryGetSelectedInt("UserID", out int id))
             {
-                using frmDeleteUser frm = new frmDeleteUser(id);
+                using frmDeleteUser frm = new frmDeleteUser(id, "User Management");
                 frm.DeletedSuccessfully += async () => await LoadUsersDataAsync();
                 frm.ShowDialog();
             }
@@ -220,7 +220,7 @@ namespace DVLD.PL.UsersManagement
         {
             if (ctrlManagementDataGrid1.TryGetSelectedInt("UserID", out int value))
             {
-                using (frmUserCard frm = new(UserID: value))
+                using (frmUserCard frm = new(UserID: value, "User Management"))
                 {
                     frm.ShowDialog();
                 } 

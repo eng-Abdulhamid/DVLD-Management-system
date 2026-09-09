@@ -18,7 +18,6 @@ namespace DVLD.PL.UsersManagement
         {
             InitializeComponent();
             this.ApplyStandardFormTheme();
-
             _userId = userId;
             _userService = new UserService();
 
