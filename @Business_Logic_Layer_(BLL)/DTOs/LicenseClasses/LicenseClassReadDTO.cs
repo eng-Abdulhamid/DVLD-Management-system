@@ -1,6 +1,6 @@
 namespace Entities
 {
-    public partial class LicenseClassReadDTO
+    public class LicenseClassReadDTO
     {
         public int LicenseClassID { get; set; }
         public string ClassName { get; set; }

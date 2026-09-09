@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
+using NControls;
 
 namespace DVLD.PL.PeopleManagement
 {
@@ -34,8 +35,8 @@ namespace DVLD.PL.PeopleManagement
         private NControls.NTextBox txtEmail;
         private System.Windows.Forms.Label lblAddress;
         private NControls.NTextBox txtAddress;
-        private ModernUI.Controls.NButton btnSave;
-        private ModernUI.Controls.NButton btnCancel;
+        private NButton btnSave;
+        private NButton btnCancel;
 
         protected override void Dispose(bool disposing)
         {
@@ -76,8 +77,8 @@ namespace DVLD.PL.PeopleManagement
             txtEmail = new NControls.NTextBox();
             lblAddress = new Label();
             txtAddress = new NControls.NTextBox();
-            btnSave = new ModernUI.Controls.NButton();
-            btnCancel = new ModernUI.Controls.NButton();
+            btnSave = new NButton();
+            btnCancel = new NButton();
             pnlContainer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pbPersonPhoto).BeginInit();
             SuspendLayout();

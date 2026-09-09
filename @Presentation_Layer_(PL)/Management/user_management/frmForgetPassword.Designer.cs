@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
+using NControls;
 
 namespace DVLD.PL.Login
 {
@@ -12,9 +13,9 @@ namespace DVLD.PL.Login
         private System.Windows.Forms.Label lblStep1;
         private System.Windows.Forms.Label lblUsername;
         private NControls.NTextBox txtUserName;
-        private ModernUI.Controls.NButton btnVerifyUser;
-        private ModernUI.Controls.NButton btnVerifiedCheck;
-        private ModernUI.Controls.NButton btnEditUsername;
+        private NButton btnVerifyUser;
+        private NButton btnVerifiedCheck;
+        private NButton btnEditUsername;
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.Panel pnlCreateNewPassword;
         private System.Windows.Forms.Label lblStep2;
@@ -25,8 +26,8 @@ namespace DVLD.PL.Login
         private System.Windows.Forms.Label lblConfirmPassword;
         private NControls.NTextBox txtConfirmPassword;
         private System.Windows.Forms.LinkLabel lnkForgotCurrentPassword;
-        private ModernUI.Controls.NButton btnChangePassword;
-        private ModernUI.Controls.NButton btnCancel;
+        private NButton btnChangePassword;
+        private NButton btnCancel;
 
         protected override void Dispose(bool disposing)
         {
@@ -40,9 +41,9 @@ namespace DVLD.PL.Login
         private void InitializeComponent()
         {
             lblStatus = new Label();
-            btnEditUsername = new ModernUI.Controls.NButton();
-            btnVerifiedCheck = new ModernUI.Controls.NButton();
-            btnVerifyUser = new ModernUI.Controls.NButton();
+            btnEditUsername = new NButton();
+            btnVerifiedCheck = new NButton();
+            btnVerifyUser = new NButton();
             txtUserName = new NControls.NTextBox();
             lblUsername = new Label();
             lblStep1 = new Label();
@@ -57,8 +58,8 @@ namespace DVLD.PL.Login
             lblConfirmPassword = new Label();
             txtConfirmPassword = new NControls.NTextBox();
             lnkForgotCurrentPassword = new LinkLabel();
-            btnChangePassword = new ModernUI.Controls.NButton();
-            btnCancel = new ModernUI.Controls.NButton();
+            btnChangePassword = new NButton();
+            btnCancel = new NButton();
             pnlMain = new Panel();
             pnlCreateNewPassword.SuspendLayout();
             pnlMain.SuspendLayout();

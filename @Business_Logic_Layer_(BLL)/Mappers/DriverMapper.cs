@@ -67,7 +67,6 @@ namespace DVLD.BLL.Mappers
             {
                 DriverID = dto.DriverID,
                 PersonID = dto.PersonID,
-                CreatedByUserID = dto.CreatedByUserID,
                 CreatedDate = DateTime.Now
             };
         }

@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Timer = System.Windows.Forms.Timer;
 
-namespace CustomControls
+namespace NControls
 {
     public enum IconType
     {

@@ -1,7 +1,7 @@
 using System;
 namespace Entities
 {
-    public partial class InternationalLicenseUpdateDTO
+    public class InternationalLicenseUpdateDTO
     {
         public int InternationalLicenseID { get; set; }
         public int ApplicationID { get; set; }

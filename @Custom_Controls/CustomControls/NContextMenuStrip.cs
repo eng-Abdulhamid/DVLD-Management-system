@@ -7,7 +7,7 @@ using System.Drawing.Text;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace ModernUI.Controls
+namespace NControls
 {
     public class NContextMenuStrip : ContextMenuStrip
     {

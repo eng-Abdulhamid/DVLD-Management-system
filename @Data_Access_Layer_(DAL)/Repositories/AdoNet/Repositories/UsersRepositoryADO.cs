@@ -1,9 +1,10 @@
 ﻿using DVLD.DAL.Entities;
-using DVLD.DAL.Mapper;
-using Microsoft.Data.SqlClient;
+using DVLD.DAL.Enums;
 using DVLD.DAL.Interfaces.IRepositories;
-using System.Data;
+using DVLD.DAL.Mapper;
 using DVLD.DAL.Mappers;
+using Microsoft.Data.SqlClient;
+using System.Data;
 using System.Reflection.Metadata;
 namespace DVLD.DAL.Repo.ADONet
 {
@@ -36,12 +37,59 @@ namespace DVLD.DAL.Repo.ADONet
 
             return await DbExecutor.ExecuteReaderSingleAsync<User, UsersColumnIndices>(Command, UserMapper.FromReader);
         }
-        public async Task<bool> DeleteAsync(int UserID)
+        public async Task<UserDeletionResult> DeleteAsync(int userID)
         {
-            string Query = $"DELETE FROM Users WHERE UserID=@UserID";
-            SqlCommand Command = new(Query);
-            Command.Parameters.AddWithValue($"@UserID", (object)UserID);
-            return await DbExecutor.ExecuteCommandReturnRowsAffected(Command) > 0;
+            string query = @"
+        IF NOT EXISTS (SELECT 1 FROM Users WHERE UserID = @UserID)
+        BEGIN
+            SELECT 0;
+            RETURN;
+        END
+
+        IF EXISTS (SELECT 1 FROM Applications WHERE CreatedByUserID = @UserID)
+        BEGIN
+            SELECT -1;
+            RETURN;
+        END
+
+        IF EXISTS (SELECT 1 FROM TestAppointments WHERE CreatedByUserID = @UserID)
+        BEGIN
+            SELECT -2;
+            RETURN;
+        END
+
+        IF EXISTS (SELECT 1 FROM Tests WHERE CreatedByUserID = @UserID)
+        BEGIN
+            SELECT -3;
+            RETURN;
+        END
+
+        IF EXISTS (SELECT 1 FROM Licenses WHERE CreatedByUserID = @UserID)
+        BEGIN
+            SELECT -4;
+            RETURN;
+        END
+
+        IF EXISTS (SELECT 1 FROM Drivers WHERE CreatedByUserID = @UserID)
+        BEGIN
+            SELECT -5;
+            RETURN;
+        END
+
+        IF EXISTS (SELECT 1 FROM DetainedLicenses WHERE CreatedByUserID = @UserID OR ReleasedByUserID = @UserID)
+        BEGIN
+            SELECT -6;
+            RETURN;
+        END
+
+        DELETE FROM Users WHERE UserID = @UserID;
+        SELECT 1;";
+
+            using SqlCommand command = new SqlCommand(query);
+            command.Parameters.AddWithValue("@UserID", userID);
+
+            int result = await DbExecutor.ExecuteScalarReturnInt(command);
+            return (UserDeletionResult)result;
         }
         public async Task<bool> UpdateAsync(User UpdatedUser)
         {
@@ -77,7 +125,7 @@ namespace DVLD.DAL.Repo.ADONet
         }
         public async Task<List<User>> GetAllAsync()
         { 
-            string Query = "SELECT * FROM Users_View";
+            string Query = "SELECT * FROM Users";
             SqlCommand Command = new(Query);
             return await DbExecutor.ExecuteReaderListAsync<User, UsersColumnIndices>(Command, UserMapper.FromReader);
         }

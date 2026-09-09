@@ -1,7 +1,7 @@
 using System;
 namespace DVLD.BLL.DTOs
 {
-    public partial class DriverReadDTO
+    public class DriverReadDTO
     {
         public int DriverID { get; set; }
         public int PersonID { get; set; }

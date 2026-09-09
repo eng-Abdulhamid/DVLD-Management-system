@@ -1,7 +1,4 @@
-﻿using CustomControls;
-using System;
-using System.Drawing;
-using System.Windows.Forms;
+﻿using NControls;
 
 namespace DVLD.PL.Global
 {
@@ -23,14 +20,8 @@ namespace DVLD.PL.Global
         public static readonly Color DangerPressed = Color.FromArgb(225, 52, 52);
 
         public static readonly Color Success = Color.FromArgb(16, 185, 129);
-        public static readonly Color SuccessHover = Color.FromArgb(34, 197, 94);
-        public static readonly Color SuccessPressed = Color.FromArgb(21, 128, 61);
-
         public static readonly Color Warning = Color.FromArgb(245, 158, 11);
-        public static readonly Color WarningHover = Color.FromArgb(251, 191, 36);
-
         public static readonly Color Info = Color.FromArgb(14, 165, 233);
-        public static readonly Color InfoHover = Color.FromArgb(56, 189, 248);
 
         public static readonly Color TextPrimary = Color.FromArgb(15, 23, 42);
         public static readonly Color TextMuted = Color.FromArgb(148, 163, 184);
@@ -46,7 +37,6 @@ namespace DVLD.PL.Global
         public static Color IconLightColor { get; set; } = Color.White;
         public static Color IconPrimaryColor { get; set; } = Color.FromArgb(124, 58, 237);
         public static Color IconDangerColor { get; set; } = Color.FromArgb(239, 68, 68);
-        public static Color IconSuccessColor { get; set; } = Color.FromArgb(16, 185, 129);
         public static Size IconStandardSize { get; set; } = new Size(18, 18);
         public static Size IconActionSize { get; set; } = new Size(20, 20);
 
@@ -64,65 +54,31 @@ namespace DVLD.PL.Global
         public static void ShowSuccessToast(string message, string title = "Success")
         {
             if (!NotificationsEnabled) return;
-
-            new NotificationBuilder()
-                .WithTitle(title)
-                .WithMessage(message)
-                .WithType(IconType.Success)
-                .WithDuration(NotificationDefaultDuration)
-                .WithPosition(NotificationDefaultPosition)
-                .WithProgressBar(NotificationShowProgressBar)
-                .WithSound(NotificationPlaySound)
-                .Show();
+            new NotificationBuilder().WithTitle(title).WithMessage(message).WithType(IconType.Success).WithDuration(NotificationDefaultDuration).WithPosition(NotificationDefaultPosition).WithProgressBar(NotificationShowProgressBar).WithSound(NotificationPlaySound).Show();
         }
 
         public static void ShowErrorToast(string message, string title = "Error")
         {
             if (!NotificationsEnabled) return;
-
-            new NotificationBuilder()
-                .WithTitle(title)
-                .WithMessage(message)
-                .WithType(IconType.Error)
-                .WithDuration(NotificationDefaultDuration)
-                .WithPosition(NotificationDefaultPosition)
-                .WithProgressBar(NotificationShowProgressBar)
-                .WithSound(NotificationPlaySound)
-                .Show();
+            new NotificationBuilder().WithTitle(title).WithMessage(message).WithType(IconType.Error).WithDuration(NotificationDefaultDuration).WithPosition(NotificationDefaultPosition).WithProgressBar(NotificationShowProgressBar).WithSound(NotificationPlaySound).Show();
         }
 
         public static void ShowWarningToast(string message, string title = "Warning")
         {
             if (!NotificationsEnabled) return;
-
-            new NotificationBuilder()
-                .WithTitle(title)
-                .WithMessage(message)
-                .WithType(IconType.Warning)
-                .WithDuration(NotificationDefaultDuration)
-                .WithPosition(NotificationDefaultPosition)
-                .WithProgressBar(NotificationShowProgressBar)
-                .WithSound(NotificationPlaySound)
-                .Show();
+            new NotificationBuilder().WithTitle(title).WithMessage(message).WithType(IconType.Warning).WithDuration(NotificationDefaultDuration).WithPosition(NotificationDefaultPosition).WithProgressBar(NotificationShowProgressBar).WithSound(NotificationPlaySound).Show();
         }
 
         public static void ShowInfoToast(string message, string title = "Information")
         {
             if (!NotificationsEnabled) return;
-
-            new NotificationBuilder()
-                .WithTitle(title)
-                .WithMessage(message)
-                .WithType(IconType.Info)
-                .WithDuration(NotificationDefaultDuration)
-                .WithPosition(NotificationDefaultPosition)
-                .WithProgressBar(NotificationShowProgressBar)
-                .WithSound(NotificationPlaySound)
-                .Show();
+            new NotificationBuilder().WithTitle(title).WithMessage(message).WithType(IconType.Info).WithDuration(NotificationDefaultDuration).WithPosition(NotificationDefaultPosition).WithProgressBar(NotificationShowProgressBar).WithSound(NotificationPlaySound).Show();
         }
 
-        public static void ApplyPrimaryStyle(this ModernUI.Controls.NButton btn)
+        public static void ApplyPrimaryStyle(this NButton btn)
         {
+            if (btn == null) return;
+
             btn.BackgroundStartColor = Primary;
             btn.BackgroundEndColor = Primary;
             btn.HoverStartColor = PrimaryHover;
@@ -144,8 +100,9 @@ namespace DVLD.PL.Global
             btn.HoverIconColor = IconLightColor;
         }
 
-        public static void ApplySecondaryStyle(this ModernUI.Controls.NButton btn)
+        public static void ApplySecondaryStyle(this NButton btn)
         {
+            if (btn == null) return;
             btn.BackgroundStartColor = NeutralBackground;
             btn.BackgroundEndColor = NeutralBackground;
             btn.HoverStartColor = NeutralHover;
@@ -167,7 +124,7 @@ namespace DVLD.PL.Global
             btn.HoverIconColor = IconHoverColor;
         }
 
-        public static void ApplyDangerStyle(this ModernUI.Controls.NButton btn)
+        public static void ApplyDangerStyle(this NButton btn)
         {
             btn.BackgroundStartColor = Danger;
             btn.BackgroundEndColor = Danger;

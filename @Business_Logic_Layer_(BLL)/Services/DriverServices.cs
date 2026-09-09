@@ -1,6 +1,7 @@
 using DVLD.BLL.DTOs;
 using DVLD.BLL.Enums;
 using DVLD.BLL.OperationResults;
+using DVLD.DAL.Enums;
 using DVLD.DAL.Interfaces.IRepositories;
 using DVLD.DAL.Repo.ADONet;
 using static DVLD.BLL.Mappers.DriverMapper;
@@ -124,18 +125,25 @@ namespace DVLD.BLL.Services
         /// </returns>
         public async Task<OperationResult<bool>> DeleteAsync(int id)
         {
-            if (!await _driverRepo.ExistsAsync(id))
+            DriverDeletionResult deletionResult = await _driverRepo.DeleteAsync(id);
+
+            if (deletionResult == DriverDeletionResult.Successful)
+            {
+                return OperationResult<bool>.Success(true, "Driver deleted successfully.");
+            }
+
+            if (deletionResult == DriverDeletionResult.NotFound)
             {
                 return OperationResult<bool>.Failure(ErrorCode.NotFound, "Driver not found.");
             }
 
-            bool isDeleted = await _driverRepo.DeleteAsync(id);
-            if (!isDeleted)
+            string errorMessage = deletionResult switch
             {
-                return OperationResult<bool>.Failure(ErrorCode.Conflict, "Cannot delete this driver because they may have linked licenses or records.");
-            }
+                DriverDeletionResult.HasLicenses => "Cannot delete this driver because they have issued license records.",
+                _ => "An unexpected error occurred while deleting the driver."
+            };
 
-            return OperationResult<bool>.Success(true, "Driver deleted successfully.");
+            return OperationResult<bool>.Failure(ErrorCode.Conflict, errorMessage);
         }
 
         /// <summary>

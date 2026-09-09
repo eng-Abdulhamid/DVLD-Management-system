@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
+using NControls;
 
 namespace DVLD.PL.PeopleManagement
 {
@@ -8,8 +9,8 @@ namespace DVLD.PL.PeopleManagement
         private System.ComponentModel.IContainer components = null;
         private NControls.NCheckBox chkAutoSearch;
         private NControls.NCheckBox chkConfirmDelete;
-        private ModernUI.Controls.NButton btnSave;
-        private ModernUI.Controls.NButton btnCancel;
+        private NButton btnSave;
+        private NButton btnCancel;
 
         protected override void Dispose(bool disposing)
         {
@@ -24,8 +25,8 @@ namespace DVLD.PL.PeopleManagement
         {
             chkAutoSearch = new NControls.NCheckBox();
             chkConfirmDelete = new NControls.NCheckBox();
-            btnSave = new ModernUI.Controls.NButton();
-            btnCancel = new ModernUI.Controls.NButton();
+            btnSave = new NButton();
+            btnCancel = new NButton();
             SuspendLayout();
             // 
             // headerControl

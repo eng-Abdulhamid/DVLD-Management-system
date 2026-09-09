@@ -7,7 +7,7 @@ using System.Drawing.Text;
 using System.Windows.Forms;
 using Timer = System.Windows.Forms.Timer;
 
-namespace ModernUI.Controls
+namespace NControls
 {
     [DefaultEvent("Click")]
     public class NButton : Control

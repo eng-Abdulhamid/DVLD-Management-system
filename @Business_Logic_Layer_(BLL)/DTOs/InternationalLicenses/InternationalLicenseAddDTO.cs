@@ -1,7 +1,7 @@
 using System;
 namespace DVLD.BLL.DTOs
 {
-    public partial class InternationalLicenseAddDTO
+    public class InternationalLicenseAddDTO
     {
         public int ApplicationID { get; set; }
         public int DriverID { get; set; }

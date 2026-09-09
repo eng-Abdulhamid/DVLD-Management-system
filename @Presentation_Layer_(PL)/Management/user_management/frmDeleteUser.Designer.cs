@@ -1,31 +1,29 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
+using NControls;
 
-namespace DVLD.PL.PeopleManagement
+namespace DVLD.PL.UsersManagement
 {
-    partial class frmDeletePersonForm
+    partial class frmDeleteUser
     {
         private System.ComponentModel.IContainer components = null;
         private Label lblWarning;
-        private ModernUI.Controls.NButton btnDelete;
-        private ctrlPersonCard ctrlPersonCard1;
-        private ModernUI.Controls.NButton btnCancel;
+        private ctrlUserCard ctrlUserCard1;
+        private NButton btnDelete;
+        private NButton btnCancel;
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
+            if (disposing && (components != null)) components.Dispose();
             base.Dispose(disposing);
         }
 
         private void InitializeComponent()
         {
             lblWarning = new Label();
-            btnDelete = new ModernUI.Controls.NButton();
-            ctrlPersonCard1 = new ctrlPersonCard();
-            btnCancel = new ModernUI.Controls.NButton();
+            ctrlUserCard1 = new ctrlUserCard();
+            btnDelete = new NButton();
+            btnCancel = new NButton();
             SuspendLayout();
             // 
             // headerControl
@@ -33,7 +31,7 @@ namespace DVLD.PL.PeopleManagement
             headerControl.AllowMaximize = false;
             headerControl.AllowMinimize = false;
             headerControl.Size = new Size(826, 38);
-            headerControl.TitleText = "DVLD / People Management / Delete Person";
+            headerControl.TitleText = "DVLD / Users Management / Delete User";
             // 
             // lblWarning
             // 
@@ -44,7 +42,15 @@ namespace DVLD.PL.PeopleManagement
             lblWarning.Name = "lblWarning";
             lblWarning.Size = new Size(519, 20);
             lblWarning.TabIndex = 0;
-            lblWarning.Text = "Warning: Are you sure you want to permanently delete this person record?";
+            lblWarning.Text = "Warning: Are you sure you want to permanently delete this user account?";
+            // 
+            // ctrlUserCard1
+            // 
+            ctrlUserCard1.BackColor = Color.Transparent;
+            ctrlUserCard1.Location = new Point(25, 88);
+            ctrlUserCard1.Name = "ctrlUserCard1";
+            ctrlUserCard1.Size = new Size(780, 350);
+            ctrlUserCard1.TabIndex = 1;
             // 
             // btnDelete
             // 
@@ -54,28 +60,13 @@ namespace DVLD.PL.PeopleManagement
             btnDelete.CenterIconWithText = true;
             btnDelete.Cursor = Cursors.Hand;
             btnDelete.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
-            btnDelete.IconMargin = 6;
-            btnDelete.IconOffset = new Point(0, 0);
-            btnDelete.IconSize = new Size(18, 18);
-            btnDelete.IconSpacing = 6;
             btnDelete.IsLoading = false;
             btnDelete.LeftIcon = Properties.Resources.bin;
-            btnDelete.Location = new Point(515, 362);
-            btnDelete.MiddleIcon = null;
+            btnDelete.Location = new Point(515, 450);
             btnDelete.Name = "btnDelete";
-            btnDelete.RightIcon = null;
             btnDelete.Size = new Size(148, 40);
             btnDelete.TabIndex = 2;
             btnDelete.Text = "Delete Record";
-            btnDelete.TextOffset = new Point(0, 0);
-            // 
-            // ctrlPersonCard1
-            // 
-            ctrlPersonCard1.BackColor = Color.White;
-            ctrlPersonCard1.Location = new Point(25, 88);
-            ctrlPersonCard1.Name = "ctrlPersonCard1";
-            ctrlPersonCard1.Size = new Size(780, 260);
-            ctrlPersonCard1.TabIndex = 1;
             // 
             // btnCancel
             // 
@@ -86,17 +77,13 @@ namespace DVLD.PL.PeopleManagement
             btnCancel.Cursor = Cursors.Hand;
             btnCancel.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             btnCancel.IsLoading = false;
-            btnCancel.LeftIcon = null;
-            btnCancel.Location = new Point(670, 362);
-            btnCancel.MiddleIcon = null;
+            btnCancel.Location = new Point(670, 450);
             btnCancel.Name = "btnCancel";
-            btnCancel.RightIcon = null;
             btnCancel.Size = new Size(135, 40);
             btnCancel.TabIndex = 3;
             btnCancel.Text = "Cancel";
-            btnCancel.TextOffset = new Point(0, 0);
             // 
-            // frmDeletePersonForm
+            // frmDeleteUser
             // 
             AllowMaximize = false;
             AllowMinimize = false;
@@ -104,18 +91,18 @@ namespace DVLD.PL.PeopleManagement
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(830, 420);
-            Controls.Add(ctrlPersonCard1);
+            ClientSize = new Size(830, 510);
+            Controls.Add(ctrlUserCard1);
             Controls.Add(lblWarning);
             Controls.Add(btnCancel);
             Controls.Add(btnDelete);
-            Name = "frmDeletePersonForm";
-            Text = "DVLD / People Management / Delete Person";
-            Load += frmDeletePersonForm_Load;
+            Name = "frmDeleteUser";
+            Text = "DVLD / Users Management / Delete User";
+            Load += frmDeleteUser_Load;
             Controls.SetChildIndex(btnDelete, 0);
             Controls.SetChildIndex(btnCancel, 0);
             Controls.SetChildIndex(lblWarning, 0);
-            Controls.SetChildIndex(ctrlPersonCard1, 0);
+            Controls.SetChildIndex(ctrlUserCard1, 0);
             Controls.SetChildIndex(headerControl, 0);
             ResumeLayout(false);
             PerformLayout();

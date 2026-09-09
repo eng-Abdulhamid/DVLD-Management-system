@@ -1,6 +1,6 @@
 namespace DVLD.BLL.DTOs
 {
-    public partial class LicenseClassAddDTO
+    public class LicenseClassAddDTO
     {
         public string ClassName { get; set; }
         public string ClassDescription { get; set; }

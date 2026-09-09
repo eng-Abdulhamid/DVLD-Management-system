@@ -1,6 +1,6 @@
 namespace DVLD.BLL.DTOs
 {
-    public partial class ApplicationTypeReadDTO
+    public class ApplicationTypeReadDTO
     {
         public int ApplicationTypeID { get; set; }
         public string ApplicationTypeTitle { get; set; }

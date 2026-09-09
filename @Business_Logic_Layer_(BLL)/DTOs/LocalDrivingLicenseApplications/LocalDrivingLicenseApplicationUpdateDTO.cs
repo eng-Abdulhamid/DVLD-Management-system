@@ -1,6 +1,6 @@
 namespace DVLD.BLL.DTOs
 {
-    public partial class LocalDrivingLicenseApplicationUpdateDTO
+    public class LocalDrivingLicenseApplicationUpdateDTO
     {
         public int LocalDrivingLicenseApplicationID { get; set; }
         public int ApplicationID { get; set; }

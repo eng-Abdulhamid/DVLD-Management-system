@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
+using NControls;
 
 namespace DVLD.PL.PeopleManagement
 {
@@ -7,8 +8,8 @@ namespace DVLD.PL.PeopleManagement
     {
         private System.ComponentModel.IContainer components = null;
         private ctrlPersonCard ctrlPersonCard1;
-        private ModernUI.Controls.NButton btnEdit;
-        private ModernUI.Controls.NButton btnDelete;
+        private NButton btnEdit;
+        private NButton btnDelete;
 
         protected override void Dispose(bool disposing)
         {
@@ -22,8 +23,8 @@ namespace DVLD.PL.PeopleManagement
         private void InitializeComponent()
         {
             ctrlPersonCard1 = new ctrlPersonCard();
-            btnEdit = new ModernUI.Controls.NButton();
-            btnDelete = new ModernUI.Controls.NButton();
+            btnEdit = new NButton();
+            btnDelete = new NButton();
             SuspendLayout();
             // 
             // headerControl
@@ -87,6 +88,7 @@ namespace DVLD.PL.PeopleManagement
             btnEdit.TabIndex = 1;
             btnEdit.TextColor = SystemColors.ControlText;
             btnEdit.TextOffset = new Point(0, 0);
+            btnEdit.Click += btnEdit_Click;
             // 
             // btnDelete
             // 

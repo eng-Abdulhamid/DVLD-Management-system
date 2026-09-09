@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
-
+using NControls;
 namespace DVLD.PL.Login
 {
     partial class frmLoginScreen
@@ -15,7 +15,7 @@ namespace DVLD.PL.Login
         private NControls.NTextBox txtPassword;
         private NControls.NCheckBox chkRememberMe;
         private System.Windows.Forms.LinkLabel lnkForgotPassword;
-        private ModernUI.Controls.NButton btnLogin;
+        private NButton btnLogin;
         private System.Windows.Forms.Label lblSignUpPrompt;
         private System.Windows.Forms.LinkLabel lnkSignUp;
         private System.Windows.Forms.Label lblAttemptsCounter;
@@ -43,7 +43,7 @@ namespace DVLD.PL.Login
             txtPassword = new NControls.NTextBox();
             chkRememberMe = new NControls.NCheckBox();
             lnkForgotPassword = new LinkLabel();
-            btnLogin = new ModernUI.Controls.NButton();
+            btnLogin = new NButton();
             lblTitle = new Label();
             lblSubtitle = new Label();
             pnlRightCanvas.SuspendLayout();

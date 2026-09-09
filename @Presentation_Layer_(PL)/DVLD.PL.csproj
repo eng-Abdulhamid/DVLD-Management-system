@@ -13,15 +13,15 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Remove="Management\**" />
+		<Compile Remove="Managementيشسب\**" />
 		<Compile Remove="People\**" />
 		<Compile Remove="Resources\**" />
 		<Compile Remove="UsersManagement\**" />
-		<EmbeddedResource Remove="Management\**" />
+		<EmbeddedResource Remove="Managementيشسب\**" />
 		<EmbeddedResource Remove="People\**" />
 		<EmbeddedResource Remove="Resources\**" />
 		<EmbeddedResource Remove="UsersManagement\**" />
-		<None Remove="Management\**" />
+		<None Remove="Managementيشسب\**" />
 		<None Remove="People\**" />
 		<None Remove="Resources\**" />
 		<None Remove="UsersManagement\**" />

@@ -9,7 +9,6 @@ namespace DVLD.PL
         private Panel pnlContainer;
         private Label lblAppName;
         private Label lblAppSubtitle;
-        private ModernUI.Controls.NButton btnPeopleManagement;
         private Panel pnlContentArea;
 
         protected override void Dispose(bool disposing)
@@ -27,11 +26,16 @@ namespace DVLD.PL
         {
             pnlContainer = new Panel();
             pnlContentArea = new Panel();
-            btnPeopleManagement = new ModernUI.Controls.NButton();
+            menuStrip1 = new MenuStrip();
+            peopleManagementToolStripMenuItem = new ToolStripMenuItem();
+            btnPeopleManagement = new ToolStripMenuItem();
+            btnUsersManagement = new ToolStripMenuItem();
+            btnDriversManagement = new ToolStripMenuItem();
             lblAppSubtitle = new Label();
             lblAppName = new Label();
             pnlContainer.SuspendLayout();
             pnlContentArea.SuspendLayout();
+            menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // headerControl
@@ -52,7 +56,7 @@ namespace DVLD.PL
             // pnlContentArea
             // 
             pnlContentArea.BackColor = Color.White;
-            pnlContentArea.Controls.Add(btnPeopleManagement);
+            pnlContentArea.Controls.Add(menuStrip1);
             pnlContentArea.Dock = DockStyle.Fill;
             pnlContentArea.Location = new Point(0, 0);
             pnlContentArea.Name = "pnlContentArea";
@@ -60,53 +64,47 @@ namespace DVLD.PL
             pnlContentArea.Size = new Size(1096, 646);
             pnlContentArea.TabIndex = 1;
             // 
+            // menuStrip1
+            // 
+            menuStrip1.BackColor = Color.Transparent;
+            menuStrip1.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            menuStrip1.Items.AddRange(new ToolStripItem[] { peopleManagementToolStripMenuItem });
+            menuStrip1.Location = new Point(36, 36);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(1024, 40);
+            menuStrip1.TabIndex = 0;
+            menuStrip1.Text = "menuStrip1";
+            // 
+            // peopleManagementToolStripMenuItem
+            // 
+            peopleManagementToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { btnPeopleManagement, btnUsersManagement, btnDriversManagement });
+            peopleManagementToolStripMenuItem.Name = "peopleManagementToolStripMenuItem";
+            peopleManagementToolStripMenuItem.Size = new Size(169, 36);
+            peopleManagementToolStripMenuItem.Text = "Management";
+            // 
             // btnPeopleManagement
             // 
-            btnPeopleManagement.BackColor = Color.Transparent;
-            btnPeopleManagement.BackgroundEndColor = Color.FromArgb(30, 41, 59);
-            btnPeopleManagement.BackgroundStartColor = Color.FromArgb(30, 41, 59);
-            btnPeopleManagement.BorderColor = Color.FromArgb(51, 65, 85);
-            btnPeopleManagement.BorderRadius = 8;
-            btnPeopleManagement.BorderSize = 1;
-            btnPeopleManagement.CenterIconWithText = false;
-            btnPeopleManagement.Cursor = Cursors.Hand;
-            btnPeopleManagement.EnableHoverAnimation = true;
-            btnPeopleManagement.EnableIconTinting = false;
-            btnPeopleManagement.EnableRippleEffect = true;
-            btnPeopleManagement.EnableShadow = false;
-            btnPeopleManagement.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            btnPeopleManagement.ForeColor = Color.White;
-            btnPeopleManagement.GradientAngle = 90F;
-            btnPeopleManagement.HoverAnimationSpeed = 20;
-            btnPeopleManagement.HoverBorderColor = Color.FromArgb(124, 58, 237);
-            btnPeopleManagement.HoverEndColor = Color.FromArgb(109, 40, 217);
-            btnPeopleManagement.HoverIconColor = Color.White;
-            btnPeopleManagement.HoverStartColor = Color.FromArgb(124, 58, 237);
-            btnPeopleManagement.HoverTextColor = Color.White;
-            btnPeopleManagement.IconColor = Color.White;
-            btnPeopleManagement.IconMargin = 12;
-            btnPeopleManagement.IconOffset = new Point(0, 0);
-            btnPeopleManagement.IconSize = new Size(22, 22);
-            btnPeopleManagement.IconSpacing = 10;
-            btnPeopleManagement.IsLoading = false;
-            btnPeopleManagement.LeftIcon = null;
-            btnPeopleManagement.Location = new Point(3, 66);
+            btnPeopleManagement.Font = new Font("Segoe UI", 14.25F);
             btnPeopleManagement.Name = "btnPeopleManagement";
-            btnPeopleManagement.PressedEndColor = Color.FromArgb(91, 33, 182);
-            btnPeopleManagement.PressedStartColor = Color.FromArgb(91, 33, 182);
-            btnPeopleManagement.RightIcon = null;
-            btnPeopleManagement.RippleColor = Color.FromArgb(60, 255, 255, 255);
-            btnPeopleManagement.RippleSpeed = 20;
-            btnPeopleManagement.ShadowColor = Color.FromArgb(60, 0, 0, 0);
-            btnPeopleManagement.ShadowOffset = new Point(1, 1);
-            btnPeopleManagement.ShadowSize = 3;
-            btnPeopleManagement.ShiftOnPress = false;
-            btnPeopleManagement.Size = new Size(226, 46);
-            btnPeopleManagement.TabIndex = 0;
-            btnPeopleManagement.Text = "Manage People";
-            btnPeopleManagement.TextColor = Color.White;
-            btnPeopleManagement.TextOffset = new Point(0, 0);
+            btnPeopleManagement.Size = new Size(260, 30);
+            btnPeopleManagement.Text = "People Management";
             btnPeopleManagement.Click += btnPeopleManagement_Click;
+            // 
+            // btnUsersManagement
+            // 
+            btnUsersManagement.Font = new Font("Segoe UI", 14.25F);
+            btnUsersManagement.Name = "btnUsersManagement";
+            btnUsersManagement.Size = new Size(260, 30);
+            btnUsersManagement.Text = "Users Mangement";
+            btnUsersManagement.Click += btnUsersManagement_Click;
+            // 
+            // btnDriversManagement
+            // 
+            btnDriversManagement.Font = new Font("Segoe UI", 14.25F);
+            btnDriversManagement.Name = "btnDriversManagement";
+            btnDriversManagement.Size = new Size(260, 30);
+            btnDriversManagement.Text = "Drivers Mangement";
+            btnDriversManagement.Click += btnDriversManagement_Click;
             // 
             // lblAppSubtitle
             // 
@@ -137,6 +135,7 @@ namespace DVLD.PL
             BackColor = Color.FromArgb(124, 58, 237);
             ClientSize = new Size(1100, 650);
             Controls.Add(pnlContainer);
+            MainMenuStrip = menuStrip1;
             MinimumSize = new Size(950, 580);
             Name = "frmMainScreen";
             Text = "DVLD - Management System";
@@ -144,9 +143,18 @@ namespace DVLD.PL
             Controls.SetChildIndex(headerControl, 0);
             pnlContainer.ResumeLayout(false);
             pnlContentArea.ResumeLayout(false);
+            pnlContentArea.PerformLayout();
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
             ResumeLayout(false);
         }
 
         #endregion
+
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem peopleManagementToolStripMenuItem;
+        private ToolStripMenuItem btnPeopleManagement;
+        private ToolStripMenuItem btnUsersManagement;
+        private ToolStripMenuItem btnDriversManagement;
     }
 }

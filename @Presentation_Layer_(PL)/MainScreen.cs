@@ -1,5 +1,7 @@
-﻿using DVLD.PL.Global;
+﻿using DVLD.PL.DriversManagement;
+using DVLD.PL.Global;
 using DVLD.PL.PeopleManagement;
+using DVLD.PL.UsersManagement;
 using System;
 using System.Windows.Forms;
 
@@ -14,7 +16,6 @@ namespace DVLD.PL
             InitializeComponent();
             this.Text = "DVLD/Home";
 
-            btnPeopleManagement.ApplyPrimaryStyle();
             SetupToolTips();
         }
 
@@ -28,24 +29,30 @@ namespace DVLD.PL
                 UseAnimation = true,
                 UseFading = true
             };
-
-            _navToolTips.SetToolTip(btnPeopleManagement, "Manage all citizen records, identity data, and personal profiles");
         }
-
         private void btnPeopleManagement_Click(object sender, EventArgs e)
         {
             using (frmPeopleManagement frm = new frmPeopleManagement())
             {
                 frm.ShowDialog(this);
             }
-        }
 
-        private void btnUserManagement_Click(object sender, EventArgs e)
-        {
         }
-
-        private void btnSettings_Click(object sender, EventArgs e)
+        private void btnUsersManagement_Click(object sender, EventArgs e)
         {
+            using (frmUserManagement userManagement = new())
+            {
+                userManagement.ShowDialog();
+            }
+
+        }
+        private void btnDriversManagement_Click(object sender, EventArgs e)
+        {
+            using (frmDriverManagement driverManagement = new())
+            {
+                driverManagement.ShowDialog();
+            }
+
         }
     }
 }

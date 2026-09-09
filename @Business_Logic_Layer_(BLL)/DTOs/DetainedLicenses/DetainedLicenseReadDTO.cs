@@ -1,7 +1,7 @@
 using System;
 namespace DVLD.BLL.DTOs
 {
-    public partial class DetainedLicenseReadDTO
+    public class DetainedLicenseReadDTO
     {
         public int DetainID { get; set; }
         public int LicenseID { get; set; }

@@ -293,7 +293,7 @@
     <value>13</value>
   </data>
   <data name="&gt;&gt;btnLogin.Type" xml:space="preserve">
-    <value>ModernUI.Controls.NButton, Modern_Controls, Culture=neutral, PublicKeyToken=null</value>
+    <value>NButton, Modern_Controls, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="lblSignUpPrompt.Text" xml:space="preserve">
     <value>Don't have an account?</value>

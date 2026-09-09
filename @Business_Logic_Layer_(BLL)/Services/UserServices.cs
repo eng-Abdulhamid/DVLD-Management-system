@@ -2,6 +2,7 @@ using DVLD.BLL.DTOs;
 using DVLD.BLL.Enums;
 using DVLD.BLL.OperationResults;
 using DVLD.DAL.Entities;
+using DVLD.DAL.Enums;
 using DVLD.DAL.Interfaces.IRepositories;
 using DVLD.DAL.Repo.ADONet;
 using System;
@@ -104,18 +105,30 @@ namespace DVLD.BLL.Services
 
         public async Task<OperationResult<bool>> DeleteAsync(int id)
         {
-            if (!await _userRepo.ExistsAsync(id))
+            UserDeletionResult deletionResult = await _userRepo.DeleteAsync(id);
+
+            if (deletionResult == UserDeletionResult.Successful)
+            {
+                return OperationResult<bool>.Success(true, "User deleted successfully.");
+            }
+
+            if (deletionResult == UserDeletionResult.NotFound)
             {
                 return OperationResult<bool>.Failure(ErrorCode.NotFound, "User not found.");
             }
 
-            bool isDeleted = await _userRepo.DeleteAsync(id);
-            if (!isDeleted)
+            string errorMessage = deletionResult switch
             {
-                return OperationResult<bool>.Failure(ErrorCode.Conflict, "Cannot delete user because they are referenced by other system records.");
-            }
+                UserDeletionResult.HasApplications => "Cannot delete this user because they created application records.",
+                UserDeletionResult.HasTestAppointments => "Cannot delete this user because they scheduled test appointments.",
+                UserDeletionResult.HasTests => "Cannot delete this user because they conducted test records.",
+                UserDeletionResult.HasLicenses => "Cannot delete this user because they issued driver licenses.",
+                UserDeletionResult.HasDrivers => "Cannot delete this user because they created driver profiles.",
+                UserDeletionResult.HasDetainedLicenses => "Cannot delete this user because they handled detained license records.",
+                _ => "An unexpected error occurred while deleting the user."
+            };
 
-            return OperationResult<bool>.Success(true, "User deleted successfully.");
+            return OperationResult<bool>.Failure(ErrorCode.Conflict, errorMessage);
         }
         private async Task<OperationResult<bool>> ProcessPasswordChangeAsync(User user, string currentPassword, string newPassword)
         {

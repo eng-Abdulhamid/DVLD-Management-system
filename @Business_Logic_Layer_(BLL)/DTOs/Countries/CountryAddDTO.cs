@@ -1,6 +1,6 @@
 namespace DVLD.BLL.DTOs
 {
-    public partial class CountryAddDTO
+    public class CountryAddDTO
     {
         public string CountryName { get; set; } = string.Empty;
 

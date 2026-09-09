@@ -1,7 +1,7 @@
 using System;
 namespace Entities
 {
-    public partial class LicenseReadDTO
+    public class LicenseReadDTO
     {
         public int LicenseID { get; set; }
         public int ApplicationID { get; set; }

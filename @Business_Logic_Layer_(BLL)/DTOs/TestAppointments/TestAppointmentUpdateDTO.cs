@@ -1,7 +1,7 @@
 using System;
 namespace DVLD.BLL.DTOs
 {
-    public partial class TestAppointmentUpdateDTO
+    public class TestAppointmentUpdateDTO
     {
         public int TestAppointmentID { get; set; }
         public int TestTypeID { get; set; }

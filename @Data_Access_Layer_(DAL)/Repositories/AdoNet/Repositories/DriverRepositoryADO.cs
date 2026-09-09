@@ -1,7 +1,8 @@
 ﻿using DVLD.DAL.Entities;
+using DVLD.DAL.Enums;
+using DVLD.DAL.Interfaces.IRepositories;
 using DVLD.DAL.Mapper;
 using Microsoft.Data.SqlClient;
-using DVLD.DAL.Interfaces.IRepositories;
 namespace DVLD.DAL.Repo.ADONet
 {
 
@@ -33,15 +34,30 @@ namespace DVLD.DAL.Repo.ADONet
             return await DbExecutor.ExecuteReaderSingleAsync<Driver, DriverColumnIndices>(Command, DriverMapper.FromReader);
         }
 
-        public async Task<bool> DeleteAsync(int DriverID)
+        public async Task<DriverDeletionResult> DeleteAsync(int driverID)
         {
-            string Query = "DELETE FROM Drivers WHERE DriverID = @DriverID";
-            SqlCommand Command = new SqlCommand(Query);
-            Command.Parameters.AddWithValue("@DriverID", DriverID);
+            string query = @"
+        IF NOT EXISTS (SELECT 1 FROM Drivers WHERE DriverID = @DriverID)
+        BEGIN
+            SELECT 0;
+            RETURN;
+        END
 
-            return await DbExecutor.ExecuteCommandReturnRowsAffected(Command) > 0;
+        IF EXISTS (SELECT 1 FROM Licenses WHERE DriverID = @DriverID)
+        BEGIN
+            SELECT -1;
+            RETURN;
+        END
+
+        DELETE FROM Drivers WHERE DriverID = @DriverID;
+        SELECT 1;";
+
+            using SqlCommand command = new SqlCommand(query);
+            command.Parameters.AddWithValue("@DriverID", driverID);
+
+            int result = await DbExecutor.ExecuteScalarReturnInt(command);
+            return (DriverDeletionResult)result;
         }
-
         public async Task<bool> UpdateAsync(Driver UpdatedDriver)
         {
             string Query = @"UPDATE Drivers SET 

@@ -1,6 +1,5 @@
 ﻿using DVLD.PL.Global;
-using System;
-using System.Windows.Forms;
+using static DVLD.PL.Global.UITheme;
 
 namespace DVLD.PL.PeopleManagement
 {
@@ -92,6 +91,11 @@ namespace DVLD.PL.PeopleManagement
                 this.Close();
             };
             frm.ShowDialog();
+        }
+
+        private void btnEdit_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
