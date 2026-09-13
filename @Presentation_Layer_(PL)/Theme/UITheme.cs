@@ -339,23 +339,27 @@ namespace DVLD.PL.Global
             lbl.TextAlign = ContentAlignment.MiddleCenter;
             lbl.Padding = new Padding(8, 3, 8, 3);
         }
-        public static void ApplyModernMenuRenderer(this ContextMenuStrip cms)
+
+        public static void ApplyModernMenuRenderer(this ToolStrip ts, bool borderless = false)
         {
             var colorTable = new NMenuColorTable
             {
                 CustomBackground = Surface,
-                CustomMenuBorder = Border,
                 CustomItemSelected = SelectionBg,
                 CustomSeparator = Border
             };
 
-            cms.Renderer = new NMenuRenderer(colorTable)
+            ts.Renderer = new NMenuRenderer(colorTable)
             {
                 ItemTextColor = TextPrimary,
                 ItemHoverTextColor = PrimaryPressed,
                 DangerTextColor = Danger
             };
         }
+
+        public static void ApplyModernMenuRenderer(this ContextMenuStrip cms) =>
+            ApplyModernMenuRenderer((ToolStrip)cms, borderless: false);
+
         #endregion
     }
 }

@@ -1,4 +1,7 @@
-﻿using CustomizeControls;
+﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
+using CustomizeControls;
 using DVLD.PL.DriversManagement;
 using DVLD.PL.Global;
 using DVLD.PL.Login;
@@ -20,51 +23,63 @@ namespace DVLD.PL
             ApplyCustomMenuRenderer();
             SetupToolTips();
             ConfigureMenuItemsInteraction();
-            UpdateCurrentUserInfo();
+            SetupHeaderIntegration();
+            SetupDashboardCards();
+            UpdateDashboardInfo();
 
-            AppSession.OnUserSessionChanged += UpdateCurrentUserInfo;
+            AppSession.OnUserSessionChanged += UpdateDashboardInfo;
         }
 
-        private void UpdateCurrentUserInfo()
+        #region Header & Session Integration
+
+        private void SetupHeaderIntegration()
+        {
+            headerControl.ShowUserProfile = true;
+
+            headerControl.OnCurrentUserInfoClicked += (s, e) => OpenCurrentUserInfo();
+            headerControl.OnChangePasswordClicked += (s, e) => OpenChangePassword();
+            headerControl.OnSignOutClicked += (s, e) => PerformSignOut();
+        }
+
+        private void UpdateDashboardInfo()
         {
             if (InvokeRequired)
             {
-                Invoke(new Action(UpdateCurrentUserInfo));
+                Invoke(new Action(UpdateDashboardInfo));
                 return;
             }
 
             if (AppSession.IsAuthenticated)
             {
-                btnCurrentUser.Text = $"👤 {AppSession.CurrentUserName}";
-                btnCurrentUser.ToolTipText = $"Logged in as: {AppSession.CurrentUserName}";
-                btnCurrentUser.Visible = true;
-                accountSettingsToolStripMenuItem.Visible = true;
+                lblGreetingTitle.Text = $"Welcome back, {AppSession.CurrentUserName}";
             }
             else
             {
-                btnCurrentUser.Text = "👤 Not Logged In";
-                btnCurrentUser.Visible = false;
-                accountSettingsToolStripMenuItem.Visible = false;
+                lblGreetingTitle.Text = "Welcome to DVLD Portal";
             }
         }
+
+        #endregion
+
+        #region UI Styling & Custom Renderer
 
         private void ApplyCustomMenuRenderer()
         {
             var colorTable = new NMenuColorTable
             {
-                CustomMenuBorder = Color.Transparent,      
+                CustomBorder = Color.Transparent, 
                 CustomBackground = Color.White,
-                CustomItemSelected = Color.FromArgb(243, 232, 255), 
-                CustomSeparator = Color.FromArgb(241, 245, 249)
+                CustomItemSelected = Color.FromArgb(241, 245, 249), 
+                CustomSeparator = Color.FromArgb(226, 232, 240)
             };
 
             var renderer = new NMenuRenderer(colorTable)
             {
                 ItemTextColor = Color.FromArgb(30, 41, 59),
-                ItemHoverTextColor = Color.FromArgb(124, 58, 237),
-                DangerTextColor = Color.FromArgb(239, 68, 68),
-                DangerHoverBackground = Color.FromArgb(254, 242, 242),
-                ItemBorderRadius = 8
+                ItemHoverTextColor = Color.FromArgb(15, 23, 42),
+                AccentColor = Color.FromArgb(124, 58, 237),
+                DangerTextColor = Color.FromArgb(220, 38, 38),
+                DangerHoverBackground = Color.FromArgb(254, 242, 242)
             };
 
             menuStrip1.Renderer = renderer;
@@ -104,18 +119,65 @@ namespace DVLD.PL
                 UseAnimation = true,
                 UseFading = true
             };
-
-            btnPeopleManagement.ToolTipText = "Manage registered persons";
-            btnUsersManagement.ToolTipText = "Manage system users and credentials";
-            btnDriversManagement.ToolTipText = "View and manage drivers records";
-            btnCurrentUserInfo.ToolTipText = "View your profile details";
-            btnChangePassword.ToolTipText = "Change your account password";
-            btnSignOut.ToolTipText = "Sign out from the application";
         }
 
-        #region Management Actions
+        #endregion
 
-        private void btnPeopleManagement_Click(object sender, EventArgs e)
+        #region Quick Dashboard Cards Setup
+
+        private void SetupDashboardCards()
+        {
+            ConfigureCardHover(cardPeople, OpenPeopleManagement);
+            ConfigureCardHover(cardDrivers, OpenDriversManagement);
+            ConfigureCardHover(cardUsers, OpenUsersManagement);
+        }
+        private static void ConfigureCardHover(Panel card, Action onClick)
+        {
+            Color defaultBg = Color.FromArgb(248, 250, 252);
+            Color hoverBg = Color.FromArgb(241, 245, 249);
+
+            card.Cursor = Cursors.Hand;
+
+            void OnHoverEnter(object? s, EventArgs e)
+            {
+                card.BackColor = hoverBg;
+                foreach (Control ctrl in card.Controls)
+                {
+                    if (ctrl is not Panel) ctrl.BackColor = hoverBg;
+                }
+            }
+
+            void OnHoverLeave(object? s, EventArgs e)
+            {
+                Point mouseInCard = card.PointToClient(Cursor.Position);
+                if (!card.ClientRectangle.Contains(mouseInCard))
+                {
+                    card.BackColor = defaultBg;
+                    foreach (Control ctrl in card.Controls)
+                    {
+                        if (ctrl is not Panel) ctrl.BackColor = defaultBg;
+                    }
+                }
+            }
+
+            card.MouseEnter += OnHoverEnter;
+            card.MouseLeave += OnHoverLeave;
+            card.Click += (s, e) => onClick();
+
+            foreach (Control child in card.Controls)
+            {
+                child.Cursor = Cursors.Hand;
+                child.MouseEnter += OnHoverEnter;
+                child.MouseLeave += OnHoverLeave;
+                child.Click += (s, e) => onClick();
+            }
+        }
+
+        #endregion
+
+        #region Centralized Navigation Actions (Single Source of Truth)
+
+        public void OpenPeopleManagement()
         {
             using (frmPeopleManagement frm = new frmPeopleManagement())
             {
@@ -123,7 +185,7 @@ namespace DVLD.PL
             }
         }
 
-        private void btnUsersManagement_Click(object sender, EventArgs e)
+        public void OpenUsersManagement()
         {
             using (frmUserManagement userManagement = new frmUserManagement())
             {
@@ -131,7 +193,7 @@ namespace DVLD.PL
             }
         }
 
-        private void btnDriversManagement_Click(object sender, EventArgs e)
+        public void OpenDriversManagement()
         {
             using (frmDriverManagement driverManagement = new frmDriverManagement())
             {
@@ -139,11 +201,7 @@ namespace DVLD.PL
             }
         }
 
-        #endregion
-
-        #region Account Actions
-
-        private void btnCurrentUserInfo_Click(object sender, EventArgs e)
+        public void OpenCurrentUserInfo()
         {
             if (!AppSession.IsAuthenticated) return;
 
@@ -153,7 +211,7 @@ namespace DVLD.PL
             }
         }
 
-        private void btnChangePassword_Click(object sender, EventArgs e)
+        public void OpenChangePassword()
         {
             if (!AppSession.IsAuthenticated) return;
 
@@ -163,7 +221,7 @@ namespace DVLD.PL
             }
         }
 
-        private void btnSignOut_Click(object sender, EventArgs e)
+        public void PerformSignOut()
         {
             DialogResult result = MessageBox.Show(
                 "Are you sure you want to sign out?",
@@ -180,9 +238,20 @@ namespace DVLD.PL
 
         #endregion
 
+        #region Menu Click Handlers
+
+        private void btnPeopleManagement_Click(object sender, EventArgs e) => OpenPeopleManagement();
+        private void btnUsersManagement_Click(object sender, EventArgs e) => OpenUsersManagement();
+        private void btnDriversManagement_Click(object sender, EventArgs e) => OpenDriversManagement();
+        private void btnCurrentUserInfo_Click(object sender, EventArgs e) => OpenCurrentUserInfo();
+        private void btnChangePassword_Click(object sender, EventArgs e) => OpenChangePassword();
+        private void btnSignOut_Click(object sender, EventArgs e) => PerformSignOut();
+
+        #endregion
+
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
-            AppSession.OnUserSessionChanged -= UpdateCurrentUserInfo;
+            AppSession.OnUserSessionChanged -= UpdateDashboardInfo;
             base.OnFormClosed(e);
         }
     }

@@ -12,6 +12,7 @@ namespace DVLD.PL.Global
             if (disposing)
             {
                 UITheme.OnThemeChanged -= HandleThemeChanged;
+                AppSession.OnUserSessionChanged -= HandleUserSessionChanged;
                 UnhookParentFormEvents();
 
                 if (_parentControlRef != null)
@@ -25,14 +26,31 @@ namespace DVLD.PL.Global
             base.Dispose(disposing);
         }
 
+        #region Component Designer generated code
+
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
+
             lblTitle = new Label();
             pnlWindowControls = new Panel();
             btnMinimize = new Button();
             btnMaximize = new Button();
             btnClose = new Button();
+
+            // زر الحساب في الهيدر
+            btnUserProfile = new Button();
+
+            // قائمة الحساب المنبثقة
+            contextMenuUser = new ContextMenuStrip(components);
+            itemCurrentUserInfo = new ToolStripMenuItem();
+            itemChangePassword = new ToolStripMenuItem();
+            itemSettings = new ToolStripMenuItem();
+            sepUser = new ToolStripSeparator();
+            itemSignOut = new ToolStripMenuItem();
+
             pnlWindowControls.SuspendLayout();
+            contextMenuUser.SuspendLayout();
             SuspendLayout();
             // 
             // lblTitle
@@ -44,10 +62,30 @@ namespace DVLD.PL.Global
             lblTitle.Location = new Point(0, 0);
             lblTitle.Name = "lblTitle";
             lblTitle.Padding = new Padding(12, 0, 0, 0);
-            lblTitle.Size = new Size(732, 38);
+            lblTitle.Size = new Size(580, 38);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "Title";
             lblTitle.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // btnUserProfile
+            // 
+            btnUserProfile.AutoSize = true;
+            btnUserProfile.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnUserProfile.BackColor = Color.Transparent;
+            btnUserProfile.Dock = DockStyle.Right;
+            btnUserProfile.FlatAppearance.BorderSize = 0;
+            btnUserProfile.FlatStyle = FlatStyle.Flat;
+            btnUserProfile.Font = new Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnUserProfile.ForeColor = Color.FromArgb(71, 85, 105);
+            btnUserProfile.Location = new Point(580, 0);
+            btnUserProfile.Name = "btnUserProfile";
+            btnUserProfile.Padding = new Padding(14, 0, 14, 0);
+            btnUserProfile.Size = new Size(152, 38);
+            btnUserProfile.TabIndex = 1;
+            btnUserProfile.Text = "👤  User  ▾";
+            btnUserProfile.TextAlign = ContentAlignment.MiddleCenter;
+            btnUserProfile.UseVisualStyleBackColor = true;
+            btnUserProfile.Visible = false; // افتراضياً مخفي لباقي الفورمز
             // 
             // pnlWindowControls
             // 
@@ -61,7 +99,7 @@ namespace DVLD.PL.Global
             pnlWindowControls.Location = new Point(732, 0);
             pnlWindowControls.Name = "pnlWindowControls";
             pnlWindowControls.Size = new Size(138, 38);
-            pnlWindowControls.TabIndex = 1;
+            pnlWindowControls.TabIndex = 2;
             // 
             // btnMinimize
             // 
@@ -105,24 +143,81 @@ namespace DVLD.PL.Global
             btnClose.Text = "✕";
             btnClose.UseVisualStyleBackColor = true;
             // 
+            // contextMenuUser
+            // 
+            contextMenuUser.Font = new Font("Segoe UI", 10F);
+            contextMenuUser.Items.AddRange(new ToolStripItem[] {
+                itemCurrentUserInfo,
+                itemChangePassword,
+                itemSettings,
+                sepUser,
+                itemSignOut
+            });
+            contextMenuUser.Name = "contextMenuUser";
+            contextMenuUser.Size = new Size(196, 140);
+            // 
+            // itemCurrentUserInfo
+            // 
+            itemCurrentUserInfo.Name = "itemCurrentUserInfo";
+            itemCurrentUserInfo.Size = new Size(195, 26);
+            itemCurrentUserInfo.Text = "Current User Info";
+            // 
+            // itemChangePassword
+            // 
+            itemChangePassword.Name = "itemChangePassword";
+            itemChangePassword.Size = new Size(195, 26);
+            itemChangePassword.Text = "Change Password";
+            // 
+            // itemSettings
+            // 
+            itemSettings.Name = "itemSettings";
+            itemSettings.Size = new Size(195, 26);
+            itemSettings.Text = "Settings";
+            // 
+            // sepUser
+            // 
+            sepUser.Name = "sepUser";
+            sepUser.Size = new Size(192, 6);
+            // 
+            // itemSignOut
+            // 
+            itemSignOut.ForeColor = Color.FromArgb(220, 38, 38);
+            itemSignOut.Name = "itemSignOut";
+            itemSignOut.Size = new Size(195, 26);
+            itemSignOut.Tag = "Danger";
+            itemSignOut.Text = "Sign Out";
+            // 
             // ctrlFormHeader
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Transparent;
             Controls.Add(lblTitle);
+            Controls.Add(btnUserProfile);
             Controls.Add(pnlWindowControls);
+            Dock = DockStyle.Top;
             Name = "ctrlFormHeader";
             Size = new Size(870, 38);
             pnlWindowControls.ResumeLayout(false);
+            contextMenuUser.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
 
+        #endregion
+
         private Label lblTitle;
+        private Button btnUserProfile;
         private Panel pnlWindowControls;
         private Button btnMinimize;
         private Button btnMaximize;
         private Button btnClose;
+
+        private ContextMenuStrip contextMenuUser;
+        private ToolStripMenuItem itemCurrentUserInfo;
+        private ToolStripMenuItem itemChangePassword;
+        private ToolStripMenuItem itemSettings;
+        private ToolStripSeparator sepUser;
+        private ToolStripMenuItem itemSignOut;
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-using CustomizeControls;
-using DVLD.BLL.DTOs;
+﻿using DVLD.BLL.DTOs;
 
 namespace DVLD.PL.Global
 {

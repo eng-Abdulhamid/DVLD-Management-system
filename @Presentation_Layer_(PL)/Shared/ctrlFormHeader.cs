@@ -3,7 +3,10 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using DVLD.PL.Common;
+using CustomizeControls;
+using DVLD.PL.Login;
+using DVLD.PL.Management.user_management;
+using DVLD.PL.UsersManagement;
 
 namespace DVLD.PL.Global
 {
@@ -24,20 +27,42 @@ namespace DVLD.PL.Global
         private bool _allowClose = true;
         private bool _allowMaximize = true;
         private bool _allowMinimize = true;
+        private bool _showUserProfile = false;
 
         private Form? _parentFormRef;
         private Control? _parentControlRef;
+
+        #region Custom Events for Extensibility
+        public event EventHandler? OnCurrentUserInfoClicked;
+        public event EventHandler? OnChangePasswordClicked;
+        public event EventHandler? OnSettingsClicked;
+        public event EventHandler? OnSignOutClicked;
+        #endregion
 
         public ctrlFormHeader()
         {
             InitializeComponent();
 
+            Dock = DockStyle.Top;
+
             if (!UIUtility.IsDesignMode)
             {
                 RegisterEvents();
+                InitializeUserContextMenu();
                 UITheme.OnThemeChanged += HandleThemeChanged;
+                AppSession.OnUserSessionChanged += HandleUserSessionChanged;
                 ApplyThemeStyles();
             }
+        }
+
+        #region Properties
+
+        [Category("Header Setup")]
+        [DefaultValue(DockStyle.Top)]
+        public override DockStyle Dock
+        {
+            get => base.Dock;
+            set => base.Dock = value;
         }
 
         [Category("Header Setup")]
@@ -92,6 +117,51 @@ namespace DVLD.PL.Global
             }
         }
 
+        [Category("Header Setup")]
+        [Description("Show or hide the current user profile badge and settings menu.")]
+        [DefaultValue(false)]
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public bool ShowUserProfile
+        {
+            get => _showUserProfile;
+            set
+            {
+                _showUserProfile = value;
+                if (btnUserProfile != null)
+                {
+                    btnUserProfile.Visible = value;
+                }
+                if (value)
+                {
+                    UpdateUserProfileDisplay();
+                }
+            }
+        }
+
+        #endregion
+
+        #region Menu & Theme Initialization
+
+        private void InitializeUserContextMenu()
+        {
+            var colorTable = new NMenuColorTable
+            {
+                CustomBackground = Color.White,
+                CustomItemSelected = Color.FromArgb(241, 245, 249),
+                CustomSeparator = Color.FromArgb(226, 232, 240)
+            };
+
+            contextMenuUser.Renderer = new NMenuRenderer(colorTable)
+            {
+                ItemTextColor = Color.FromArgb(30, 41, 59),
+                ItemHoverTextColor = Color.FromArgb(15, 23, 42),
+                AccentColor = Color.FromArgb(124, 58, 237),
+                DangerTextColor = Color.FromArgb(220, 38, 38),
+                DangerHoverBackground = Color.FromArgb(254, 242, 242)
+            };
+        }
+
         private void HandleThemeChanged()
         {
             if (IsHandleCreated && !IsDisposed)
@@ -107,6 +177,37 @@ namespace DVLD.PL.Global
             }
         }
 
+        private void HandleUserSessionChanged()
+        {
+            if (IsHandleCreated && !IsDisposed)
+            {
+                if (InvokeRequired)
+                {
+                    BeginInvoke(UpdateUserProfileDisplay);
+                }
+                else
+                {
+                    UpdateUserProfileDisplay();
+                }
+            }
+        }
+
+        private void UpdateUserProfileDisplay()
+        {
+            if (!_showUserProfile) return;
+
+            if (AppSession.IsAuthenticated)
+            {
+                btnUserProfile.Text = $"👤  {AppSession.CurrentUserName}  ▾";
+                btnUserProfile.Visible = true;
+            }
+            else
+            {
+                btnUserProfile.Text = "👤  Guest  ▾";
+                btnUserProfile.Visible = false;
+            }
+        }
+
         private void ApplyThemeStyles()
         {
             lblTitle.ForeColor = UITheme.TextPrimary;
@@ -114,13 +215,19 @@ namespace DVLD.PL.Global
             btnMinimize.ForeColor = UITheme.TextSecondary;
             btnMaximize.ForeColor = UITheme.TextSecondary;
             btnClose.ForeColor = UITheme.TextSecondary;
+            btnUserProfile.ForeColor = UITheme.TextPrimary;
 
             SetupHoverEffect(btnClose, UITheme.Danger, Color.White);
             SetupHoverEffect(btnMaximize, UITheme.SelectionBg, UITheme.TextPrimary);
             SetupHoverEffect(btnMinimize, UITheme.SelectionBg, UITheme.TextPrimary);
+            SetupHoverEffect(btnUserProfile, UITheme.SelectionBg, UITheme.TextPrimary);
 
             Invalidate(true);
         }
+
+        #endregion
+
+        #region Window Dragging & Lifecycle Events
 
         protected override void OnParentChanged(EventArgs e)
         {
@@ -136,6 +243,8 @@ namespace DVLD.PL.Global
             {
                 BackColor = _parentControlRef.BackColor;
                 _parentControlRef.BackColorChanged += Parent_BackColorChanged;
+
+                SendToBack();
             }
         }
 
@@ -151,9 +260,12 @@ namespace DVLD.PL.Global
         {
             base.OnLoad(e);
 
+            SendToBack();
+
             if (btnClose != null) btnClose.Visible = _allowClose;
             if (btnMaximize != null) btnMaximize.Visible = _allowMaximize;
             if (btnMinimize != null) btnMinimize.Visible = _allowMinimize;
+            if (btnUserProfile != null) btnUserProfile.Visible = _showUserProfile;
 
             UnhookParentFormEvents();
             _parentFormRef = ParentForm;
@@ -164,6 +276,7 @@ namespace DVLD.PL.Global
                 UpdateMaximizeIcon();
             }
 
+            UpdateUserProfileDisplay();
             ApplyThemeStyles();
         }
 
@@ -195,6 +308,12 @@ namespace DVLD.PL.Global
                 }
             };
             btnMaximize.Click += (s, e) => ToggleMaximize();
+
+            btnUserProfile.Click += BtnUserProfile_Click;
+            itemCurrentUserInfo.Click += ItemCurrentUserInfo_Click;
+            itemChangePassword.Click += ItemChangePassword_Click;
+            itemSettings.Click += ItemSettings_Click;
+            itemSignOut.Click += ItemSignOut_Click;
         }
 
         private void Header_MouseDown(object? sender, MouseEventArgs e)
@@ -206,7 +325,6 @@ namespace DVLD.PL.Global
             int deltaX = Math.Abs(currentScreenPos.X - _lastClickPos.X);
             int deltaY = Math.Abs(currentScreenPos.Y - _lastClickPos.Y);
 
-            // Double click validation for window maximize toggle
             if (timeDifference.TotalMilliseconds <= SystemInformation.DoubleClickTime
                 && deltaX <= SystemInformation.DoubleClickSize.Width
                 && deltaY <= SystemInformation.DoubleClickSize.Height)
@@ -272,5 +390,83 @@ namespace DVLD.PL.Global
                 btn.ForeColor = defaultForeColor;
             };
         }
+
+        #endregion
+
+        #region User Profile Actions (Smart Fallbacks + Extensibility)
+
+        private void BtnUserProfile_Click(object? sender, EventArgs e)
+        {
+            if (contextMenuUser == null || !AppSession.IsAuthenticated) return;
+
+            Point screenPos = btnUserProfile.PointToScreen(new Point(btnUserProfile.Width, btnUserProfile.Height));
+            contextMenuUser.Show(screenPos.X - contextMenuUser.PreferredSize.Width, screenPos.Y);
+        }
+
+        private void ItemCurrentUserInfo_Click(object? sender, EventArgs e)
+        {
+            if (OnCurrentUserInfoClicked != null)
+            {
+                OnCurrentUserInfoClicked.Invoke(this, EventArgs.Empty);
+                return;
+            }
+
+            if (!AppSession.IsAuthenticated) return;
+
+            using (frmUserCard frm = new(AppSession.CurrentUserID))
+            {
+                frm.ShowDialog(ParentForm);
+            }
+        }
+
+        private void ItemChangePassword_Click(object? sender, EventArgs e)
+        {
+            if (OnChangePasswordClicked != null)
+            {
+                OnChangePasswordClicked.Invoke(this, EventArgs.Empty);
+                return;
+            }
+
+            if (!AppSession.IsAuthenticated) return;
+
+            using (frmForgetPassword frm = new(AppSession.CurrentUserName))
+            {
+                frm.ShowDialog(ParentForm);
+            }
+        }
+
+        private void ItemSettings_Click(object? sender, EventArgs e)
+        {
+            if (OnSettingsClicked != null)
+            {
+                OnSettingsClicked.Invoke(this, EventArgs.Empty);
+                return;
+            }
+
+            UITheme.ShowInfoToast("Settings feature is currently under development.", "Under Construction");
+        }
+
+        private void ItemSignOut_Click(object? sender, EventArgs e)
+        {
+            if (OnSignOutClicked != null)
+            {
+                OnSignOutClicked.Invoke(this, EventArgs.Empty);
+                return;
+            }
+
+            DialogResult result = MessageBox.Show(
+                "Are you sure you want to sign out?",
+                "Confirm Sign Out",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                AppSession.LogOut();
+                ParentForm?.Close();
+            }
+        }
+
+        #endregion
     }
 }

@@ -34,8 +34,9 @@
             // 
             headerControl.AllowMaximize = false;
             headerControl.AllowMinimize = false;
+            headerControl.BackColor = Color.FromArgb(248, 250, 252);
             headerControl.Size = new Size(458, 38);
-            headerControl.TitleText = "Current User Settings";
+            headerControl.TitleText = "Title";
             // 
             // frmCurrentUserSettings
             // 
@@ -45,6 +46,8 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(462, 581);
+            CustomBorderColor = Color.FromArgb(226, 232, 240);
+            ForeColor = Color.FromArgb(15, 23, 42);
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "frmCurrentUserSettings";
