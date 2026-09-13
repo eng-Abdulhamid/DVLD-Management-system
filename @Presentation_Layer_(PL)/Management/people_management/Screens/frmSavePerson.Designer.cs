@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
-using NControls;
+using CustomizeControls;
 
 namespace DVLD.PL.PeopleManagement
 {
@@ -12,17 +12,17 @@ namespace DVLD.PL.PeopleManagement
         private System.Windows.Forms.LinkLabel lnkUploadPhoto;
         private System.Windows.Forms.LinkLabel lnkRemovePhoto;
         private System.Windows.Forms.Label lblPersonID;
-        private NControls.NTextBox txtPersonID;
+        private CustomizeControls.NTextBox txtPersonID;
         private System.Windows.Forms.Label lblNationalNo;
-        private NControls.NTextBox txtNationalNo;
+        private CustomizeControls.NTextBox txtNationalNo;
         private System.Windows.Forms.Label lblFirstName;
-        private NControls.NTextBox txtFirstName;
+        private CustomizeControls.NTextBox txtFirstName;
         private System.Windows.Forms.Label lblSecondName;
-        private NControls.NTextBox txtSecondName;
+        private CustomizeControls.NTextBox txtSecondName;
         private System.Windows.Forms.Label lblThirdName;
-        private NControls.NTextBox txtThirdName;
+        private CustomizeControls.NTextBox txtThirdName;
         private System.Windows.Forms.Label lblLastName;
-        private NControls.NTextBox txtLastName;
+        private CustomizeControls.NTextBox txtLastName;
         private System.Windows.Forms.Label lblGender;
         private System.Windows.Forms.ComboBox cmbGender;
         private System.Windows.Forms.Label lblDateOfBirth;
@@ -30,11 +30,11 @@ namespace DVLD.PL.PeopleManagement
         private System.Windows.Forms.Label lblCountry;
         private System.Windows.Forms.ComboBox cmbCountry;
         private System.Windows.Forms.Label lblPhone;
-        private NControls.NTextBox txtPhone;
+        private CustomizeControls.NTextBox txtPhone;
         private System.Windows.Forms.Label lblEmail;
-        private NControls.NTextBox txtEmail;
+        private CustomizeControls.NTextBox txtEmail;
         private System.Windows.Forms.Label lblAddress;
-        private NControls.NTextBox txtAddress;
+        private CustomizeControls.NTextBox txtAddress;
         private NButton btnSave;
         private NButton btnCancel;
 
@@ -54,17 +54,17 @@ namespace DVLD.PL.PeopleManagement
             lnkUploadPhoto = new LinkLabel();
             lnkRemovePhoto = new LinkLabel();
             lblPersonID = new Label();
-            txtPersonID = new NControls.NTextBox();
+            txtPersonID = new CustomizeControls.NTextBox();
             lblNationalNo = new Label();
-            txtNationalNo = new NControls.NTextBox();
+            txtNationalNo = new CustomizeControls.NTextBox();
             lblFirstName = new Label();
-            txtFirstName = new NControls.NTextBox();
+            txtFirstName = new CustomizeControls.NTextBox();
             lblSecondName = new Label();
-            txtSecondName = new NControls.NTextBox();
+            txtSecondName = new CustomizeControls.NTextBox();
             lblThirdName = new Label();
-            txtThirdName = new NControls.NTextBox();
+            txtThirdName = new CustomizeControls.NTextBox();
             lblLastName = new Label();
-            txtLastName = new NControls.NTextBox();
+            txtLastName = new CustomizeControls.NTextBox();
             lblGender = new Label();
             cmbGender = new ComboBox();
             lblDateOfBirth = new Label();
@@ -72,11 +72,11 @@ namespace DVLD.PL.PeopleManagement
             lblCountry = new Label();
             cmbCountry = new ComboBox();
             lblPhone = new Label();
-            txtPhone = new NControls.NTextBox();
+            txtPhone = new CustomizeControls.NTextBox();
             lblEmail = new Label();
-            txtEmail = new NControls.NTextBox();
+            txtEmail = new CustomizeControls.NTextBox();
             lblAddress = new Label();
-            txtAddress = new NControls.NTextBox();
+            txtAddress = new CustomizeControls.NTextBox();
             btnSave = new NButton();
             btnCancel = new NButton();
             pnlContainer.SuspendLayout();

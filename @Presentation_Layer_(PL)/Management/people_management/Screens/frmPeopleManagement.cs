@@ -166,7 +166,7 @@ namespace DVLD.PL.PeopleManagement
             ctrlNotFound1.OnClearFilterClick += async (s, e) =>
             {
                 var txtSearch = ctrlPeopleSearch1.Controls.Find("txtSearch", true);
-                if (txtSearch.Length > 0 && txtSearch[0] is NControls.NTextBox txt)
+                if (txtSearch.Length > 0 && txtSearch[0] is CustomizeControls.NTextBox txt)
                 {
                     txt.Text = string.Empty;
                 }

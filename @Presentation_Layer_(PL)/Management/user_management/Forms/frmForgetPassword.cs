@@ -182,7 +182,7 @@ namespace DVLD.PL.Login
             HookPasswordToggle(txtConfirmPassword);
         }
 
-        private void HookPasswordToggle(NControls.NTextBox box)
+        private void HookPasswordToggle(CustomizeControls.NTextBox box)
         {
             box.UseSystemPasswordChar = true;
             box.RightIcon = Resources.visibilityOff;
@@ -362,7 +362,7 @@ namespace DVLD.PL.Login
             return true;
         }
 
-        private bool TriggerFieldError(NControls.NTextBox control, string message)
+        private bool TriggerFieldError(CustomizeControls.NTextBox control, string message)
         {
             control.HasError = true;
             control.Shake();

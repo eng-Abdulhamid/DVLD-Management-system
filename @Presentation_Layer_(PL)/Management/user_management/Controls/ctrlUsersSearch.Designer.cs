@@ -10,7 +10,7 @@ namespace DVLD.PL.UsersManagement
         private ComboBox cbFilterBy;
         private Label lblStatus;
         private ComboBox cbIsActive;
-        private NControls.NTextBox txtSearch;
+        private CustomizeControls.NTextBox txtSearch;
 
         private void InitializeComponent()
         {
@@ -18,7 +18,7 @@ namespace DVLD.PL.UsersManagement
             cbFilterBy = new ComboBox();
             lblStatus = new Label();
             cbIsActive = new ComboBox();
-            txtSearch = new NControls.NTextBox();
+            txtSearch = new CustomizeControls.NTextBox();
             SuspendLayout();
             // 
             // txtSearch

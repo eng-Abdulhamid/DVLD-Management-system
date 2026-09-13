@@ -1,14 +1,14 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
-using NControls;
+using CustomizeControls;
 
 namespace DVLD.PL.PeopleManagement
 {
     partial class frmPeopleManagementSettings
     {
         private System.ComponentModel.IContainer components = null;
-        private NControls.NCheckBox chkAutoSearch;
-        private NControls.NCheckBox chkConfirmDelete;
+        private CustomizeControls.NCheckBox chkAutoSearch;
+        private CustomizeControls.NCheckBox chkConfirmDelete;
         private NButton btnSave;
         private NButton btnCancel;
 
@@ -23,8 +23,8 @@ namespace DVLD.PL.PeopleManagement
 
         private void InitializeComponent()
         {
-            chkAutoSearch = new NControls.NCheckBox();
-            chkConfirmDelete = new NControls.NCheckBox();
+            chkAutoSearch = new CustomizeControls.NCheckBox();
+            chkConfirmDelete = new CustomizeControls.NCheckBox();
             btnSave = new NButton();
             btnCancel = new NButton();
             SuspendLayout();
@@ -46,7 +46,7 @@ namespace DVLD.PL.PeopleManagement
             chkAutoSearch.BoxBackColor = Color.White;
             chkAutoSearch.BoxBorderColor = Color.FromArgb(200, 205, 212);
             chkAutoSearch.BoxSize = 18;
-            chkAutoSearch.CheckAlign = NControls.NCheckAlign.Left;
+            chkAutoSearch.CheckAlign = CustomizeControls.NCheckAlign.Left;
             chkAutoSearch.Checked = true;
             chkAutoSearch.CheckedColor = Color.FromArgb(124, 58, 237);
             chkAutoSearch.CheckMarkColor = Color.White;
@@ -63,7 +63,7 @@ namespace DVLD.PL.PeopleManagement
             chkAutoSearch.Name = "chkAutoSearch";
             chkAutoSearch.RippleColor = Color.FromArgb(40, 124, 58, 237);
             chkAutoSearch.Size = new Size(290, 24);
-            chkAutoSearch.Style = NControls.NCheckBoxStyle.Rounded;
+            chkAutoSearch.Style = CustomizeControls.NCheckBoxStyle.Rounded;
             chkAutoSearch.SwitchOffTrackColor = Color.FromArgb(220, 224, 230);
             chkAutoSearch.SwitchThumbColor = Color.White;
             chkAutoSearch.SwitchWidth = 38;
@@ -82,7 +82,7 @@ namespace DVLD.PL.PeopleManagement
             chkConfirmDelete.BoxBackColor = Color.White;
             chkConfirmDelete.BoxBorderColor = Color.FromArgb(200, 205, 212);
             chkConfirmDelete.BoxSize = 18;
-            chkConfirmDelete.CheckAlign = NControls.NCheckAlign.Left;
+            chkConfirmDelete.CheckAlign = CustomizeControls.NCheckAlign.Left;
             chkConfirmDelete.Checked = true;
             chkConfirmDelete.CheckedColor = Color.FromArgb(124, 58, 237);
             chkConfirmDelete.CheckMarkColor = Color.White;
@@ -99,7 +99,7 @@ namespace DVLD.PL.PeopleManagement
             chkConfirmDelete.Name = "chkConfirmDelete";
             chkConfirmDelete.RippleColor = Color.FromArgb(40, 124, 58, 237);
             chkConfirmDelete.Size = new Size(290, 24);
-            chkConfirmDelete.Style = NControls.NCheckBoxStyle.Rounded;
+            chkConfirmDelete.Style = CustomizeControls.NCheckBoxStyle.Rounded;
             chkConfirmDelete.SwitchOffTrackColor = Color.FromArgb(220, 224, 230);
             chkConfirmDelete.SwitchThumbColor = Color.White;
             chkConfirmDelete.SwitchWidth = 38;

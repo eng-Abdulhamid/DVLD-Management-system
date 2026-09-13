@@ -6,10 +6,12 @@
 		<UseWindowsForms>true</UseWindowsForms>
 		<RootNamespace>DVLD.PL</RootNamespace>
 		<AssemblyName>DVLD.PL</AssemblyName>
-		<LangVersion>10.0</LangVersion>
+		<LangVersion>14.0</LangVersion>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Deterministic>true</Deterministic>
+		<AnalysisLevel>latest-recommended</AnalysisLevel>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -39,24 +41,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove=".gitignore" />
+		<None Remove=".gitignore" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\@Custom_Controls\Modern_Controls.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Reference Include="ApplicatinNeededControlsModern">
-		  <HintPath>..\@Custom_Controls\bin\Release\ApplicatinNeededControlsModern.dll</HintPath>
-		</Reference>
-		<Reference Include="DVLD.BLL">
-		  <HintPath>..\@Business_Logic_Layer_(BLL)\bin\Debug\net10.0\DVLD.BLL.dll</HintPath>
-		</Reference>
+		<ProjectReference Include="..\@Custom_Controls\CustomizeControls.csproj" />
+		<ProjectReference Include="..\@Business_Logic_Layer_(BLL)\DVLD.BLL.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

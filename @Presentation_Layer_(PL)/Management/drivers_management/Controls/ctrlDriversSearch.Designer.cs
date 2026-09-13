@@ -10,7 +10,7 @@ namespace DVLD.PL.DriversManagement
         private ComboBox cbSearchByLetter;
         private Label lblFilterBy;
         private ComboBox cbFilterBy;
-        private NControls.NTextBox txtSearch;
+        private CustomizeControls.NTextBox txtSearch;
 
         protected override void Dispose(bool disposing)
         {
@@ -29,7 +29,7 @@ namespace DVLD.PL.DriversManagement
             cbSearchByLetter = new ComboBox();
             lblFilterBy = new Label();
             cbFilterBy = new ComboBox();
-            txtSearch = new NControls.NTextBox();
+            txtSearch = new CustomizeControls.NTextBox();
             SuspendLayout();
             // 
             // txtSearch

@@ -6,7 +6,7 @@ using System.Drawing.Text;
 using System.Windows.Forms;
 using Timer = System.Windows.Forms.Timer;
 
-namespace NControls
+namespace CustomizeControls
 {
     public enum NCheckBoxStyle
     {

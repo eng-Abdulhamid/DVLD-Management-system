@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
-using NControls;
+using CustomizeControls;
 
 namespace DVLD.PL.Login
 {
@@ -12,7 +12,7 @@ namespace DVLD.PL.Login
         private System.Windows.Forms.Label lblSubHeader;
         private System.Windows.Forms.Label lblStep1;
         private System.Windows.Forms.Label lblUsername;
-        private NControls.NTextBox txtUserName;
+        private CustomizeControls.NTextBox txtUserName;
         private NButton btnVerifyUser;
         private NButton btnVerifiedCheck;
         private NButton btnEditUsername;
@@ -20,11 +20,11 @@ namespace DVLD.PL.Login
         private System.Windows.Forms.Panel pnlCreateNewPassword;
         private System.Windows.Forms.Label lblStep2;
         private System.Windows.Forms.Label lblOldPassword;
-        private NControls.NTextBox txtOldPassword;
+        private CustomizeControls.NTextBox txtOldPassword;
         private System.Windows.Forms.Label lblNewPassword;
-        private NControls.NTextBox txtNewPassword;
+        private CustomizeControls.NTextBox txtNewPassword;
         private System.Windows.Forms.Label lblConfirmPassword;
-        private NControls.NTextBox txtConfirmPassword;
+        private CustomizeControls.NTextBox txtConfirmPassword;
         private System.Windows.Forms.LinkLabel lnkForgotCurrentPassword;
         private NButton btnChangePassword;
         private NButton btnCancel;

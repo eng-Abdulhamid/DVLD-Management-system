@@ -4,8 +4,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using static DVLD.PL.Global.UITheme;
-using NControls;
-using ModernUI.Controls;
+using CustomizeControls;
 
 namespace DVLD.PL.Management
 {

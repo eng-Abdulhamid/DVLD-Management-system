@@ -7,7 +7,7 @@ using System.Drawing.Text;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace NControls
+namespace CustomizeControls
 {
     public class NContextMenuStrip : ContextMenuStrip
     {

@@ -4,33 +4,26 @@
 		<TargetFramework>net10.0</TargetFramework>
 		<RootNamespace>DVLD.BLL</RootNamespace>
 		<AssemblyName>DVLD.BLL</AssemblyName>
-		<LangVersion>latest</LangVersion>
+		<LangVersion>14.0</LangVersion>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-
 		<AnalysisLevel>latest-recommended</AnalysisLevel>
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Services\Partial\**" />
-	  <EmbeddedResource Remove="Services\Partial\**" />
-	  <None Remove="Services\Partial\**" />
+		<Compile Remove="Services\Partial\**" />
+		<EmbeddedResource Remove="Services\Partial\**" />
+		<None Remove="Services\Partial\**" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Common\SearchCriteria.cs" />
+		<Compile Remove="Common\SearchCriteria.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Reference Include="DVLD.DAL">
-	    <HintPath>..\@Data_Access_Layer_(DAL)\bin\Debug\net10.0\DVLD.DAL.dll</HintPath>
-	  </Reference>
+		<ProjectReference Include="..\@Data_Access_Layer_(DAL)\DVLD.DAL.csproj" />
 	</ItemGroup>
 
 </Project>

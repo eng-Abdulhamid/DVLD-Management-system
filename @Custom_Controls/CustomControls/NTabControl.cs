@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace Modern_Controls.CustomControls
+namespace CustomizeControls
 {
     public class NTabControl : TabControl
     {

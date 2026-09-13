@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
-using NControls;
+using CustomizeControls;
 
 namespace DVLD.PL.PeopleManagement
 {

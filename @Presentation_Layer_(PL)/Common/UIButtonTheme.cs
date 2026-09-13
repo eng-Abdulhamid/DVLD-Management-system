@@ -1,4 +1,4 @@
-﻿using NControls;
+﻿using CustomizeControls;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -192,7 +192,7 @@ namespace DVLD.PL.Global
             btn.Invalidate();
         }
 
-        public static void ApplyStandardStyle(this NControls.NTextBox txt)
+        public static void ApplyStandardStyle(this CustomizeControls.NTextBox txt)
         {
             txt.BorderRadius = DefaultBorderRadius;
             txt.BorderSize = 1;
@@ -219,7 +219,7 @@ namespace DVLD.PL.Global
             cb.DropDownStyle = ComboBoxStyle.DropDownList;
         }
 
-        public static void ApplyStandardStyle(this NControls.NCheckBox chk)
+        public static void ApplyStandardStyle(this CustomizeControls.NCheckBox chk)
         {
             chk.CheckedColor = Primary;
             chk.HoverBorderColor = Primary;

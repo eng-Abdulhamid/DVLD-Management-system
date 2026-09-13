@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
-using NControls;
+using CustomizeControls;
 namespace DVLD.PL.Login
 {
     partial class frmLoginScreen
@@ -10,10 +10,10 @@ namespace DVLD.PL.Login
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.Label lblSubtitle;
         private System.Windows.Forms.Label lblUserName;
-        private NControls.NTextBox txtUserName;
+        private CustomizeControls.NTextBox txtUserName;
         private System.Windows.Forms.Label lblPassword;
-        private NControls.NTextBox txtPassword;
-        private NControls.NCheckBox chkRememberMe;
+        private CustomizeControls.NTextBox txtPassword;
+        private CustomizeControls.NCheckBox chkRememberMe;
         private System.Windows.Forms.LinkLabel lnkForgotPassword;
         private NButton btnLogin;
         private System.Windows.Forms.Label lblSignUpPrompt;
@@ -38,10 +38,10 @@ namespace DVLD.PL.Login
             lblSignUpPrompt = new Label();
             lnkSignUp = new LinkLabel();
             lblUserName = new Label();
-            txtUserName = new NControls.NTextBox();
+            txtUserName = new CustomizeControls.NTextBox();
             lblPassword = new Label();
-            txtPassword = new NControls.NTextBox();
-            chkRememberMe = new NControls.NCheckBox();
+            txtPassword = new CustomizeControls.NTextBox();
+            chkRememberMe = new CustomizeControls.NCheckBox();
             lnkForgotPassword = new LinkLabel();
             btnLogin = new NButton();
             lblTitle = new Label();
@@ -251,7 +251,7 @@ namespace DVLD.PL.Login
             chkRememberMe.BoxBackColor = Color.White;
             chkRememberMe.BoxBorderColor = Color.FromArgb(203, 213, 225);
             chkRememberMe.BoxSize = 18;
-            chkRememberMe.CheckAlign = NControls.NCheckAlign.Left;
+            chkRememberMe.CheckAlign = CustomizeControls.NCheckAlign.Left;
             chkRememberMe.Checked = false;
             chkRememberMe.CheckedColor = Color.FromArgb(124, 58, 237);
             chkRememberMe.CheckMarkColor = Color.White;
@@ -269,7 +269,7 @@ namespace DVLD.PL.Login
             chkRememberMe.Name = "chkRememberMe";
             chkRememberMe.RippleColor = Color.FromArgb(40, 124, 58, 237);
             chkRememberMe.Size = new Size(130, 24);
-            chkRememberMe.Style = NControls.NCheckBoxStyle.Rounded;
+            chkRememberMe.Style = CustomizeControls.NCheckBoxStyle.Rounded;
             chkRememberMe.SwitchOffTrackColor = Color.FromArgb(220, 224, 230);
             chkRememberMe.SwitchThumbColor = Color.White;
             chkRememberMe.SwitchWidth = 38;

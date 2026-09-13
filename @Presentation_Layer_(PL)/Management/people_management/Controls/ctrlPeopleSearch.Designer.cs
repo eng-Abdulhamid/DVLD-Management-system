@@ -11,7 +11,7 @@ namespace DVLD.PL.PeopleManagement
         private ComboBox cbSearchByLetter;
         private ComboBox cbByGendor;
         private Label label1;
-        private NControls.NTextBox txtSearch;
+        private CustomizeControls.NTextBox txtSearch;
         private Label label4;
 
         protected override void Dispose(bool disposing)
@@ -30,7 +30,7 @@ namespace DVLD.PL.PeopleManagement
             cbSearchByLetter = new ComboBox();
             cbByGendor = new ComboBox();
             label1 = new Label();
-            txtSearch = new NControls.NTextBox();
+            txtSearch = new CustomizeControls.NTextBox();
             label4 = new Label();
             SuspendLayout();
             // 

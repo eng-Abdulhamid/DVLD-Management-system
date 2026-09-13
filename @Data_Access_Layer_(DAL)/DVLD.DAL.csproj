@@ -4,28 +4,27 @@
 		<TargetFramework>net10.0</TargetFramework>
 		<RootNamespace>DVLD.DAL</RootNamespace>
 		<AssemblyName>DVLD.DAL</AssemblyName>
-		<LangVersion>latest</LangVersion>
+		<LangVersion>14.0</LangVersion>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-
 		<AnalysisLevel>latest-recommended</AnalysisLevel>
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Common\clsCRUD.cs" />
-	  <Compile Remove="Repositories\AdoNet\ApplicationRepository.cs" />
-	  <Compile Remove="Repositories\AdoNet\ApplicationTypeRepository.cs" />
-	  <Compile Remove="Repositories\AdoNet\DetainedLicenseRepository.cs" />
-	  <Compile Remove="Repositories\AdoNet\DriverRepository.cs" />
-	  <Compile Remove="Repositories\AdoNet\InternationalLicenseRepository.cs" />
-	  <Compile Remove="Repositories\AdoNet\LicenseClassRepository.cs" />
-	  <Compile Remove="Repositories\AdoNet\LicenseRepository.cs" />
-	  <Compile Remove="Repositories\AdoNet\TestAppointmentRepository.cs" />
-	  <Compile Remove="Repositories\AdoNet\TestRepository.cs" />
-	  <Compile Remove="Repositories\AdoNet\TestTypeRepository.cs" />
-	  <Compile Remove="Repositories\AdoNet\UserRepository.cs" />
+		<Compile Remove="Common\clsCRUD.cs" />
+		<Compile Remove="Repositories\AdoNet\ApplicationRepository.cs" />
+		<Compile Remove="Repositories\AdoNet\ApplicationTypeRepository.cs" />
+		<Compile Remove="Repositories\AdoNet\DetainedLicenseRepository.cs" />
+		<Compile Remove="Repositories\AdoNet\DriverRepository.cs" />
+		<Compile Remove="Repositories\AdoNet\InternationalLicenseRepository.cs" />
+		<Compile Remove="Repositories\AdoNet\LicenseClassRepository.cs" />
+		<Compile Remove="Repositories\AdoNet\LicenseRepository.cs" />
+		<Compile Remove="Repositories\AdoNet\TestAppointmentRepository.cs" />
+		<Compile Remove="Repositories\AdoNet\TestRepository.cs" />
+		<Compile Remove="Repositories\AdoNet\TestTypeRepository.cs" />
+		<Compile Remove="Repositories\AdoNet\UserRepository.cs" />
 	</ItemGroup>
 
 	<ItemGroup>

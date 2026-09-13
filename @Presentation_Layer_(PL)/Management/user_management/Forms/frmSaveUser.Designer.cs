@@ -1,8 +1,6 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
-using Modern_Controls.CustomControls;
-using NControls;
-
+using CustomizeControls;
 namespace DVLD.PL.UsersManagement
 {
     partial class frmSaveUser

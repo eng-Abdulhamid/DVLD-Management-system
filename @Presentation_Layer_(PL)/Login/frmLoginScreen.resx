@@ -293,7 +293,7 @@
     <value>13</value>
   </data>
   <data name="&gt;&gt;btnLogin.Type" xml:space="preserve">
-    <value>NButton, Modern_Controls, Culture=neutral, PublicKeyToken=null</value>
+    <value>NButton, CustomizeControls, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="lblSignUpPrompt.Text" xml:space="preserve">
     <value>Don't have an account?</value>
@@ -302,7 +302,7 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;chkRememberMe.Type" xml:space="preserve">
-    <value>NControls.NCheckBox, Modern_Controls, Culture=neutral, PublicKeyToken=null</value>
+    <value>CustomizeControls.NCheckBox, CustomizeControls, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="lnkForgotPassword.Text" xml:space="preserve">
     <value>Forgot Password?</value>
@@ -419,7 +419,7 @@
     <value>Welcome Back</value>
   </data>
   <data name="&gt;&gt;txtPassword.Type" xml:space="preserve">
-    <value>NControls.NTextBox, Modern_Controls, Culture=neutral, PublicKeyToken=null</value>
+    <value>CustomizeControls.NTextBox, CustomizeControls, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="txtUserName.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 10.5pt</value>
@@ -560,7 +560,7 @@
     <value>0, 0</value>
   </data>
   <data name="&gt;&gt;txtUserName.Type" xml:space="preserve">
-    <value>NControls.NTextBox, Modern_Controls, Culture=neutral, PublicKeyToken=null</value>
+    <value>CustomizeControls.NTextBox, CustomizeControls, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;ctrlFormHeader1.Parent" xml:space="preserve">
     <value>pnlRightCanvas</value>

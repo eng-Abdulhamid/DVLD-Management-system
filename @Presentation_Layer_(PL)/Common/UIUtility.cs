@@ -1,4 +1,4 @@
-﻿using ModernUI.Controls;
+﻿using CustomizeControls;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -32,7 +32,7 @@ namespace DVLD.PL.Global
             return bitmap;
         }
 
-        public static void TogglePasswordVisibility(NControls.NTextBox txt, Image eyeOnIcon, Image eyeOffIcon)
+        public static void TogglePasswordVisibility(CustomizeControls.NTextBox txt, Image eyeOnIcon, Image eyeOffIcon)
         {
             txt.UseSystemPasswordChar = !txt.UseSystemPasswordChar;
             txt.ClearIcons();
@@ -41,7 +41,7 @@ namespace DVLD.PL.Global
 
             txt.AddIcon(
                 iconToSet,
-                NControls.IconPosition.Right,
+                CustomizeControls.IconPosition.Right,
                 20, 20,
                 true,
                 (t) => TogglePasswordVisibility(t, eyeOnIcon, eyeOffIcon));

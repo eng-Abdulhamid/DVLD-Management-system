@@ -3,7 +3,7 @@ using DVLD.BLL.Services;
 using DVLD.PL.Global;
 using DVLD.PL.Login;
 using DVLD.PL.PeopleManagement;
-using NControls;
+using CustomizeControls;
 using System;
 using System.Drawing;
 using System.Linq.Expressions;

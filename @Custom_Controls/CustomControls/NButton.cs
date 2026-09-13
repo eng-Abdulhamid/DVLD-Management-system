@@ -7,7 +7,7 @@ using System.Drawing.Text;
 using System.Windows.Forms;
 using Timer = System.Windows.Forms.Timer;
 
-namespace NControls
+namespace CustomizeControls
 {
     [DefaultEvent("Click")]
     public class NButton : Control
