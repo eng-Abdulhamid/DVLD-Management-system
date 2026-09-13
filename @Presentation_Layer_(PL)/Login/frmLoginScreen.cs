@@ -1,10 +1,12 @@
-﻿using DVLD.BLL.OperationResults;
+﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
+using DVLD.BLL.OperationResults;
 using DVLD.BLL.Services;
 using DVLD.PL.Configuration;
 using DVLD.PL.Global;
 using DVLD.PL.Properties;
 using Timer = System.Windows.Forms.Timer;
-using static DVLD.PL.Global.AppSession;
 
 namespace DVLD.PL.Login
 {
@@ -16,12 +18,14 @@ namespace DVLD.PL.Login
         private readonly UserService _userService;
         private ToolTip? _toolTips;
 
+        // Login screen allows unauthenticated access
+        protected override bool RequiresAuthentication => false;
+
         public frmLoginScreen()
         {
             InitializeComponent();
-            this.ApplyStandardFormTheme();
-            this.AllowMaximize = false;
-            this.AllowResize = false;
+            AllowMaximize = false;
+            AllowResize = false;
             SetContextTitle("Login");
 
             _userService = new UserService();
@@ -36,7 +40,7 @@ namespace DVLD.PL.Login
 
         private void InitializeUI()
         {
-            this.Icon = Resources.iconLoginIn;
+            Icon = Resources.iconLoginIn;
             RegisterEvents();
             SetupPasswordVisibility();
             SetupToolTips();
@@ -46,16 +50,28 @@ namespace DVLD.PL.Login
             _lockoutTimer.Tick += LockoutTimer_Tick;
         }
 
+        protected override void OnThemeApplied()
+        {
+            base.OnThemeApplied();
+            ApplyStyles();
+        }
+
         private void ApplyStyles()
         {
+            pnlRightCanvas.BackColor = UITheme.Surface;
+            lblTitle.ForeColor = UITheme.TextPrimary;
+            lblSubtitle.ForeColor = UITheme.TextSecondary;
+            lblUserName.ForeColor = UITheme.TextSecondary;
+            lblPassword.ForeColor = UITheme.TextSecondary;
+
             btnLogin.ApplyPrimaryStyle();
             txtUserName.ApplyStandardStyle();
             txtPassword.ApplyStandardStyle();
             chkRememberMe.ApplyStandardStyle();
 
-            txtUserName.IconColor = Color.FromArgb(148, 163, 184);
+            txtUserName.IconColor = UITheme.TextMuted;
             txtUserName.HoverIconColor = UITheme.Primary;
-            txtPassword.IconColor = Color.FromArgb(148, 163, 184);
+            txtPassword.IconColor = UITheme.TextMuted;
             txtPassword.HoverIconColor = UITheme.Primary;
         }
 
@@ -72,7 +88,7 @@ namespace DVLD.PL.Login
             _toolTips.SetToolTip(txtUserName, "Enter your registered username");
             _toolTips.SetToolTip(txtPassword, "Enter your password");
             _toolTips.SetToolTip(btnLogin, "Securely sign in to the system");
-            _toolTips.SetToolTip(chkRememberMe, "Remember credentials on this device");
+            _toolTips.SetToolTip(chkRememberMe, "Remember credentials securely on this device");
             _toolTips.SetToolTip(lnkForgotPassword, "Reset your account password");
             _toolTips.SetToolTip(lnkSignUp, "Register a new profile");
         }
@@ -87,7 +103,7 @@ namespace DVLD.PL.Login
         private void LoadRememberedCredentials()
         {
             string rememberedUserName = HandleConfigurationFile.GetValueByKey("RememberedUserName");
-            string rememberedPassword = HandleConfigurationFile.GetValueByKey("RememberedPassword");
+            string rememberedPassword = HandleConfigurationFile.GetSecureValue("RememberedPassword");
 
             if (!string.IsNullOrEmpty(rememberedUserName) && !string.IsNullOrEmpty(rememberedPassword))
             {
@@ -148,8 +164,7 @@ namespace DVLD.PL.Login
             lblAttemptMessage.Text = "Too many failed attempts. System locked.";
             lblAttemptsCounter.Text = $"Please wait {_lockoutSecondsRemaining} seconds...";
 
-            UITheme.ShowWarningToast("Too many failed attempts. System access temporarily locked.", "Security Notice");
-
+            UITheme.ShowWarningToast("Too many failed attempts. Access temporarily locked.", "Security Notice");
             _lockoutTimer?.Start();
         }
 
@@ -186,18 +201,27 @@ namespace DVLD.PL.Login
             {
                 _failedAttempts = 0;
                 var user = await _userService.GetByUserNameAsync(txtUserName.Text.Trim());
-                CurrentUser = user.Data;
 
-                lblAttemptMessage.Visible = false;
-                lblAttemptsCounter.Visible = false;
-                HandleCredentialsSaving();
-
-                this.Hide();
-                using (frmMainScreen mainScreen = new frmMainScreen())
+                if (user.IsSuccess && user.Data != null)
                 {
-                    mainScreen.ShowDialog();
+                    AppSession.LogIn(user.Data);
+
+                    lblAttemptMessage.Visible = false;
+                    lblAttemptsCounter.Visible = false;
+                    HandleCredentialsSaving();
+
+                    Hide();
+                    using (frmMainScreen mainScreen = new frmMainScreen())
+                    {
+                        mainScreen.ShowDialog();
+                    }
+                    Close();
+                    return;
                 }
-                this.Close();
+                else
+                {
+                    UITheme.ShowErrorToast("Failed to load user profile.", "Login Error");
+                }
             }
             else
             {
@@ -208,7 +232,6 @@ namespace DVLD.PL.Login
 
             btnLogin.IsLoading = false;
             CheckTextBoxsAreNotEmpty();
-            
         }
 
         private void HandleCredentialsSaving()
@@ -216,7 +239,7 @@ namespace DVLD.PL.Login
             if (chkRememberMe.Checked)
             {
                 HandleConfigurationFile.SetKeyAndValue("RememberedUserName", txtUserName.Text.Trim());
-                HandleConfigurationFile.SetKeyAndValue("RememberedPassword", txtPassword.Text);
+                HandleConfigurationFile.SetSecureValue("RememberedPassword", txtPassword.Text);
             }
             else
             {

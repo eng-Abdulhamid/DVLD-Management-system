@@ -24,22 +24,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Remove="CustomControls\ModerContextMenuStrip.cs" />
-		<Compile Remove="CustomControls\ModernButton00.cs" />
-		<Compile Remove="CustomControls\ModernDataGridView.cs" />
-		<Compile Remove="CustomControls\ModernErrorProvider.cs" />
-		<Compile Remove="CustomControls\ModernFormDesigner.cs" />
-		<Compile Remove="CustomControls\ModernFormStyle.cs" />
-		<Compile Remove="CustomControls\ModernPanel.cs" />
-		<Compile Remove="CustomControls\notification.cs" />
-		<Compile Remove="CustomControls\notification.Designer.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<EmbeddedResource Remove="CustomControls\notification.resx" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<Folder Include="Properties\" />
 	</ItemGroup>
 

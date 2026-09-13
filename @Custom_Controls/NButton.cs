@@ -1,0 +1,684 @@
+﻿using System;
+using System.ComponentModel;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
+using System.Drawing.Text;
+using System.Windows.Forms;
+using Timer = System.Windows.Forms.Timer;
+
+namespace CustomizeControls
+{
+    [DefaultEvent("Click")]
+    public class NButton : Control
+    {
+        private Timer? _hoverTimer;
+        private Timer? _rippleTimer;
+        private Timer? _spinnerTimer;
+
+        private float _hoverAlpha = 0f;
+        private bool _isHovered = false;
+        private bool _isPressed = false;
+        private StringFormat? _textFormat;
+
+        private float _rippleRadius = 0f;
+        private float _rippleAlpha = 0f;
+        private Point _rippleLocation;
+
+        private bool _isLoading = false;
+        private int _spinnerAngle = 0;
+
+        [Category("Behavior")]
+        [Browsable(true)]
+        [EditorBrowsable(EditorBrowsableState.Always)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public new int TabIndex { get => base.TabIndex; set => base.TabIndex = value; }
+
+        [Category("Behavior")]
+        [Browsable(true)]
+        [EditorBrowsable(EditorBrowsableState.Always)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public new bool TabStop { get => base.TabStop; set => base.TabStop = value; }
+
+        [Category("6. Behavior")]
+        [Description("Set to true to show a loading spinner and disable clicks.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set
+            {
+                if (_isLoading == value) return;
+                _isLoading = value;
+                if (_isLoading)
+                {
+                    _spinnerAngle = 0;
+                    if (!DesignMode) _spinnerTimer?.Start();
+                }
+                else
+                {
+                    _spinnerTimer?.Stop();
+                }
+                Invalidate();
+            }
+        }
+
+        [Category("1. Background")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Color BackgroundStartColor { get; set; } = SystemColors.Control;
+
+        [Category("1. Background")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Color BackgroundEndColor { get; set; } = SystemColors.Control;
+
+        [Category("1. Background")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Color HoverStartColor { get; set; } = Color.FromArgb(229, 241, 251);
+
+        [Category("1. Background")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Color HoverEndColor { get; set; } = Color.FromArgb(229, 241, 251);
+
+        [Category("1. Background")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Color PressedStartColor { get; set; } = Color.FromArgb(204, 228, 247);
+
+        [Category("1. Background")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Color PressedEndColor { get; set; } = Color.FromArgb(204, 228, 247);
+
+        [Category("1. Background")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Color DisabledStartColor { get; set; } = Color.FromArgb(241, 245, 249);
+
+        [Category("1. Background")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Color DisabledEndColor { get; set; } = Color.FromArgb(241, 245, 249);
+
+        [Category("1. Background")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public float GradientAngle { get; set; } = 90f;
+
+        [Category("2. Text")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Color TextColor { get; set; } = SystemColors.ControlText;
+
+        [Category("2. Text")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Color HoverTextColor { get; set; } = SystemColors.ControlText;
+
+        [Category("2. Text")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Color DisabledTextColor { get; set; } = Color.FromArgb(148, 163, 184);
+
+        [Category("2. Text")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Point TextOffset { get; set; } = new Point(0, 0);
+
+        [Category("3. Borders")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public int BorderRadius { get; set; } = 0;
+
+        [Category("3. Borders")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public int BorderSize { get; set; } = 1;
+
+        [Category("3. Borders")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Color BorderColor { get; set; } = Color.DarkGray;
+
+        [Category("3. Borders")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Color HoverBorderColor { get; set; } = Color.FromArgb(0, 120, 215);
+
+        [Category("3. Borders")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Color DisabledBorderColor { get; set; } = Color.FromArgb(226, 232, 240);
+
+        [Category("4. Icons")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Image? LeftIcon { get; set; } = null;
+
+        [Category("4. Icons")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Image? MiddleIcon { get; set; } = null;
+
+        [Category("4. Icons")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Image? RightIcon { get; set; } = null;
+
+        [Category("4. Icons")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Size IconSize { get; set; } = new Size(16, 16);
+
+        [Category("4. Icons")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public bool CenterIconWithText { get; set; } = false;
+
+        [Category("4. Icons")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public int IconMargin { get; set; } = 10;
+
+        [Category("4. Icons")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public int IconSpacing { get; set; } = 5;
+
+        [Category("4. Icons")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Point IconOffset { get; set; } = new Point(0, 0);
+
+        [Category("4. Icons")]
+        [Description("Enables solid recoloring of the icon to the target color regardless of the original icon's colors.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public bool EnableIconTinting { get; set; } = false;
+
+        [Category("4. Icons")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Color IconColor { get; set; } = Color.White;
+
+        [Category("4. Icons")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Color HoverIconColor { get; set; } = Color.White;
+
+        [Category("5. Shadow")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public bool EnableShadow { get; set; } = false;
+
+        [Category("5. Shadow")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public int ShadowSize { get; set; } = 3;
+
+        [Category("5. Shadow")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Point ShadowOffset { get; set; } = new Point(1, 1);
+
+        [Category("5. Shadow")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Color ShadowColor { get; set; } = Color.FromArgb(40, 0, 0, 0);
+
+        [Category("6. Behavior")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public bool EnableHoverAnimation { get; set; } = false;
+
+        [Category("6. Behavior")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public int HoverAnimationSpeed { get; set; } = 25;
+
+        [Category("6. Behavior")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public bool ShiftOnPress { get; set; } = false;
+
+        [Category("6. Behavior")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public bool EnableRippleEffect { get; set; } = false;
+
+        [Category("6. Behavior")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Color RippleColor { get; set; } = Color.FromArgb(50, 0, 0, 0);
+
+        [Category("6. Behavior")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public int RippleSpeed { get; set; } = 15;
+
+        public NButton()
+        {
+            SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint |
+                     ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw |
+                     ControlStyles.SupportsTransparentBackColor | ControlStyles.Selectable, true);
+
+            DoubleBuffered = true;
+            BackColor = Color.Transparent;
+            ForeColor = SystemColors.ControlText;
+            Font = new Font("Segoe UI", 9.5F, FontStyle.Regular);
+            Size = new Size(110, 34);
+            Cursor = Cursors.Hand;
+
+            _textFormat = new StringFormat
+            {
+                Alignment = StringAlignment.Center,
+                LineAlignment = StringAlignment.Center,
+                Trimming = StringTrimming.EllipsisCharacter,
+                HotkeyPrefix = HotkeyPrefix.Show
+            };
+
+            _hoverTimer = new Timer { Interval = 15 };
+            _hoverTimer.Tick += HoverTimer_Tick;
+
+            _rippleTimer = new Timer { Interval = 15 };
+            _rippleTimer.Tick += RippleTimer_Tick;
+
+            _spinnerTimer = new Timer { Interval = 16 };
+            _spinnerTimer.Tick += SpinnerTimer_Tick;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_hoverTimer != null)
+                {
+                    _hoverTimer.Stop();
+                    _hoverTimer.Tick -= HoverTimer_Tick;
+                    _hoverTimer.Dispose();
+                    _hoverTimer = null;
+                }
+
+                if (_rippleTimer != null)
+                {
+                    _rippleTimer.Stop();
+                    _rippleTimer.Tick -= RippleTimer_Tick;
+                    _rippleTimer.Dispose();
+                    _rippleTimer = null;
+                }
+
+                if (_spinnerTimer != null)
+                {
+                    _spinnerTimer.Stop();
+                    _spinnerTimer.Tick -= SpinnerTimer_Tick;
+                    _spinnerTimer.Dispose();
+                    _spinnerTimer = null;
+                }
+
+                _textFormat?.Dispose();
+                _textFormat = null;
+            }
+            base.Dispose(disposing);
+        }
+
+        protected override void OnEnabledChanged(EventArgs e)
+        {
+            base.OnEnabledChanged(e);
+            Cursor = Enabled ? Cursors.Hand : Cursors.Default;
+            Invalidate();
+        }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            if (_isLoading || !Enabled) return;
+            base.OnKeyDown(e);
+            if (e.KeyCode == Keys.Space || e.KeyCode == Keys.Enter)
+            {
+                _isPressed = true;
+                Invalidate();
+            }
+        }
+
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+            if (_isLoading || !Enabled) return;
+            base.OnKeyUp(e);
+            if (e.KeyCode == Keys.Space || e.KeyCode == Keys.Enter)
+            {
+                _isPressed = false;
+                Invalidate();
+                OnClick(EventArgs.Empty);
+            }
+        }
+
+        protected override void OnMouseEnter(EventArgs e)
+        {
+            if (!Enabled) return;
+            base.OnMouseEnter(e);
+            _isHovered = true;
+            if (EnableHoverAnimation && !DesignMode) _hoverTimer?.Start();
+            else { _hoverAlpha = 255; Invalidate(); }
+        }
+
+        protected override void OnMouseLeave(EventArgs e)
+        {
+            base.OnMouseLeave(e);
+            _isHovered = false;
+            _isPressed = false;
+            if (EnableHoverAnimation && !DesignMode) _hoverTimer?.Start();
+            else { _hoverAlpha = 0; Invalidate(); }
+        }
+
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            if (_isLoading || !Enabled) return;
+            base.OnMouseDown(e);
+            if (e.Button == MouseButtons.Left)
+            {
+                _isPressed = true;
+                Focus();
+                if (EnableRippleEffect && !DesignMode)
+                {
+                    _rippleLocation = e.Location;
+                    _rippleRadius = 0;
+                    _rippleAlpha = RippleColor.A;
+                    _rippleTimer?.Start();
+                }
+                Invalidate();
+            }
+        }
+
+        protected override void OnMouseUp(MouseEventArgs e)
+        {
+            if (_isLoading || !Enabled) return;
+            base.OnMouseUp(e);
+            if (e.Button == MouseButtons.Left)
+            {
+                _isPressed = false;
+                Invalidate();
+            }
+        }
+
+        private void HoverTimer_Tick(object? sender, EventArgs e)
+        {
+            bool stopTimer = false;
+            if (_isHovered)
+            {
+                _hoverAlpha += HoverAnimationSpeed;
+                if (_hoverAlpha >= 255) { _hoverAlpha = 255; stopTimer = true; }
+            }
+            else
+            {
+                _hoverAlpha -= HoverAnimationSpeed;
+                if (_hoverAlpha <= 0) { _hoverAlpha = 0; stopTimer = true; }
+            }
+            Invalidate();
+            if (stopTimer) _hoverTimer?.Stop();
+        }
+
+        private void RippleTimer_Tick(object? sender, EventArgs e)
+        {
+            _rippleRadius += RippleSpeed;
+            _rippleAlpha -= (RippleSpeed * 0.45f);
+
+            if (_rippleAlpha <= 0)
+            {
+                _rippleAlpha = 0;
+                _rippleTimer?.Stop();
+            }
+            Invalidate();
+        }
+
+        private void SpinnerTimer_Tick(object? sender, EventArgs e)
+        {
+            _spinnerAngle = (_spinnerAngle + 14) % 360;
+            Invalidate();
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            if (Width <= 0 || Height <= 0) return;
+
+            Graphics g = e.Graphics;
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+            g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            g.CompositingQuality = CompositingQuality.HighQuality;
+            g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
+
+            int shadowMargin = (EnableShadow && Enabled && !_isPressed) ? Math.Max(1, ShadowSize) : 0;
+            RectangleF btnRect = new RectangleF(
+                shadowMargin,
+                shadowMargin,
+                Width - (shadowMargin * 2) - 1,
+                Height - (shadowMargin * 2) - 1);
+
+            if (btnRect.Width <= 0 || btnRect.Height <= 0) return;
+
+            if (EnableShadow && Enabled && !_isPressed)
+                DrawShadow(g, btnRect);
+
+            DrawBackgroundAndBorder(g, btnRect);
+
+            if (EnableRippleEffect && _rippleAlpha > 0 && !_isLoading && Enabled)
+                DrawRipple(g, btnRect);
+
+            int pressShift = (_isPressed && ShiftOnPress && Enabled) ? 1 : 0;
+
+            if (_isLoading)
+            {
+                DrawSpinner(g, btnRect, pressShift);
+            }
+            else
+            {
+                DrawContent(g, btnRect, pressShift);
+            }
+
+            if (Focused && ShowFocusCues && Enabled)
+            {
+                Rectangle focusRect = Rectangle.Inflate(Rectangle.Round(btnRect), -3, -3);
+                using Pen focusPen = new Pen(Color.FromArgb(140, BorderColor), 1f) { DashStyle = DashStyle.Dot };
+                g.DrawRectangle(focusPen, focusRect);
+            }
+        }
+
+        private void DrawSpinner(Graphics g, RectangleF rect, int shiftY)
+        {
+            Color currentTextColor = Enabled ? (_isPressed ? HoverTextColor : BlendColors(HoverTextColor, TextColor, _hoverAlpha / 255f)) : DisabledTextColor;
+
+            int spinnerSize = Math.Min(26, (int)(rect.Height * 0.55f));
+            if (spinnerSize < 12) spinnerSize = 12;
+
+            RectangleF spinnerRect = new RectangleF(
+                rect.X + (rect.Width - spinnerSize) / 2f,
+                rect.Y + (rect.Height - spinnerSize) / 2f + shiftY,
+                spinnerSize,
+                spinnerSize);
+
+            using Pen spinnerPen = new Pen(currentTextColor, 2.5f)
+            {
+                StartCap = LineCap.Round,
+                EndCap = LineCap.Round
+            };
+            g.DrawArc(spinnerPen, spinnerRect, _spinnerAngle, 260);
+        }
+
+        private void DrawShadow(Graphics g, RectangleF rect)
+        {
+            RectangleF shadowRect = new RectangleF(rect.X + ShadowOffset.X, rect.Y + ShadowOffset.Y, rect.Width, rect.Height);
+            using GraphicsPath path = GetRoundedPath(shadowRect, BorderRadius);
+            int alphaStep = ShadowColor.A / Math.Max(1, ShadowSize);
+
+            for (int i = 0; i < ShadowSize; i++)
+            {
+                int currentAlpha = Math.Max(0, ShadowColor.A - (i * alphaStep));
+                using Pen pen = new Pen(Color.FromArgb(currentAlpha, ShadowColor), i + 1.2f)
+                {
+                    LineJoin = LineJoin.Round
+                };
+                g.DrawPath(pen, path);
+            }
+        }
+
+        private void DrawBackgroundAndBorder(Graphics g, RectangleF rect)
+        {
+            Color cStart;
+            Color cEnd;
+            Color cBorder;
+
+            if (!Enabled)
+            {
+                cStart = DisabledStartColor;
+                cEnd = DisabledEndColor;
+                cBorder = DisabledBorderColor;
+            }
+            else if (_isPressed || _isLoading)
+            {
+                cStart = PressedStartColor;
+                cEnd = PressedEndColor;
+                cBorder = HoverBorderColor;
+            }
+            else if (_hoverAlpha > 0)
+            {
+                cStart = BlendColors(HoverStartColor, BackgroundStartColor, _hoverAlpha / 255f);
+                cEnd = BlendColors(HoverEndColor, BackgroundEndColor, _hoverAlpha / 255f);
+                cBorder = BlendColors(HoverBorderColor, BorderColor, _hoverAlpha / 255f);
+            }
+            else
+            {
+                cStart = BackgroundStartColor;
+                cEnd = BackgroundEndColor;
+                cBorder = BorderColor;
+            }
+
+            using GraphicsPath path = GetRoundedPath(rect, BorderRadius);
+
+            if (cStart == cEnd)
+            {
+                using SolidBrush brush = new SolidBrush(cStart);
+                g.FillPath(brush, path);
+            }
+            else
+            {
+                using LinearGradientBrush brush = new LinearGradientBrush(rect, cStart, cEnd, GradientAngle);
+                g.FillPath(brush, path);
+            }
+
+            if (BorderSize > 0)
+            {
+                using Pen pen = new Pen(cBorder, BorderSize) { Alignment = PenAlignment.Inset };
+                g.DrawPath(pen, path);
+            }
+        }
+
+        private void DrawRipple(Graphics g, RectangleF rect)
+        {
+            using GraphicsPath path = GetRoundedPath(rect, BorderRadius);
+            Region oldClip = g.Clip;
+            g.SetClip(path);
+
+            int safeAlpha = Math.Max(0, Math.Min(255, (int)_rippleAlpha));
+            using (SolidBrush brush = new SolidBrush(Color.FromArgb(safeAlpha, RippleColor)))
+            {
+                RectangleF rippleRect = new RectangleF(
+                    _rippleLocation.X - _rippleRadius,
+                    _rippleLocation.Y - _rippleRadius,
+                    _rippleRadius * 2,
+                    _rippleRadius * 2);
+                g.FillEllipse(brush, rippleRect);
+            }
+
+            g.Clip = oldClip;
+        }
+
+        private void DrawContent(Graphics g, RectangleF rect, int shiftY)
+        {
+            Color currentTextColor = Enabled ? (_isPressed ? HoverTextColor : BlendColors(HoverTextColor, TextColor, _hoverAlpha / 255f)) : DisabledTextColor;
+            Color currentIconColor = Enabled ? (_isPressed ? HoverIconColor : BlendColors(HoverIconColor, IconColor, _hoverAlpha / 255f)) : DisabledTextColor;
+
+            float centerY = rect.Y + (rect.Height - IconSize.Height) / 2f + shiftY + IconOffset.Y;
+
+            if (MiddleIcon != null)
+            {
+                float centerX = rect.X + (rect.Width - IconSize.Width) / 2f + IconOffset.X;
+                RectangleF midRect = new RectangleF(centerX, centerY, IconSize.Width, IconSize.Height);
+                DrawCrispIcon(g, MiddleIcon, midRect, currentIconColor);
+            }
+
+            if (CenterIconWithText)
+            {
+                int textWidth = string.IsNullOrEmpty(Text) ? 0 : TextRenderer.MeasureText(Text, Font).Width;
+                int totalWidth = textWidth;
+
+                if (LeftIcon != null) totalWidth += IconSize.Width + IconSpacing;
+                if (RightIcon != null) totalWidth += IconSize.Width + IconSpacing;
+
+                float startX = rect.X + (rect.Width - totalWidth) / 2f + TextOffset.X;
+
+                if (LeftIcon != null)
+                {
+                    RectangleF iconRect = new RectangleF(startX + IconOffset.X, centerY, IconSize.Width, IconSize.Height);
+                    DrawCrispIcon(g, LeftIcon, iconRect, currentIconColor);
+                    startX += IconSize.Width + IconSpacing;
+                }
+
+                if (_textFormat != null && !string.IsNullOrEmpty(Text))
+                {
+                    using SolidBrush brush = new SolidBrush(currentTextColor);
+                    RectangleF textRect = new RectangleF(startX, rect.Y + shiftY + TextOffset.Y, textWidth, rect.Height);
+                    g.DrawString(Text, Font, brush, textRect, _textFormat);
+                    startX += textWidth + IconSpacing;
+                }
+
+                if (RightIcon != null)
+                {
+                    RectangleF iconRect = new RectangleF(startX + IconOffset.X, centerY, IconSize.Width, IconSize.Height);
+                    DrawCrispIcon(g, RightIcon, iconRect, currentIconColor);
+                }
+            }
+            else
+            {
+                float leftBound = rect.X;
+                float rightBound = rect.Right;
+
+                if (LeftIcon != null)
+                {
+                    RectangleF iconRect = new RectangleF(rect.X + IconMargin + IconOffset.X, centerY, IconSize.Width, IconSize.Height);
+                    DrawCrispIcon(g, LeftIcon, iconRect, currentIconColor);
+                    leftBound = iconRect.Right + IconSpacing;
+                }
+
+                if (RightIcon != null)
+                {
+                    RectangleF iconRect = new RectangleF(rect.Right - IconSize.Width - IconMargin + IconOffset.X, centerY, IconSize.Width, IconSize.Height);
+                    DrawCrispIcon(g, RightIcon, iconRect, currentIconColor);
+                    rightBound = iconRect.Left - IconSpacing;
+                }
+
+                if (_textFormat != null && !string.IsNullOrEmpty(Text))
+                {
+                    using SolidBrush brush = new SolidBrush(currentTextColor);
+                    RectangleF textRect = new RectangleF(leftBound + TextOffset.X, rect.Y + shiftY + TextOffset.Y, Math.Max(0, rightBound - leftBound), rect.Height);
+                    g.DrawString(Text, Font, brush, textRect, _textFormat);
+                }
+            }
+        }
+
+        private void DrawCrispIcon(Graphics g, Image img, RectangleF rect, Color tint)
+        {
+            Rectangle destRect = Rectangle.Round(rect);
+            if (destRect.Width <= 0 || destRect.Height <= 0) return;
+
+            if (!EnableIconTinting || tint == Color.Transparent || tint == Color.Empty)
+            {
+                g.DrawImage(img, destRect, 0, 0, img.Width, img.Height, GraphicsUnit.Pixel);
+                return;
+            }
+
+            ColorMatrix cm = new ColorMatrix(new float[][]
+            {
+                new float[] { 0, 0, 0, 0, 0 },
+                new float[] { 0, 0, 0, 0, 0 },
+                new float[] { 0, 0, 0, 0, 0 },
+                new float[] { 0, 0, 0, tint.A / 255f, 0 },
+                new float[] { tint.R / 255f, tint.G / 255f, tint.B / 255f, 0, 1 }
+            });
+
+            using ImageAttributes ia = new ImageAttributes();
+            ia.SetColorMatrix(cm, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
+            g.DrawImage(img, destRect, 0, 0, img.Width, img.Height, GraphicsUnit.Pixel, ia);
+        }
+
+        private static GraphicsPath GetRoundedPath(RectangleF rect, float radius)
+        {
+            GraphicsPath path = new GraphicsPath();
+            if (radius <= 0)
+            {
+                path.AddRectangle(rect);
+                return path;
+            }
+            float r2 = Math.Min(radius * 2, Math.Min(rect.Width, rect.Height));
+            path.StartFigure();
+            path.AddArc(rect.X, rect.Y, r2, r2, 180, 90);
+            path.AddArc(rect.Right - r2, rect.Y, r2, r2, 270, 90);
+            path.AddArc(rect.Right - r2, rect.Bottom - r2, r2, r2, 0, 90);
+            path.AddArc(rect.X, rect.Bottom - r2, r2, r2, 90, 90);
+            path.CloseFigure();
+            return path;
+        }
+
+        private static Color BlendColors(Color c1, Color c2, float ratio)
+        {
+            ratio = Math.Clamp(ratio, 0f, 1f);
+            int r = (int)(c1.R * ratio + c2.R * (1 - ratio));
+            int g = (int)(c1.G * ratio + c2.G * (1 - ratio));
+            int b = (int)(c1.B * ratio + c2.B * (1 - ratio));
+            int a = (int)(c1.A * ratio + c2.A * (1 - ratio));
+            return Color.FromArgb(a, r, g, b);
+        }
+    }
+}

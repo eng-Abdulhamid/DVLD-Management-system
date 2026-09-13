@@ -1,31 +1,43 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 using CustomizeControls;
+
 namespace DVLD.PL.Login
 {
     partial class frmLoginScreen
     {
         private System.ComponentModel.IContainer components = null;
-        private System.Windows.Forms.Panel pnlRightCanvas;
-        private System.Windows.Forms.Label lblTitle;
-        private System.Windows.Forms.Label lblSubtitle;
-        private System.Windows.Forms.Label lblUserName;
-        private CustomizeControls.NTextBox txtUserName;
-        private System.Windows.Forms.Label lblPassword;
-        private CustomizeControls.NTextBox txtPassword;
-        private CustomizeControls.NCheckBox chkRememberMe;
-        private System.Windows.Forms.LinkLabel lnkForgotPassword;
+        private Panel pnlRightCanvas;
+        private Label lblTitle;
+        private Label lblSubtitle;
+        private Label lblUserName;
+        private NTextBox txtUserName;
+        private Label lblPassword;
+        private NTextBox txtPassword;
+        private NCheckBox chkRememberMe;
+        private LinkLabel lnkForgotPassword;
         private NButton btnLogin;
-        private System.Windows.Forms.Label lblSignUpPrompt;
-        private System.Windows.Forms.LinkLabel lnkSignUp;
-        private System.Windows.Forms.Label lblAttemptsCounter;
-        private System.Windows.Forms.Label lblAttemptMessage;
+        private Label lblSignUpPrompt;
+        private LinkLabel lnkSignUp;
+        private Label lblAttemptsCounter;
+        private Label lblAttemptMessage;
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing)
             {
-                components.Dispose();
+                if (_lockoutTimer != null)
+                {
+                    _lockoutTimer.Stop();
+                    _lockoutTimer.Tick -= LockoutTimer_Tick;
+                    _lockoutTimer.Dispose();
+                    _lockoutTimer = null;
+                }
+
+                _toolTips?.Dispose();
+                _toolTips = null;
+
+                components?.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -38,10 +50,10 @@ namespace DVLD.PL.Login
             lblSignUpPrompt = new Label();
             lnkSignUp = new LinkLabel();
             lblUserName = new Label();
-            txtUserName = new CustomizeControls.NTextBox();
+            txtUserName = new NTextBox();
             lblPassword = new Label();
-            txtPassword = new CustomizeControls.NTextBox();
-            chkRememberMe = new CustomizeControls.NCheckBox();
+            txtPassword = new NTextBox();
+            chkRememberMe = new NCheckBox();
             lnkForgotPassword = new LinkLabel();
             btnLogin = new NButton();
             lblTitle = new Label();
@@ -53,7 +65,7 @@ namespace DVLD.PL.Login
             // 
             headerControl.AllowMaximize = false;
             headerControl.AllowMinimize = false;
-            headerControl.Size = new Size(520, 38);
+            headerControl.Size = new Size(516, 38);
             headerControl.TitleText = "DVLD - Sign In";
             // 
             // pnlRightCanvas
@@ -341,7 +353,7 @@ namespace DVLD.PL.Login
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(124, 58, 237);
+            BackColor = Color.White; // Unified with Surface
             ClientSize = new Size(520, 640);
             Controls.Add(pnlRightCanvas);
             Name = "frmLoginScreen";
