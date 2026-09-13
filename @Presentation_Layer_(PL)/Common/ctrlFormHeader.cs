@@ -1,4 +1,9 @@
-﻿using System;
+﻿using DVLD.PL.Common;
+using DVLD.PL.Login;
+using DVLD.PL.Management.user_management;
+using DVLD.PL.PeopleManagement;
+using DVLD.PL.UsersManagement;
+using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.InteropServices;
@@ -23,11 +28,19 @@ namespace DVLD.PL.Global
         private bool _allowClose = true;
         private bool _allowMaximize = true;
         private bool _allowMinimize = true;
+        private bool _showCurrentUserButton = true;
+        private bool _showPreferencesButton = true;
 
         public ctrlFormHeader()
         {
             InitializeComponent();
-            RegisterEvents();
+            cmsUserMenu.Renderer = new ModernMenuRenderer();
+
+            if (!UIUtility.IsDesignMode)
+            {
+                RegisterEvents();
+                RefreshCurrentUserInfo();
+            }
         }
 
         [Category("Header Setup")]
@@ -41,7 +54,6 @@ namespace DVLD.PL.Global
         }
 
         [Category("Header Setup")]
-        [Description("Show or hide the Close button.")]
         [DefaultValue(true)]
         [Browsable(true)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
@@ -51,15 +63,11 @@ namespace DVLD.PL.Global
             set
             {
                 _allowClose = value;
-                if (btnClose != null)
-                {
-                    btnClose.Visible = value;
-                }
+                if (btnClose != null) btnClose.Visible = value;
             }
         }
 
         [Category("Header Setup")]
-        [Description("Show or hide the Maximize/Restore button.")]
         [DefaultValue(true)]
         [Browsable(true)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
@@ -69,15 +77,11 @@ namespace DVLD.PL.Global
             set
             {
                 _allowMaximize = value;
-                if (btnMaximize != null)
-                {
-                    btnMaximize.Visible = value;
-                }
+                if (btnMaximize != null) btnMaximize.Visible = value;
             }
         }
 
         [Category("Header Setup")]
-        [Description("Show or hide the Minimize button.")]
         [DefaultValue(true)]
         [Browsable(true)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
@@ -87,10 +91,75 @@ namespace DVLD.PL.Global
             set
             {
                 _allowMinimize = value;
-                if (btnMinimize != null)
+                if (btnMinimize != null) btnMinimize.Visible = value;
+            }
+        }
+
+        [Category("Header Setup")]
+        [DefaultValue(true)]
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public bool ShowCurrentUserButton
+        {
+            get => _showCurrentUserButton;
+            set
+            {
+                _showCurrentUserButton = value;
+                UpdateActionsVisibility();
+            }
+        }
+
+        [Category("Header Setup")]
+        [DefaultValue(true)]
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public bool ShowPreferencesButton
+        {
+            get => _showPreferencesButton;
+            set
+            {
+                _showPreferencesButton = value;
+                if (btnPreferences != null) btnPreferences.Visible = value;
+            }
+        }
+
+        public void RefreshCurrentUserInfo()
+        {
+            if (UIUtility.IsDesignMode) return;
+
+            bool hasActiveUser = (AppSession.CurrentUser != null && AppSession.CurrentUser.UserID > 0);
+            btnCurrentUser.Visible = _showCurrentUserButton && hasActiveUser;
+            btnPreferences.Visible = _showPreferencesButton && hasActiveUser;
+
+            if (hasActiveUser)
+            {
+                btnCurrentUser.Text = $"{AppSession.CurrentUser!.UserName}  ▾";
+            }
+        }
+
+        private void UpdateActionsVisibility()
+        {
+            if (UIUtility.IsDesignMode)
+            {
+                btnCurrentUser.Visible = _showCurrentUserButton;
+                btnPreferences.Visible = _showPreferencesButton;
+                return;
+            }
+
+            RefreshCurrentUserInfo();
+        }
+
+        protected override void OnParentChanged(EventArgs e)
+        {
+            base.OnParentChanged(e);
+
+            if (this.Parent != null)
+            {
+                this.BackColor = this.Parent.BackColor;
+                this.Parent.BackColorChanged += (s, ev) =>
                 {
-                    btnMinimize.Visible = value;
-                }
+                    this.BackColor = this.Parent.BackColor;
+                };
             }
         }
 
@@ -104,14 +173,11 @@ namespace DVLD.PL.Global
 
             if (this.ParentForm != null)
             {
-                this.ParentForm.Resize += ParentForm_Resize;
+                this.ParentForm.Resize += (s, ev) => UpdateMaximizeIcon();
                 UpdateMaximizeIcon();
             }
-        }
 
-        private void ParentForm_Resize(object? sender, EventArgs e)
-        {
-            UpdateMaximizeIcon();
+            UpdateActionsVisibility();
         }
 
         private void RegisterEvents()
@@ -132,6 +198,68 @@ namespace DVLD.PL.Global
             SetupHoverEffect(btnClose, Color.FromArgb(239, 68, 68), Color.White);
             SetupHoverEffect(btnMaximize, Color.FromArgb(241, 245, 249), Color.FromArgb(15, 23, 42));
             SetupHoverEffect(btnMinimize, Color.FromArgb(241, 245, 249), Color.FromArgb(15, 23, 42));
+
+            btnCurrentUser.Click += (s, e) =>
+            {
+                cmsUserMenu.Show(btnCurrentUser, new Point(0, btnCurrentUser.Height + 2));
+            };
+
+            btnPreferences.Click += (s, e) =>
+            {
+                using var frmPref = new frmCurrentUserSettings();
+                frmPref.ShowDialog();
+            };
+
+            tsmiViewProfile.Click += (s, e) =>
+            {
+                if (AppSession.CurrentUser?.UserID > 0)
+                {
+                    using var frm = new frmUserCard(AppSession.CurrentUser.UserID);
+                    frm.ShowDialog();
+                }
+            };
+
+            tsmiEditInfo.Click += (s, e) =>
+            {
+                if (AppSession.CurrentUser?.PersonID > 0)
+                {
+                    using var frm = new frmSavePerson(AppSession.CurrentUser.PersonID);
+                    frm.PersonSaved += async (personId) =>
+                    {
+                        RefreshCurrentUserInfo();
+                    };
+                    frm.ShowDialog();
+                }
+            };
+
+            tsmiChangePassword.Click += (s, e) =>
+            {
+                if (!string.IsNullOrEmpty(AppSession.CurrentUser?.UserName))
+                {
+                    using var frm = new frmForgetPassword(AppSession.CurrentUser.UserName, "Change Password");
+                    frm.AllowEditUsername = false;
+                    frm.ShowDialog();
+                }
+            };
+
+            tsmiLogout.Click += (s, e) =>
+            {
+                AppSession.CurrentUser = new BLL.DTOs.UserReadDTO();
+
+                Form? activeMain = Application.OpenForms["frmMain"];
+                activeMain?.Hide();
+
+                using var frmLogin = new frmLoginScreen();
+                if (frmLogin.ShowDialog() == DialogResult.OK)
+                {
+                    RefreshCurrentUserInfo();
+                    activeMain?.Show();
+                }
+                else
+                {
+                    Application.Exit();
+                }
+            };
         }
 
         private void Header_MouseDown(object? sender, MouseEventArgs e)

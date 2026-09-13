@@ -39,6 +39,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove=".gitignore" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
 	</ItemGroup>
 

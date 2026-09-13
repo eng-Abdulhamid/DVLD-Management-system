@@ -3,13 +3,6 @@ using DVLD.BLL.Services;
 using DVLD.PL.Global;
 using DVLD.PL.Management;
 using DVLD.PL.Management.user_management;
-using DVLD.PL.PeopleManagement;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace DVLD.PL.UsersManagement
 {
@@ -24,8 +17,8 @@ namespace DVLD.PL.UsersManagement
         {
             InitializeComponent();
             this.ApplyStandardFormTheme();
+            SetContextTitle("Users Management");
 
-            // Setup DataGrid columns matching UserReadDTO schema
             _columnDefinitions = new List<DataGridColumnDefinition>
             {
                 new DataGridColumnDefinition { Key = "UserID", HeaderText = "User ID", DataPropertyName = "UserID", Width = 120 },
@@ -59,10 +52,8 @@ namespace DVLD.PL.UsersManagement
         {
             this.Load += async (s, e) => await LoadUsersDataAsync();
 
-            // Search control filter event
             ctrlUsersSearch1.OnFilterChanged += (col, text, isActive) => ApplyFilter(col, text, isActive);
 
-            // Pagination events
             ctrlPagination1.OnPageChanged += (s, e) => DisplayCurrentPage();
             ctrlPagination1.OnPageSizeChanged += (s, e) =>
             {
@@ -70,13 +61,11 @@ namespace DVLD.PL.UsersManagement
                 DisplayCurrentPage();
             };
 
-            // Actions toolbar events
             ctrlManagementActions1.OnAddClick += (s, e) => OpenAddNewUserDialog();
             ctrlManagementActions1.OnEditClick += (s, e) => OpenUpdateSelectedUserDialog();
             ctrlManagementActions1.OnDeleteClick += (s, e) => OpenDeleteSelectedUserDialog();
             ctrlManagementActions1.OnRefreshClick += async (s, e) => await LoadUsersDataAsync();
 
-            // Grid selection state synchronization
             ctrlManagementDataGrid1.SelectionChanged += (s, e) =>
             {
                 ctrlManagementActions1.UpdateButtonsState(ctrlManagementDataGrid1.HasSelection);
@@ -85,6 +74,7 @@ namespace DVLD.PL.UsersManagement
             ctrlManagementDataGrid1.CellDoubleClick += (s, e) =>
             {
                 if (e.RowIndex >= 0) OpenViewUserCardDialog();
+
             };
 
             ctrlNotFound1.OnClearFilterClick += (s, e) =>
@@ -116,7 +106,6 @@ namespace DVLD.PL.UsersManagement
             {
                 _allUsers = result.DataList;
                 ApplyFilter(ctrlUsersSearch1.FilterColumn, ctrlUsersSearch1.SearchText, ctrlUsersSearch1.IsActiveStatus);
-                UITheme.ShowSuccessToast("Users list updated successfully.");
             }
             else
             {
@@ -129,13 +118,11 @@ namespace DVLD.PL.UsersManagement
         {
             IEnumerable<UserReadDTO> query = _allUsers;
 
-            // Apply active status filter
             if (isActive.HasValue)
             {
                 query = query.Where(u => u.IsActive == isActive.Value);
             }
 
-            // Apply text-based search on matched column
             if (!string.IsNullOrWhiteSpace(filterColumn) && !string.IsNullOrWhiteSpace(searchText))
             {
                 string search = searchText.ToLower();
@@ -150,7 +137,6 @@ namespace DVLD.PL.UsersManagement
 
             _filteredUsers = query.ToList();
 
-            // Update pagination metrics
             ctrlPagination1.TotalRecords = _filteredUsers.Count;
             ctrlPagination1.CurrentPage = 1;
             ctrlPagination1.UpdateUI();
@@ -191,7 +177,7 @@ namespace DVLD.PL.UsersManagement
 
         private void OpenAddNewUserDialog()
         {
-            using frmSaveUser frm = new frmSaveUser(-1, "User Management");
+            using frmSaveUser frm = new frmSaveUser(-1);
             frm.UserSaved += async (id) => await LoadUsersDataAsync();
             frm.ShowDialog();
         }
@@ -200,7 +186,7 @@ namespace DVLD.PL.UsersManagement
         {
             if (ctrlManagementDataGrid1.TryGetSelectedInt("UserID", out int id))
             {
-                using frmSaveUser frm = new frmSaveUser(id, "User Management");
+                using frmSaveUser frm = new frmSaveUser(id);
                 frm.UserSaved += async (savedId) => await LoadUsersDataAsync();
                 frm.ShowDialog();
             }
@@ -210,7 +196,7 @@ namespace DVLD.PL.UsersManagement
         {
             if (ctrlManagementDataGrid1.TryGetSelectedInt("UserID", out int id))
             {
-                using frmDeleteUser frm = new frmDeleteUser(id, "User Management");
+                using frmDeleteUser frm = new frmDeleteUser(id);
                 frm.DeletedSuccessfully += async () => await LoadUsersDataAsync();
                 frm.ShowDialog();
             }
@@ -220,8 +206,10 @@ namespace DVLD.PL.UsersManagement
         {
             if (ctrlManagementDataGrid1.TryGetSelectedInt("UserID", out int value))
             {
-                using (frmUserCard frm = new(UserID: value, "User Management"))
+                using (frmUserCard frm = new(UserID: value))
                 {
+                    frm.OnEditedSuccessfully +=  async () => await LoadUsersDataAsync();
+                    frm.OnDeletedSuccessfully += async () => await LoadUsersDataAsync();
                     frm.ShowDialog();
                 } 
             }

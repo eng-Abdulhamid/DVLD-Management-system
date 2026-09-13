@@ -52,6 +52,7 @@ namespace DVLD.PL.Login
             this.AllowMaximize = false;
             this.AllowResize = false;
 
+            SetContextTitle("Forget or Change Password");
 
             _userService = new UserService();
             _initialUsername = userName;

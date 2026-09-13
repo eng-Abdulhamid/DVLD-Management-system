@@ -4,13 +4,41 @@ using DVLD.DAL.Interfaces.IRepositories;
 using DVLD.DAL.Mapper;
 using DVLD.DAL.Mappers;
 using Microsoft.Data.SqlClient;
-using System.Data;
-using System.Reflection.Metadata;
 namespace DVLD.DAL.Repo.ADONet
 {
     public class UserRepositoryADO : IUserRepository
     {
-       
+
+        public async Task<bool> IsUsernameExistAsync(string username)
+        {
+            string query = "SELECT 1 FROM Users WHERE UserName = @UserName";
+
+            using SqlCommand command = new SqlCommand(query);
+            command.Parameters.AddWithValue("@UserName", username);
+
+            return await DbExecutor.ExecuteCommandReturnBoolean(command);
+        }
+
+        public async Task<bool> IsUsernameExistForOtherUserAsync(string username, int userId)
+        {
+            string query = "SELECT 1 FROM Users WHERE UserName = @UserName AND UserID != @UserID";
+
+            using SqlCommand command = new SqlCommand(query);
+            command.Parameters.AddWithValue("@UserName", username);
+            command.Parameters.AddWithValue("@UserID", userId);
+
+            return await DbExecutor.ExecuteCommandReturnBoolean(command);
+        }
+
+        public async Task<bool> IsPersonLinkedToUserAsync(int personId)
+        {
+            string query = "SELECT 1 FROM Users WHERE PersonID = @PersonID";
+
+            using SqlCommand command = new SqlCommand(query);
+            command.Parameters.AddWithValue("@PersonID", personId);
+
+            return await DbExecutor.ExecuteCommandReturnBoolean(command);
+        }
         public async Task<int> AddAsync(User UserDetails)
         {
             string Query = @"INSERT INTO Users 

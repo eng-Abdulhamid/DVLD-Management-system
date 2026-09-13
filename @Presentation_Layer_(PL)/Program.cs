@@ -17,7 +17,6 @@ namespace DVLD.PL
             Application.SetCompatibleTextRenderingDefault(false);
             Application.ThreadException += GlobalExceptionHandler;
             InitializeConnectionString();
-            AppSession.TitlePath += "DVLD";
             Application.Run(new frmLoginScreen());
         }
         private static void InitializeConnectionString()

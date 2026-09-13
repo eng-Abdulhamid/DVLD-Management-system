@@ -18,15 +18,14 @@ namespace DVLD.PL.PeopleManagement
         public frmDeletePersonForm() : this(-1)
         {
         }
-
         public frmDeletePersonForm(int personId)
         {
             InitializeComponent();
-
             this.ApplyStandardFormTheme();
             this.AllowMaximize = false;
             this.AllowMinimize = false;
             this.AllowResize = false;
+            SetContextTitle("Delete Person");
 
             _personId = personId;
 
@@ -80,36 +79,33 @@ namespace DVLD.PL.PeopleManagement
             btnCancel.Click += (s, e) => this.Close();
             btnDelete.Click += async (s, e) => await PerformDeleteAsync();
         }
+        private void UpdateDeleteButtonEnabled(bool enabled)
+        {
+            btnDelete.IsLoading = !enabled;
+            btnDelete.Enabled = enabled;
+            btnCancel.Enabled = enabled;
 
+        }
         private async Task PerformDeleteAsync()
         {
             if (_personService == null) return;
 
-            btnDelete.IsLoading = true;
-            btnDelete.Enabled = false;
-            btnCancel.Enabled = false;
+            UpdateDeleteButtonEnabled(false);
 
-            try
-            {
-                OperationResult<bool> result = await _personService.DeleteAsync(_personId);
+            OperationResult<bool> result = await _personService.DeleteAsync(_personId);
 
-                if (result.IsSuccess)
-                {
-                    UITheme.ShowSuccessToast("Person deleted successfully.");
-                    DeletedSuccessfully?.Invoke();
-                    this.Close();
-                }
-                else
-                {
-                    UITheme.ShowWarningToast(result.Message, "Delete Failed");
-                }
-            }
-            finally
+            if (result.IsSuccess)
             {
-                btnDelete.IsLoading = false;
-                btnDelete.Enabled = true;
-                btnCancel.Enabled = true;
+                UITheme.ShowSuccessToast("Person deleted successfully.");
+                DeletedSuccessfully?.Invoke();
+                this.Close();
             }
+            else
+            {
+                UITheme.ShowWarningToast(result.Message, "Delete Failed");
+            }
+
+            UpdateDeleteButtonEnabled(true);
         }
     }
 }

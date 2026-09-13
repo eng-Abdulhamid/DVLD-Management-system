@@ -208,7 +208,7 @@ namespace DVLD.DAL.Repo.ADONet
                         return false;
                     }
 
-                    return (int.TryParse(result.ToString(), out int value) && value == 1);
+                    return (int.TryParse(result.ToString(), out int value) && value >= 1);
                 }
                 catch (Exception ex)
                 {

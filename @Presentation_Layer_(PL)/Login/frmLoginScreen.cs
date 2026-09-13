@@ -1,15 +1,10 @@
-﻿using System;
-using System.Drawing;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using DVLD.BLL.OperationResults;
+﻿using DVLD.BLL.OperationResults;
 using DVLD.BLL.Services;
 using DVLD.PL.Configuration;
 using DVLD.PL.Global;
 using DVLD.PL.Properties;
 using Timer = System.Windows.Forms.Timer;
 using static DVLD.PL.Global.AppSession;
-using System.Configuration;
 
 namespace DVLD.PL.Login
 {
@@ -24,11 +19,11 @@ namespace DVLD.PL.Login
         public frmLoginScreen()
         {
             InitializeComponent();
-
             this.ApplyStandardFormTheme();
             this.AllowMaximize = false;
             this.AllowResize = false;
-            AppSession.TitlePath += " / Login";
+            SetContextTitle("Login");
+
             _userService = new UserService();
             InitializeUI();
         }
@@ -185,40 +180,35 @@ namespace DVLD.PL.Login
             btnLogin.IsLoading = true;
             btnLogin.Enabled = false;
 
-            try
+            OperationResult<bool> loginResults = await _userService.AuthenticateUserAsync(txtUserName.Text.Trim(), txtPassword.Text);
+
+            if (loginResults.IsSuccess)
             {
-                OperationResult<bool> loginResults = await _userService.AuthenticateUserAsync(txtUserName.Text.Trim(), txtPassword.Text);
+                _failedAttempts = 0;
+                var user = await _userService.GetByUserNameAsync(txtUserName.Text.Trim());
+                CurrentUser = user.Data;
 
-                if (loginResults.IsSuccess)
+                lblAttemptMessage.Visible = false;
+                lblAttemptsCounter.Visible = false;
+                HandleCredentialsSaving();
+
+                this.Hide();
+                using (frmMainScreen mainScreen = new frmMainScreen())
                 {
-                    _failedAttempts = 0;
-                    var user = await _userService.GetByUserNameAsync(txtUserName.Text.Trim());
-                    CurrentUser = user.Data;
-
-                    lblAttemptMessage.Visible = false;
-                    lblAttemptsCounter.Visible = false;
-                    HandleCredentialsSaving();
-
-                    this.Hide();
-                    using (frmMainScreen mainScreen = new frmMainScreen())
-                    {
-                        AppSession.TitlePath = "DVLD / Main Screen";
-                        mainScreen.ShowDialog();
-                    }
-                    this.Close();
+                    mainScreen.ShowDialog();
                 }
-                else
-                {
-                    txtPassword.Shake();
-                    txtUserName.Shake();
-                    HandleFailedAttempt(3);
-                }
+                this.Close();
             }
-            finally
+            else
             {
-                btnLogin.IsLoading = false;
-                CheckTextBoxsAreNotEmpty();
+                txtPassword.Shake();
+                txtUserName.Shake();
+                HandleFailedAttempt(3);
             }
+
+            btnLogin.IsLoading = false;
+            CheckTextBoxsAreNotEmpty();
+            
         }
 
         private void HandleCredentialsSaving()
@@ -253,7 +243,6 @@ namespace DVLD.PL.Login
                 txtUserName.Text = username;
                 txtPassword.Text = newPassword;
             };
-            AppSession.TitlePath += " / Reset Password";
             resetPasswordScreen.ShowDialog();
         }
     }

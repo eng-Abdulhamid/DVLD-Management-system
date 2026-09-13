@@ -1,5 +1,5 @@
-## Visual Studio files and cache
-.vs/
+
+.vs
 *.suo
 *.user
 *.userosscache
@@ -7,8 +7,6 @@
 *.userprefs
 *.dbmdl
 *.jfm
-
-## Build results and output directories
 [Bb]in/
 [Oo]bj/
 [Dd]ebug/

@@ -2,9 +2,9 @@
 using System.Windows.Forms;
 using NControls;
 
-namespace DVLD.PL.UsersManagement
+namespace DVLD.PL.DriversManagement
 {
-    partial class frmSaveUser
+    partial class frmSaveDriver
     {
         private System.ComponentModel.IContainer components = null;
         private Label lblTitle;
@@ -13,19 +13,21 @@ namespace DVLD.PL.UsersManagement
         private GroupBox gbSearchFilter;
         private NTextBox txtSearchNationalNo;
         private NButton btnSearchPerson;
+        private NButton btnSelectPerson;
         private NButton btnAddNewPerson;
         private DVLD.PL.PeopleManagement.ctrlPersonCard ctrlPersonCard1;
         private LinkLabel lnkEditPerson;
         private NButton btnNext;
-        private TabPage tpLoginInfo;
-        private Label lblUserName;
-        private NTextBox txtUserName;
-        private Label lblPassword;
-        private NTextBox txtPassword;
-        private Label lblConfirmPassword;
-        private NTextBox txtConfirmPassword;
-        private LinkLabel lnkEditPassword;
-        private NControls.NCheckBox chkIsActive;
+        private TabPage tpDriverConfirmation;
+        private Label lblConfirmTitle;
+        private Label lblPersonNameHeader;
+        private Label lblConfirmPersonName;
+        private Label lblPersonIdHeader;
+        private Label lblPersonIdValue;
+        private Label lblCreatedDateHeader;
+        private Label lblCreatedDateValue;
+        private Label lblCreatedByHeader;
+        private Label lblCreatedByValue;
         private NButton btnSave;
         private NButton btnCancel;
 
@@ -42,29 +44,30 @@ namespace DVLD.PL.UsersManagement
             tcWizard = new TabControl();
             tpPersonSelection = new TabPage();
             gbSearchFilter = new GroupBox();
-            btnSelectPerson = new NButton();
             txtSearchNationalNo = new NTextBox();
             btnSearchPerson = new NButton();
+            btnSelectPerson = new NButton();
             btnAddNewPerson = new NButton();
             ctrlPersonCard1 = new DVLD.PL.PeopleManagement.ctrlPersonCard();
             lnkEditPerson = new LinkLabel();
             btnNext = new NButton();
-            tpLoginInfo = new TabPage();
-            lblUserName = new Label();
-            txtUserName = new NTextBox();
-            lblPassword = new Label();
-            txtPassword = new NTextBox();
-            lblConfirmPassword = new Label();
-            txtConfirmPassword = new NTextBox();
-            lnkEditPassword = new LinkLabel();
-            chkIsActive = new NCheckBox();
+            tpDriverConfirmation = new TabPage();
+            lblConfirmTitle = new Label();
+            lblPersonNameHeader = new Label();
+            lblConfirmPersonName = new Label();
+            lblPersonIdHeader = new Label();
+            lblPersonIdValue = new Label();
+            lblCreatedDateHeader = new Label();
+            lblCreatedDateValue = new Label();
+            lblCreatedByHeader = new Label();
+            lblCreatedByValue = new Label();
             btnSave = new NButton();
             btnCancel = new NButton();
             toolTip1 = new ToolTip(components);
             tcWizard.SuspendLayout();
             tpPersonSelection.SuspendLayout();
             gbSearchFilter.SuspendLayout();
-            tpLoginInfo.SuspendLayout();
+            tpDriverConfirmation.SuspendLayout();
             SuspendLayout();
             // 
             // headerControl
@@ -72,7 +75,7 @@ namespace DVLD.PL.UsersManagement
             headerControl.AllowMaximize = false;
             headerControl.AllowMinimize = false;
             headerControl.Size = new Size(856, 38);
-            headerControl.TitleText = "DVLD / Users Management / Save User";
+            headerControl.TitleText = "DVLD / Drivers Management / Add New Driver";
             // 
             // lblTitle
             // 
@@ -81,16 +84,17 @@ namespace DVLD.PL.UsersManagement
             lblTitle.ForeColor = Color.FromArgb(15, 23, 42);
             lblTitle.Location = new Point(20, 48);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(162, 30);
+            lblTitle.Size = new Size(179, 30);
             lblTitle.TabIndex = 0;
-            lblTitle.Text = "Add New User";
+            lblTitle.Text = "Add New Driver";
             // 
             // tcWizard
             // 
             tcWizard.Controls.Add(tpPersonSelection);
-            tcWizard.Controls.Add(tpLoginInfo);
+            tcWizard.Controls.Add(tpDriverConfirmation);
             tcWizard.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             tcWizard.Location = new Point(20, 85);
+            tcWizard.Multiline = true;
             tcWizard.Name = "tcWizard";
             tcWizard.SelectedIndex = 0;
             tcWizard.Size = new Size(820, 435);
@@ -108,13 +112,14 @@ namespace DVLD.PL.UsersManagement
             tpPersonSelection.Padding = new Padding(12);
             tpPersonSelection.Size = new Size(812, 405);
             tpPersonSelection.TabIndex = 0;
-            tpPersonSelection.Text = "1. Person Selection";
+            tpPersonSelection.Text = "Person Selection";
+            tpPersonSelection.ToolTipText = "Select Person For this Driver Record";
             // 
             // gbSearchFilter
             // 
-            gbSearchFilter.Controls.Add(btnSelectPerson);
             gbSearchFilter.Controls.Add(txtSearchNationalNo);
             gbSearchFilter.Controls.Add(btnSearchPerson);
+            gbSearchFilter.Controls.Add(btnSelectPerson);
             gbSearchFilter.Controls.Add(btnAddNewPerson);
             gbSearchFilter.ForeColor = Color.FromArgb(71, 85, 105);
             gbSearchFilter.Location = new Point(16, 8);
@@ -123,55 +128,6 @@ namespace DVLD.PL.UsersManagement
             gbSearchFilter.TabIndex = 0;
             gbSearchFilter.TabStop = false;
             gbSearchFilter.Text = "Search Person";
-            // 
-            // btnSelectPerson
-            // 
-            btnSelectPerson.BackColor = Color.Transparent;
-            btnSelectPerson.BackgroundEndColor = SystemColors.Control;
-            btnSelectPerson.BackgroundStartColor = SystemColors.Control;
-            btnSelectPerson.BorderColor = Color.DarkGray;
-            btnSelectPerson.BorderRadius = 8;
-            btnSelectPerson.BorderSize = 1;
-            btnSelectPerson.CenterIconWithText = false;
-            btnSelectPerson.Cursor = Cursors.Hand;
-            btnSelectPerson.EnableHoverAnimation = false;
-            btnSelectPerson.EnableIconTinting = false;
-            btnSelectPerson.EnableRippleEffect = false;
-            btnSelectPerson.EnableShadow = false;
-            btnSelectPerson.Font = new Font("Segoe UI", 9F);
-            btnSelectPerson.ForeColor = SystemColors.ControlText;
-            btnSelectPerson.GradientAngle = 90F;
-            btnSelectPerson.HoverAnimationSpeed = 20;
-            btnSelectPerson.HoverBorderColor = Color.FromArgb(0, 120, 215);
-            btnSelectPerson.HoverEndColor = Color.FromArgb(229, 241, 251);
-            btnSelectPerson.HoverIconColor = Color.White;
-            btnSelectPerson.HoverStartColor = Color.FromArgb(229, 241, 251);
-            btnSelectPerson.HoverTextColor = SystemColors.ControlText;
-            btnSelectPerson.IconColor = Color.White;
-            btnSelectPerson.IconMargin = 10;
-            btnSelectPerson.IconOffset = new Point(0, 0);
-            btnSelectPerson.IconSize = new Size(28, 28);
-            btnSelectPerson.IconSpacing = 5;
-            btnSelectPerson.IsLoading = false;
-            btnSelectPerson.LeftIcon = null;
-            btnSelectPerson.Location = new Point(722, 23);
-            btnSelectPerson.MiddleIcon = Properties.Resources.SelectPerson;
-            btnSelectPerson.Name = "btnSelectPerson";
-            btnSelectPerson.PressedEndColor = Color.FromArgb(204, 228, 247);
-            btnSelectPerson.PressedStartColor = Color.FromArgb(204, 228, 247);
-            btnSelectPerson.RightIcon = null;
-            btnSelectPerson.RippleColor = Color.FromArgb(70, 0, 0, 0);
-            btnSelectPerson.RippleSpeed = 15;
-            btnSelectPerson.ShadowColor = Color.FromArgb(60, 0, 0, 0);
-            btnSelectPerson.ShadowOffset = new Point(1, 1);
-            btnSelectPerson.ShadowSize = 3;
-            btnSelectPerson.ShiftOnPress = false;
-            btnSelectPerson.Size = new Size(40, 38);
-            btnSelectPerson.TabIndex = 3;
-            btnSelectPerson.TextColor = SystemColors.ControlText;
-            btnSelectPerson.TextOffset = new Point(0, 0);
-            toolTip1.SetToolTip(btnSelectPerson, "Select a Person");
-            btnSelectPerson.Click += SelectPerson_Click;
             // 
             // txtSearchNationalNo
             // 
@@ -242,11 +198,11 @@ namespace DVLD.PL.UsersManagement
             btnSearchPerson.IconColor = Color.White;
             btnSearchPerson.IconMargin = 10;
             btnSearchPerson.IconOffset = new Point(0, 0);
-            btnSearchPerson.IconSize = new Size(22, 22);
+            btnSearchPerson.IconSize = new Size(24, 24);
             btnSearchPerson.IconSpacing = 5;
             btnSearchPerson.IsLoading = false;
             btnSearchPerson.LeftIcon = null;
-            btnSearchPerson.Location = new Point(282, 23);
+            btnSearchPerson.Location = new Point(282, 25);
             btnSearchPerson.MiddleIcon = Properties.Resources.search;
             btnSearchPerson.Name = "btnSearchPerson";
             btnSearchPerson.PressedEndColor = Color.FromArgb(204, 228, 247);
@@ -262,7 +218,55 @@ namespace DVLD.PL.UsersManagement
             btnSearchPerson.TabIndex = 1;
             btnSearchPerson.TextColor = SystemColors.ControlText;
             btnSearchPerson.TextOffset = new Point(0, 0);
-            toolTip1.SetToolTip(btnSearchPerson, "Search");
+            toolTip1.SetToolTip(btnSearchPerson, "Search for a person using National No.");
+            // 
+            // btnSelectPerson
+            // 
+            btnSelectPerson.BackColor = Color.Transparent;
+            btnSelectPerson.BackgroundEndColor = SystemColors.Control;
+            btnSelectPerson.BackgroundStartColor = SystemColors.Control;
+            btnSelectPerson.BorderColor = Color.DarkGray;
+            btnSelectPerson.BorderRadius = 8;
+            btnSelectPerson.BorderSize = 1;
+            btnSelectPerson.CenterIconWithText = false;
+            btnSelectPerson.Cursor = Cursors.Hand;
+            btnSelectPerson.EnableHoverAnimation = false;
+            btnSelectPerson.EnableIconTinting = false;
+            btnSelectPerson.EnableRippleEffect = false;
+            btnSelectPerson.EnableShadow = false;
+            btnSelectPerson.Font = new Font("Segoe UI", 9F);
+            btnSelectPerson.ForeColor = SystemColors.ControlText;
+            btnSelectPerson.GradientAngle = 90F;
+            btnSelectPerson.HoverAnimationSpeed = 20;
+            btnSelectPerson.HoverBorderColor = Color.FromArgb(0, 120, 215);
+            btnSelectPerson.HoverEndColor = Color.FromArgb(229, 241, 251);
+            btnSelectPerson.HoverIconColor = Color.White;
+            btnSelectPerson.HoverStartColor = Color.FromArgb(229, 241, 251);
+            btnSelectPerson.HoverTextColor = SystemColors.ControlText;
+            btnSelectPerson.IconColor = Color.White;
+            btnSelectPerson.IconMargin = 10;
+            btnSelectPerson.IconOffset = new Point(0, 0);
+            btnSelectPerson.IconSize = new Size(30, 30);
+            btnSelectPerson.IconSpacing = 5;
+            btnSelectPerson.IsLoading = false;
+            btnSelectPerson.LeftIcon = null;
+            btnSelectPerson.Location = new Point(721, 25);
+            btnSelectPerson.MiddleIcon = Properties.Resources.SelectPerson;
+            btnSelectPerson.Name = "btnSelectPerson";
+            btnSelectPerson.PressedEndColor = Color.FromArgb(204, 228, 247);
+            btnSelectPerson.PressedStartColor = Color.FromArgb(204, 228, 247);
+            btnSelectPerson.RightIcon = null;
+            btnSelectPerson.RippleColor = Color.FromArgb(70, 0, 0, 0);
+            btnSelectPerson.RippleSpeed = 15;
+            btnSelectPerson.ShadowColor = Color.FromArgb(60, 0, 0, 0);
+            btnSelectPerson.ShadowOffset = new Point(1, 1);
+            btnSelectPerson.ShadowSize = 3;
+            btnSelectPerson.ShiftOnPress = false;
+            btnSelectPerson.Size = new Size(40, 38);
+            btnSelectPerson.TabIndex = 2;
+            btnSelectPerson.TextColor = SystemColors.ControlText;
+            btnSelectPerson.TextOffset = new Point(0, 0);
+            toolTip1.SetToolTip(btnSelectPerson, "Select Exits Person. Will open in a new window");
             // 
             // btnAddNewPerson
             // 
@@ -294,7 +298,7 @@ namespace DVLD.PL.UsersManagement
             btnAddNewPerson.IconSpacing = 5;
             btnAddNewPerson.IsLoading = false;
             btnAddNewPerson.LeftIcon = null;
-            btnAddNewPerson.Location = new Point(676, 23);
+            btnAddNewPerson.Location = new Point(674, 26);
             btnAddNewPerson.MiddleIcon = Properties.Resources.add_person;
             btnAddNewPerson.Name = "btnAddNewPerson";
             btnAddNewPerson.PressedEndColor = Color.FromArgb(204, 228, 247);
@@ -307,17 +311,17 @@ namespace DVLD.PL.UsersManagement
             btnAddNewPerson.ShadowSize = 3;
             btnAddNewPerson.ShiftOnPress = false;
             btnAddNewPerson.Size = new Size(40, 38);
-            btnAddNewPerson.TabIndex = 2;
+            btnAddNewPerson.TabIndex = 3;
             btnAddNewPerson.TextColor = SystemColors.ControlText;
             btnAddNewPerson.TextOffset = new Point(0, 0);
-            toolTip1.SetToolTip(btnAddNewPerson, "Add new person");
+            toolTip1.SetToolTip(btnAddNewPerson, "Add new Person.  Will open new window.");
             // 
             // ctrlPersonCard1
             // 
             ctrlPersonCard1.BackColor = Color.White;
             ctrlPersonCard1.Location = new Point(16, 90);
             ctrlPersonCard1.Name = "ctrlPersonCard1";
-            ctrlPersonCard1.Size = new Size(793, 260);
+            ctrlPersonCard1.Size = new Size(779, 260);
             ctrlPersonCard1.TabIndex = 1;
             // 
             // lnkEditPerson
@@ -331,7 +335,6 @@ namespace DVLD.PL.UsersManagement
             lnkEditPerson.TabIndex = 2;
             lnkEditPerson.TabStop = true;
             lnkEditPerson.Text = "Edit Person Info";
-            toolTip1.SetToolTip(lnkEditPerson, "Edit this person info in new screen ");
             lnkEditPerson.Visible = false;
             // 
             // btnNext
@@ -354,14 +357,14 @@ namespace DVLD.PL.UsersManagement
             btnNext.HoverAnimationSpeed = 20;
             btnNext.HoverBorderColor = Color.FromArgb(0, 120, 215);
             btnNext.HoverEndColor = Color.FromArgb(229, 241, 251);
-            btnNext.HoverIconColor = Color.White;
+            btnNext.HoverIconColor = Color.Navy;
             btnNext.HoverStartColor = Color.FromArgb(229, 241, 251);
             btnNext.HoverTextColor = SystemColors.ControlText;
-            btnNext.IconColor = Color.White;
+            btnNext.IconColor = Color.DimGray;
             btnNext.IconMargin = 10;
             btnNext.IconOffset = new Point(0, 0);
             btnNext.IconSize = new Size(16, 16);
-            btnNext.IconSpacing = 5;
+            btnNext.IconSpacing = 10;
             btnNext.IsLoading = false;
             btnNext.LeftIcon = null;
             btnNext.Location = new Point(686, 355);
@@ -369,7 +372,7 @@ namespace DVLD.PL.UsersManagement
             btnNext.Name = "btnNext";
             btnNext.PressedEndColor = Color.FromArgb(204, 228, 247);
             btnNext.PressedStartColor = Color.FromArgb(204, 228, 247);
-            btnNext.RightIcon = null;
+            btnNext.RightIcon = Properties.Resources.forward;
             btnNext.RippleColor = Color.FromArgb(70, 0, 0, 0);
             btnNext.RippleSpeed = 15;
             btnNext.ShadowColor = Color.FromArgb(60, 0, 0, 0);
@@ -378,239 +381,125 @@ namespace DVLD.PL.UsersManagement
             btnNext.ShiftOnPress = false;
             btnNext.Size = new Size(110, 38);
             btnNext.TabIndex = 3;
-            btnNext.Text = "Next >";
+            btnNext.Text = "Next";
             btnNext.TextColor = SystemColors.ControlText;
             btnNext.TextOffset = new Point(0, 0);
+            toolTip1.SetToolTip(btnNext, "Go to confirm driver information");
             // 
-            // tpLoginInfo
+            // tpDriverConfirmation
             // 
-            tpLoginInfo.BackColor = Color.White;
-            tpLoginInfo.Controls.Add(lblUserName);
-            tpLoginInfo.Controls.Add(txtUserName);
-            tpLoginInfo.Controls.Add(lblPassword);
-            tpLoginInfo.Controls.Add(txtPassword);
-            tpLoginInfo.Controls.Add(lblConfirmPassword);
-            tpLoginInfo.Controls.Add(txtConfirmPassword);
-            tpLoginInfo.Controls.Add(lnkEditPassword);
-            tpLoginInfo.Controls.Add(chkIsActive);
-            tpLoginInfo.Location = new Point(4, 26);
-            tpLoginInfo.Name = "tpLoginInfo";
-            tpLoginInfo.Padding = new Padding(24);
-            tpLoginInfo.Size = new Size(812, 405);
-            tpLoginInfo.TabIndex = 1;
-            tpLoginInfo.Text = "2. Login Credentials";
+            tpDriverConfirmation.BackColor = Color.White;
+            tpDriverConfirmation.Controls.Add(lblConfirmTitle);
+            tpDriverConfirmation.Controls.Add(lblPersonNameHeader);
+            tpDriverConfirmation.Controls.Add(lblConfirmPersonName);
+            tpDriverConfirmation.Controls.Add(lblPersonIdHeader);
+            tpDriverConfirmation.Controls.Add(lblPersonIdValue);
+            tpDriverConfirmation.Controls.Add(lblCreatedDateHeader);
+            tpDriverConfirmation.Controls.Add(lblCreatedDateValue);
+            tpDriverConfirmation.Controls.Add(lblCreatedByHeader);
+            tpDriverConfirmation.Controls.Add(lblCreatedByValue);
+            tpDriverConfirmation.Location = new Point(4, 26);
+            tpDriverConfirmation.Name = "tpDriverConfirmation";
+            tpDriverConfirmation.Padding = new Padding(32);
+            tpDriverConfirmation.Size = new Size(812, 405);
+            tpDriverConfirmation.TabIndex = 1;
+            tpDriverConfirmation.Text = "Driver Confirmation";
+            tpDriverConfirmation.ToolTipText = "Confirm driver info";
             // 
-            // lblUserName
+            // lblConfirmTitle
             // 
-            lblUserName.AutoSize = true;
-            lblUserName.ForeColor = Color.FromArgb(71, 85, 105);
-            lblUserName.Location = new Point(36, 32);
-            lblUserName.Name = "lblUserName";
-            lblUserName.Size = new Size(69, 17);
-            lblUserName.TabIndex = 0;
-            lblUserName.Text = "Username";
+            lblConfirmTitle.AutoSize = true;
+            lblConfirmTitle.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            lblConfirmTitle.ForeColor = Color.FromArgb(15, 23, 42);
+            lblConfirmTitle.Location = new Point(36, 32);
+            lblConfirmTitle.Name = "lblConfirmTitle";
+            lblConfirmTitle.Size = new Size(183, 21);
+            lblConfirmTitle.TabIndex = 0;
+            lblConfirmTitle.Text = "Confirm Driver Creation";
             // 
-            // txtUserName
+            // lblPersonNameHeader
             // 
-            txtUserName.AllowArabicCharacters = false;
-            txtUserName.AllowEnglishCharacters = true;
-            txtUserName.AllowNumbers = true;
-            txtUserName.AllowSpaces = false;
-            txtUserName.AllowSymbols = false;
-            txtUserName.BackColor = Color.Transparent;
-            txtUserName.BorderColor = Color.FromArgb(220, 220, 220);
-            txtUserName.BorderFocusColor = Color.FromArgb(200, 200, 200);
-            txtUserName.BorderRadius = 24;
-            txtUserName.BorderSize = 1;
-            txtUserName.CustomAllowedCharacters = "";
-            txtUserName.EnableIconTinting = false;
-            txtUserName.EnableSuggest = false;
-            txtUserName.ErrorBorderColor = Color.FromArgb(239, 68, 68);
-            txtUserName.FillColor = Color.White;
-            txtUserName.HasError = false;
-            txtUserName.HoverIconColor = Color.FromArgb(15, 23, 42);
-            txtUserName.IconColor = Color.FromArgb(148, 163, 184);
-            txtUserName.IconOffsetLeft = 10;
-            txtUserName.IconOffsetRight = 10;
-            txtUserName.IconSize = new Size(20, 20);
-            txtUserName.IconSpacing = 8;
-            txtUserName.LeftIcon = null;
-            txtUserName.LeftIconClickable = false;
-            txtUserName.Location = new Point(36, 55);
-            txtUserName.MaxLength = 20;
-            txtUserName.MaxSuggestItems = 8;
-            txtUserName.MoveToNextControlOnEnter = true;
-            txtUserName.Name = "txtUserName";
-            txtUserName.Padding = new Padding(8, 12, 8, 12);
-            txtUserName.PlaceholderColor = Color.DarkGray;
-            txtUserName.PlaceholderText = "Enter unique username...";
-            txtUserName.RightIcon = null;
-            txtUserName.RightIconClickable = false;
-            txtUserName.ShowClearButton = false;
-            txtUserName.Size = new Size(320, 38);
-            txtUserName.SuggestIcon = null;
-            txtUserName.TabIndex = 0;
-            toolTip1.SetToolTip(txtUserName, "You can only use English letters and numbers");
-            txtUserName.UseSystemPasswordChar = false;
-            txtUserName.ValidateEmail = false;
+            lblPersonNameHeader.AutoSize = true;
+            lblPersonNameHeader.ForeColor = Color.FromArgb(100, 116, 139);
+            lblPersonNameHeader.Location = new Point(36, 120);
+            lblPersonNameHeader.Name = "lblPersonNameHeader";
+            lblPersonNameHeader.Size = new Size(107, 17);
+            lblPersonNameHeader.TabIndex = 3;
+            lblPersonNameHeader.Text = "Selected Person:";
             // 
-            // lblPassword
+            // lblConfirmPersonName
             // 
-            lblPassword.AutoSize = true;
-            lblPassword.ForeColor = Color.FromArgb(71, 85, 105);
-            lblPassword.Location = new Point(36, 110);
-            lblPassword.Name = "lblPassword";
-            lblPassword.Size = new Size(66, 17);
-            lblPassword.TabIndex = 1;
-            lblPassword.Text = "Password";
+            lblConfirmPersonName.AutoSize = true;
+            lblConfirmPersonName.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            lblConfirmPersonName.ForeColor = Color.FromArgb(124, 58, 237);
+            lblConfirmPersonName.Location = new Point(160, 118);
+            lblConfirmPersonName.Name = "lblConfirmPersonName";
+            lblConfirmPersonName.Size = new Size(79, 19);
+            lblConfirmPersonName.TabIndex = 4;
+            lblConfirmPersonName.Text = "[Unknown]";
             // 
-            // txtPassword
+            // lblPersonIdHeader
             // 
-            txtPassword.AllowArabicCharacters = false;
-            txtPassword.AllowEnglishCharacters = true;
-            txtPassword.AllowNumbers = true;
-            txtPassword.AllowSpaces = false;
-            txtPassword.AllowSymbols = true;
-            txtPassword.BackColor = Color.Transparent;
-            txtPassword.BorderColor = Color.FromArgb(220, 220, 220);
-            txtPassword.BorderFocusColor = Color.FromArgb(200, 200, 200);
-            txtPassword.BorderRadius = 24;
-            txtPassword.BorderSize = 1;
-            txtPassword.CustomAllowedCharacters = "";
-            txtPassword.EnableIconTinting = false;
-            txtPassword.EnableSuggest = false;
-            txtPassword.ErrorBorderColor = Color.FromArgb(239, 68, 68);
-            txtPassword.FillColor = Color.White;
-            txtPassword.HasError = false;
-            txtPassword.HoverIconColor = Color.FromArgb(15, 23, 42);
-            txtPassword.IconColor = Color.FromArgb(148, 163, 184);
-            txtPassword.IconOffsetLeft = 10;
-            txtPassword.IconOffsetRight = 10;
-            txtPassword.IconSize = new Size(20, 20);
-            txtPassword.IconSpacing = 8;
-            txtPassword.LeftIcon = null;
-            txtPassword.LeftIconClickable = false;
-            txtPassword.Location = new Point(36, 133);
-            txtPassword.MaxLength = 20;
-            txtPassword.MaxSuggestItems = 8;
-            txtPassword.MoveToNextControlOnEnter = true;
-            txtPassword.Name = "txtPassword";
-            txtPassword.Padding = new Padding(8, 12, 8, 12);
-            txtPassword.PlaceholderColor = Color.DarkGray;
-            txtPassword.PlaceholderText = "Enter password...";
-            txtPassword.RightIcon = null;
-            txtPassword.RightIconClickable = false;
-            txtPassword.ShowClearButton = false;
-            txtPassword.Size = new Size(320, 38);
-            txtPassword.SuggestIcon = null;
-            txtPassword.TabIndex = 2;
-            toolTip1.SetToolTip(txtPassword, "You can only use English Letters, Number and Symbols");
-            txtPassword.UseSystemPasswordChar = true;
-            txtPassword.ValidateEmail = false;
+            lblPersonIdHeader.AutoSize = true;
+            lblPersonIdHeader.ForeColor = Color.FromArgb(100, 116, 139);
+            lblPersonIdHeader.Location = new Point(36, 80);
+            lblPersonIdHeader.Name = "lblPersonIdHeader";
+            lblPersonIdHeader.Size = new Size(70, 17);
+            lblPersonIdHeader.TabIndex = 1;
+            lblPersonIdHeader.Text = "Person ID:";
             // 
-            // lblConfirmPassword
+            // lblPersonIdValue
             // 
-            lblConfirmPassword.AutoSize = true;
-            lblConfirmPassword.ForeColor = Color.FromArgb(71, 85, 105);
-            lblConfirmPassword.Location = new Point(36, 188);
-            lblConfirmPassword.Name = "lblConfirmPassword";
-            lblConfirmPassword.Size = new Size(118, 17);
-            lblConfirmPassword.TabIndex = 3;
-            lblConfirmPassword.Text = "Confirm Password";
+            lblPersonIdValue.AutoSize = true;
+            lblPersonIdValue.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            lblPersonIdValue.ForeColor = Color.FromArgb(15, 23, 42);
+            lblPersonIdValue.Location = new Point(160, 78);
+            lblPersonIdValue.Name = "lblPersonIdValue";
+            lblPersonIdValue.Size = new Size(35, 19);
+            lblPersonIdValue.TabIndex = 2;
+            lblPersonIdValue.Text = "N/A";
             // 
-            // txtConfirmPassword
+            // lblCreatedDateHeader
             // 
-            txtConfirmPassword.AllowArabicCharacters = false;
-            txtConfirmPassword.AllowEnglishCharacters = true;
-            txtConfirmPassword.AllowNumbers = true;
-            txtConfirmPassword.AllowSpaces = false;
-            txtConfirmPassword.AllowSymbols = true;
-            txtConfirmPassword.BackColor = Color.Transparent;
-            txtConfirmPassword.BorderColor = Color.FromArgb(220, 220, 220);
-            txtConfirmPassword.BorderFocusColor = Color.FromArgb(200, 200, 200);
-            txtConfirmPassword.BorderRadius = 24;
-            txtConfirmPassword.BorderSize = 1;
-            txtConfirmPassword.CustomAllowedCharacters = "";
-            txtConfirmPassword.EnableIconTinting = false;
-            txtConfirmPassword.EnableSuggest = false;
-            txtConfirmPassword.ErrorBorderColor = Color.FromArgb(239, 68, 68);
-            txtConfirmPassword.FillColor = Color.White;
-            txtConfirmPassword.HasError = false;
-            txtConfirmPassword.HoverIconColor = Color.FromArgb(15, 23, 42);
-            txtConfirmPassword.IconColor = Color.FromArgb(148, 163, 184);
-            txtConfirmPassword.IconOffsetLeft = 10;
-            txtConfirmPassword.IconOffsetRight = 10;
-            txtConfirmPassword.IconSize = new Size(20, 20);
-            txtConfirmPassword.IconSpacing = 8;
-            txtConfirmPassword.LeftIcon = null;
-            txtConfirmPassword.LeftIconClickable = false;
-            txtConfirmPassword.Location = new Point(36, 211);
-            txtConfirmPassword.MaxLength = 20;
-            txtConfirmPassword.MaxSuggestItems = 8;
-            txtConfirmPassword.MoveToNextControlOnEnter = true;
-            txtConfirmPassword.Name = "txtConfirmPassword";
-            txtConfirmPassword.Padding = new Padding(8, 12, 8, 12);
-            txtConfirmPassword.PlaceholderColor = Color.DarkGray;
-            txtConfirmPassword.PlaceholderText = "Repeat password...";
-            txtConfirmPassword.RightIcon = null;
-            txtConfirmPassword.RightIconClickable = false;
-            txtConfirmPassword.ShowClearButton = false;
-            txtConfirmPassword.Size = new Size(320, 38);
-            txtConfirmPassword.SuggestIcon = null;
-            txtConfirmPassword.TabIndex = 4;
-            toolTip1.SetToolTip(txtConfirmPassword, "You can only use English Letters, Number and Symbols");
-            txtConfirmPassword.UseSystemPasswordChar = true;
-            txtConfirmPassword.ValidateEmail = false;
+            lblCreatedDateHeader.AutoSize = true;
+            lblCreatedDateHeader.ForeColor = Color.FromArgb(100, 116, 139);
+            lblCreatedDateHeader.Location = new Point(36, 160);
+            lblCreatedDateHeader.Name = "lblCreatedDateHeader";
+            lblCreatedDateHeader.Size = new Size(94, 17);
+            lblCreatedDateHeader.TabIndex = 5;
+            lblCreatedDateHeader.Text = "Creation Date:";
             // 
-            // lnkEditPassword
+            // lblCreatedDateValue
             // 
-            lnkEditPassword.AutoSize = true;
-            lnkEditPassword.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            lnkEditPassword.LinkBehavior = LinkBehavior.NeverUnderline;
-            lnkEditPassword.LinkColor = Color.FromArgb(124, 58, 237);
-            lnkEditPassword.Location = new Point(36, 115);
-            lnkEditPassword.Name = "lnkEditPassword";
-            lnkEditPassword.Size = new Size(157, 19);
-            lnkEditPassword.TabIndex = 6;
-            lnkEditPassword.TabStop = true;
-            lnkEditPassword.Text = "Change / Edit Password";
-            lnkEditPassword.Visible = false;
+            lblCreatedDateValue.AutoSize = true;
+            lblCreatedDateValue.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            lblCreatedDateValue.ForeColor = Color.FromArgb(15, 23, 42);
+            lblCreatedDateValue.Location = new Point(160, 158);
+            lblCreatedDateValue.Name = "lblCreatedDateValue";
+            lblCreatedDateValue.Size = new Size(35, 19);
+            lblCreatedDateValue.TabIndex = 6;
+            lblCreatedDateValue.Text = "N/A";
             // 
-            // chkIsActive
+            // lblCreatedByHeader
             // 
-            chkIsActive.AnimationSpeed = 25;
-            chkIsActive.AutoCheck = true;
-            chkIsActive.BackColor = Color.Transparent;
-            chkIsActive.BorderRadius = 4;
-            chkIsActive.BorderSize = 1;
-            chkIsActive.BoxBackColor = Color.White;
-            chkIsActive.BoxBorderColor = Color.FromArgb(200, 205, 212);
-            chkIsActive.BoxSize = 18;
-            chkIsActive.CheckAlign = NCheckAlign.Left;
-            chkIsActive.Checked = true;
-            chkIsActive.CheckedColor = Color.FromArgb(0, 120, 215);
-            chkIsActive.CheckMarkColor = Color.White;
-            chkIsActive.CheckState = CheckState.Checked;
-            chkIsActive.CheckThickness = 2F;
-            chkIsActive.DisabledColor = Color.FromArgb(220, 224, 230);
-            chkIsActive.DisabledTextColor = Color.FromArgb(160, 166, 175);
-            chkIsActive.EnableAnimation = true;
-            chkIsActive.EnableRipple = false;
-            chkIsActive.Font = new Font("Segoe UI", 9.5F);
-            chkIsActive.ForeColor = Color.FromArgb(30, 41, 59);
-            chkIsActive.HoverBorderColor = Color.FromArgb(0, 120, 215);
-            chkIsActive.Location = new Point(36, 275);
-            chkIsActive.Name = "chkIsActive";
-            chkIsActive.RippleColor = Color.FromArgb(40, 0, 120, 215);
-            chkIsActive.Size = new Size(160, 24);
-            chkIsActive.Style = NCheckBoxStyle.Rounded;
-            chkIsActive.SwitchOffTrackColor = Color.FromArgb(220, 224, 230);
-            chkIsActive.SwitchThumbColor = Color.White;
-            chkIsActive.SwitchWidth = 38;
-            chkIsActive.TabIndex = 5;
-            chkIsActive.Text = "Is Active User";
-            chkIsActive.TextSpacing = 8;
-            chkIsActive.ThreeState = false;
+            lblCreatedByHeader.AutoSize = true;
+            lblCreatedByHeader.ForeColor = Color.FromArgb(100, 116, 139);
+            lblCreatedByHeader.Location = new Point(36, 200);
+            lblCreatedByHeader.Name = "lblCreatedByHeader";
+            lblCreatedByHeader.Size = new Size(77, 17);
+            lblCreatedByHeader.TabIndex = 7;
+            lblCreatedByHeader.Text = "Created By:";
+            // 
+            // lblCreatedByValue
+            // 
+            lblCreatedByValue.AutoSize = true;
+            lblCreatedByValue.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            lblCreatedByValue.ForeColor = Color.FromArgb(15, 23, 42);
+            lblCreatedByValue.Location = new Point(160, 198);
+            lblCreatedByValue.Name = "lblCreatedByValue";
+            lblCreatedByValue.Size = new Size(54, 19);
+            lblCreatedByValue.TabIndex = 8;
+            lblCreatedByValue.Text = "System";
             // 
             // btnSave
             // 
@@ -656,7 +545,7 @@ namespace DVLD.PL.UsersManagement
             btnSave.ShiftOnPress = false;
             btnSave.Size = new Size(124, 40);
             btnSave.TabIndex = 2;
-            btnSave.Text = "Save User";
+            btnSave.Text = "Save Driver";
             btnSave.TextColor = SystemColors.ControlText;
             btnSave.TextOffset = new Point(0, 0);
             // 
@@ -707,12 +596,9 @@ namespace DVLD.PL.UsersManagement
             btnCancel.Text = "Cancel";
             btnCancel.TextColor = SystemColors.ControlText;
             btnCancel.TextOffset = new Point(0, 0);
+            toolTip1.SetToolTip(btnCancel, "Cancel and Close the window");
             // 
-            // toolTip1
-            // 
-            toolTip1.ToolTipIcon = ToolTipIcon.Info;
-            // 
-            // frmSaveUser
+            // frmSaveDriver
             // 
             AllowMaximize = false;
             AllowMinimize = false;
@@ -727,9 +613,8 @@ namespace DVLD.PL.UsersManagement
             Controls.Add(lblTitle);
             MaximizeBox = false;
             MinimizeBox = false;
-            Name = "frmSaveUser";
-            Text = "DVLD / Users Management / Save User";
-            Load += frmSaveUser_Load;
+            Name = "frmSaveDriver";
+            Load += frmSaveDriver_Load;
             Controls.SetChildIndex(lblTitle, 0);
             Controls.SetChildIndex(tcWizard, 0);
             Controls.SetChildIndex(btnSave, 0);
@@ -739,13 +624,12 @@ namespace DVLD.PL.UsersManagement
             tpPersonSelection.ResumeLayout(false);
             tpPersonSelection.PerformLayout();
             gbSearchFilter.ResumeLayout(false);
-            tpLoginInfo.ResumeLayout(false);
-            tpLoginInfo.PerformLayout();
+            tpDriverConfirmation.ResumeLayout(false);
+            tpDriverConfirmation.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
 
-        private NButton btnSelectPerson;
         private ToolTip toolTip1;
     }
 }

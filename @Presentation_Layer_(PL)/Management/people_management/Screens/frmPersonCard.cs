@@ -18,7 +18,7 @@ namespace DVLD.PL.PeopleManagement
         public frmPersonCard(int personId)
         {
             InitializeComponent();
-
+            SetContextTitle("Person Details");
             this.ApplyStandardFormTheme();
             this.AllowMaximize = false;
             this.AllowResize = false;

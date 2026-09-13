@@ -28,6 +28,7 @@ namespace DVLD.PL.PeopleManagement
         public frmSavePerson(int personId = -1)
         {
             InitializeComponent();
+            SetContextTitle(_mode == Mode.AddNew ? "Add New Person" : "Edit Person");
 
             this.ApplyStandardFormTheme();
             this.AllowMaximize = false;

@@ -23,9 +23,14 @@ namespace DVLD.PL.DriversManagement
         private void InitializeComponent()
         {
             pnlMain = new Panel();
+            ctrlNotFound1 = new DVLD.PL.Management.ctrlNotFound();
             ctrlManagementDataGrid1 = new DVLD.PL.Management.ctrlManagementDataGrid();
             pnlTopBar = new Panel();
+            ctrlDriversSearch1 = new ctrlDriversSearch();
+            ctrlManagementActions1 = new DVLD.PL.Management.ctrlManagementActions();
+            ctrlPagination1 = new DVLD.PL.Management.ctrlPagination();
             pnlMain.SuspendLayout();
+            pnlTopBar.SuspendLayout();
             SuspendLayout();
             // 
             // headerControl
@@ -36,6 +41,7 @@ namespace DVLD.PL.DriversManagement
             // pnlMain
             // 
             pnlMain.BackColor = Color.FromArgb(248, 250, 252);
+            pnlMain.Controls.Add(ctrlNotFound1);
             pnlMain.Controls.Add(ctrlManagementDataGrid1);
             pnlMain.Controls.Add(pnlTopBar);
             pnlMain.Dock = DockStyle.Fill;
@@ -43,6 +49,15 @@ namespace DVLD.PL.DriversManagement
             pnlMain.Name = "pnlMain";
             pnlMain.Size = new Size(1116, 678);
             pnlMain.TabIndex = 1;
+            // 
+            // ctrlNotFound1
+            // 
+            ctrlNotFound1.BackColor = Color.Transparent;
+            ctrlNotFound1.Location = new Point(318, 220);
+            ctrlNotFound1.Name = "ctrlNotFound1";
+            ctrlNotFound1.Size = new Size(480, 240);
+            ctrlNotFound1.TabIndex = 2;
+            ctrlNotFound1.Visible = false;
             // 
             // ctrlManagementDataGrid1
             // 
@@ -57,11 +72,51 @@ namespace DVLD.PL.DriversManagement
             // pnlTopBar
             // 
             pnlTopBar.BackColor = Color.White;
+            pnlTopBar.Controls.Add(ctrlDriversSearch1);
+            pnlTopBar.Controls.Add(ctrlManagementActions1);
+            pnlTopBar.Controls.Add(ctrlPagination1);
             pnlTopBar.Dock = DockStyle.Top;
             pnlTopBar.Location = new Point(0, 0);
             pnlTopBar.Name = "pnlTopBar";
             pnlTopBar.Size = new Size(1116, 136);
             pnlTopBar.TabIndex = 0;
+            // 
+            // ctrlDriversSearch1
+            // 
+            ctrlDriversSearch1.BackColor = Color.Transparent;
+            ctrlDriversSearch1.Dock = DockStyle.Top;
+            ctrlDriversSearch1.Location = new Point(0, 0);
+            ctrlDriversSearch1.Margin = new Padding(4, 3, 4, 3);
+            ctrlDriversSearch1.MinimumSize = new Size(715, 86);
+            ctrlDriversSearch1.Name = "ctrlDriversSearch1";
+            ctrlDriversSearch1.Size = new Size(1116, 86);
+            ctrlDriversSearch1.TabIndex = 0;
+            // 
+            // ctrlManagementActions1
+            // 
+            ctrlManagementActions1.AddEnabled = true;
+            ctrlManagementActions1.AddVisible = true;
+            ctrlManagementActions1.BackColor = Color.Transparent;
+            ctrlManagementActions1.DeleteEnabled = false;
+            ctrlManagementActions1.DeleteVisible = true;
+            ctrlManagementActions1.EditEnabled = false;
+            ctrlManagementActions1.EditVisible = false;
+            ctrlManagementActions1.Location = new Point(12, 90);
+            ctrlManagementActions1.Name = "ctrlManagementActions1";
+            ctrlManagementActions1.RefreshEnabled = true;
+            ctrlManagementActions1.RefreshVisible = true;
+            ctrlManagementActions1.Size = new Size(120, 42);
+            ctrlManagementActions1.TabIndex = 1;
+            // 
+            // ctrlPagination1
+            // 
+            ctrlPagination1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            ctrlPagination1.BackColor = Color.Transparent;
+            ctrlPagination1.Location = new Point(764, 92);
+            ctrlPagination1.MinimumSize = new Size(340, 38);
+            ctrlPagination1.Name = "ctrlPagination1";
+            ctrlPagination1.Size = new Size(340, 38);
+            ctrlPagination1.TabIndex = 2;
             // 
             // frmDriverManagement
             // 
@@ -74,6 +129,7 @@ namespace DVLD.PL.DriversManagement
             Controls.SetChildIndex(headerControl, 0);
             Controls.SetChildIndex(pnlMain, 0);
             pnlMain.ResumeLayout(false);
+            pnlTopBar.ResumeLayout(false);
             ResumeLayout(false);
         }
     }

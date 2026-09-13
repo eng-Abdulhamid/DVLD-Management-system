@@ -4,22 +4,24 @@ using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace DVLD.PL.UsersManagement
+namespace DVLD.PL.DriversManagement
 {
-    public partial class frmDeleteUser : frmBase
+    public partial class frmDeleteDriver : frmBase
     {
-        private readonly int _userId;
-        private readonly UserService _userService;
+        private readonly int _driverId;
+        private readonly DriverService _driverService;
         private ToolTip? _toolTips;
 
         public event Action? DeletedSuccessfully;
 
-        public frmDeleteUser(int userId)
+        public frmDeleteDriver(int driverId)
         {
             InitializeComponent();
             this.ApplyStandardFormTheme();
-            _userId = userId;
-            _userService = new UserService();
+            SetContextTitle("Delete Driver");
+
+            _driverId = driverId;
+            _driverService = new DriverService();
 
             ApplyStyles();
             SetupToolTips();
@@ -41,7 +43,7 @@ namespace DVLD.PL.UsersManagement
                 UseFading = true
             };
 
-            _toolTips.SetToolTip(btnDelete, "Permanently delete this user record");
+            _toolTips.SetToolTip(btnDelete, "Permanently delete this driver record");
             _toolTips.SetToolTip(btnCancel, "Cancel and close window");
         }
 
@@ -51,47 +53,43 @@ namespace DVLD.PL.UsersManagement
             btnDelete.Click += async (s, e) => await PerformDeleteAsync();
         }
 
-        private async void frmDeleteUser_Load(object sender, EventArgs e)
+        private async void frmDeleteDriver_Load(object sender, EventArgs e)
         {
             if (UIUtility.IsDesignMode) return;
 
-            if (_userId <= 0)
+            if (_driverId <= 0)
             {
-                UITheme.ShowErrorToast("Invalid user ID.");
+                UITheme.ShowErrorToast("Invalid driver ID.");
                 this.Close();
                 return;
             }
 
-            await ctrlUserCard1.LoadUserInfoAsync(_userId);
+            await ctrlDriverCard1.LoadDriverInfoAsync(_driverId);
         }
+        private void UpdateDeleteButtonEnabled(bool Enabled)
+        {
+            btnDelete.IsLoading = !Enabled;
+            btnDelete.Enabled = Enabled;
+            btnCancel.Enabled = Enabled;
 
+        }
         private async Task PerformDeleteAsync()
         {
-            btnDelete.IsLoading = true;
-            btnDelete.Enabled = false;
-            btnCancel.Enabled = false;
+            UpdateDeleteButtonEnabled(false);
+            var result = await _driverService.DeleteAsync(_driverId);
 
-            try
+            if (result.IsSuccess)
             {
-                var result = await _userService.DeleteAsync(_userId);
+                UITheme.ShowSuccessToast("Driver deleted successfully.");
+                DeletedSuccessfully?.Invoke();
+                this.Close();
+            }
+            else
+            {
+                UITheme.ShowErrorToast(result.Message);
+            }
 
-                if (result.IsSuccess)
-                {
-                    UITheme.ShowSuccessToast("User deleted successfully.");
-                    DeletedSuccessfully?.Invoke();
-                    this.Close();
-                }
-                else
-                {
-                    UITheme.ShowErrorToast(result.Message);
-                }
-            }
-            finally
-            {
-                btnDelete.IsLoading = false;
-                btnDelete.Enabled = true;
-                btnCancel.Enabled = true;
-            }
+            UpdateDeleteButtonEnabled(true);
         }
     }
 }

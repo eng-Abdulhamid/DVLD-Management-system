@@ -52,13 +52,34 @@ namespace DVLD.BLL.Services
             return await _userRepo.ExistsAsync(id);
         }
 
+        public async Task<bool> IsPersonLinkedToUserAsync(int personId)
+        {
+            return await _userRepo.IsPersonLinkedToUserAsync(personId);
+        }
+        public async Task<bool> IsUsernameAvailableAsync(string username, int? currentUserId = null)
+        {
+            if (string.IsNullOrWhiteSpace(username)) return false;
+
+            if (currentUserId.HasValue && currentUserId.Value > 0)
+            {
+                return !await _userRepo.IsUsernameExistForOtherUserAsync(username.Trim(), currentUserId.Value);
+            }
+
+            return !await _userRepo.IsUsernameExistAsync(username.Trim());
+        }
+        public async Task<OperationResult<bool>> IsUsernameAvailableForUserAsync(string username, int userId)
+        {
+            if (string.IsNullOrWhiteSpace(username)) return OperationResult<bool>.Failure(ErrorCode.BadRequest, "Username cannot be null or empty.");
+            bool isAvailable = !await _userRepo.IsUsernameExistForOtherUserAsync(username.Trim(), userId);
+            return OperationResult<bool>.Success(isAvailable, isAvailable ? "Username is available." : "Username is already taken by another user.");
+        }
         public async Task<OperationResult<int>> AddAsync(UserAddDTO dto)
         {
             if (dto == null)
             {
                 return OperationResult<int>.Failure(ErrorCode.BadRequest, "User data cannot be null.");
             }
-
+            
             if (!string.IsNullOrEmpty(dto.Password))
                  // Hash the password before adding
                  dto.Password = ComputeHash(dto.Password);
@@ -66,6 +87,15 @@ namespace DVLD.BLL.Services
             else
                 return OperationResult<int>.Failure(ErrorCode.BadRequest, "New password cannot be null or empty.");
             
+
+            if(await _userRepo.IsPersonLinkedToUserAsync(dto.PersonID))
+            {
+                return OperationResult<int>.Failure(ErrorCode.Conflict, "This person is already linked to another user.");
+            }
+            if (await _userRepo.IsUsernameExistAsync(dto.UserName))
+            {
+                return OperationResult<int>.Failure(ErrorCode.Conflict, "Username already exists.");
+            }
 
             int addResult = await _userRepo.AddAsync(MapToEntity(dto));
 
@@ -170,6 +200,11 @@ namespace DVLD.BLL.Services
 
             if (dto.UserID <= 0)
                 return OperationResult<bool>.Failure(ErrorCode.BadRequest, "Invalid user ID.");
+
+            if (await _userRepo.IsUsernameExistForOtherUserAsync(dto.UserName, dto.UserID))
+            {
+                return OperationResult<bool>.Failure(ErrorCode.Conflict, "Username already exists for another user.");
+            }
 
             bool isUpdated = await _userRepo.UpdateAsync(MapToEntity(dto));
 

@@ -31,6 +31,7 @@ namespace DVLD.PL.PeopleManagement
         {
             InitializeComponent();
             this.ApplyStandardFormTheme();
+            SetContextTitle("People Management");
 
             _mode = mode;
 
@@ -58,9 +59,6 @@ namespace DVLD.PL.PeopleManagement
         {
             if (_mode == enMode.SelectPerson)
             {
-                this.Text = "DVLD / Select Person";
-                headerControl.TitleText = "DVLD / Select Person";
-
                 ctrlManagementActions1.AddVisible = true;
                 ctrlManagementActions1.RefreshVisible = true;
                 ctrlManagementActions1.EditVisible = false;
@@ -73,9 +71,6 @@ namespace DVLD.PL.PeopleManagement
             }
             else
             {
-                this.Text = "DVLD / People Management";
-                headerControl.TitleText = "DVLD / People Management";
-
                 ctrlManagementActions1.AddVisible = true;
                 ctrlManagementActions1.RefreshVisible = true;
                 ctrlManagementActions1.EditVisible = true;
@@ -292,7 +287,6 @@ namespace DVLD.PL.PeopleManagement
         private async Task HandleManualRefreshAsync()
         {
             await ctrlPeopleSearch1.PerformSearchAsync();
-            UITheme.ShowSuccessToast("People records reloaded successfully.");
         }
 
         private void OpenAddNewPersonDialog()

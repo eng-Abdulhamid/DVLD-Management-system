@@ -8,7 +8,7 @@ namespace DVLD.PL.PeopleManagement
         public frmPeopleManagementSettings()
         {
             InitializeComponent();
-
+            SetContextTitle("Settings");
             this.ApplyStandardFormTheme();
             this.AllowMaximize = false;
             this.AllowMinimize = false;

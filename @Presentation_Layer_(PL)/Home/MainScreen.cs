@@ -14,6 +14,7 @@ namespace DVLD.PL
         public frmMainScreen()
         {
             InitializeComponent();
+            SetContextTitle("Home");
             SetupToolTips();
         }
 
@@ -32,7 +33,6 @@ namespace DVLD.PL
         {
             using (frmPeopleManagement frm = new frmPeopleManagement())
             {
-                AppSession.TitlePath += " / People Management";
                 frm.ShowDialog(this);
             }
 
@@ -41,7 +41,6 @@ namespace DVLD.PL
         {
             using (frmUserManagement userManagement = new())
             {
-                AppSession.TitlePath += " / Users Management";
                 userManagement.ShowDialog();
             }
 
@@ -50,7 +49,6 @@ namespace DVLD.PL
         {
             using (frmDriverManagement driverManagement = new())
             {
-                AppSession.TitlePath += " / Drivers Management";
                 driverManagement.ShowDialog();
             }
 

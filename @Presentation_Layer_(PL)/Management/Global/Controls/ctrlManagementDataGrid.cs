@@ -133,43 +133,41 @@ namespace DVLD.PL.Management
             _columnDefinitions.AddRange(columns);
 
             _suppressSelectionEvents = true;
-            try
-            {
-                dgvResults.Columns.Clear();
-                cmsColumns.Items.Clear();
 
-                foreach (DataGridColumnDefinition def in _columnDefinitions)
+
+            dgvResults.Columns.Clear();
+            cmsColumns.Items.Clear();
+
+            foreach (DataGridColumnDefinition def in _columnDefinitions)
+            {
+                dgvResults.Columns.Add(new DataGridViewTextBoxColumn
                 {
-                    dgvResults.Columns.Add(new DataGridViewTextBoxColumn
-                    {
-                        Name = def.Key,
-                        HeaderText = def.HeaderText,
-                        DataPropertyName = def.DataPropertyName,
-                        Width = def.Width,
-                        ReadOnly = true
-                    });
+                    Name = def.Key,
+                    HeaderText = def.HeaderText,
+                    DataPropertyName = def.DataPropertyName,
+                    Width = def.Width,
+                    ReadOnly = true
+                });
 
-                    ToolStripMenuItem menuItem = new ToolStripMenuItem(def.HeaderText)
-                    {
-                        Checked = true,
-                        CheckOnClick = true,
-                        Tag = def.Key
-                    };
+                ToolStripMenuItem menuItem = new ToolStripMenuItem(def.HeaderText)
+                {
+                    Checked = true,
+                    CheckOnClick = true,
+                    Tag = def.Key
+                };
 
-                    menuItem.CheckedChanged += (s, e) =>
-                    {
-                        if (s is ToolStripMenuItem item && item.Tag is string key && dgvResults.Columns.Contains(key))
-                            dgvResults.Columns[key].Visible = item.Checked;
-                    };
+                menuItem.CheckedChanged += (s, e) =>
+                {
+                    if (s is ToolStripMenuItem item && item.Tag is string key && dgvResults.Columns.Contains(key))
+                        dgvResults.Columns[key].Visible = item.Checked;
+                };
 
-                    def.ToolStripItem = menuItem;
-                    cmsColumns.Items.Add(menuItem);
-                }
+                def.ToolStripItem = menuItem;
+                cmsColumns.Items.Add(menuItem);
             }
-            finally
-            {
-                _suppressSelectionEvents = false;
-            }
+            
+            _suppressSelectionEvents = false;
+            
         }
 
         public void SelectRow(int rowIndex)
@@ -177,18 +175,13 @@ namespace DVLD.PL.Management
             if (rowIndex < 0 || rowIndex >= dgvResults.Rows.Count) return;
 
             _suppressSelectionEvents = true;
-            try
-            {
-                dgvResults.ClearSelection();
-                dgvResults.Rows[rowIndex].Selected = true;
+            dgvResults.ClearSelection();
+            dgvResults.Rows[rowIndex].Selected = true;
 
-                if (dgvResults.Columns.Count > 0)
-                    dgvResults.CurrentCell = dgvResults.Rows[rowIndex].Cells[0];
-            }
-            finally
-            {
-                _suppressSelectionEvents = false;
-            }
+            if (dgvResults.Columns.Count > 0)
+                dgvResults.CurrentCell = dgvResults.Rows[rowIndex].Cells[0];
+            _suppressSelectionEvents = false;
+            
 
             SelectionChanged?.Invoke(this, EventArgs.Empty);
         }
@@ -196,15 +189,12 @@ namespace DVLD.PL.Management
         public void ClearSelection()
         {
             _suppressSelectionEvents = true;
-            try
-            {
-                dgvResults.CurrentCell = null;
-                dgvResults.ClearSelection();
-            }
-            finally
-            {
-                _suppressSelectionEvents = false;
-            }
+
+            dgvResults.CurrentCell = null;
+            dgvResults.ClearSelection();
+            
+            _suppressSelectionEvents = false;
+            
 
             SelectionChanged?.Invoke(this, EventArgs.Empty);
         }
@@ -212,16 +202,12 @@ namespace DVLD.PL.Management
         public void ClearRows()
         {
             _suppressSelectionEvents = true;
-            try
-            {
-                dgvResults.Rows.Clear();
-                dgvResults.CurrentCell = null;
-            }
-            finally
-            {
-                _suppressSelectionEvents = false;
-            }
 
+            dgvResults.Rows.Clear();
+            dgvResults.CurrentCell = null;
+            
+            _suppressSelectionEvents = false;
+            
             SelectionChanged?.Invoke(this, EventArgs.Empty);
         }
 
@@ -229,14 +215,9 @@ namespace DVLD.PL.Management
         {
             _suppressSelectionEvents = true;
             int newRowIndex = -1;
-            try
-            {
-                newRowIndex = dgvResults.Rows.Add(values);
-            }
-            finally
-            {
-                _suppressSelectionEvents = false;
-            }
+
+            newRowIndex = dgvResults.Rows.Add(values);
+            _suppressSelectionEvents = false;
 
             return newRowIndex;
         }
@@ -246,16 +227,12 @@ namespace DVLD.PL.Management
             if (!HasSelection) return;
 
             _suppressSelectionEvents = true;
-            try
-            {
-                dgvResults.Rows.Remove(dgvResults.SelectedRows[0]);
-                dgvResults.CurrentCell = null;
-                dgvResults.ClearSelection();
-            }
-            finally
-            {
-                _suppressSelectionEvents = false;
-            }
+            dgvResults.Rows.Remove(dgvResults.SelectedRows[0]);
+            dgvResults.CurrentCell = null;
+            dgvResults.ClearSelection();
+                
+            _suppressSelectionEvents = false;
+           
 
             SelectionChanged?.Invoke(this, EventArgs.Empty);
         }

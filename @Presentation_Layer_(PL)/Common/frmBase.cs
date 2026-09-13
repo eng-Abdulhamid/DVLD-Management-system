@@ -49,11 +49,29 @@ namespace DVLD.PL.Global
                 return cp;
             }
         }
+        public void SetContextTitle(string currentScreenTitle)
+        {
+            Form? parent = this.Owner ?? Form.ActiveForm;
 
+            if (parent is frmBase baseParent && baseParent != this && !string.IsNullOrWhiteSpace(baseParent.Text))
+            {
+                string fullPath = $"{baseParent.Text} / {currentScreenTitle}";
+                this.Text = fullPath;
+
+                if (headerControl != null)
+                {
+                    headerControl.TitleText = fullPath;
+                }
+            }
+            else
+            {
+                this.Text = currentScreenTitle;
+            }
+        }
         public frmBase()
         {
             InitializeComponent();
-
+            
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
             this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
             this.SetStyle(ControlStyles.UserPaint, true);
@@ -206,6 +224,17 @@ namespace DVLD.PL.Global
         {
             get => MinimizeBox;
             set => MinimizeBox = value;
+        }
+
+        [Category("Window Header Setup")]
+        [Description("Visible the current user button on the header.")]
+        [DefaultValue(true)]
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public bool ShowCurrentUserButton
+        {
+            get => headerControl.ShowCurrentUserButton;
+            set => headerControl.ShowCurrentUserButton = value;
         }
 
         #endregion

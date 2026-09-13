@@ -23,8 +23,10 @@ namespace DVLD.PL.DriversManagement
         {
             InitializeComponent();
             this.ApplyStandardFormTheme();
+            SetContextTitle("Drivers Management");
 
-            // Setup DataGrid columns matching DriverReadDTO schema
+            ctrlManagementActions1.EditVisible = false;
+
             _columnDefinitions = new List<DataGridColumnDefinition>
             {
                 new DataGridColumnDefinition { Key = "DriverID", HeaderText = "Driver ID", DataPropertyName = "DriverID", Width = 110 },
@@ -58,10 +60,8 @@ namespace DVLD.PL.DriversManagement
         {
             this.Load += async (s, e) => await LoadDriversDataAsync();
 
-            // Drivers search control filter event
             ctrlDriversSearch1.OnFilterChanged += (col, text, letter) => ApplyFilter(col, text, letter);
 
-            // Pagination events
             ctrlPagination1.OnPageChanged += (s, e) => DisplayCurrentPage();
             ctrlPagination1.OnPageSizeChanged += (s, e) =>
             {
@@ -69,12 +69,10 @@ namespace DVLD.PL.DriversManagement
                 DisplayCurrentPage();
             };
 
-            // Toolbar action events
             ctrlManagementActions1.OnAddClick += (s, e) => OpenAddNewDriverDialog();
             ctrlManagementActions1.OnDeleteClick += (s, e) => OpenDeleteSelectedDriverDialog();
             ctrlManagementActions1.OnRefreshClick += async (s, e) => await LoadDriversDataAsync();
 
-            // Grid selection state synchronization
             ctrlManagementDataGrid1.SelectionChanged += (s, e) =>
             {
                 ctrlManagementActions1.UpdateButtonsState(ctrlManagementDataGrid1.HasSelection);
@@ -82,7 +80,7 @@ namespace DVLD.PL.DriversManagement
 
             ctrlManagementDataGrid1.CellDoubleClick += (s, e) =>
             {
-                if (e.RowIndex >= 0) OpenViewPersonCardDialog();
+                if (e.RowIndex >= 0) OpenViewDriverCardDialog();
             };
 
             ctrlNotFound1.OnClearFilterClick += (s, e) =>
@@ -96,14 +94,28 @@ namespace DVLD.PL.DriversManagement
             var menu = ctrlManagementDataGrid1.RowActionsContextMenu;
             menu.Items.Clear();
 
-            menu.Items.Add(new ToolStripMenuItem("Show Person Info", Properties.Resources.User, (s, e) => OpenViewPersonCardDialog()));
+            menu.Items.Add(new ToolStripMenuItem("Show Driver Info", Properties.Resources.User, (s, e) => OpenViewDriverCardDialog()));
             menu.Items.Add(new ToolStripSeparator());
 
-            menu.Items.Add(new ToolStripMenuItem("Add New Driver", Properties.Resources.add_person, (s, e) => OpenAddNewDriverDialog()) { ShortcutKeys = Keys.Control | Keys.N });
-            menu.Items.Add(new ToolStripMenuItem("Delete Driver", Properties.Resources.bin, (s, e) => OpenDeleteSelectedDriverDialog()) { ShortcutKeys = Keys.Delete });
+            var addItem = new ToolStripMenuItem("Add New Driver", Properties.Resources.add_person, (s, e) => OpenAddNewDriverDialog())
+            {
+                ShortcutKeys = Keys.Control | Keys.N
+            };
+            menu.Items.Add(addItem);
+
+            var deleteItem = new ToolStripMenuItem("Delete Driver", Properties.Resources.bin, (s, e) => OpenDeleteSelectedDriverDialog())
+            {
+                ShortcutKeys = Keys.Delete
+            };
+            menu.Items.Add(deleteItem);
+
             menu.Items.Add(new ToolStripSeparator());
 
-            menu.Items.Add(new ToolStripMenuItem("Refresh", Properties.Resources.refresh, async (s, e) => await LoadDriversDataAsync()) { ShortcutKeys = Keys.F5 });
+            var refreshItem = new ToolStripMenuItem("Refresh", Properties.Resources.refresh, async (s, e) => await LoadDriversDataAsync())
+            {
+                ShortcutKeys = Keys.F5
+            };
+            menu.Items.Add(refreshItem);
         }
 
         private async Task LoadDriversDataAsync()
@@ -113,7 +125,6 @@ namespace DVLD.PL.DriversManagement
             {
                 _allDrivers = result.DataList;
                 ApplyFilter(ctrlDriversSearch1.FilterColumn, ctrlDriversSearch1.SearchText, ctrlDriversSearch1.Letter);
-                UITheme.ShowSuccessToast("Drivers list updated successfully.");
             }
             else
             {
@@ -126,7 +137,6 @@ namespace DVLD.PL.DriversManagement
         {
             IEnumerable<DriverReadDTO> query = _allDrivers;
 
-            // Apply text-based search on matched column
             if (!string.IsNullOrWhiteSpace(filterColumn) && !string.IsNullOrWhiteSpace(searchText))
             {
                 string search = searchText.ToLower();
@@ -140,7 +150,6 @@ namespace DVLD.PL.DriversManagement
 
             _filteredDrivers = query.ToList();
 
-            // Update pagination metrics
             ctrlPagination1.TotalRecords = _filteredDrivers.Count;
             ctrlPagination1.CurrentPage = 1;
             ctrlPagination1.UpdateUI();
@@ -167,6 +176,7 @@ namespace DVLD.PL.DriversManagement
 
             foreach (var driver in pageData)
             {
+                
                 ctrlManagementDataGrid1.AddRow(
                     driver.DriverID,
                     driver.PersonID,
@@ -183,7 +193,7 @@ namespace DVLD.PL.DriversManagement
         {
             using frmSaveDriver frm = new frmSaveDriver();
             frm.DriverSaved += async (id) => await LoadDriversDataAsync();
-            frm.ShowDialog();
+            frm.ShowDialog(this);
         }
 
         private void OpenDeleteSelectedDriverDialog()
@@ -192,16 +202,16 @@ namespace DVLD.PL.DriversManagement
             {
                 using frmDeleteDriver frm = new frmDeleteDriver(id);
                 frm.DeletedSuccessfully += async () => await LoadDriversDataAsync();
-                frm.ShowDialog();
+                frm.ShowDialog(this);
             }
         }
 
-        private void OpenViewPersonCardDialog()
+        private void OpenViewDriverCardDialog()
         {
-            if (ctrlManagementDataGrid1.TryGetSelectedInt("PersonID", out int personId))
+            if (ctrlManagementDataGrid1.TryGetSelectedInt("DriverID", out int driverId))
             {
-                using frmPersonCard frm = new frmPersonCard(personId);
-                frm.ShowDialog();
+                using frmDriverCard frm = new frmDriverCard(driverId);
+                frm.ShowDialog(this);
             }
         }
 

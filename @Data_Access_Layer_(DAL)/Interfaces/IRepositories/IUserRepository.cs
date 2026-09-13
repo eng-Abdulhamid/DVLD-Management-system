@@ -9,6 +9,8 @@ namespace DVLD.DAL.Interfaces.IRepositories
         Task<User?> FindByUsernameAsync(string username);
         Task<bool> ChangePasswordAsync(string UserName, string newPassword);
         Task<bool> ChangePasswordAsync(int UserID, string newPassword);
-
+        Task<bool> IsUsernameExistAsync(string username);
+        Task<bool> IsUsernameExistForOtherUserAsync(string username, int userId);
+        Task<bool> IsPersonLinkedToUserAsync(int personId);
     }
 }

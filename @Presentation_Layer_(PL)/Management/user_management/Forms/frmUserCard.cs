@@ -15,11 +15,13 @@ namespace DVLD.PL.Management.user_management
     public partial class frmUserCard : frmBase
     {
         private readonly int _userID;
+        public Action OnEditedSuccessfully;
+        public Action OnDeletedSuccessfully;
         public frmUserCard(int UserID)
         {
             InitializeComponent();
             _userID = UserID;
-
+            SetContextTitle("User Card");
             ctrlUserCard1?.LoadUserInfoAsync(_userID);
             ctrlUserManagementControls.OnDeleteClick += CtrlManagementActions1_OnDeleteClick;
             ctrlUserManagementControls.OnEditClick += CtrlManagementActions1_OnEditClick;
@@ -49,7 +51,7 @@ namespace DVLD.PL.Management.user_management
             {
                 deleteForm.DeletedSuccessfully += () =>
                 {
-                    UITheme.ShowSuccessToast("User deleted successfully.", "Deleted Successfully");
+                    OnDeletedSuccessfully?.Invoke();
                     this.Close();
                 };
                 deleteForm.ShowDialog();
@@ -61,8 +63,8 @@ namespace DVLD.PL.Management.user_management
             {
                 editForm.UserSaved += (int UserId) =>
                 {
-                    UITheme.ShowSuccessToast("User updated successfully.", "Updated Successfully");
                     ctrlUserCard1?.LoadUserInfoAsync(UserId);
+                    OnEditedSuccessfully?.Invoke();
                 };
                 editForm.ShowDialog();
             }

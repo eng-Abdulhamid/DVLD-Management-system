@@ -40,11 +40,11 @@ namespace DVLD.PL.UsersManagement
             // 
             // pnlMain
             // 
+            pnlMain.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pnlMain.BackColor = Color.FromArgb(248, 250, 252);
             pnlMain.Controls.Add(ctrlNotFound1);
             pnlMain.Controls.Add(ctrlManagementDataGrid1);
             pnlMain.Controls.Add(pnlTopBar);
-            pnlMain.Dock = DockStyle.Fill;
             pnlMain.Location = new Point(2, 40);
             pnlMain.Name = "pnlMain";
             pnlMain.Size = new Size(1116, 678);
@@ -52,8 +52,9 @@ namespace DVLD.PL.UsersManagement
             // 
             // ctrlNotFound1
             // 
-            ctrlNotFound1.BackColor = Color.Transparent;
-            ctrlNotFound1.Location = new Point(318, 220);
+            ctrlNotFound1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            ctrlNotFound1.BackColor = Color.White;
+            ctrlNotFound1.Location = new Point(318, 265);
             ctrlNotFound1.Name = "ctrlNotFound1";
             ctrlNotFound1.Size = new Size(480, 240);
             ctrlNotFound1.TabIndex = 2;
@@ -61,8 +62,8 @@ namespace DVLD.PL.UsersManagement
             // 
             // ctrlManagementDataGrid1
             // 
+            ctrlManagementDataGrid1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             ctrlManagementDataGrid1.BackColor = Color.Transparent;
-            ctrlManagementDataGrid1.Dock = DockStyle.Fill;
             ctrlManagementDataGrid1.Location = new Point(0, 144);
             ctrlManagementDataGrid1.Margin = new Padding(0);
             ctrlManagementDataGrid1.Name = "ctrlManagementDataGrid1";
@@ -118,6 +119,7 @@ namespace DVLD.PL.UsersManagement
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1120, 720);
             Controls.Add(pnlMain);
+            MinimumSize = new Size(1120, 720);
             Name = "frmUserManagement";
             Text = "DVLD / Users Management";
             Controls.SetChildIndex(headerControl, 0);
