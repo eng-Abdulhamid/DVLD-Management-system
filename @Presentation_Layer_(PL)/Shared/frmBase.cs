@@ -277,19 +277,7 @@ namespace DVLD.PL.Global
 
         private void HandleUserSessionChanged()
         {
-            if (IsDisposed || !IsHandleCreated) return;
-
-            if (InvokeRequired)
-            {
-                BeginInvoke(new Action(HandleUserSessionChanged));
-                return;
-            }
-
-            // Automatically close protected child windows when the user signs out
-            if (RequiresAuthentication && !AppSession.IsAuthenticated)
-            {
-                Close();
-            }
+            
         }
 
         private void SyncHeaderProperties()

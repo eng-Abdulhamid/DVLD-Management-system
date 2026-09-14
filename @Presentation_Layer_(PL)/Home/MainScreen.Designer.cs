@@ -47,7 +47,7 @@ namespace DVLD.PL
         {
             if (disposing)
             {
-                AppSession.OnUserSessionChanged -= UpdateDashboardInfo;
+                //AppSession.OnUserSessionChanged -= UpdateDashboardInfo;
                 if (components != null)
                 {
                     components.Dispose();

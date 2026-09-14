@@ -28,6 +28,7 @@ namespace DVLD.PL.Login
         private System.Windows.Forms.LinkLabel lnkForgotCurrentPassword;
         private NButton btnChangePassword;
         private NButton btnCancel;
+        private System.Windows.Forms.ToolTip toolTip1;
 
         protected override void Dispose(bool disposing)
         {
@@ -40,6 +41,8 @@ namespace DVLD.PL.Login
 
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
+            toolTip1 = new ToolTip(components);
             lblStatus = new Label();
             btnEditUsername = new NButton();
             btnVerifiedCheck = new NButton();

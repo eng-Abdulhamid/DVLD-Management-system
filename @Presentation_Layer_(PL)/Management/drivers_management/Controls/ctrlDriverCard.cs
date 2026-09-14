@@ -1,6 +1,7 @@
 ﻿using DVLD.BLL.DTOs;
 using DVLD.BLL.Services;
 using DVLD.PL.Global;
+using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -11,31 +12,31 @@ namespace DVLD.PL.DriversManagement
         private int _driverId = -1;
         private DriverService? _driverService;
 
-        // Lazy initialization for designer stability
-        private DriverService DriverServiceInstance => _driverService ??= new DriverService();
-
         public int DriverID => _driverId;
         public DriverReadDTO? SelectedDriverInfo { get; private set; }
 
         public ctrlDriverCard()
         {
             InitializeComponent();
-            ResetCard();
+            if (!UIUtility.IsDesignMode)
+            {
+                ResetCard();
+            }
         }
 
         public async Task LoadDriverInfoAsync(int driverId)
         {
             if (UIUtility.IsDesignMode) return;
 
-            _driverId = driverId;
-
             if (driverId <= 0)
             {
                 ResetCard();
+                SetErrorState();
                 return;
             }
 
-            var result = await DriverServiceInstance.GetByIdAsync(driverId);
+            _driverService ??= new DriverService();
+            var result = await _driverService.GetByIdAsync(driverId);
 
             if (result.IsSuccess && result.Data != null)
             {
@@ -44,6 +45,7 @@ namespace DVLD.PL.DriversManagement
             else
             {
                 ResetCard();
+                SetErrorState();
             }
         }
 
@@ -54,13 +56,14 @@ namespace DVLD.PL.DriversManagement
             if (driver == null)
             {
                 ResetCard();
+                SetErrorState();
                 return;
             }
 
             _driverId = driver.DriverID;
             SelectedDriverInfo = driver;
 
-            // Load encapsulated person details
+            // Enforce sequential UI loading to prevent race conditions
             await ctrlPersonCard1.LoadPersonInfoAsync(SelectedDriverInfo.PersonID);
 
             PopulateDriverDetails();
@@ -73,6 +76,9 @@ namespace DVLD.PL.DriversManagement
             lblDriverID.Text = SelectedDriverInfo.DriverID.ToString();
             lblCreatedByUserID.Text = SelectedDriverInfo.CreatedByUserID.ToString();
             lblCreatedDate.Text = SelectedDriverInfo.CreatedDate.ToString("dd MMM yyyy");
+
+            lblDriverID.ForeColor = Color.FromArgb(31, 41, 55);
+            gbDriverInfo.Text = "Driver Information (Active)";
         }
 
         public void ResetCard()
@@ -80,11 +86,24 @@ namespace DVLD.PL.DriversManagement
             _driverId = -1;
             SelectedDriverInfo = null;
 
-            ctrlPersonCard1.ResetCard();
+            if (!UIUtility.IsDesignMode)
+            {
+                ctrlPersonCard1.ResetCard();
+            }
 
             lblDriverID.Text = "[????]";
             lblCreatedByUserID.Text = "[????]";
             lblCreatedDate.Text = "[????]";
+
+            lblDriverID.ForeColor = Color.FromArgb(31, 41, 55);
+            gbDriverInfo.Text = "Driver Information";
+        }
+
+        private void SetErrorState()
+        {
+            lblDriverID.Text = "Not Found";
+            lblDriverID.ForeColor = Color.FromArgb(239, 68, 68); // Red color for immediate UX feedback
+            gbDriverInfo.Text = "Driver Information (Invalid)";
         }
     }
 }

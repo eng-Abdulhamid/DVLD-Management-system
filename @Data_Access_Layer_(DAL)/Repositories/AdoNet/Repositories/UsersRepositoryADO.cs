@@ -126,14 +126,12 @@ namespace DVLD.DAL.Repo.ADONet
                 CommandText = $@"UPDATE Users SET 
                 PersonID=@PersonID,
                 UserName=@UserName,
-                Password=@Password,
                 IsActive=@IsActive
                 WHERE UserID=@UserID"
             };
             Command.Parameters.AddWithValue("@UserID", UpdatedUser.UserID);
             Command.Parameters.AddWithValue("@PersonID", (int)UpdatedUser.PersonID);
             Command.Parameters.AddWithValue("@UserName", (string)UpdatedUser.UserName);
-            Command.Parameters.AddWithValue("@Password", (string)UpdatedUser.Password);
             Command.Parameters.AddWithValue("@IsActive", (bool)UpdatedUser.IsActive);
             return await DbExecutor.ExecuteCommandReturnRowsAffected(Command) > 0;
         }

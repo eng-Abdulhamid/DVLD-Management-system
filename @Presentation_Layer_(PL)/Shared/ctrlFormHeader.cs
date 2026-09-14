@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using CustomizeControls;
+using DVLD.BLL.Services;
 using DVLD.PL.Login;
 using DVLD.PL.Management.user_management;
 using DVLD.PL.UsersManagement;
@@ -24,18 +25,10 @@ namespace DVLD.PL.Global
         private DateTime _lastClickTime = DateTime.MinValue;
         private Point _lastClickPos = Point.Empty;
 
-        private bool _allowClose = true;
-        private bool _allowMaximize = true;
-        private bool _allowMinimize = true;
-        private bool _showUserProfile = false;
-
         private Form? _parentFormRef;
         private Control? _parentControlRef;
 
         #region Custom Events for Extensibility
-        public event EventHandler? OnCurrentUserInfoClicked;
-        public event EventHandler? OnChangePasswordClicked;
-        public event EventHandler? OnSettingsClicked;
         public event EventHandler? OnSignOutClicked;
         #endregion
 
@@ -50,7 +43,10 @@ namespace DVLD.PL.Global
                 RegisterEvents();
                 InitializeUserContextMenu();
                 UITheme.OnThemeChanged += HandleThemeChanged;
-                AppSession.OnUserSessionChanged += HandleUserSessionChanged;
+                if (ShowUserProfile)
+                {
+                    AppSession.OnUserSessionChanged += UpdateUserProfileDisplay;
+                }
                 ApplyThemeStyles();
             }
         }
@@ -81,13 +77,13 @@ namespace DVLD.PL.Global
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool AllowClose
         {
-            get => _allowClose;
+            get;
             set
             {
-                _allowClose = value;
+                field = value;
                 if (btnClose != null) btnClose.Visible = value;
             }
-        }
+        } = true;
 
         [Category("Header Setup")]
         [DefaultValue(true)]
@@ -95,13 +91,13 @@ namespace DVLD.PL.Global
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool AllowMaximize
         {
-            get => _allowMaximize;
+            get;
             set
             {
-                _allowMaximize = value;
+                field = value;
                 if (btnMaximize != null) btnMaximize.Visible = value;
             }
-        }
+        } = true;
 
         [Category("Header Setup")]
         [DefaultValue(true)]
@@ -109,13 +105,13 @@ namespace DVLD.PL.Global
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool AllowMinimize
         {
-            get => _allowMinimize;
+            get;
             set
             {
-                _allowMinimize = value;
+                field = value;
                 if (btnMinimize != null) btnMinimize.Visible = value;
             }
-        }
+        } = true;
 
         [Category("Header Setup")]
         [Description("Show or hide the current user profile badge and settings menu.")]
@@ -124,10 +120,10 @@ namespace DVLD.PL.Global
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool ShowUserProfile
         {
-            get => _showUserProfile;
+            get;
             set
             {
-                _showUserProfile = value;
+                field = value;
                 if (btnUserProfile != null)
                 {
                     btnUserProfile.Visible = value;
@@ -137,7 +133,7 @@ namespace DVLD.PL.Global
                     UpdateUserProfileDisplay();
                 }
             }
-        }
+        } = false;
 
         #endregion
 
@@ -177,24 +173,9 @@ namespace DVLD.PL.Global
             }
         }
 
-        private void HandleUserSessionChanged()
-        {
-            if (IsHandleCreated && !IsDisposed)
-            {
-                if (InvokeRequired)
-                {
-                    BeginInvoke(UpdateUserProfileDisplay);
-                }
-                else
-                {
-                    UpdateUserProfileDisplay();
-                }
-            }
-        }
-
         private void UpdateUserProfileDisplay()
         {
-            if (!_showUserProfile) return;
+            if (!ShowUserProfile) return;
 
             if (AppSession.IsAuthenticated)
             {
@@ -262,10 +243,10 @@ namespace DVLD.PL.Global
 
             SendToBack();
 
-            if (btnClose != null) btnClose.Visible = _allowClose;
-            if (btnMaximize != null) btnMaximize.Visible = _allowMaximize;
-            if (btnMinimize != null) btnMinimize.Visible = _allowMinimize;
-            if (btnUserProfile != null) btnUserProfile.Visible = _showUserProfile;
+            if (btnClose != null) btnClose.Visible = AllowClose;
+            if (btnMaximize != null) btnMaximize.Visible = AllowMaximize;
+            if (btnMinimize != null) btnMinimize.Visible = AllowMinimize;
+            if (btnUserProfile != null) btnUserProfile.Visible = ShowUserProfile;
 
             UnhookParentFormEvents();
             _parentFormRef = ParentForm;
@@ -275,8 +256,6 @@ namespace DVLD.PL.Global
                 _parentFormRef.Resize += ParentForm_Resize;
                 UpdateMaximizeIcon();
             }
-
-            UpdateUserProfileDisplay();
             ApplyThemeStyles();
         }
 
@@ -332,7 +311,7 @@ namespace DVLD.PL.Global
                 _lastClickTime = DateTime.MinValue;
                 _lastClickPos = Point.Empty;
 
-                if (_allowMaximize)
+                if (AllowMaximize)
                 {
                     ToggleMaximize();
                 }
@@ -351,7 +330,7 @@ namespace DVLD.PL.Global
 
         public void ToggleMaximize()
         {
-            if (ParentForm == null || !_allowMaximize) return;
+            if (ParentForm == null || !AllowMaximize) return;
 
             if (ParentForm is frmBase baseForm)
             {
@@ -393,78 +372,98 @@ namespace DVLD.PL.Global
 
         #endregion
 
-        #region User Profile Actions (Smart Fallbacks + Extensibility)
+        #region User Profile Actions
+
+        private bool CheckUserAuthentication()
+        {
+            if (!AppSession.IsAuthenticated)
+            {
+                UITheme.ShowInfoToast("There is no user in the system. Please Log in again.");
+                return true;
+            }
+            return false;
+        }
+
+        private async Task RefreshCurrentUserSessionAsync()
+        {
+            UserService userServices = new UserService();
+            var result = await userServices.GetByIdAsync(AppSession.CurrentUserID);
+
+            if (result.IsSuccess && result.Data != null)
+            {
+                AppSession.CurrentUser = result.Data;
+                UpdateUserProfileDisplay();
+            }
+        }
 
         private void BtnUserProfile_Click(object? sender, EventArgs e)
         {
-            if (contextMenuUser == null || !AppSession.IsAuthenticated) return;
+            if (CheckUserAuthentication()) return;
+            if (contextMenuUser == null) return;
 
-            Point screenPos = btnUserProfile.PointToScreen(new Point(btnUserProfile.Width, btnUserProfile.Height));
-            contextMenuUser.Show(screenPos.X - contextMenuUser.PreferredSize.Width, screenPos.Y);
+            using (var editUserForm = new frmUserCard(AppSession.CurrentUserID))
+            {
+                editUserForm.OnEditedSuccessfully += async () =>
+                {
+                    await RefreshCurrentUserSessionAsync();
+                };
+
+                editUserForm.OnDeletedSuccessfully += () =>
+                {
+                    UITheme.ShowSuccessToast("Your account has been deleted successfully. The application will now restart.");
+                    Application.Restart();
+                };
+
+                Point screenPos = btnUserProfile.PointToScreen(new Point(btnUserProfile.Width, btnUserProfile.Height));
+                contextMenuUser.Show(screenPos.X - contextMenuUser.PreferredSize.Width, screenPos.Y);
+            }
         }
 
         private void ItemCurrentUserInfo_Click(object? sender, EventArgs e)
         {
-            if (OnCurrentUserInfoClicked != null)
-            {
-                OnCurrentUserInfoClicked.Invoke(this, EventArgs.Empty);
-                return;
-            }
-
-            if (!AppSession.IsAuthenticated) return;
+            if (CheckUserAuthentication()) return;
 
             using (frmUserCard frm = new(AppSession.CurrentUserID))
             {
+                frm.OnEditedSuccessfully += async () =>
+                {
+                    await RefreshCurrentUserSessionAsync();
+                };
+
+                frm.OnDeletedSuccessfully += () =>
+                {
+                    UITheme.ShowSuccessToast("Your account has been deleted successfully. The application will now restart.");
+                    Application.Restart();
+                };
+
                 frm.ShowDialog(ParentForm);
             }
         }
 
         private void ItemChangePassword_Click(object? sender, EventArgs e)
         {
-            if (OnChangePasswordClicked != null)
+            if (!AppSession.IsAuthenticated)
             {
-                OnChangePasswordClicked.Invoke(this, EventArgs.Empty);
-                return;
+                UITheme.ShowInfoToast("There is no user in the system. Please Log in again.");
             }
-
-            if (!AppSession.IsAuthenticated) return;
-
-            using (frmForgetPassword frm = new(AppSession.CurrentUserName))
+            using (frmForgetPassword frm = new(AppSession.CurrentUserName, "Change Passowrd", false))
             {
+                frm.OnPasswordChange += (username, newPassword) =>
+                {
+                    Application.Restart();
+                };
                 frm.ShowDialog(ParentForm);
             }
         }
 
         private void ItemSettings_Click(object? sender, EventArgs e)
         {
-            if (OnSettingsClicked != null)
-            {
-                OnSettingsClicked.Invoke(this, EventArgs.Empty);
-                return;
-            }
 
-            UITheme.ShowInfoToast("Settings feature is currently under development.", "Under Construction");
         }
 
         private void ItemSignOut_Click(object? sender, EventArgs e)
         {
-            if (OnSignOutClicked != null)
-            {
-                OnSignOutClicked.Invoke(this, EventArgs.Empty);
-                return;
-            }
-
-            DialogResult result = MessageBox.Show(
-                "Are you sure you want to sign out?",
-                "Confirm Sign Out",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question);
-
-            if (result == DialogResult.Yes)
-            {
-                AppSession.LogOut();
-                ParentForm?.Close();
-            }
+            OnSignOutClicked?.Invoke(this, EventArgs.Empty);
         }
 
         #endregion

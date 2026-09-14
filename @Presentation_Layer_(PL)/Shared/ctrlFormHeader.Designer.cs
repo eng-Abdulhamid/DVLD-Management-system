@@ -12,7 +12,6 @@ namespace DVLD.PL.Global
             if (disposing)
             {
                 UITheme.OnThemeChanged -= HandleThemeChanged;
-                AppSession.OnUserSessionChanged -= HandleUserSessionChanged;
                 UnhookParentFormEvents();
 
                 if (_parentControlRef != null)
@@ -31,24 +30,18 @@ namespace DVLD.PL.Global
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-
             lblTitle = new Label();
             pnlWindowControls = new Panel();
             btnMinimize = new Button();
             btnMaximize = new Button();
             btnClose = new Button();
-
-            // زر الحساب في الهيدر
             btnUserProfile = new Button();
-
-            // قائمة الحساب المنبثقة
             contextMenuUser = new ContextMenuStrip(components);
             itemCurrentUserInfo = new ToolStripMenuItem();
             itemChangePassword = new ToolStripMenuItem();
             itemSettings = new ToolStripMenuItem();
             sepUser = new ToolStripSeparator();
             itemSignOut = new ToolStripMenuItem();
-
             pnlWindowControls.SuspendLayout();
             contextMenuUser.SuspendLayout();
             SuspendLayout();
@@ -62,30 +55,10 @@ namespace DVLD.PL.Global
             lblTitle.Location = new Point(0, 0);
             lblTitle.Name = "lblTitle";
             lblTitle.Padding = new Padding(12, 0, 0, 0);
-            lblTitle.Size = new Size(580, 38);
+            lblTitle.Size = new Size(1051, 38);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "Title";
             lblTitle.TextAlign = ContentAlignment.MiddleLeft;
-            // 
-            // btnUserProfile
-            // 
-            btnUserProfile.AutoSize = true;
-            btnUserProfile.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnUserProfile.BackColor = Color.Transparent;
-            btnUserProfile.Dock = DockStyle.Right;
-            btnUserProfile.FlatAppearance.BorderSize = 0;
-            btnUserProfile.FlatStyle = FlatStyle.Flat;
-            btnUserProfile.Font = new Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnUserProfile.ForeColor = Color.FromArgb(71, 85, 105);
-            btnUserProfile.Location = new Point(580, 0);
-            btnUserProfile.Name = "btnUserProfile";
-            btnUserProfile.Padding = new Padding(14, 0, 14, 0);
-            btnUserProfile.Size = new Size(152, 38);
-            btnUserProfile.TabIndex = 1;
-            btnUserProfile.Text = "👤  User  ▾";
-            btnUserProfile.TextAlign = ContentAlignment.MiddleCenter;
-            btnUserProfile.UseVisualStyleBackColor = true;
-            btnUserProfile.Visible = false; // افتراضياً مخفي لباقي الفورمز
             // 
             // pnlWindowControls
             // 
@@ -96,7 +69,7 @@ namespace DVLD.PL.Global
             pnlWindowControls.Controls.Add(btnMaximize);
             pnlWindowControls.Controls.Add(btnClose);
             pnlWindowControls.Dock = DockStyle.Right;
-            pnlWindowControls.Location = new Point(732, 0);
+            pnlWindowControls.Location = new Point(1166, 0);
             pnlWindowControls.Name = "pnlWindowControls";
             pnlWindowControls.Size = new Size(138, 38);
             pnlWindowControls.TabIndex = 2;
@@ -143,47 +116,60 @@ namespace DVLD.PL.Global
             btnClose.Text = "✕";
             btnClose.UseVisualStyleBackColor = true;
             // 
+            // btnUserProfile
+            // 
+            btnUserProfile.AutoSize = true;
+            btnUserProfile.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnUserProfile.BackColor = Color.Transparent;
+            btnUserProfile.Dock = DockStyle.Right;
+            btnUserProfile.FlatAppearance.BorderSize = 0;
+            btnUserProfile.FlatStyle = FlatStyle.Flat;
+            btnUserProfile.Font = new Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnUserProfile.ForeColor = Color.FromArgb(71, 85, 105);
+            btnUserProfile.Location = new Point(1051, 0);
+            btnUserProfile.Name = "btnUserProfile";
+            btnUserProfile.Padding = new Padding(14, 0, 14, 0);
+            btnUserProfile.Size = new Size(115, 38);
+            btnUserProfile.TabIndex = 1;
+            btnUserProfile.Text = "👤  User  ▾";
+            btnUserProfile.UseVisualStyleBackColor = true;
+            btnUserProfile.Visible = false;
+            // 
             // contextMenuUser
             // 
             contextMenuUser.Font = new Font("Segoe UI", 10F);
-            contextMenuUser.Items.AddRange(new ToolStripItem[] {
-                itemCurrentUserInfo,
-                itemChangePassword,
-                itemSettings,
-                sepUser,
-                itemSignOut
-            });
+            contextMenuUser.Items.AddRange(new ToolStripItem[] { itemCurrentUserInfo, itemChangePassword, itemSettings, sepUser, itemSignOut });
             contextMenuUser.Name = "contextMenuUser";
-            contextMenuUser.Size = new Size(196, 140);
+            contextMenuUser.Size = new Size(188, 106);
             // 
             // itemCurrentUserInfo
             // 
             itemCurrentUserInfo.Name = "itemCurrentUserInfo";
-            itemCurrentUserInfo.Size = new Size(195, 26);
+            itemCurrentUserInfo.Size = new Size(187, 24);
             itemCurrentUserInfo.Text = "Current User Info";
             // 
             // itemChangePassword
             // 
             itemChangePassword.Name = "itemChangePassword";
-            itemChangePassword.Size = new Size(195, 26);
+            itemChangePassword.Size = new Size(187, 24);
             itemChangePassword.Text = "Change Password";
             // 
             // itemSettings
             // 
             itemSettings.Name = "itemSettings";
-            itemSettings.Size = new Size(195, 26);
+            itemSettings.Size = new Size(187, 24);
             itemSettings.Text = "Settings";
             // 
             // sepUser
             // 
             sepUser.Name = "sepUser";
-            sepUser.Size = new Size(192, 6);
+            sepUser.Size = new Size(184, 6);
             // 
             // itemSignOut
             // 
             itemSignOut.ForeColor = Color.FromArgb(220, 38, 38);
             itemSignOut.Name = "itemSignOut";
-            itemSignOut.Size = new Size(195, 26);
+            itemSignOut.Size = new Size(187, 24);
             itemSignOut.Tag = "Danger";
             itemSignOut.Text = "Sign Out";
             // 
@@ -195,9 +181,8 @@ namespace DVLD.PL.Global
             Controls.Add(lblTitle);
             Controls.Add(btnUserProfile);
             Controls.Add(pnlWindowControls);
-            Dock = DockStyle.Top;
             Name = "ctrlFormHeader";
-            Size = new Size(870, 38);
+            Size = new Size(1304, 38);
             pnlWindowControls.ResumeLayout(false);
             contextMenuUser.ResumeLayout(false);
             ResumeLayout(false);

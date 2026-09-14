@@ -3,6 +3,7 @@ using DVLD.BLL.Services;
 using DVLD.PL.Global;
 using DVLD.PL.PeopleManagement;
 using System;
+using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -24,6 +25,7 @@ namespace DVLD.PL.DriversManagement
             _driverService = new DriverService();
 
             ApplyStyles();
+            ConfigureWizardUI();
             RegisterEvents();
         }
 
@@ -32,11 +34,21 @@ namespace DVLD.PL.DriversManagement
             btnSave.ApplyPrimaryStyle();
             btnCancel.ApplySecondaryStyle();
             btnNext.ApplyPrimaryStyle();
+            btnBack.ApplySecondaryStyle();
             btnSearchPerson.ApplySecondaryStyle();
             btnAddNewPerson.ApplySecondaryStyle();
             btnSelectPerson.ApplySecondaryStyle();
 
             txtSearchNationalNo.ApplyStandardStyle();
+        }
+
+        private void ConfigureWizardUI()
+        {
+            // Enforce strictly guided wizard flow by hiding default tab headers
+            tcWizard.Appearance = TabAppearance.FlatButtons;
+            tcWizard.ItemSize = new Size(0, 1);
+            tcWizard.SizeMode = TabSizeMode.Fixed;
+            tcWizard.TabStop = false;
         }
 
         private void frmSaveDriver_Load(object sender, EventArgs e)
@@ -56,31 +68,22 @@ namespace DVLD.PL.DriversManagement
             btnSearchPerson.Click += async (s, e) =>
             {
                 if (string.IsNullOrWhiteSpace(txtSearchNationalNo.Text)) return;
+                
                 await ctrlPersonCard1.LoadPersonInfoByNationalNoAsync(txtSearchNationalNo.Text.Trim());
-                if (ctrlPersonCard1.PersonID > 0)
-                {
-                    _selectedPersonId = ctrlPersonCard1.PersonID;
-                    lnkEditPerson.Visible = true;
-                }
+                EvaluatePersonSelection();
             };
 
             btnSelectPerson.Click += (s, e) =>
             {
                 using var selectPersonForm = new frmPeopleManagement(frmPeopleManagement.enMode.SelectPerson);
-                selectPersonForm.OnPersonSelected += async (personId) =>
-                {
-                    await LoadPersonInfoAsync(personId);
-                };
+                selectPersonForm.OnPersonSelected += async (personId) => await LoadPersonInfoAsync(personId);
                 selectPersonForm.ShowDialog(this);
             };
 
             btnAddNewPerson.Click += (s, e) =>
             {
                 using frmSavePerson frm = new frmSavePerson();
-                frm.PersonSaved += async (personId) =>
-                {
-                    await LoadPersonInfoAsync(personId);
-                };
+                frm.PersonSaved += async (personId) => await LoadPersonInfoAsync(personId);
                 frm.ShowDialog(this);
             };
 
@@ -96,14 +99,21 @@ namespace DVLD.PL.DriversManagement
             {
                 if (_selectedPersonId <= 0)
                 {
-                    UITheme.ShowWarningToast("Please select a valid person first.");
+                    UITheme.ShowWarningToast("Please select a valid person first to proceed.");
                     return;
                 }
 
                 lblConfirmPersonName.Text = ctrlPersonCard1.SelectedPersonInfo?.FullName ?? "[Unknown]";
                 lblPersonIdValue.Text = _selectedPersonId.ToString();
+                
                 tcWizard.SelectedTab = tpDriverConfirmation;
                 btnSave.Enabled = true;
+            };
+
+            btnBack.Click += (s, e) =>
+            {
+                tcWizard.SelectedTab = tpPersonSelection;
+                btnSave.Enabled = false;
             };
 
             btnCancel.Click += (s, e) => this.Close();
@@ -112,22 +122,38 @@ namespace DVLD.PL.DriversManagement
 
         private async Task LoadPersonInfoAsync(int personId)
         {
-            _selectedPersonId = personId;
             await ctrlPersonCard1.LoadPersonInfoAsync(personId);
-            lnkEditPerson.Visible = true;
+            EvaluatePersonSelection();
         }
-        private void UpdateSaveButtonStatus(bool Enabled)
-        {
-            btnSave.IsLoading = !Enabled;
-            btnSave.Enabled = Enabled;
-            btnCancel.Enabled = Enabled;
 
+        private void EvaluatePersonSelection()
+        {
+            if (ctrlPersonCard1.PersonID > 0)
+            {
+                _selectedPersonId = ctrlPersonCard1.PersonID;
+                lnkEditPerson.Visible = true;
+            }
+            else
+            {
+                _selectedPersonId = -1;
+                lnkEditPerson.Visible = false;
+            }
         }
+
+        private void UpdateSaveButtonStatus(bool isEnabled)
+        {
+            btnSave.IsLoading = !isEnabled;
+            btnSave.Enabled = isEnabled;
+            btnCancel.Enabled = isEnabled;
+            btnBack.Enabled = isEnabled;
+        }
+
         private async Task PerformSaveAsync()
         {
             if (_selectedPersonId <= 0)
             {
-                UITheme.ShowWarningToast("Please select a person before saving.");
+                UITheme.ShowWarningToast("Valid person context lost. Please re-select a person.");
+                tcWizard.SelectedTab = tpPersonSelection;
                 return;
             }
 
@@ -146,11 +172,10 @@ namespace DVLD.PL.DriversManagement
             }
             else
             {
+                // BLL restricts duplicate drivers linked to the same PersonID. The message surfaces here.
                 UITheme.ShowWarningToast(result.Message ?? "Failed to save driver.", "Registration Failed");
+                UpdateSaveButtonStatus(true);
             }
-
-            UpdateSaveButtonStatus(true);
-
         }
     }
 }

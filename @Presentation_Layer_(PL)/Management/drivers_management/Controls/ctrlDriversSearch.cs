@@ -8,7 +8,7 @@ namespace DVLD.PL.DriversManagement
     [DefaultEvent("OnFilterChanged")]
     public partial class ctrlDriversSearch : UserControl
     {
-        private readonly System.Windows.Forms.Timer _searchTimer;
+        private readonly System.Windows.Forms.Timer? _searchTimer;
         private bool _isInitializing = true;
 
         [Category("Filter Events")]
@@ -66,7 +66,7 @@ namespace DVLD.PL.DriversManagement
             {
                 "Driver ID", "Person ID", "National No.", "Full Name"
             });
-            cbFilterBy.SelectedIndex = 3; // Default: Full Name
+            cbFilterBy.SelectedIndex = 3;
 
             UpdatePlaceholder();
             ConfigureInputConstraints(cbFilterBy.Text);
@@ -117,7 +117,8 @@ namespace DVLD.PL.DriversManagement
             txtSearch.Text = string.Empty;
             UpdatePlaceholder();
             ConfigureInputConstraints(cbFilterBy.Text);
-            _searchTimer.Stop();
+
+            _searchTimer?.Stop();
             TriggerFilterChanged();
         }
 
@@ -138,11 +139,13 @@ namespace DVLD.PL.DriversManagement
 
             if (cbSearchByLetter.SelectedIndex != 0 && !string.IsNullOrWhiteSpace(txtSearch.Text))
             {
+                _isInitializing = true;
                 cbSearchByLetter.SelectedIndex = 0;
+                _isInitializing = false;
             }
 
-            _searchTimer.Stop();
-            _searchTimer.Start();
+            _searchTimer?.Stop();
+            _searchTimer?.Start();
         }
 
         private void txtSearch_KeyDown(object sender, KeyEventArgs e)
@@ -152,22 +155,28 @@ namespace DVLD.PL.DriversManagement
             if (e.KeyCode == Keys.Enter)
             {
                 e.SuppressKeyPress = true;
-                _searchTimer.Stop();
+                _searchTimer?.Stop();
                 TriggerFilterChanged();
             }
             else if (e.KeyCode == Keys.Escape)
             {
                 e.SuppressKeyPress = true;
-                _searchTimer.Stop();
+                _searchTimer?.Stop();
                 txtSearch.Text = string.Empty;
             }
         }
 
         public void ClearFilter()
         {
+            // Halt event execution temporarily to prevent redundant database fetches
+            _isInitializing = true;
+
             cbFilterBy.SelectedIndex = 3;
             cbSearchByLetter.SelectedIndex = 0;
             txtSearch.Text = string.Empty;
+
+            _isInitializing = false;
+            TriggerFilterChanged();
         }
     }
 }

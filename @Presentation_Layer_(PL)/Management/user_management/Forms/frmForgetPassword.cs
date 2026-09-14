@@ -1,12 +1,10 @@
 ﻿using DVLD.BLL.DTOs;
-using DVLD.BLL.OperationResults;
 using DVLD.BLL.Services;
 using DVLD.PL.Global;
 using DVLD.PL.Properties;
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -15,7 +13,7 @@ namespace DVLD.PL.Login
     public partial class frmForgetPassword : frmBase
     {
         private readonly UserService _userService;
-        private UserReadDTO _verifiedUser = new UserReadDTO();
+        private UserReadDTO _verifiedUser = new();
         private bool _accountVerified = false;
         private bool _isChangingPassword = false;
         private readonly string _initialUsername;
@@ -23,8 +21,6 @@ namespace DVLD.PL.Login
 
         private const int FORM_COLLAPSED_HEIGHT = 310;
         private const int FORM_EXPANDED_HEIGHT = 680;
-
-        private ToolTip? _toolTips;
 
         public Action<string, string>? OnPasswordChange;
 
@@ -58,6 +54,7 @@ namespace DVLD.PL.Login
             _initialUsername = userName;
             _allowEditUsername = allowEditUsername;
             btnVerifiedCheck.Enabled = false;
+
             if (!string.IsNullOrWhiteSpace(customTitle))
             {
                 this.Text = customTitle;
@@ -77,8 +74,7 @@ namespace DVLD.PL.Login
             SetupToolTips();
             ApplyStyles();
 
-            this.Height = FORM_COLLAPSED_HEIGHT;
-            pnlCreateNewPassword.Visible = false;
+            ToggleFormExpansion(false);
             SwitchToUnverifiedState();
 
             this.Load += async (s, e) =>
@@ -91,7 +87,7 @@ namespace DVLD.PL.Login
                 }
             };
         }
-
+        protected override bool RequiresAuthentication => false;
         private void ApplyStyles()
         {
             btnVerifyUser.ApplyPrimaryStyle();
@@ -119,23 +115,20 @@ namespace DVLD.PL.Login
 
         private void SetupToolTips()
         {
-            _toolTips = new ToolTip
-            {
-                InitialDelay = 400,
-                ReshowDelay = 100,
-                UseAnimation = true,
-                UseFading = true
-            };
+            toolTip1.InitialDelay = 400;
+            toolTip1.ReshowDelay = 100;
+            toolTip1.UseAnimation = true;
+            toolTip1.UseFading = true;
 
-            _toolTips.SetToolTip(txtUserName, "Enter your registered username");
-            _toolTips.SetToolTip(btnVerifyUser, "Verify account existence");
-            _toolTips.SetToolTip(btnEditUsername, "Change username");
-            _toolTips.SetToolTip(txtOldPassword, "Enter current password");
-            _toolTips.SetToolTip(txtNewPassword, "Enter a new secure password");
-            _toolTips.SetToolTip(txtConfirmPassword, "Re-enter new password");
-            _toolTips.SetToolTip(btnChangePassword, "Commit new password");
-            _toolTips.SetToolTip(btnCancel, "Cancel operation and return");
-            _toolTips.SetToolTip(lnkForgotCurrentPassword, "Request password recovery");
+            toolTip1.SetToolTip(txtUserName, "Enter your registered username");
+            toolTip1.SetToolTip(btnVerifyUser, "Verify account existence");
+            toolTip1.SetToolTip(btnEditUsername, "Change username");
+            toolTip1.SetToolTip(txtOldPassword, "Enter current password");
+            toolTip1.SetToolTip(txtNewPassword, "Enter a new secure password");
+            toolTip1.SetToolTip(txtConfirmPassword, "Re-enter new password");
+            toolTip1.SetToolTip(btnChangePassword, "Commit new password");
+            toolTip1.SetToolTip(btnCancel, "Cancel operation and return");
+            toolTip1.SetToolTip(lnkForgotCurrentPassword, "Request password recovery");
         }
 
         private void RegisterEvents()
@@ -145,7 +138,7 @@ namespace DVLD.PL.Login
 
             btnVerifyUser.Click += async (s, e) => await VerifyAccountAsync(txtUserName.Text.Trim());
             btnEditUsername.Click += BtnEditUsername_Click;
-            btnChangePassword.Click += BtnChangePassword_Click;
+            btnChangePassword.Click += async (s, e) => await PerformPasswordChangeAsync();
             btnCancel.Click += (s, e) => Close();
 
             txtUserName.TextChanged += (s, e) => txtUserName.HasError = false;
@@ -154,25 +147,17 @@ namespace DVLD.PL.Login
             txtConfirmPassword.TextChanged += ClearPasswordErrors;
         }
 
-        private async Task AnimateFormHeight(bool expand)
+        private void ToggleFormExpansion(bool expand)
         {
             int targetHeight = expand ? FORM_EXPANDED_HEIGHT : FORM_COLLAPSED_HEIGHT;
-            int step = expand ? 24 : -24;
+            if (this.Height == targetHeight) return;
+
+            // Instantly snap to the correct size to avoid UI thread lag and visual tearing
             int centerY = this.Top + (this.Height / 2);
-
-            if (expand) pnlCreateNewPassword.Visible = true;
-
-            while ((expand && this.Height < targetHeight) || (!expand && this.Height > targetHeight))
-            {
-                this.Height += step;
-                this.Top = centerY - (this.Height / 2);
-                await Task.Delay(1);
-            }
-
             this.Height = targetHeight;
             this.Top = centerY - (this.Height / 2);
 
-            if (!expand) pnlCreateNewPassword.Visible = false;
+            pnlCreateNewPassword.Visible = expand;
         }
 
         private void SetupPasswordVisibility()
@@ -191,13 +176,11 @@ namespace DVLD.PL.Login
             box.RightIconClick += (s, e) =>
             {
                 box.UseSystemPasswordChar = !box.UseSystemPasswordChar;
-                box.RightIcon = box.UseSystemPasswordChar
-                    ? Resources.visibilityOff
-                    : Resources.visibilityOn;
+                box.RightIcon = box.UseSystemPasswordChar ? Resources.visibilityOff : Resources.visibilityOn;
             };
         }
 
-        private async void SwitchToVerifiedState()
+        private void SwitchToVerifiedState()
         {
             _accountVerified = true;
             txtUserName.Enabled = false;
@@ -209,11 +192,11 @@ namespace DVLD.PL.Login
 
             SetStatusMessage("Account verified successfully.", Color.FromArgb(16, 137, 62));
 
-            await AnimateFormHeight(true);
+            ToggleFormExpansion(true);
             txtOldPassword.Focus();
         }
 
-        private async void SwitchToUnverifiedState()
+        private void SwitchToUnverifiedState()
         {
             _accountVerified = false;
             _verifiedUser = new UserReadDTO();
@@ -227,7 +210,7 @@ namespace DVLD.PL.Login
             ResetPasswordFields();
             lblStatus.Visible = false;
 
-            await AnimateFormHeight(false);
+            ToggleFormExpansion(false);
 
             txtUserName.Enabled = true;
             txtUserName.Focus();
@@ -256,8 +239,7 @@ namespace DVLD.PL.Login
 
         private bool ValidateUsernameField()
         {
-            string username = txtUserName.Text.Trim();
-            if (string.IsNullOrWhiteSpace(username))
+            if (string.IsNullOrWhiteSpace(txtUserName.Text.Trim()))
             {
                 return TriggerFieldError(txtUserName, "Please enter your username.");
             }
@@ -282,18 +264,9 @@ namespace DVLD.PL.Login
 
             ToggleLoadingState(false);
 
-            if (result == null || !result.IsSuccess || result.Data == null)
+            if (!result.IsSuccess || result.Data == null)
             {
-                TriggerFieldError(txtUserName, "No account found with this username.");
-                btnVerifyUser.Enabled = true;
-                return;
-            }
-
-            if (!TryGetUserId(result.Data, out _))
-            {
-                SetStatusMessage("Error reading account details.", Color.FromArgb(220, 38, 38));
-                txtUserName.Enabled = true;
-                btnVerifyUser.Enabled = true;
+                TriggerFieldError(txtUserName, result.Message ?? "No account found with this username.");
                 return;
             }
 
@@ -306,7 +279,7 @@ namespace DVLD.PL.Login
             SwitchToUnverifiedState();
         }
 
-        private async void BtnChangePassword_Click(object? sender, EventArgs e)
+        private async Task PerformPasswordChangeAsync()
         {
             if (!_accountVerified || _isChangingPassword || !ValidatePasswordFields()) return;
 
@@ -315,10 +288,11 @@ namespace DVLD.PL.Login
             btnChangePassword.Enabled = false;
             SetStatusMessage("Updating password...", Color.FromArgb(100, 116, 139));
 
-            OperationResult<bool> result = await _userService.ChangePasswordAsync(txtUserName.Text.Trim(), txtOldPassword.Text, txtNewPassword.Text);
+            var result = await _userService.ChangePasswordAsync(txtUserName.Text.Trim(), txtOldPassword.Text, txtNewPassword.Text);
 
             _isChangingPassword = false;
             btnChangePassword.IsLoading = false;
+
             if (!IsDisposed) btnChangePassword.Enabled = true;
 
             if (!result.IsSuccess)
@@ -334,7 +308,7 @@ namespace DVLD.PL.Login
 
         private void HandleUpdateFailure(string? message)
         {
-            if (message == "Last password is incorrect.")
+            if (message?.Contains("Last password is incorrect", StringComparison.OrdinalIgnoreCase) == true)
             {
                 TriggerFieldError(txtOldPassword, "Current password is incorrect.");
             }
@@ -353,6 +327,9 @@ namespace DVLD.PL.Login
             if (string.IsNullOrWhiteSpace(txtNewPassword.Text))
                 return TriggerFieldError(txtNewPassword, "Please enter a new password.");
 
+            if (txtNewPassword.Text.Length < 6)
+                return TriggerFieldError(txtNewPassword, "Password must be at least 6 characters.");
+
             if (txtNewPassword.Text == txtOldPassword.Text)
                 return TriggerFieldError(txtNewPassword, "New password must be different.");
 
@@ -369,18 +346,6 @@ namespace DVLD.PL.Login
             SetStatusMessage(message, Color.FromArgb(220, 38, 38));
             control.Focus();
             return false;
-        }
-
-        private bool TryGetUserId(object user, out int userId)
-        {
-            userId = -1;
-            PropertyInfo? property = user.GetType().GetProperty("UserID")
-                                  ?? user.GetType().GetProperty("UserId")
-                                  ?? user.GetType().GetProperty("ID")
-                                  ?? user.GetType().GetProperty("Id");
-
-            if (property == null || property.GetValue(user) == null) return false;
-            return int.TryParse(property.GetValue(user)!.ToString(), out userId);
         }
     }
 }

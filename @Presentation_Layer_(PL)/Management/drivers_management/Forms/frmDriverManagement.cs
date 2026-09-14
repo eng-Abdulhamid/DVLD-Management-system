@@ -25,7 +25,8 @@ namespace DVLD.PL.DriversManagement
             this.ApplyStandardFormTheme();
             SetContextTitle("Drivers Management");
 
-            ctrlManagementActions1.EditVisible = false;
+            // Activated Edit feature to allow editing the associated Person info
+            ctrlManagementActions1.EditVisible = true;
 
             _columnDefinitions = new List<DataGridColumnDefinition>
             {
@@ -70,6 +71,7 @@ namespace DVLD.PL.DriversManagement
             };
 
             ctrlManagementActions1.OnAddClick += (s, e) => OpenAddNewDriverDialog();
+            ctrlManagementActions1.OnEditClick += (s, e) => OpenEditPersonDialog();
             ctrlManagementActions1.OnDeleteClick += (s, e) => OpenDeleteSelectedDriverDialog();
             ctrlManagementActions1.OnRefreshClick += async (s, e) => await LoadDriversDataAsync();
 
@@ -103,6 +105,12 @@ namespace DVLD.PL.DriversManagement
             };
             menu.Items.Add(addItem);
 
+            var editItem = new ToolStripMenuItem("Edit Person Info", Properties.Resources.edit_person, (s, e) => OpenEditPersonDialog())
+            {
+                ShortcutKeys = Keys.Control | Keys.E
+            };
+            menu.Items.Add(editItem);
+
             var deleteItem = new ToolStripMenuItem("Delete Driver", Properties.Resources.bin, (s, e) => OpenDeleteSelectedDriverDialog())
             {
                 ShortcutKeys = Keys.Delete
@@ -130,12 +138,19 @@ namespace DVLD.PL.DriversManagement
             {
                 _allDrivers.Clear();
                 ApplyFilter(string.Empty, string.Empty, string.Empty);
+                UITheme.ShowErrorToast("Unable to load drivers data from the server.");
             }
         }
 
         private void ApplyFilter(string filterColumn, string searchText, string letter)
         {
             IEnumerable<DriverReadDTO> query = _allDrivers;
+
+            if (!string.IsNullOrEmpty(letter))
+            {
+                // Reflection ensures safety if 'FullName' is missing from standard DTOs
+                query = query.Where(d => d.GetType().GetProperty("FullName")?.GetValue(d)?.ToString()?.StartsWith(letter, StringComparison.OrdinalIgnoreCase) == true);
+            }
 
             if (!string.IsNullOrWhiteSpace(filterColumn) && !string.IsNullOrWhiteSpace(searchText))
             {
@@ -144,6 +159,8 @@ namespace DVLD.PL.DriversManagement
                 {
                     "DriverID" => query.Where(d => d.DriverID.ToString().Contains(search)),
                     "PersonID" => query.Where(d => d.PersonID.ToString().Contains(search)),
+                    "NationalNo" => query.Where(d => d.GetType().GetProperty("NationalNo")?.GetValue(d)?.ToString()?.ToLower().Contains(search) == true),
+                    "FullName" => query.Where(d => d.GetType().GetProperty("FullName")?.GetValue(d)?.ToString()?.ToLower().Contains(search) == true),
                     _ => query
                 };
             }
@@ -176,7 +193,6 @@ namespace DVLD.PL.DriversManagement
 
             foreach (var driver in pageData)
             {
-                
                 ctrlManagementDataGrid1.AddRow(
                     driver.DriverID,
                     driver.PersonID,
@@ -196,11 +212,22 @@ namespace DVLD.PL.DriversManagement
             frm.ShowDialog(this);
         }
 
+        private void OpenEditPersonDialog()
+        {
+            // Extract the PersonID directly from the grid to allow modification of the linked Person
+            if (ctrlManagementDataGrid1.TryGetSelectedInt("PersonID", out int personId))
+            {
+                using frmSavePerson frm = new frmSavePerson(personId);
+                frm.PersonSaved += async (id) => await LoadDriversDataAsync();
+                frm.ShowDialog(this);
+            }
+        }
+
         private void OpenDeleteSelectedDriverDialog()
         {
-            if (ctrlManagementDataGrid1.TryGetSelectedInt("DriverID", out int id))
+            if (ctrlManagementDataGrid1.TryGetSelectedInt("DriverID", out int driverId))
             {
-                using frmDeleteDriver frm = new frmDeleteDriver(id);
+                using frmDeleteDriver frm = new frmDeleteDriver(driverId);
                 frm.DeletedSuccessfully += async () => await LoadDriversDataAsync();
                 frm.ShowDialog(this);
             }
@@ -218,6 +245,7 @@ namespace DVLD.PL.DriversManagement
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             if (keyData == (Keys.Control | Keys.N)) { OpenAddNewDriverDialog(); return true; }
+            if (keyData == (Keys.Control | Keys.E)) { OpenEditPersonDialog(); return true; }
             if (keyData == Keys.Delete || keyData == (Keys.Control | Keys.D)) { OpenDeleteSelectedDriverDialog(); return true; }
             if (keyData == Keys.F5 || keyData == (Keys.Control | Keys.R)) { _ = LoadDriversDataAsync(); return true; }
             return base.ProcessCmdKey(ref msg, keyData);

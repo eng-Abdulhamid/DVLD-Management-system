@@ -36,6 +36,8 @@
             // 
             headerControl.AllowMaximize = false;
             headerControl.AllowMinimize = false;
+            headerControl.BackColor = Color.FromArgb(248, 250, 252);
+            headerControl.Size = new Size(796, 38);
             headerControl.TitleText = "frmUserCard";
             // 
             // ctrlUserCard1
@@ -50,11 +52,14 @@
             // 
             ctrlUserManagementControls.AddVisible = false;
             ctrlUserManagementControls.BackColor = Color.Transparent;
+            ctrlUserManagementControls.DeleteEnabled = true;
+            ctrlUserManagementControls.EditEnabled = true;
             ctrlUserManagementControls.Location = new Point(708, 46);
             ctrlUserManagementControls.Name = "ctrlUserManagementControls";
             ctrlUserManagementControls.RefreshVisible = false;
             ctrlUserManagementControls.Size = new Size(82, 42);
             ctrlUserManagementControls.TabIndex = 2;
+            ctrlUserManagementControls.OnAddClick += ctrlUserManagementControls_OnAddClick;
             // 
             // frmUserCard
             // 
@@ -63,6 +68,8 @@
             ClientSize = new Size(800, 405);
             Controls.Add(ctrlUserManagementControls);
             Controls.Add(ctrlUserCard1);
+            CustomBorderColor = Color.FromArgb(226, 232, 240);
+            ForeColor = Color.FromArgb(15, 23, 42);
             Name = "frmUserCard";
             Text = "frmUserCard";
             Controls.SetChildIndex(headerControl, 0);

@@ -27,7 +27,7 @@ namespace DVLD.PL
             SetupDashboardCards();
             UpdateDashboardInfo();
 
-            AppSession.OnUserSessionChanged += UpdateDashboardInfo;
+            //AppSession.OnUserSessionChanged += UpdateDashboardInfo;
         }
 
         #region Header & Session Integration
@@ -36,8 +36,8 @@ namespace DVLD.PL
         {
             headerControl.ShowUserProfile = true;
 
-            headerControl.OnCurrentUserInfoClicked += (s, e) => OpenCurrentUserInfo();
-            headerControl.OnChangePasswordClicked += (s, e) => OpenChangePassword();
+            //headerControl.OnCurrentUserInfoClicked += (s, e) => OpenCurrentUserInfo();
+            //headerControl.OnChangePasswordClicked += (s, e) => OpenChangePassword();
             headerControl.OnSignOutClicked += (s, e) => PerformSignOut();
         }
 
@@ -223,19 +223,9 @@ namespace DVLD.PL
 
         public void PerformSignOut()
         {
-            DialogResult result = MessageBox.Show(
-                "Are you sure you want to sign out?",
-                "Confirm Sign Out",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question);
-
-            if (result == DialogResult.Yes)
-            {
-                AppSession.LogOut();
-                this.Close();
-            }
+            AppSession.LogOut();
+            Application.Restart();
         }
-
         #endregion
 
         #region Menu Click Handlers
@@ -251,7 +241,7 @@ namespace DVLD.PL
 
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
-            AppSession.OnUserSessionChanged -= UpdateDashboardInfo;
+            //AppSession.OnUserSessionChanged -= UpdateDashboardInfo;
             base.OnFormClosed(e);
         }
     }

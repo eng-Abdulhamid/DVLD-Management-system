@@ -1,9 +1,6 @@
 ﻿using DVLD.BLL.DTOs;
 using DVLD.BLL.Services;
 using DVLD.PL.Global;
-using System.Drawing;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace DVLD.PL.UsersManagement
 {

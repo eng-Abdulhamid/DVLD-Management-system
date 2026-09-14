@@ -6,6 +6,7 @@ using DVLD.BLL.Services;
 using DVLD.PL.Configuration;
 using DVLD.PL.Global;
 using DVLD.PL.Properties;
+using DVLD.PL.UsersManagement;
 using Timer = System.Windows.Forms.Timer;
 
 namespace DVLD.PL.Login
@@ -98,6 +99,21 @@ namespace DVLD.PL.Login
             EnableWindowDragging(this);
             EnableWindowDragging(pnlRightCanvas);
             EnableWindowDragging(lblTitle);
+
+            txtUserName.KeyDown += TextBox_KeyDown;
+            txtPassword.KeyDown += TextBox_KeyDown;
+        }
+
+        private void TextBox_KeyDown(object? sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+                if (btnLogin.Enabled)
+                {
+                    btnLogin_Click(btnLogin, EventArgs.Empty);
+                }
+            }
         }
 
         private void LoadRememberedCredentials()
@@ -204,7 +220,7 @@ namespace DVLD.PL.Login
 
                 if (user.IsSuccess && user.Data != null)
                 {
-                    AppSession.LogIn(user.Data);
+                    AppSession.CurrentUser = user.Data;
 
                     lblAttemptMessage.Visible = false;
                     lblAttemptsCounter.Visible = false;
@@ -267,6 +283,25 @@ namespace DVLD.PL.Login
                 txtPassword.Text = newPassword;
             };
             resetPasswordScreen.ShowDialog();
+        }
+
+        private void lnkSignUp_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            using (frmSaveUser addNewUser = new())
+            {
+                addNewUser.UserSaved += (userId) =>
+                {
+                    var userResult = _userService.GetByIdAsync(userId).Result;
+                    if (userResult.IsSuccess && userResult.Data != null)
+                    {
+                        txtUserName.Text = userResult.Data.UserName;
+                        txtPassword.Text = string.Empty;
+                        txtPassword.Focus();
+                    }
+                };
+                addNewUser?.ShowDialog();
+
+            }
         }
     }
 }

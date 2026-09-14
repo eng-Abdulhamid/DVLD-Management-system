@@ -100,12 +100,12 @@ namespace DVLD.PL.DriversManagement
             ctrlManagementActions1.DeleteEnabled = false;
             ctrlManagementActions1.DeleteVisible = true;
             ctrlManagementActions1.EditEnabled = false;
-            ctrlManagementActions1.EditVisible = false;
+            ctrlManagementActions1.EditVisible = true; // Enabled mapping to Edit Person
             ctrlManagementActions1.Location = new Point(12, 90);
             ctrlManagementActions1.Name = "ctrlManagementActions1";
             ctrlManagementActions1.RefreshEnabled = true;
             ctrlManagementActions1.RefreshVisible = true;
-            ctrlManagementActions1.Size = new Size(120, 42);
+            ctrlManagementActions1.Size = new Size(160, 42); // Slightly increased width to fit the edit button
             ctrlManagementActions1.TabIndex = 1;
             // 
             // ctrlPagination1

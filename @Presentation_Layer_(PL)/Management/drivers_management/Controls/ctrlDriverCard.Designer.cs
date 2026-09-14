@@ -57,6 +57,7 @@ namespace DVLD.PL.DriversManagement
             gbDriverInfo.ForeColor = Color.FromArgb(71, 85, 105);
             gbDriverInfo.Location = new Point(0, 265);
             gbDriverInfo.Name = "gbDriverInfo";
+            gbDriverInfo.Padding = new Padding(10);
             gbDriverInfo.Size = new Size(780, 80);
             gbDriverInfo.TabIndex = 1;
             gbDriverInfo.TabStop = false;

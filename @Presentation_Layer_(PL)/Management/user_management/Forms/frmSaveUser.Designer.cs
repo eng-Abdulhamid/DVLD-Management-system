@@ -26,9 +26,9 @@ namespace DVLD.PL.UsersManagement
             btnSearchPerson = new NButton();
             btnSelectPerson = new NButton();
             btnAddNewPerson = new NButton();
-            ctrlPersonCard1 = new DVLD.PL.PeopleManagement.ctrlPersonCard();
             lnkEditPerson = new LinkLabel();
             btnNext = new NButton();
+            ctrlPersonCard1 = new DVLD.PL.PeopleManagement.ctrlPersonCard();
             tpLoginInfo = new TabPage();
             lblUserName = new Label();
             txtUserName = new NTextBox();
@@ -62,6 +62,10 @@ namespace DVLD.PL.UsersManagement
             btnSave.BorderSize = 1;
             btnSave.CenterIconWithText = false;
             btnSave.Cursor = Cursors.Hand;
+            btnSave.DisabledBorderColor = Color.FromArgb(226, 232, 240);
+            btnSave.DisabledEndColor = Color.FromArgb(241, 245, 249);
+            btnSave.DisabledStartColor = Color.FromArgb(241, 245, 249);
+            btnSave.DisabledTextColor = Color.FromArgb(148, 163, 184);
             btnSave.EnableHoverAnimation = false;
             btnSave.EnableIconTinting = false;
             btnSave.EnableRippleEffect = false;
@@ -111,6 +115,10 @@ namespace DVLD.PL.UsersManagement
             btnCancel.BorderSize = 1;
             btnCancel.CenterIconWithText = false;
             btnCancel.Cursor = Cursors.Hand;
+            btnCancel.DisabledBorderColor = Color.FromArgb(226, 232, 240);
+            btnCancel.DisabledEndColor = Color.FromArgb(241, 245, 249);
+            btnCancel.DisabledStartColor = Color.FromArgb(241, 245, 249);
+            btnCancel.DisabledTextColor = Color.FromArgb(148, 163, 184);
             btnCancel.EnableHoverAnimation = false;
             btnCancel.EnableIconTinting = false;
             btnCancel.EnableRippleEffect = false;
@@ -242,6 +250,10 @@ namespace DVLD.PL.UsersManagement
             btnSearchPerson.BorderRadius = 0;
             btnSearchPerson.BorderSize = 1;
             btnSearchPerson.CenterIconWithText = false;
+            btnSearchPerson.DisabledBorderColor = Color.FromArgb(226, 232, 240);
+            btnSearchPerson.DisabledEndColor = Color.FromArgb(241, 245, 249);
+            btnSearchPerson.DisabledStartColor = Color.FromArgb(241, 245, 249);
+            btnSearchPerson.DisabledTextColor = Color.FromArgb(148, 163, 184);
             btnSearchPerson.EnableHoverAnimation = false;
             btnSearchPerson.EnableIconTinting = false;
             btnSearchPerson.EnableRippleEffect = false;
@@ -289,6 +301,10 @@ namespace DVLD.PL.UsersManagement
             btnSelectPerson.BorderRadius = 0;
             btnSelectPerson.BorderSize = 1;
             btnSelectPerson.CenterIconWithText = false;
+            btnSelectPerson.DisabledBorderColor = Color.FromArgb(226, 232, 240);
+            btnSelectPerson.DisabledEndColor = Color.FromArgb(241, 245, 249);
+            btnSelectPerson.DisabledStartColor = Color.FromArgb(241, 245, 249);
+            btnSelectPerson.DisabledTextColor = Color.FromArgb(148, 163, 184);
             btnSelectPerson.EnableHoverAnimation = false;
             btnSelectPerson.EnableIconTinting = false;
             btnSelectPerson.EnableRippleEffect = false;
@@ -326,6 +342,7 @@ namespace DVLD.PL.UsersManagement
             btnSelectPerson.TextColor = SystemColors.ControlText;
             btnSelectPerson.TextOffset = new Point(0, 0);
             toolTip1.SetToolTip(btnSelectPerson, "Select an exists person from the system");
+            btnSelectPerson.Click += btnSelectPerson_Click;
             // 
             // btnAddNewPerson
             // 
@@ -336,6 +353,10 @@ namespace DVLD.PL.UsersManagement
             btnAddNewPerson.BorderRadius = 0;
             btnAddNewPerson.BorderSize = 1;
             btnAddNewPerson.CenterIconWithText = false;
+            btnAddNewPerson.DisabledBorderColor = Color.FromArgb(226, 232, 240);
+            btnAddNewPerson.DisabledEndColor = Color.FromArgb(241, 245, 249);
+            btnAddNewPerson.DisabledStartColor = Color.FromArgb(241, 245, 249);
+            btnAddNewPerson.DisabledTextColor = Color.FromArgb(148, 163, 184);
             btnAddNewPerson.EnableHoverAnimation = false;
             btnAddNewPerson.EnableIconTinting = false;
             btnAddNewPerson.EnableRippleEffect = false;
@@ -374,14 +395,6 @@ namespace DVLD.PL.UsersManagement
             btnAddNewPerson.TextOffset = new Point(0, 0);
             toolTip1.SetToolTip(btnAddNewPerson, "Add new person and select him");
             // 
-            // ctrlPersonCard1
-            // 
-            ctrlPersonCard1.BackColor = Color.White;
-            ctrlPersonCard1.Location = new Point(10, 82);
-            ctrlPersonCard1.Name = "ctrlPersonCard1";
-            ctrlPersonCard1.Size = new Size(808, 247);
-            ctrlPersonCard1.TabIndex = 1;
-            // 
             // lnkEditPerson
             // 
             lnkEditPerson.AutoSize = true;
@@ -404,6 +417,10 @@ namespace DVLD.PL.UsersManagement
             btnNext.BorderRadius = 0;
             btnNext.BorderSize = 1;
             btnNext.CenterIconWithText = false;
+            btnNext.DisabledBorderColor = Color.FromArgb(226, 232, 240);
+            btnNext.DisabledEndColor = Color.FromArgb(241, 245, 249);
+            btnNext.DisabledStartColor = Color.FromArgb(241, 245, 249);
+            btnNext.DisabledTextColor = Color.FromArgb(148, 163, 184);
             btnNext.Enabled = false;
             btnNext.EnableHoverAnimation = false;
             btnNext.EnableIconTinting = false;
@@ -443,6 +460,14 @@ namespace DVLD.PL.UsersManagement
             btnNext.TextColor = SystemColors.ControlText;
             btnNext.TextOffset = new Point(0, 0);
             toolTip1.SetToolTip(btnNext, "Go to confirm User Login Credentails");
+            // 
+            // ctrlPersonCard1
+            // 
+            ctrlPersonCard1.BackColor = Color.White;
+            ctrlPersonCard1.Location = new Point(10, 82);
+            ctrlPersonCard1.Name = "ctrlPersonCard1";
+            ctrlPersonCard1.Size = new Size(808, 247);
+            ctrlPersonCard1.TabIndex = 1;
             // 
             // tpLoginInfo
             // 
@@ -684,6 +709,10 @@ namespace DVLD.PL.UsersManagement
             btnPrev.BorderRadius = 0;
             btnPrev.BorderSize = 1;
             btnPrev.CenterIconWithText = false;
+            btnPrev.DisabledBorderColor = Color.FromArgb(226, 232, 240);
+            btnPrev.DisabledEndColor = Color.FromArgb(241, 245, 249);
+            btnPrev.DisabledStartColor = Color.FromArgb(241, 245, 249);
+            btnPrev.DisabledTextColor = Color.FromArgb(148, 163, 184);
             btnPrev.EnableHoverAnimation = false;
             btnPrev.EnableIconTinting = false;
             btnPrev.EnableRippleEffect = false;
@@ -735,6 +764,8 @@ namespace DVLD.PL.UsersManagement
             Controls.Add(tcWizard);
             Controls.Add(btnCancel);
             Controls.Add(btnSave);
+            CustomBorderColor = Color.FromArgb(226, 232, 240);
+            ForeColor = Color.FromArgb(15, 23, 42);
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "frmSaveUser";

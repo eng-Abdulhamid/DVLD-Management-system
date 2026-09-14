@@ -15,8 +15,8 @@ namespace DVLD.PL.Management.user_management
     public partial class frmUserCard : frmBase
     {
         private readonly int _userID;
-        public Action OnEditedSuccessfully;
-        public Action OnDeletedSuccessfully;
+        public event Action? OnEditedSuccessfully;
+        public event Action? OnDeletedSuccessfully;
         public frmUserCard(int UserID)
         {
             InitializeComponent();
@@ -68,6 +68,11 @@ namespace DVLD.PL.Management.user_management
                 };
                 editForm.ShowDialog();
             }
-        }   
+        }
+
+        private void ctrlUserManagementControls_OnAddClick(object sender, EventArgs e)
+        {
+
+        }
     }
 }

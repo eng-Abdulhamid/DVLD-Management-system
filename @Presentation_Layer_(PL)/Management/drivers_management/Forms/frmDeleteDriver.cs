@@ -10,7 +10,6 @@ namespace DVLD.PL.DriversManagement
     {
         private readonly int _driverId;
         private readonly DriverService _driverService;
-        private ToolTip? _toolTips;
 
         public event Action? DeletedSuccessfully;
 
@@ -36,15 +35,14 @@ namespace DVLD.PL.DriversManagement
 
         private void SetupToolTips()
         {
-            _toolTips = new ToolTip
-            {
-                InitialDelay = 300,
-                UseAnimation = true,
-                UseFading = true
-            };
+            // Leveraged the designer-managed toolTip1 component to ensure automatic disposal 
+            // and prevent memory leaks instead of instantiating an unmanaged ToolTip instance.
+            toolTip1.InitialDelay = 300;
+            toolTip1.UseAnimation = true;
+            toolTip1.UseFading = true;
 
-            _toolTips.SetToolTip(btnDelete, "Permanently delete this driver record");
-            _toolTips.SetToolTip(btnCancel, "Cancel and close window");
+            toolTip1.SetToolTip(btnDelete, "Permanently delete this driver record");
+            toolTip1.SetToolTip(btnCancel, "Cancel and close window");
         }
 
         private void RegisterEvents()
@@ -59,23 +57,44 @@ namespace DVLD.PL.DriversManagement
 
             if (_driverId <= 0)
             {
-                UITheme.ShowErrorToast("Invalid driver ID.");
+                UITheme.ShowErrorToast("Invalid driver ID provided.");
                 this.Close();
                 return;
             }
 
-            await ctrlDriverCard1.LoadDriverInfoAsync(_driverId);
-        }
-        private void UpdateDeleteButtonEnabled(bool Enabled)
-        {
-            btnDelete.IsLoading = !Enabled;
-            btnDelete.Enabled = Enabled;
-            btnCancel.Enabled = Enabled;
+            // Defense in depth: Disable deletion until context is fully verified from the BLL
+            UpdateDeleteButtonEnabled(false);
 
+            await ctrlDriverCard1.LoadDriverInfoAsync(_driverId);
+
+            // Verify the driver actually exists and loaded successfully before enabling the delete action
+            if (ctrlDriverCard1.SelectedDriverInfo == null)
+            {
+                lblWarning.Text = "⚠ Driver not found or has already been deleted.";
+                return;
+            }
+
+            UpdateDeleteButtonEnabled(true);
         }
+
+        private void UpdateDeleteButtonEnabled(bool isEnabled)
+        {
+            btnDelete.IsLoading = !isEnabled;
+            btnDelete.Enabled = isEnabled;
+            btnCancel.Enabled = isEnabled;
+        }
+
         private async Task PerformDeleteAsync()
         {
+            // UI validation: Require explicit final confirmation for destructive BLL operations
+            if (MessageBox.Show("Are you absolutely sure you want to delete this driver? This action cannot be undone.",
+                                "Confirm Deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
+            {
+                return;
+            }
+
             UpdateDeleteButtonEnabled(false);
+
             var result = await _driverService.DeleteAsync(_driverId);
 
             if (result.IsSuccess)
@@ -86,10 +105,10 @@ namespace DVLD.PL.DriversManagement
             }
             else
             {
-                UITheme.ShowErrorToast(result.Message);
+                // BLL restricts deletion if the driver is linked to active licenses or constraints.
+                UITheme.ShowWarningToast(result.Message ?? "Unable to delete driver due to linked constraints.", "Deletion Rejected");
+                UpdateDeleteButtonEnabled(true);
             }
-
-            UpdateDeleteButtonEnabled(true);
         }
     }
 }

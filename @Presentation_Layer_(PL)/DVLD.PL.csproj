@@ -42,6 +42,7 @@
 
 	<ItemGroup>
 		<None Remove=".gitignore" />
+		<None Remove="Management\drivers_management\Forms\frmAddNewDriver.Designer.cs~RFc6932bb.TMP" />
 	</ItemGroup>
 
 	<ItemGroup>

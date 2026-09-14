@@ -34,6 +34,7 @@ namespace DVLD.PL.DriversManagement
             // 
             // txtSearch
             // 
+            txtSearch.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtSearch.AllowArabicCharacters = true;
             txtSearch.AllowEnglishCharacters = true;
             txtSearch.AllowNumbers = true;
@@ -72,7 +73,7 @@ namespace DVLD.PL.DriversManagement
             txtSearch.RightIcon = null;
             txtSearch.RightIconClickable = false;
             txtSearch.ShowClearButton = true;
-            txtSearch.Size = new Size(331, 44);
+            txtSearch.Size = new Size(420, 44);
             txtSearch.TabIndex = 0;
             txtSearch.UseSystemPasswordChar = false;
             txtSearch.ValidateEmail = false;

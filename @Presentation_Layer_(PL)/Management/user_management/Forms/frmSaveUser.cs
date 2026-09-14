@@ -1,15 +1,9 @@
-﻿using DVLD.BLL.DTOs;
+﻿using CustomizeControls;
+using DVLD.BLL.DTOs;
 using DVLD.BLL.Services;
 using DVLD.PL.Global;
 using DVLD.PL.Login;
 using DVLD.PL.PeopleManagement;
-using CustomizeControls;
-using System;
-using System.Drawing;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
 namespace DVLD.PL.UsersManagement
 {
     public partial class frmSaveUser : frmBase
@@ -18,36 +12,32 @@ namespace DVLD.PL.UsersManagement
 
         private readonly Mode _mode;
         private readonly int _userId;
-        private int _selectedPersonId = -1;
-
         private int SelectedPersonId
         {
-            get => _selectedPersonId;
+            get;
             set
             {
-                _selectedPersonId = value;
-                btnNext.Enabled = (_selectedPersonId > 0);
+                field = value;
+                btnNext.Enabled = (field > 0);
             }
         }
 
         private readonly UserService _userService;
 
         public event Action<int>? UserSaved;
-
         public frmSaveUser(int userId = -1)
         {
             InitializeComponent();
             this.ApplyStandardFormTheme();
+            SetContextTitle(_mode == Mode.AddNew ? "Add New User" : "Edit User");
 
             _userId = userId;
             _mode = (_userId <= 0) ? Mode.AddNew : Mode.UpdateExisting;
             _userService = new UserService();
 
-            SetContextTitle(_mode == Mode.AddNew ? "Add New User" : "Edit User");
             ApplyStyles();
             RegisterEvents();
         }
-
         private void ApplyStyles()
         {
             btnSave.ApplyPrimaryStyle();
@@ -64,49 +54,160 @@ namespace DVLD.PL.UsersManagement
             txtSearchNationalNo.ApplyStandardStyle();
             chkIsActive.ApplyStandardStyle();
         }
-        //protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
-        //{
-        //    if (keyData == (Keys.Enter)) 
-        //    {
-        //        _ = PerformSaveAsync();
-        //        return true; 
-        //    }
-        //    return base.ProcessCmdKey(ref msg, keyData);
-        //}
+        #region Event Handlers
+        private void RegisterEvents()
+        {
+            btnSearchPerson.Click += HandleSearchPersonEvent_Click;
 
+            btnSelectPerson.Click += HandleSelectPersonEvent_Click;
+
+            btnAddNewPerson.Click += HandleNewPersonEvent_Click;
+
+            lnkEditPerson.LinkClicked += HandleEditPersonEvent_LinkClicked;
+            lnkEditPassword.LinkClicked += HandleEditPasswordEvent_LinkClicked;
+
+            btnNext.Click += HandleNextButtonEvent_Clicked;
+
+            btnPrev.Click += HandlePreviousButtonEvent_Clicked;
+
+            btnCancel.Click += CancelButton_Click;
+            btnSave.Click += HandleSaveButtonEvent_Clicked;
+        }
+        private async void HandleSearchPersonEvent_Click(object? sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtSearchNationalNo.Text)) return;
+
+            await ctrlPersonCard1.LoadPersonInfoByNationalNoAsync(txtSearchNationalNo.Text.Trim());
+
+            if (ctrlPersonCard1.PersonID > 0)
+            {
+                if (await _userService.IsPersonLinkedToUserAsync(ctrlPersonCard1.PersonID))
+                {
+                    UITheme.ShowWarningToast("This person is already linked to an account.");
+                    SelectedPersonId = -1;
+                    return;
+                }
+
+                SelectedPersonId = ctrlPersonCard1.PersonID;
+                lnkEditPerson.Visible = true;
+            }
+            else
+            {
+                SelectedPersonId = -1;
+            }
+
+        }
+        private void HandleSelectPersonEvent_Click(object? sender, EventArgs e)
+        {
+            using var selectPersonForm = new frmPeopleManagement(frmPeopleManagement.enMode.SelectPerson);
+            selectPersonForm.OnPersonSelected += async (personId) =>
+            {
+                if (await _userService.IsPersonLinkedToUserAsync(personId))
+                {
+                    UITheme.ShowWarningToast("This person already has an associated user account.");
+                    return;
+                }
+
+                await LoadPersonInfo(personId);
+            };
+            selectPersonForm.ShowDialog();
+        }
+        private async void HandleNewPersonEvent_Click(object? sender, EventArgs e)
+        {
+            using frmSavePerson frm = new frmSavePerson();
+            frm.PersonSaved += async (personId) =>
+            {
+                await LoadPersonInfo(personId);
+            };
+            frm.ShowDialog();
+        }
+        private async Task LoadPersonInfo(int personId)
+        {
+            SelectedPersonId = personId;
+            await ctrlPersonCard1.LoadPersonInfoAsync(personId);
+            lnkEditPerson.Visible = true;
+        }
+
+        private async void HandleEditPersonEvent_LinkClicked(object? sender, EventArgs e)
+        {
+            if (SelectedPersonId <= 0) return;
+            using frmSavePerson frm = new frmSavePerson(SelectedPersonId);
+            frm.PersonSaved += async (personId) => await ctrlPersonCard1.LoadPersonInfoAsync(personId);
+            frm.ShowDialog();
+        }
+        private async void HandleEditPasswordEvent_LinkClicked(object? sender, EventArgs e)
+        {
+            using frmForgetPassword frm = new frmForgetPassword(txtUserName.Text.Trim(), "Edit Password");
+            frm.AllowEditUsername = false;
+            frm.ShowDialog();
+        }
+        private void HandleNextButtonEvent_Clicked(object? sender, EventArgs e)
+        {
+            if (SelectedPersonId <= 0)
+            {
+                UITheme.ShowWarningToast("Please select a valid person first.");
+                return;
+            }
+
+            tcWizard.SelectedTab = tpLoginInfo;
+            btnPrev.Enabled = true;
+            btnPrev.ApplySecondaryStyle();
+            btnNext.Visible = false;
+        }
+        private void HandlePreviousButtonEvent_Clicked(object? sender, EventArgs e)
+        {
+            tcWizard.SelectedTab = tpPersonSelection;
+            btnNext.Visible = true;
+        }
+        private void CancelButton_Click(object? sender, EventArgs e)
+        {
+            this.Close();
+        }
+        private async void HandleSaveButtonEvent_Clicked(object? sender, EventArgs e)
+        {
+            await PerformSaveAsync();
+        }
+        #endregion
         private async void frmSaveUser_Load(object sender, EventArgs e)
         {
             if (UIUtility.IsDesignMode) return;
 
             if (_mode == Mode.AddNew)
             {
-                tcWizard.SelectedTab = tpPersonSelection;
-                btnSave.Enabled = false;
-                btnSave.ApplyDisabledStyle();
-                lnkEditPerson.Visible = false;
-
-                lblPassword.Visible = true;
-                txtPassword.Visible = true;
-                lblConfirmPassword.Visible = true;
-                txtConfirmPassword.Visible = true;
-
-                lnkEditPassword.Visible = false;
+                SwitchAddMode();
             }
             else
             {
-                btnSave.Text = "Update User";
-
-                lblPassword.Visible = false;
-                txtPassword.Visible = false;
-                lblConfirmPassword.Visible = false;
-                txtConfirmPassword.Visible = false;
-                chkIsActive.Location = new Point(186, 124);
-                lnkEditPassword.Visible = true;
-
-                await LoadUserDataAsync();
+                await SwitchUpdateMode();
             }
         }
+        private void SwitchAddMode()
+        {
+            tcWizard.SelectedTab = tpPersonSelection;
+            btnSave.Enabled = false;
+            btnSave.ApplyDisabledStyle();
+            lnkEditPerson.Visible = false;
 
+            lblPassword.Visible = true;
+            txtPassword.Visible = true;
+            lblConfirmPassword.Visible = true;
+            txtConfirmPassword.Visible = true;
+
+            lnkEditPassword.Visible = false;
+        }
+        private async Task SwitchUpdateMode()
+        {
+            btnSave.Text = "Update User";
+
+            lblPassword.Visible = false;
+            txtPassword.Visible = false;
+            lblConfirmPassword.Visible = false;
+            txtConfirmPassword.Visible = false;
+            chkIsActive.Location = new Point(186, 124);
+            lnkEditPassword.Visible = true;
+
+            await LoadUserDataAsync();
+        }
         private async Task LoadUserDataAsync()
         {
             var result = await _userService.GetByIdAsync(_userId);
@@ -131,89 +232,85 @@ namespace DVLD.PL.UsersManagement
             btnSave.Enabled = true;
             btnSave.ApplyPrimaryStyle();
         }
-
-        private void RegisterEvents()
+        #region Perform Save Operations
+        private async Task PerformSaveAsync()
         {
-            btnSearchPerson.Click += async (s, e) =>
-            {
-                if (string.IsNullOrWhiteSpace(txtSearchNationalNo.Text)) return;
+            if (!ValidateFieldsBeforeSave()) return;
+            
+            UpdateSaveButtonStatus(false);
+            btnSave.IsLoading = false;
 
-                await ctrlPersonCard1.LoadPersonInfoByNationalNoAsync(txtSearchNationalNo.Text.Trim());
+            await SaveDependsOnCurrentMode();
 
-                if (ctrlPersonCard1.PersonID > 0)
-                {
-                    if (await _userService.IsPersonLinkedToUserAsync(ctrlPersonCard1.PersonID))
-                    {
-                        UITheme.ShowWarningToast("This person is already linked to an account.");
-                        SelectedPersonId = -1;
-                        return;
-                    }
+            UpdateSaveButtonStatus(true);
 
-                    SelectedPersonId = ctrlPersonCard1.PersonID;
-                    lnkEditPerson.Visible = true;
-                }
-                else
-                {
-                    SelectedPersonId = -1;
-                }
-            };
-
-            btnSelectPerson.Click += SelectPerson_Click;
-
-            btnAddNewPerson.Click += (s, e) =>
-            {
-                using frmSavePerson frm = new frmSavePerson();
-                frm.PersonSaved += async (personId) =>
-                {
-                    await LoadPersonInfo(personId);
-                };
-                frm.ShowDialog();
-            };
-
-            lnkEditPerson.LinkClicked += (s, e) =>
-            {
-                if (SelectedPersonId <= 0) return;
-                using frmSavePerson frm = new frmSavePerson(SelectedPersonId);
-                frm.PersonSaved += async (personId) => await ctrlPersonCard1.LoadPersonInfoAsync(personId);
-                frm.ShowDialog();
-            };
-
-            lnkEditPassword.LinkClicked += (s, e) =>
-            {
-                using frmForgetPassword frm = new frmForgetPassword(txtUserName.Text.Trim(), "Edit Password");
-                frm.AllowEditUsername = false;
-                frm.ShowDialog();
-            };
-
-            btnNext.Click += (s, e) =>
-            {
-                if (SelectedPersonId <= 0)
-                {
-                    UITheme.ShowWarningToast("Please select a valid person first.");
-                    return;
-                }
-
-                tcWizard.SelectedTab = tpLoginInfo;
-                btnPrev.Enabled = true;
-                btnPrev.ApplySecondaryStyle();
-                btnNext.Visible = false;
-            };
-
-            btnPrev.Click += (s, e) =>
-            {
-                tcWizard.SelectedTab = tpPersonSelection;
-                btnNext.Visible = true;
-            };
-
-            btnCancel.Click += (s, e) => this.Close();
-            btnSave.Click += async (s, e) => await PerformSaveAsync();
         }
-        private void CheckPasswordSimilarity()
+        private bool ValidateFieldsBeforeSave()
+        {
+            if (!ValidateRequiredField(txtUserName))
+            {
+                UITheme.ShowErrorToast($"Please enter your user name.", "Validation Error");
+                return false;
+            }
+            if (!ValidateRequiredField(txtPassword))
+            {
+                UITheme.ShowErrorToast($"Please enter a password.", "Validation Error");
+                return false;
+            }
+            if (!ValidateRequiredField(txtConfirmPassword))
+            {
+                UITheme.ShowErrorToast($"Please confirm your password.", "Validation Error");
+                return false;
+            }
+            if (!ValidatePasswordMatch())
+            {
+                return false;
+            }
+            return true;
+        }
+        private bool ValidateRequiredField(NTextBox txtBox)
+        {
+            if (string.IsNullOrWhiteSpace(txtBox.Text))
+            {
+                txtBox.HasError = true;
+                txtBox.Shake();
+                txtBox.Focus();
+
+                return false;
+            }
+
+            txtBox.HasError = false;
+            return true;
+        }
+        private bool ValidatePasswordMatch()
         {
             if (txtPassword.Text != txtConfirmPassword.Text)
             {
+                txtConfirmPassword.HasError = true;
                 txtConfirmPassword.Shake();
-                UITheme.ShowErrorToast("Passwords do not match.");
+                UITheme.ShowErrorToast("Passwords do not match.", "Validation Error");
+                txtConfirmPassword.Focus();
+
+                return false;
+            }
+
+            txtConfirmPassword.HasError = false;
+            return true;
+        }
+        private async Task SaveDependsOnCurrentMode()
+        {
+            switch (_mode)
+            {
+                case Mode.AddNew:
+                    {
+                        await AddNew();
+                        break;
+                    }
+                case Mode.UpdateExisting:
+                    {
+                        await UpdateUser();
+                        break;
+                    }
             }
         }
         private async Task AddNew()
@@ -239,10 +336,10 @@ namespace DVLD.PL.UsersManagement
             }
 
         }
-        private async Task UpdatePerson()
+        private async Task UpdateUser()
         {
-            var dto = new UserUpdateDTO(_userId, SelectedPersonId, txtUserName.Text.Trim(), chkIsActive.Checked);
-            var taskResult = _userService.UpdateAsync(dto);
+            var updatedDto = new UserUpdateDTO(_userId, SelectedPersonId, txtUserName.Text.Trim(), chkIsActive.Checked);
+            var taskResult = _userService.UpdateAsync(updatedDto);
 
             btnSave.IsLoading = true;
 
@@ -251,6 +348,16 @@ namespace DVLD.PL.UsersManagement
             btnSave.IsLoading = false;
             if (result.IsSuccess)
             {
+                if (AppSession.CurrentUser?.UserID == _userId)
+                {
+                    AppSession.CurrentUser = new UserReadDTO()
+                    {
+                        UserID = updatedDto.UserID,
+                        PersonID = updatedDto.PersonID,
+                        IsActive = updatedDto.IsActive,
+                        UserName = updatedDto.UserName
+                    };
+                }
                 UITheme.ShowSuccessToast("User updated successfully.");
                 UserSaved?.Invoke(_userId);
                 this.Close();
@@ -259,71 +366,9 @@ namespace DVLD.PL.UsersManagement
             {
                 UITheme.ShowWarningToast(result.Message ?? "Failed to update user.", "Update Failed");
             }
-
         }
-        private void UpdateSaveButtonStatus(bool Enabled)
-        {
-            btnSave.Enabled = Enabled;
-            btnCancel.Enabled = Enabled;
-            if (Enabled) btnSave.ApplyPrimaryStyle();
-            else btnSave.ApplyDisabledStyle();
-        }
-        private async Task PerformSaveAsync()
-        {
-            if (string.IsNullOrWhiteSpace(txtUserName.Text))
-            {
-                txtUserName.Shake();
-                return;
-            }
-            UpdateSaveButtonStatus(false);
-            btnSave.IsLoading = false;
-            switch (_mode)
-            {
-                case Mode.AddNew:
-                    {
-                        if (string.IsNullOrWhiteSpace(txtPassword.Text))
-                        {
-                            txtPassword.Shake();
-                            return;
-                        }
+        #endregion
 
-                        CheckPasswordSimilarity();
-
-                        await AddNew(); 
-                        break;
-                    }
-                case Mode.UpdateExisting:
-                    {
-                        await UpdatePerson();
-                        break;
-                    }
-            }
-            UpdateSaveButtonStatus(true);
-            
-        }
-
-        private void SelectPerson_Click(object? sender, EventArgs e)
-        {
-            using var selectPersonForm = new frmPeopleManagement(frmPeopleManagement.enMode.SelectPerson);
-            selectPersonForm.OnPersonSelected += async (personId) =>
-            {
-                if (await _userService.IsPersonLinkedToUserAsync(personId))
-                {
-                    UITheme.ShowWarningToast("This person already has an associated user account.");
-                    return;
-                }
-
-                await LoadPersonInfo(personId);
-            };
-            selectPersonForm.ShowDialog();
-        }
-
-        private async Task LoadPersonInfo(int personId)
-        {
-            SelectedPersonId = personId;
-            await ctrlPersonCard1.LoadPersonInfoAsync(personId);
-            lnkEditPerson.Visible = true;
-        }
 
         private bool CheckTextBoxsIfCanSave()
         {
@@ -342,6 +387,17 @@ namespace DVLD.PL.UsersManagement
                     CheckTextBoxsIfCanSave() :
                     !string.IsNullOrEmpty(txtUserName.Text)
                 );
+        }
+        private void UpdateSaveButtonStatus(bool Enabled)
+        {
+            btnSave.Enabled = Enabled;
+            btnCancel.Enabled = Enabled;
+            if (Enabled) btnSave.ApplyPrimaryStyle();
+            else btnSave.ApplyDisabledStyle();
+        }
+        private void btnSelectPerson_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

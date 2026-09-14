@@ -30,6 +30,7 @@ namespace DVLD.PL.DriversManagement
         private Label lblCreatedByValue;
         private NButton btnSave;
         private NButton btnCancel;
+        private NButton btnBack;
 
         protected override void Dispose(bool disposing)
         {
@@ -63,6 +64,7 @@ namespace DVLD.PL.DriversManagement
             lblCreatedByValue = new Label();
             btnSave = new NButton();
             btnCancel = new NButton();
+            btnBack = new NButton();
             toolTip1 = new ToolTip(components);
             tcWizard.SuspendLayout();
             tpPersonSelection.SuspendLayout();
@@ -266,7 +268,7 @@ namespace DVLD.PL.DriversManagement
             btnSelectPerson.TabIndex = 2;
             btnSelectPerson.TextColor = SystemColors.ControlText;
             btnSelectPerson.TextOffset = new Point(0, 0);
-            toolTip1.SetToolTip(btnSelectPerson, "Select Exits Person. Will open in a new window");
+            toolTip1.SetToolTip(btnSelectPerson, "Select Existing Person");
             // 
             // btnAddNewPerson
             // 
@@ -314,7 +316,7 @@ namespace DVLD.PL.DriversManagement
             btnAddNewPerson.TabIndex = 3;
             btnAddNewPerson.TextColor = SystemColors.ControlText;
             btnAddNewPerson.TextOffset = new Point(0, 0);
-            toolTip1.SetToolTip(btnAddNewPerson, "Add new Person.  Will open new window.");
+            toolTip1.SetToolTip(btnAddNewPerson, "Add new Person");
             // 
             // ctrlPersonCard1
             // 
@@ -384,7 +386,7 @@ namespace DVLD.PL.DriversManagement
             btnNext.Text = "Next";
             btnNext.TextColor = SystemColors.ControlText;
             btnNext.TextOffset = new Point(0, 0);
-            toolTip1.SetToolTip(btnNext, "Go to confirm driver information");
+            toolTip1.SetToolTip(btnNext, "Proceed to Driver Confirmation");
             // 
             // tpDriverConfirmation
             // 
@@ -398,13 +400,13 @@ namespace DVLD.PL.DriversManagement
             tpDriverConfirmation.Controls.Add(lblCreatedDateValue);
             tpDriverConfirmation.Controls.Add(lblCreatedByHeader);
             tpDriverConfirmation.Controls.Add(lblCreatedByValue);
+            tpDriverConfirmation.Controls.Add(btnBack);
             tpDriverConfirmation.Location = new Point(4, 26);
             tpDriverConfirmation.Name = "tpDriverConfirmation";
             tpDriverConfirmation.Padding = new Padding(32);
             tpDriverConfirmation.Size = new Size(812, 405);
             tpDriverConfirmation.TabIndex = 1;
             tpDriverConfirmation.Text = "Driver Confirmation";
-            tpDriverConfirmation.ToolTipText = "Confirm driver info";
             // 
             // lblConfirmTitle
             // 
@@ -500,6 +502,54 @@ namespace DVLD.PL.DriversManagement
             lblCreatedByValue.Size = new Size(54, 19);
             lblCreatedByValue.TabIndex = 8;
             lblCreatedByValue.Text = "System";
+            // 
+            // btnBack
+            // 
+            btnBack.BackColor = Color.Transparent;
+            btnBack.BackgroundEndColor = SystemColors.Control;
+            btnBack.BackgroundStartColor = SystemColors.Control;
+            btnBack.BorderColor = Color.DarkGray;
+            btnBack.BorderRadius = 8;
+            btnBack.BorderSize = 1;
+            btnBack.CenterIconWithText = false;
+            btnBack.Cursor = Cursors.Hand;
+            btnBack.EnableHoverAnimation = false;
+            btnBack.EnableIconTinting = false;
+            btnBack.EnableRippleEffect = false;
+            btnBack.EnableShadow = false;
+            btnBack.Font = new Font("Segoe UI", 9F);
+            btnBack.ForeColor = SystemColors.ControlText;
+            btnBack.GradientAngle = 90F;
+            btnBack.HoverAnimationSpeed = 20;
+            btnBack.HoverBorderColor = Color.FromArgb(0, 120, 215);
+            btnBack.HoverEndColor = Color.FromArgb(229, 241, 251);
+            btnBack.HoverIconColor = Color.Navy;
+            btnBack.HoverStartColor = Color.FromArgb(229, 241, 251);
+            btnBack.HoverTextColor = SystemColors.ControlText;
+            btnBack.IconColor = Color.DimGray;
+            btnBack.IconMargin = 10;
+            btnBack.IconOffset = new Point(0, 0);
+            btnBack.IconSize = new Size(16, 16);
+            btnBack.IconSpacing = 10;
+            btnBack.IsLoading = false;
+            btnBack.LeftIcon = null;
+            btnBack.Location = new Point(36, 355);
+            btnBack.MiddleIcon = null;
+            btnBack.Name = "btnBack";
+            btnBack.PressedEndColor = Color.FromArgb(204, 228, 247);
+            btnBack.PressedStartColor = Color.FromArgb(204, 228, 247);
+            btnBack.RightIcon = null;
+            btnBack.RippleColor = Color.FromArgb(70, 0, 0, 0);
+            btnBack.RippleSpeed = 15;
+            btnBack.ShadowColor = Color.FromArgb(60, 0, 0, 0);
+            btnBack.ShadowOffset = new Point(1, 1);
+            btnBack.ShadowSize = 3;
+            btnBack.ShiftOnPress = false;
+            btnBack.Size = new Size(110, 38);
+            btnBack.TabIndex = 9;
+            btnBack.Text = "Back";
+            btnBack.TextColor = SystemColors.ControlText;
+            btnBack.TextOffset = new Point(0, 0);
             // 
             // btnSave
             // 
