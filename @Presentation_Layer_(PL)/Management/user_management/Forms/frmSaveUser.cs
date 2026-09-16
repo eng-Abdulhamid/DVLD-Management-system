@@ -95,7 +95,6 @@ namespace DVLD.PL.UsersManagement
             {
                 SelectedPersonId = -1;
             }
-
         }
         private void HandleSelectPersonEvent_Click(object? sender, EventArgs e)
         {
@@ -368,8 +367,6 @@ namespace DVLD.PL.UsersManagement
             }
         }
         #endregion
-
-
         private bool CheckTextBoxsIfCanSave()
         {
             return (
@@ -378,7 +375,6 @@ namespace DVLD.PL.UsersManagement
                 (!string.IsNullOrEmpty(txtConfirmPassword.Text))
                 );
         }
-
         private void CheckTextBoxsIfCanSave_TextChange(object sender, EventArgs e)
         {
             UpdateSaveButtonStatus
