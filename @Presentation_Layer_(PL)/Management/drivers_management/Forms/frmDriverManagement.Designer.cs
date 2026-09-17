@@ -42,8 +42,8 @@ namespace DVLD.PL.DriversManagement
             // 
             pnlMain.BackColor = Color.FromArgb(248, 250, 252);
             pnlMain.Controls.Add(ctrlNotFound1);
-            pnlMain.Controls.Add(ctrlManagementDataGrid1);
             pnlMain.Controls.Add(pnlTopBar);
+            pnlMain.Controls.Add(ctrlManagementDataGrid1);
             pnlMain.Dock = DockStyle.Fill;
             pnlMain.Location = new Point(2, 40);
             pnlMain.Name = "pnlMain";
@@ -52,8 +52,8 @@ namespace DVLD.PL.DriversManagement
             // 
             // ctrlNotFound1
             // 
-            ctrlNotFound1.BackColor = Color.Transparent;
-            ctrlNotFound1.Location = new Point(318, 220);
+            ctrlNotFound1.BackColor = Color.White;
+            ctrlNotFound1.Location = new Point(326, 247);
             ctrlNotFound1.Name = "ctrlNotFound1";
             ctrlNotFound1.Size = new Size(480, 240);
             ctrlNotFound1.TabIndex = 2;
@@ -63,15 +63,15 @@ namespace DVLD.PL.DriversManagement
             // 
             ctrlManagementDataGrid1.BackColor = Color.Transparent;
             ctrlManagementDataGrid1.Dock = DockStyle.Fill;
-            ctrlManagementDataGrid1.Location = new Point(0, 136);
+            ctrlManagementDataGrid1.Location = new Point(0, 0);
             ctrlManagementDataGrid1.Margin = new Padding(0);
             ctrlManagementDataGrid1.Name = "ctrlManagementDataGrid1";
-            ctrlManagementDataGrid1.Size = new Size(1116, 542);
+            ctrlManagementDataGrid1.Size = new Size(1116, 678);
             ctrlManagementDataGrid1.TabIndex = 1;
             // 
             // pnlTopBar
             // 
-            pnlTopBar.BackColor = Color.White;
+            pnlTopBar.BackColor = Color.Transparent;
             pnlTopBar.Controls.Add(ctrlDriversSearch1);
             pnlTopBar.Controls.Add(ctrlManagementActions1);
             pnlTopBar.Controls.Add(ctrlPagination1);
@@ -94,24 +94,16 @@ namespace DVLD.PL.DriversManagement
             // 
             // ctrlManagementActions1
             // 
-            ctrlManagementActions1.AddEnabled = true;
-            ctrlManagementActions1.AddVisible = true;
             ctrlManagementActions1.BackColor = Color.Transparent;
-            ctrlManagementActions1.DeleteEnabled = false;
-            ctrlManagementActions1.DeleteVisible = true;
-            ctrlManagementActions1.EditEnabled = false;
-            ctrlManagementActions1.EditVisible = true; // Enabled mapping to Edit Person
             ctrlManagementActions1.Location = new Point(12, 90);
             ctrlManagementActions1.Name = "ctrlManagementActions1";
-            ctrlManagementActions1.RefreshEnabled = true;
-            ctrlManagementActions1.RefreshVisible = true;
-            ctrlManagementActions1.Size = new Size(160, 42); // Slightly increased width to fit the edit button
+            ctrlManagementActions1.Size = new Size(170, 42);
             ctrlManagementActions1.TabIndex = 1;
             // 
             // ctrlPagination1
             // 
             ctrlPagination1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            ctrlPagination1.BackColor = Color.Transparent;
+            ctrlPagination1.BackColor = Color.White;
             ctrlPagination1.Location = new Point(764, 92);
             ctrlPagination1.MinimumSize = new Size(340, 38);
             ctrlPagination1.Name = "ctrlPagination1";
@@ -122,8 +114,11 @@ namespace DVLD.PL.DriversManagement
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.White;
             ClientSize = new Size(1120, 720);
             Controls.Add(pnlMain);
+            CustomBorderColor = Color.FromArgb(226, 232, 240);
+            ForeColor = Color.FromArgb(15, 23, 42);
             Name = "frmDriverManagement";
             Text = "DVLD / Drivers Management";
             Controls.SetChildIndex(headerControl, 0);

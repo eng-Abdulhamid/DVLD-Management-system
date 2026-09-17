@@ -8,11 +8,10 @@ namespace DVLD.PL.DriversManagement
 {
     public partial class frmDeleteDriver : frmBase
     {
+        #region Properties and the Constructor
         private readonly int _driverId;
         private readonly DriverService _driverService;
-
         public event Action? DeletedSuccessfully;
-
         public frmDeleteDriver(int driverId)
         {
             InitializeComponent();
@@ -32,7 +31,6 @@ namespace DVLD.PL.DriversManagement
             btnDelete.ApplyDangerStyle();
             btnCancel.ApplySecondaryStyle();
         }
-
         private void SetupToolTips()
         {
             // Leveraged the designer-managed toolTip1 component to ensure automatic disposal 
@@ -44,13 +42,13 @@ namespace DVLD.PL.DriversManagement
             toolTip1.SetToolTip(btnDelete, "Permanently delete this driver record");
             toolTip1.SetToolTip(btnCancel, "Cancel and close window");
         }
-
         private void RegisterEvents()
         {
             btnCancel.Click += (s, e) => this.Close();
             btnDelete.Click += async (s, e) => await PerformDeleteAsync();
         }
-
+        #endregion
+        #region Events
         private async void frmDeleteDriver_Load(object sender, EventArgs e)
         {
             if (UIUtility.IsDesignMode) return;
@@ -76,14 +74,13 @@ namespace DVLD.PL.DriversManagement
 
             UpdateDeleteButtonEnabled(true);
         }
-
+        #endregion
         private void UpdateDeleteButtonEnabled(bool isEnabled)
         {
             btnDelete.IsLoading = !isEnabled;
             btnDelete.Enabled = isEnabled;
             btnCancel.Enabled = isEnabled;
         }
-
         private async Task PerformDeleteAsync()
         {
             // UI validation: Require explicit final confirmation for destructive BLL operations

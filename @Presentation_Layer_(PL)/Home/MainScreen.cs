@@ -1,7 +1,4 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-using CustomizeControls;
+﻿using CustomizeControls;
 using DVLD.PL.DriversManagement;
 using DVLD.PL.Global;
 using DVLD.PL.Login;
@@ -35,10 +32,6 @@ namespace DVLD.PL
         private void SetupHeaderIntegration()
         {
             headerControl.ShowUserProfile = true;
-
-            //headerControl.OnCurrentUserInfoClicked += (s, e) => OpenCurrentUserInfo();
-            //headerControl.OnChangePasswordClicked += (s, e) => OpenChangePassword();
-            headerControl.OnSignOutClicked += (s, e) => PerformSignOut();
         }
 
         private void UpdateDashboardInfo()
@@ -177,29 +170,34 @@ namespace DVLD.PL
 
         #region Centralized Navigation Actions (Single Source of Truth)
 
-        public void OpenPeopleManagement()
+        private frmPeopleManagement? _frmPeopleManagementInstance;
+        private frmUserManagement? _frmUserManagementInstance;
+        private frmDriverManagement? _frmDriverManagementInstance;
+
+        private void OpenFormSingleton<T>(ref T? formInstance, Func<T> formFactory) where T : Form
         {
-            using (frmPeopleManagement frm = new frmPeopleManagement())
+            if (formInstance == null || formInstance.IsDisposed)
             {
-                frm.ShowDialog(this);
+                formInstance = formFactory();
+                formInstance.Show();
+            }
+            else
+            {
+                if (formInstance.WindowState == FormWindowState.Minimized)
+                {
+                    formInstance.WindowState = FormWindowState.Normal;
+                }
+
+                formInstance.BringToFront();
+                formInstance.Activate();
             }
         }
 
-        public void OpenUsersManagement()
-        {
-            using (frmUserManagement userManagement = new frmUserManagement())
-            {
-                userManagement.ShowDialog(this);
-            }
-        }
+        public void OpenPeopleManagement() => OpenFormSingleton(ref _frmPeopleManagementInstance, () => new frmPeopleManagement());
 
-        public void OpenDriversManagement()
-        {
-            using (frmDriverManagement driverManagement = new frmDriverManagement())
-            {
-                driverManagement.ShowDialog(this);
-            }
-        }
+        public void OpenUsersManagement() => OpenFormSingleton(ref _frmUserManagementInstance, () => new frmUserManagement());
+
+        public void OpenDriversManagement() => OpenFormSingleton(ref _frmDriverManagementInstance, () => new frmDriverManagement());
 
         public void OpenCurrentUserInfo()
         {
@@ -207,7 +205,7 @@ namespace DVLD.PL
 
             using (frmUserCard frm = new frmUserCard(AppSession.CurrentUserID))
             {
-                frm.ShowDialog(this);
+                frm.ShowDialog(this); 
             }
         }
 
@@ -221,11 +219,6 @@ namespace DVLD.PL
             }
         }
 
-        public void PerformSignOut()
-        {
-            AppSession.LogOut();
-            Application.Restart();
-        }
         #endregion
 
         #region Menu Click Handlers
@@ -235,13 +228,11 @@ namespace DVLD.PL
         private void btnDriversManagement_Click(object sender, EventArgs e) => OpenDriversManagement();
         private void btnCurrentUserInfo_Click(object sender, EventArgs e) => OpenCurrentUserInfo();
         private void btnChangePassword_Click(object sender, EventArgs e) => OpenChangePassword();
-        private void btnSignOut_Click(object sender, EventArgs e) => PerformSignOut();
 
         #endregion
 
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
-            //AppSession.OnUserSessionChanged -= UpdateDashboardInfo;
             base.OnFormClosed(e);
         }
     }

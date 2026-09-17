@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<RootNamespace>DVLD.TestBLL</RootNamespace>
+		<AssemblyName>DVLD.TestBLL</AssemblyName>
+		<LangVersion>latest</LangVersion>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+
+		<AnalysisLevel>latest-recommended</AnalysisLevel>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+		<OutputType>Exe</OutputType>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+		<ProjectReference Include="..\DVLD-Management system\@Data_Access_Layer_(DAL)\DVLD.DAL.csproj" />
+		<ProjectReference Include="C:\Users\Abd-Ulhameed\Desktop\DVLD-Management system\@Business_Logic_Layer_(BLL)\DVLD.BLL.csproj" />
+	</ItemGroup>
+
+</Project>

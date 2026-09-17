@@ -1,34 +1,22 @@
 ﻿using DVLD.PL.Global;
-using System;
 using System.ComponentModel;
-using System.Drawing;
-using System.Windows.Forms;
 using static DVLD.PL.Global.UITheme;
 using CustomizeControls;
-
 namespace DVLD.PL.Management
 {
     [DefaultEvent("OnAddClick")]
     public partial class ctrlManagementActions : UserControl
     {
+        #region Properties
         private const int ButtonSpacing = 6;
-
-        #region Events
-
         [Category("Operations")]
         public event EventHandler? OnAddClick;
-
         [Category("Operations")]
         public event EventHandler? OnEditClick;
-
         [Category("Operations")]
         public event EventHandler? OnDeleteClick;
-
         [Category("Operations")]
         public event EventHandler? OnRefreshClick;
-
-        #endregion
-
         #region Visibility Properties
 
         [Category("Buttons Visibility")]
@@ -92,7 +80,6 @@ namespace DVLD.PL.Management
         }
 
         #endregion
-
         #region Enable / Disable Properties
 
         [Category("Buttons State")]
@@ -152,7 +139,8 @@ namespace DVLD.PL.Management
         }
 
         #endregion
-
+        #endregion
+        #region Constructor and Initialization
         public ctrlManagementActions()
         {
             InitializeComponent();
@@ -170,7 +158,6 @@ namespace DVLD.PL.Management
             UpdateButtonsState(false);
             RearrangeButtons();
         }
-
         private void ApplyStyles()
         {
             btnAddNew.ApplySecondaryStyle();
@@ -178,7 +165,6 @@ namespace DVLD.PL.Management
             btnUpdate.ApplySecondaryStyle();
             btnDelete.ApplySecondaryStyle();
         }
-
         private void SetupToolTips()
         {
             toolTip1.SetToolTip(btnAddNew, "Add new record (Ctrl + N)");
@@ -186,7 +172,6 @@ namespace DVLD.PL.Management
             toolTip1.SetToolTip(btnDelete, "Delete selected record (Delete)");
             toolTip1.SetToolTip(btnRefresh, "Refresh list (F5)");
         }
-
         private void RegisterEvents()
         {
             btnAddNew.Click += (s, e) => OnAddClick?.Invoke(this, e);
@@ -199,6 +184,7 @@ namespace DVLD.PL.Management
             btnDelete.VisibleChanged += (s, e) => RearrangeButtons();
             btnRefresh.VisibleChanged += (s, e) => RearrangeButtons();
         }
+        #endregion
         public void RearrangeButtons()
         {
             this.SuspendLayout();
@@ -226,17 +212,17 @@ namespace DVLD.PL.Management
 
             this.ResumeLayout(true);
         }
-
         public void UpdateButtonsState(bool hasSelection)
         {
             EditEnabled = hasSelection;
             DeleteEnabled = hasSelection;
         }
-
+        #region Override
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
             RearrangeButtons();
         }
+        #endregion
     }
 }

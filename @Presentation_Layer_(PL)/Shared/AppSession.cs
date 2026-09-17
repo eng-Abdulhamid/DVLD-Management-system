@@ -50,6 +50,7 @@ namespace DVLD.PL.Global
 
             CurrentUser = null;
             OnUserSessionChanged?.Invoke();
+            Application.Restart();
         }
     }
 }

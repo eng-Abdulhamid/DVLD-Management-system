@@ -28,7 +28,8 @@ namespace DVLD.PL.DriversManagement
             // 
             headerControl.AllowMaximize = false;
             headerControl.AllowMinimize = false;
-            headerControl.Size = new Size(820, 38);
+            headerControl.BackColor = Color.FromArgb(248, 250, 252);
+            headerControl.Size = new Size(816, 38);
             headerControl.TitleText = "DVLD / Drivers Management / Driver Details";
             // 
             // ctrlDriverCard1
@@ -49,11 +50,15 @@ namespace DVLD.PL.DriversManagement
             btnEditPerson.BorderSize = 0;
             btnEditPerson.CenterIconWithText = false;
             btnEditPerson.Cursor = Cursors.Hand;
+            btnEditPerson.DisabledBorderColor = Color.FromArgb(226, 232, 240);
+            btnEditPerson.DisabledEndColor = Color.FromArgb(241, 245, 249);
+            btnEditPerson.DisabledStartColor = Color.FromArgb(241, 245, 249);
+            btnEditPerson.DisabledTextColor = Color.FromArgb(148, 163, 184);
             btnEditPerson.EnableHoverAnimation = false;
             btnEditPerson.EnableIconTinting = false;
             btnEditPerson.EnableRippleEffect = false;
             btnEditPerson.EnableShadow = false;
-            btnEditPerson.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            btnEditPerson.Font = new Font("Segoe UI", 9.75F);
             btnEditPerson.ForeColor = SystemColors.ControlText;
             btnEditPerson.GradientAngle = 90F;
             btnEditPerson.HoverAnimationSpeed = 20;
@@ -97,11 +102,15 @@ namespace DVLD.PL.DriversManagement
             btnClose.BorderSize = 1;
             btnClose.CenterIconWithText = false;
             btnClose.Cursor = Cursors.Hand;
+            btnClose.DisabledBorderColor = Color.FromArgb(226, 232, 240);
+            btnClose.DisabledEndColor = Color.FromArgb(241, 245, 249);
+            btnClose.DisabledStartColor = Color.FromArgb(241, 245, 249);
+            btnClose.DisabledTextColor = Color.FromArgb(148, 163, 184);
             btnClose.EnableHoverAnimation = false;
             btnClose.EnableIconTinting = false;
             btnClose.EnableRippleEffect = false;
             btnClose.EnableShadow = false;
-            btnClose.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            btnClose.Font = new Font("Segoe UI", 9.75F);
             btnClose.ForeColor = SystemColors.ControlText;
             btnClose.GradientAngle = 90F;
             btnClose.HoverAnimationSpeed = 20;
@@ -147,6 +156,8 @@ namespace DVLD.PL.DriversManagement
             Controls.Add(btnClose);
             Controls.Add(btnEditPerson);
             Controls.Add(ctrlDriverCard1);
+            CustomBorderColor = Color.FromArgb(226, 232, 240);
+            ForeColor = Color.FromArgb(15, 23, 42);
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "frmDriverCard";

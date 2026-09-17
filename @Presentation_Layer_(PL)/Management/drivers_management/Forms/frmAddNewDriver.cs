@@ -2,20 +2,14 @@
 using DVLD.BLL.Services;
 using DVLD.PL.Global;
 using DVLD.PL.PeopleManagement;
-using System;
-using System.Drawing;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
 namespace DVLD.PL.DriversManagement
 {
     public partial class frmSaveDriver : frmBase
     {
+        #region Properties and the Constructor
         private int _selectedPersonId = -1;
         private readonly DriverService _driverService;
-
         public event Action<int>? DriverSaved;
-
         public frmSaveDriver()
         {
             InitializeComponent();
@@ -28,7 +22,6 @@ namespace DVLD.PL.DriversManagement
             ConfigureWizardUI();
             RegisterEvents();
         }
-
         private void ApplyStyles()
         {
             btnSave.ApplyPrimaryStyle();
@@ -41,7 +34,6 @@ namespace DVLD.PL.DriversManagement
 
             txtSearchNationalNo.ApplyStandardStyle();
         }
-
         private void ConfigureWizardUI()
         {
             // Enforce strictly guided wizard flow by hiding default tab headers
@@ -50,25 +42,13 @@ namespace DVLD.PL.DriversManagement
             tcWizard.SizeMode = TabSizeMode.Fixed;
             tcWizard.TabStop = false;
         }
-
-        private void frmSaveDriver_Load(object sender, EventArgs e)
-        {
-            if (UIUtility.IsDesignMode) return;
-
-            tcWizard.SelectedTab = tpPersonSelection;
-            btnSave.Enabled = false;
-            lnkEditPerson.Visible = false;
-
-            lblCreatedDateValue.Text = DateTime.Now.ToString("dd MMM yyyy - hh:mm tt");
-            lblCreatedByValue.Text = AppSession.CurrentUser?.UserName ?? "System";
-        }
-
+        #region Register Events
         private void RegisterEvents()
         {
             btnSearchPerson.Click += async (s, e) =>
             {
                 if (string.IsNullOrWhiteSpace(txtSearchNationalNo.Text)) return;
-                
+
                 await ctrlPersonCard1.LoadPersonInfoByNationalNoAsync(txtSearchNationalNo.Text.Trim());
                 EvaluatePersonSelection();
             };
@@ -105,7 +85,7 @@ namespace DVLD.PL.DriversManagement
 
                 lblConfirmPersonName.Text = ctrlPersonCard1.SelectedPersonInfo?.FullName ?? "[Unknown]";
                 lblPersonIdValue.Text = _selectedPersonId.ToString();
-                
+
                 tcWizard.SelectedTab = tpDriverConfirmation;
                 btnSave.Enabled = true;
             };
@@ -119,13 +99,11 @@ namespace DVLD.PL.DriversManagement
             btnCancel.Click += (s, e) => this.Close();
             btnSave.Click += async (s, e) => await PerformSaveAsync();
         }
-
         private async Task LoadPersonInfoAsync(int personId)
         {
             await ctrlPersonCard1.LoadPersonInfoAsync(personId);
             EvaluatePersonSelection();
         }
-
         private void EvaluatePersonSelection()
         {
             if (ctrlPersonCard1.PersonID > 0)
@@ -139,15 +117,21 @@ namespace DVLD.PL.DriversManagement
                 lnkEditPerson.Visible = false;
             }
         }
-
-        private void UpdateSaveButtonStatus(bool isEnabled)
+        #endregion
+        #endregion
+        #region Events
+        private void frmSaveDriver_Load(object sender, EventArgs e)
         {
-            btnSave.IsLoading = !isEnabled;
-            btnSave.Enabled = isEnabled;
-            btnCancel.Enabled = isEnabled;
-            btnBack.Enabled = isEnabled;
-        }
+            if (UIUtility.IsDesignMode) return;
 
+            tcWizard.SelectedTab = tpPersonSelection;
+            btnSave.Enabled = false;
+            lnkEditPerson.Visible = false;
+
+            lblCreatedDateValue.Text = DateTime.Now.ToString("dd MMM yyyy - hh:mm tt");
+            lblCreatedByValue.Text = AppSession.CurrentUser?.UserName ?? "System";
+        }
+        #endregion
         private async Task PerformSaveAsync()
         {
             if (_selectedPersonId <= 0)
@@ -176,6 +160,13 @@ namespace DVLD.PL.DriversManagement
                 UITheme.ShowWarningToast(result.Message ?? "Failed to save driver.", "Registration Failed");
                 UpdateSaveButtonStatus(true);
             }
+        }
+        private void UpdateSaveButtonStatus(bool isEnabled)
+        {
+            btnSave.IsLoading = !isEnabled;
+            btnSave.Enabled = isEnabled;
+            btnCancel.Enabled = isEnabled;
+            btnBack.Enabled = isEnabled;
         }
     }
 }

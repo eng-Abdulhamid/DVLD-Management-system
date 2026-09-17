@@ -251,19 +251,22 @@ namespace DVLD.PL.UsersManagement
                 UITheme.ShowErrorToast($"Please enter your user name.", "Validation Error");
                 return false;
             }
-            if (!ValidateRequiredField(txtPassword))
+            if (_mode == Mode.AddNew)
             {
-                UITheme.ShowErrorToast($"Please enter a password.", "Validation Error");
-                return false;
-            }
-            if (!ValidateRequiredField(txtConfirmPassword))
-            {
-                UITheme.ShowErrorToast($"Please confirm your password.", "Validation Error");
-                return false;
-            }
-            if (!ValidatePasswordMatch())
-            {
-                return false;
+                if (!ValidateRequiredField(txtPassword))
+                {
+                    UITheme.ShowErrorToast($"Please enter a password.", "Validation Error");
+                    return false;
+                }
+                if (!ValidateRequiredField(txtConfirmPassword))
+                {
+                    UITheme.ShowErrorToast($"Please confirm your password.", "Validation Error");
+                    return false;
+                }
+                if (!ValidatePasswordMatch())
+                {
+                    return false;
+                }
             }
             return true;
         }

@@ -3,17 +3,11 @@ using DVLD.BLL.Services;
 using DVLD.PL.Global;
 using DVLD.PL.Management;
 using DVLD.PL.PeopleManagement;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
 namespace DVLD.PL.DriversManagement
 {
     public partial class frmDriverManagement : frmBase
     {
+        #region Properties and the Constructor
         private readonly DriverService _driverService = new DriverService();
         private List<DriverReadDTO> _allDrivers = new List<DriverReadDTO>();
         private List<DriverReadDTO> _filteredDrivers = new List<DriverReadDTO>();
@@ -25,38 +19,88 @@ namespace DVLD.PL.DriversManagement
             this.ApplyStandardFormTheme();
             SetContextTitle("Drivers Management");
 
-            // Activated Edit feature to allow editing the associated Person info
-            ctrlManagementActions1.EditVisible = true;
-
             _columnDefinitions = new List<DataGridColumnDefinition>
             {
-                new DataGridColumnDefinition { Key = "DriverID", HeaderText = "Driver ID", DataPropertyName = "DriverID", Width = 110 },
-                new DataGridColumnDefinition { Key = "PersonID", HeaderText = "Person ID", DataPropertyName = "PersonID", Width = 110 },
-                new DataGridColumnDefinition { Key = "CreatedByUserID", HeaderText = "Created By User ID", DataPropertyName = "CreatedByUserID", Width = 160 },
-                new DataGridColumnDefinition { Key = "CreatedDate", HeaderText = "Created Date", DataPropertyName = "CreatedDate", Width = 180 }
+                new DataGridColumnDefinition 
+                { 
+                    Key = "DriverID", 
+                    HeaderText = "Driver ID", 
+                    DataPropertyName = "DriverID", 
+                    Width = 110 
+                },
+                new DataGridColumnDefinition 
+                { 
+                    Key = "PersonID", 
+                    HeaderText = "Person ID", 
+                    DataPropertyName = "PersonID", 
+                    Width = 110 
+                },
+                new DataGridColumnDefinition 
+                { 
+                    Key = "CreatedByUserID", 
+                    HeaderText = "Created By User ID", 
+                    DataPropertyName = "CreatedByUserID", 
+                    Width = 160 
+                },
+                new DataGridColumnDefinition 
+                { 
+                    Key = "CreatedDate", 
+                    HeaderText = "Created Date", 
+                    DataPropertyName = "CreatedDate", 
+                    Width = 180 
+                }
             };
 
             ctrlManagementDataGrid1.InitializeColumns(_columnDefinitions);
-            InitializeRowContextMenu();
+            InitializeRowContextMenuInDataGrid();
             RegisterEvents();
             CenterOverlays();
         }
-
-        private void CenterOverlays()
+        private void InitializeRowContextMenuInDataGrid()
         {
-            if (ctrlNotFound1 == null || pnlMain == null) return;
-            ctrlNotFound1.Location = new Point(
-                Math.Max(0, (pnlMain.Width - ctrlNotFound1.Width) / 2),
-                Math.Max(0, (pnlMain.Height - ctrlNotFound1.Height) / 2 + 30)
-            );
-        }
+            var menu = ctrlManagementDataGrid1.RowActionsContextMenu;
+            menu.Items.Clear();
 
-        protected override void OnResize(EventArgs e)
-        {
-            base.OnResize(e);
-            CenterOverlays();
-        }
+            menu.Items.Add(
+                new ToolStripMenuItem
+                (
+                    "Show Driver Info", 
+                    Properties.Resources.User, (s, e) => OpenViewDriverCardDialog())
+                );
 
+            menu.Items.Add(new ToolStripSeparator());
+
+            menu.Items.Add(new ToolStripMenuItem(
+                    "Add New Driver",
+                    Properties.Resources.add_person, (s, e) => OpenAddNewDriverDialog()) 
+            {
+                ShortcutKeys = Keys.Control | Keys.N 
+            });
+
+            menu.Items.Add(new ToolStripMenuItem(
+                    "Edit Person Info",
+                    Properties.Resources.edit_person, (s, e) => OpenEditPersonDialog())
+            {
+                ShortcutKeys = Keys.Control | Keys.E
+            });
+
+            menu.Items.Add(new ToolStripMenuItem(
+                    "Delete Driver",
+                    Properties.Resources.bin, (s, e) => OpenDeleteSelectedDriverDialog())
+            {
+                ShortcutKeys = Keys.Delete
+            });
+
+            menu.Items.Add(new ToolStripSeparator());
+
+            menu.Items.Add(new ToolStripMenuItem(
+                    "Refresh", 
+                    Properties.Resources.refresh, async (s, e) => await LoadDriversDataAsync())
+            {
+                ShortcutKeys = Keys.F5
+            });
+        }
+        #region Register Events
         private void RegisterEvents()
         {
             this.Load += async (s, e) => await LoadDriversDataAsync();
@@ -90,42 +134,6 @@ namespace DVLD.PL.DriversManagement
                 ctrlDriversSearch1.ClearFilter();
             };
         }
-
-        private void InitializeRowContextMenu()
-        {
-            var menu = ctrlManagementDataGrid1.RowActionsContextMenu;
-            menu.Items.Clear();
-
-            menu.Items.Add(new ToolStripMenuItem("Show Driver Info", Properties.Resources.User, (s, e) => OpenViewDriverCardDialog()));
-            menu.Items.Add(new ToolStripSeparator());
-
-            var addItem = new ToolStripMenuItem("Add New Driver", Properties.Resources.add_person, (s, e) => OpenAddNewDriverDialog())
-            {
-                ShortcutKeys = Keys.Control | Keys.N
-            };
-            menu.Items.Add(addItem);
-
-            var editItem = new ToolStripMenuItem("Edit Person Info", Properties.Resources.edit_person, (s, e) => OpenEditPersonDialog())
-            {
-                ShortcutKeys = Keys.Control | Keys.E
-            };
-            menu.Items.Add(editItem);
-
-            var deleteItem = new ToolStripMenuItem("Delete Driver", Properties.Resources.bin, (s, e) => OpenDeleteSelectedDriverDialog())
-            {
-                ShortcutKeys = Keys.Delete
-            };
-            menu.Items.Add(deleteItem);
-
-            menu.Items.Add(new ToolStripSeparator());
-
-            var refreshItem = new ToolStripMenuItem("Refresh", Properties.Resources.refresh, async (s, e) => await LoadDriversDataAsync())
-            {
-                ShortcutKeys = Keys.F5
-            };
-            menu.Items.Add(refreshItem);
-        }
-
         private async Task LoadDriversDataAsync()
         {
             var result = await _driverService.GetAllAsync();
@@ -138,10 +146,8 @@ namespace DVLD.PL.DriversManagement
             {
                 _allDrivers.Clear();
                 ApplyFilter(string.Empty, string.Empty, string.Empty);
-                UITheme.ShowErrorToast("Unable to load drivers data from the server.");
             }
         }
-
         private void ApplyFilter(string filterColumn, string searchText, string letter)
         {
             IEnumerable<DriverReadDTO> query = _allDrivers;
@@ -173,7 +179,6 @@ namespace DVLD.PL.DriversManagement
 
             DisplayCurrentPage();
         }
-
         private void DisplayCurrentPage()
         {
             ctrlManagementDataGrid1.ClearRows();
@@ -204,17 +209,25 @@ namespace DVLD.PL.DriversManagement
             ctrlManagementDataGrid1.ClearSelection();
             ctrlManagementActions1.UpdateButtonsState(false);
         }
-
+        #endregion
+        private void CenterOverlays()
+        {
+            if (ctrlNotFound1 == null || pnlMain == null) return;
+            ctrlNotFound1.Location = new Point(
+                Math.Max(0, (pnlMain.Width - ctrlNotFound1.Width) / 2),
+                Math.Max(0, (pnlMain.Height - ctrlNotFound1.Height) / 2 + 30)
+            );
+        }
+        #endregion
+        #region Operation forms
         private void OpenAddNewDriverDialog()
         {
             using frmSaveDriver frm = new frmSaveDriver();
             frm.DriverSaved += async (id) => await LoadDriversDataAsync();
             frm.ShowDialog(this);
         }
-
         private void OpenEditPersonDialog()
         {
-            // Extract the PersonID directly from the grid to allow modification of the linked Person
             if (ctrlManagementDataGrid1.TryGetSelectedInt("PersonID", out int personId))
             {
                 using frmSavePerson frm = new frmSavePerson(personId);
@@ -222,7 +235,6 @@ namespace DVLD.PL.DriversManagement
                 frm.ShowDialog(this);
             }
         }
-
         private void OpenDeleteSelectedDriverDialog()
         {
             if (ctrlManagementDataGrid1.TryGetSelectedInt("DriverID", out int driverId))
@@ -232,7 +244,6 @@ namespace DVLD.PL.DriversManagement
                 frm.ShowDialog(this);
             }
         }
-
         private void OpenViewDriverCardDialog()
         {
             if (ctrlManagementDataGrid1.TryGetSelectedInt("DriverID", out int driverId))
@@ -241,7 +252,8 @@ namespace DVLD.PL.DriversManagement
                 frm.ShowDialog(this);
             }
         }
-
+        #endregion
+        #region Override functions
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             if (keyData == (Keys.Control | Keys.N)) { OpenAddNewDriverDialog(); return true; }
@@ -250,5 +262,11 @@ namespace DVLD.PL.DriversManagement
             if (keyData == Keys.F5 || keyData == (Keys.Control | Keys.R)) { _ = LoadDriversDataAsync(); return true; }
             return base.ProcessCmdKey(ref msg, keyData);
         }
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+            CenterOverlays();
+        }
+        #endregion
     }
 }

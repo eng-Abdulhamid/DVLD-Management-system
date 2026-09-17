@@ -463,7 +463,7 @@ namespace DVLD.PL.Global
 
         private void ItemSignOut_Click(object? sender, EventArgs e)
         {
-            OnSignOutClicked?.Invoke(this, EventArgs.Empty);
+            AppSession.LogOut();
         }
 
         #endregion

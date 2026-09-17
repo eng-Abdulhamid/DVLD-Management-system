@@ -9,23 +9,24 @@ namespace DVLD.PL.PeopleManagement
 {
     public partial class frmDeletePersonForm : frmBase
     {
+        #region Fields & Events
         private readonly int _personId;
         private readonly PersonService? _personService;
         private ToolTip? _toolTips;
 
         public event Action? DeletedSuccessfully;
 
+        #endregion
+
+        #region Constructors & Initialization
         public frmDeletePersonForm() : this(-1)
         {
         }
+
         public frmDeletePersonForm(int personId)
         {
             InitializeComponent();
-            this.ApplyStandardFormTheme();
-            this.AllowMaximize = false;
-            this.AllowMinimize = false;
-            this.AllowResize = false;
-            SetContextTitle("Delete Person");
+            ConfigureForm();
 
             _personId = personId;
 
@@ -39,25 +40,19 @@ namespace DVLD.PL.PeopleManagement
             SetupToolTips();
         }
 
+        private void ConfigureForm()
+        {
+            this.ApplyStandardFormTheme();
+            this.AllowMaximize = false;
+            this.AllowMinimize = false;
+            this.AllowResize = false;
+            SetContextTitle("Delete Person");
+        }
+
         private void ApplyStyles()
         {
             btnDelete.ApplyDangerStyle();
             btnCancel.ApplySecondaryStyle();
-        }
-
-        private async void frmDeletePersonForm_Load(object sender, EventArgs e)
-        {
-            if (UIUtility.IsDesignMode)
-                return;
-
-            if (_personId <= 0)
-            {
-                UITheme.ShowErrorToast("Invalid person identifier.");
-                this.Close();
-                return;
-            }
-
-            await ctrlPersonCard1.LoadPersonInfoAsync(_personId);
         }
 
         private void SetupToolTips()
@@ -74,38 +69,95 @@ namespace DVLD.PL.PeopleManagement
             _toolTips.SetToolTip(btnCancel, "Cancel and close this window");
         }
 
+        #endregion
+
+        #region Form Lifecycle Events
+
+        private async void frmDeletePersonForm_Load(object sender, EventArgs e)
+        {
+            if (UIUtility.IsDesignMode)
+                return;
+
+            if (!ValidatePersonId())
+                return;
+
+            await LoadPersonCardDataAsync();
+        }
+
+        private bool ValidatePersonId()
+        {
+            if (_personId <= 0)
+            {
+                UITheme.ShowErrorToast("Invalid person identifier.");
+                this.Close();
+                return false;
+            }
+
+            return true;
+        }
+
+        private async Task LoadPersonCardDataAsync()
+        {
+            await ctrlPersonCard1.LoadPersonInfoAsync(_personId);
+        }
+
+        #endregion
+
+        #region Deletion Workflow
+
+        private async Task PerformDeleteAsync()
+        {
+            if (_personService == null) return;
+
+            SetActionButtonsState(isEnabled: false);
+
+            OperationResult<bool> result = await _personService.DeleteAsync(_personId);
+            HandleDeleteResult(result);
+
+            SetActionButtonsState(isEnabled: true);
+        }
+
+        private void HandleDeleteResult(OperationResult<bool> result)
+        {
+            if (result.IsSuccess)
+            {
+                OnDeleteSuccess();
+            }
+            else
+            {
+                OnDeleteFailure(result.Message);
+            }
+        }
+
+        private void OnDeleteSuccess()
+        {
+            UITheme.ShowSuccessToast("Person deleted successfully.");
+            DeletedSuccessfully?.Invoke();
+            this.Close();
+        }
+
+        private void OnDeleteFailure(string? errorMessage)
+        {
+            UITheme.ShowWarningToast(errorMessage, "Delete Failed");
+        }
+
+        private void SetActionButtonsState(bool isEnabled)
+        {
+            btnDelete.IsLoading = !isEnabled;
+            btnDelete.Enabled = isEnabled;
+            btnCancel.Enabled = isEnabled;
+        }
+
+        #endregion
+
+        #region Event Subscriptions
+
         private void RegisterEvents()
         {
             btnCancel.Click += (s, e) => this.Close();
             btnDelete.Click += async (s, e) => await PerformDeleteAsync();
         }
-        private void UpdateDeleteButtonEnabled(bool enabled)
-        {
-            btnDelete.IsLoading = !enabled;
-            btnDelete.Enabled = enabled;
-            btnCancel.Enabled = enabled;
 
-        }
-        private async Task PerformDeleteAsync()
-        {
-            if (_personService == null) return;
-
-            UpdateDeleteButtonEnabled(false);
-
-            OperationResult<bool> result = await _personService.DeleteAsync(_personId);
-
-            if (result.IsSuccess)
-            {
-                UITheme.ShowSuccessToast("Person deleted successfully.");
-                DeletedSuccessfully?.Invoke();
-                this.Close();
-            }
-            else
-            {
-                UITheme.ShowWarningToast(result.Message, "Delete Failed");
-            }
-
-            UpdateDeleteButtonEnabled(true);
-        }
+        #endregion
     }
 }

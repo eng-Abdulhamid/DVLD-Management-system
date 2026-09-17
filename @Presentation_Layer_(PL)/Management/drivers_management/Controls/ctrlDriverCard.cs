@@ -1,14 +1,11 @@
 ﻿using DVLD.BLL.DTOs;
 using DVLD.BLL.Services;
 using DVLD.PL.Global;
-using System.Drawing;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
 namespace DVLD.PL.DriversManagement
 {
     public partial class ctrlDriverCard : UserControl
     {
+        #region Properties and the Constructor
         private int _driverId = -1;
         private DriverService? _driverService;
 
@@ -23,7 +20,7 @@ namespace DVLD.PL.DriversManagement
                 ResetCard();
             }
         }
-
+        #endregion
         public async Task LoadDriverInfoAsync(int driverId)
         {
             if (UIUtility.IsDesignMode) return;
@@ -48,7 +45,6 @@ namespace DVLD.PL.DriversManagement
                 SetErrorState();
             }
         }
-
         public async Task LoadDriverInfoAsync(DriverReadDTO driver)
         {
             if (UIUtility.IsDesignMode) return;
@@ -68,19 +64,6 @@ namespace DVLD.PL.DriversManagement
 
             PopulateDriverDetails();
         }
-
-        private void PopulateDriverDetails()
-        {
-            if (SelectedDriverInfo == null) return;
-
-            lblDriverID.Text = SelectedDriverInfo.DriverID.ToString();
-            lblCreatedByUserID.Text = SelectedDriverInfo.CreatedByUserID.ToString();
-            lblCreatedDate.Text = SelectedDriverInfo.CreatedDate.ToString("dd MMM yyyy");
-
-            lblDriverID.ForeColor = Color.FromArgb(31, 41, 55);
-            gbDriverInfo.Text = "Driver Information (Active)";
-        }
-
         public void ResetCard()
         {
             _driverId = -1;
@@ -98,7 +81,17 @@ namespace DVLD.PL.DriversManagement
             lblDriverID.ForeColor = Color.FromArgb(31, 41, 55);
             gbDriverInfo.Text = "Driver Information";
         }
+        private void PopulateDriverDetails()
+        {
+            if (SelectedDriverInfo == null) return;
 
+            lblDriverID.Text = SelectedDriverInfo.DriverID.ToString();
+            lblCreatedByUserID.Text = SelectedDriverInfo.CreatedByUserID.ToString();
+            lblCreatedDate.Text = SelectedDriverInfo.CreatedDate.ToString("dd MMM yyyy");
+
+            lblDriverID.ForeColor = Color.FromArgb(31, 41, 55);
+            gbDriverInfo.Text = "Driver Information (Active)";
+        }
         private void SetErrorState()
         {
             lblDriverID.Text = "Not Found";

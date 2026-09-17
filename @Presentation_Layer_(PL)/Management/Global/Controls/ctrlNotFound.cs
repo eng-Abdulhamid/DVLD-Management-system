@@ -1,23 +1,11 @@
 ﻿using DVLD.PL.Global;
-using System;
 using System.ComponentModel;
-using System.Drawing;
-using System.Windows.Forms;
-
 namespace DVLD.PL.Management
 {
     [DefaultEvent("OnClearFilterClick")]
     public partial class ctrlNotFound : UserControl
     {
-        #region Events
-
-        [Category("Search Behavior")]
-        [Description("Fires when the Clear Filters button is clicked.")]
-        public event EventHandler? OnClearFilterClick;
-
-        #endregion
-
-        #region Properties
+        #region Properties and the Constructor
 
         [Category("Appearance")]
         [Description("The main title displayed when no records are found.")]
@@ -57,8 +45,10 @@ namespace DVLD.PL.Management
                 CenterControls();
             }
         }
+        [Category("Search Behavior")]
+        [Description("Fires when the Clear Filters button is clicked.")]
+        public event EventHandler? OnClearFilterClick;
 
-        #endregion
 
         public ctrlNotFound()
         {
@@ -71,7 +61,6 @@ namespace DVLD.PL.Management
 
             this.Resize += (s, e) => CenterControls();
         }
-
         private void ApplyStyles()
         {
             btnClearFilter.ApplySecondaryStyle();
@@ -80,12 +69,12 @@ namespace DVLD.PL.Management
             lblEmptyDesc.ForeColor = UITheme.NeutralText;
             lblEmptyIcon.ForeColor = UITheme.TextMuted;
         }
-
         private void RegisterEvents()
         {
             btnClearFilter.Click += (s, e) => OnClearFilterClick?.Invoke(this, EventArgs.Empty);
         }
 
+        #endregion
         private void CenterControls()
         {
             lblEmptyIcon.Left = (this.Width - lblEmptyIcon.Width) / 2;
@@ -93,11 +82,12 @@ namespace DVLD.PL.Management
             lblEmptyDesc.Left = (this.Width - lblEmptyDesc.Width) / 2;
             btnClearFilter.Left = (this.Width - btnClearFilter.Width) / 2;
         }
-
+        #region Overrides
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
             CenterControls();
         }
+        #endregion
     }
 }

@@ -4,22 +4,19 @@ using DVLD.BLL.OperationResults;
 using DVLD.BLL.Services;
 using DVLD.PL.Global;
 using DVLD.PL.Properties;
-using System.Drawing;
-using System.IO;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
 namespace DVLD.PL.PeopleManagement
 {
     public partial class ctrlPersonCard : UserControl
     {
+        #region Fields & Properties
         private int _personId = -1;
         private PersonService? _personService;
         private PersonService PersonServiceInstance => _personService ??= new PersonService();
-
         public int PersonID => _personId;
         public PersonReadDTO? SelectedPersonInfo { get; private set; }
+        #endregion
 
+        #region Constructor
         public ctrlPersonCard()
         {
             InitializeComponent();
@@ -28,12 +25,12 @@ namespace DVLD.PL.PeopleManagement
             if (UIUtility.IsDesignMode)
                 return;
         }
+        #endregion
 
+        #region Loading functions
         public async Task LoadPersonInfoAsync(int personId)
         {
             if (UIUtility.IsDesignMode) return;
-
-            _personId = personId;
 
             if (personId <= 0)
             {
@@ -41,21 +38,11 @@ namespace DVLD.PL.PeopleManagement
                 return;
             }
 
-            lblFullName.Text = "Loading details...";
+            SetLoadingState();
 
             OperationResult<PersonReadDTO> result = await PersonServiceInstance.GetByIdAsync(personId);
-
-            if (result.IsSuccess && result.Data != null)
-            {
-                SelectedPersonInfo = result.Data;
-                PopulateCard(SelectedPersonInfo);
-            }
-            else
-            {
-                ResetCard();
-            }
+            HandleLoadResult(result);
         }
-
         public async Task LoadPersonInfoByNationalNoAsync(string nationalNo)
         {
             if (UIUtility.IsDesignMode) return;
@@ -66,23 +53,51 @@ namespace DVLD.PL.PeopleManagement
                 return;
             }
 
-            lblFullName.Text = "Loading details...";
+            SetLoadingState();
 
             OperationResult<PersonReadDTO> result = await PersonServiceInstance.GetByNationalNoAsync(nationalNo);
+            HandleLoadResult(result);
+        }
 
+        public void ResetCard()
+        {
+            _personId = -1;
+            SelectedPersonInfo = null;
+
+            ClearFields();
+            ResetPersonImage();
+        }
+
+        #endregion
+
+        #region Data Processing & Result Handling
+
+        private void SetLoadingState()
+        {
+            lblFullName.Text = "Loading details...";
+        }
+        private void HandleLoadResult(OperationResult<PersonReadDTO> result)
+        {
             if (result.IsSuccess && result.Data != null)
             {
                 _personId = result.Data.PersonID;
                 SelectedPersonInfo = result.Data;
-                PopulateCard(SelectedPersonInfo);
+                FillCard(SelectedPersonInfo);
             }
             else
             {
                 ResetCard();
             }
         }
+        #endregion
 
-        private void PopulateCard(PersonReadDTO personData)
+        #region UI Filling Methods
+        private void FillCard(PersonReadDTO personData)
+        {
+            FillTextDetails(personData);
+            FillPersonImage(personData.ImagePath, personData.Gendor);
+        }
+        private void FillTextDetails(PersonReadDTO personData)
         {
             lblPersonID.Text = personData.PersonID.ToString();
             lblNationalNo.Text = personData.NationalNo;
@@ -93,30 +108,30 @@ namespace DVLD.PL.PeopleManagement
             lblGender.Text = personData.Gendor.ToString();
             lblCountry.Text = personData.CountryName;
             lblAddress.Text = personData.Address;
-
-            LoadPersonImage(personData.ImagePath, personData.Gendor == Gendor.Male);
         }
-
-        private void LoadPersonImage(string imagePath, bool isMale)
+        private void FillPersonImage(string? imagePath, Gendor gender)
         {
             if (!string.IsNullOrWhiteSpace(imagePath) && File.Exists(imagePath))
             {
-                using (var stream = new FileStream(imagePath, FileMode.Open, FileAccess.Read))
-                {
-                    pbPersonImage.Image = Image.FromStream(stream);
-                }
+                LoadImageFromFile(imagePath);
             }
             else
             {
-                pbPersonImage.Image = Resources.User;
+                ResetPersonImage();
             }
         }
-
-        public void ResetCard()
+        private void LoadImageFromFile(string imagePath)
         {
-            _personId = -1;
-            SelectedPersonInfo = null;
-
+            // Using a memory stream prevents GDI+ from locking the source file on disk
+            using var stream = new FileStream(imagePath, FileMode.Open, FileAccess.Read);
+            pbPersonImage.Image = new Bitmap(stream);
+        }
+        private void ResetPersonImage()
+        {
+            pbPersonImage.Image = Resources.User;
+        }
+        private void ClearFields()
+        {
             lblPersonID.Text = "[????]";
             lblNationalNo.Text = "[????]";
             lblFullName.Text = "No Person Selected";
@@ -126,18 +141,20 @@ namespace DVLD.PL.PeopleManagement
             lblGender.Text = "[????]";
             lblCountry.Text = "[????]";
             lblAddress.Text = "[????]";
-
-            pbPersonImage.Image = Resources.User;
         }
+        #endregion
 
+        #region Custom Painting
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-
-            using (Pen borderPen = new Pen(Color.FromArgb(226, 232, 240), 1))
-            {
-                e.Graphics.DrawRectangle(borderPen, 0, 0, this.Width - 1, this.Height - 1);
-            }
+            DrawCardBorder(e.Graphics);
         }
+        private void DrawCardBorder(Graphics graphics)
+        {
+            using var borderPen = new Pen(Color.FromArgb(226, 232, 240), 1);
+            graphics.DrawRectangle(borderPen, 0, 0, this.Width - 1, this.Height - 1);
+        }
+        #endregion
     }
 }

@@ -8,6 +8,7 @@ namespace DVLD.PL.DriversManagement
     [DefaultEvent("OnFilterChanged")]
     public partial class ctrlDriversSearch : UserControl
     {
+        #region Properties and the Constructor
         private readonly System.Windows.Forms.Timer? _searchTimer;
         private bool _isInitializing = true;
 
@@ -17,6 +18,17 @@ namespace DVLD.PL.DriversManagement
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string FilterColumn => GetDbColumnName(cbFilterBy.Text);
+        private string GetDbColumnName(string displayFilter)
+        {
+            return displayFilter switch
+            {
+                "Driver ID" => "DriverID",
+                "Person ID" => "PersonID",
+                "National No." => "NationalNo",
+                "Full Name" => "FullName",
+                _ => "FullName"
+            };
+        }
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -33,24 +45,17 @@ namespace DVLD.PL.DriversManagement
             if (UIUtility.IsDesignMode) return;
 
             _searchTimer = new System.Windows.Forms.Timer { Interval = 300 };
-            _searchTimer.Tick += (s, e) =>
-            {
-                _searchTimer.Stop();
-                TriggerFilterChanged();
-            };
+            _searchTimer.Tick += Search_Tick;
 
             InitializeControlsData();
             ApplyStyles();
             _isInitializing = false;
         }
-
-        private void ApplyStyles()
+        private void Search_Tick(object? sender, EventArgs e)
         {
-            txtSearch.ApplyStandardStyle();
-            cbFilterBy.ApplyStandardStyle();
-            cbSearchByLetter.ApplyStandardStyle();
+            _searchTimer?.Stop();
+            TriggerFilterChanged();
         }
-
         private void InitializeControlsData()
         {
             cbSearchByLetter.Items.Clear();
@@ -71,7 +76,6 @@ namespace DVLD.PL.DriversManagement
             UpdatePlaceholder();
             ConfigureInputConstraints(cbFilterBy.Text);
         }
-
         private void UpdatePlaceholder()
         {
             if (cbFilterBy.SelectedIndex >= 0)
@@ -79,19 +83,6 @@ namespace DVLD.PL.DriversManagement
                 txtSearch.PlaceholderText = $"Search by {cbFilterBy.Text.ToLower()}...";
             }
         }
-
-        private string GetDbColumnName(string displayFilter)
-        {
-            return displayFilter switch
-            {
-                "Driver ID" => "DriverID",
-                "Person ID" => "PersonID",
-                "National No." => "NationalNo",
-                "Full Name" => "FullName",
-                _ => "FullName"
-            };
-        }
-
         private void ConfigureInputConstraints(string selectedFilter)
         {
             bool isNumeric = selectedFilter == "Driver ID" || selectedFilter == "Person ID";
@@ -103,13 +94,14 @@ namespace DVLD.PL.DriversManagement
             txtSearch.AllowSymbols = false;
             txtSearch.MaxLength = isNumeric ? 10 : 50;
         }
-
-        private void TriggerFilterChanged()
+        private void ApplyStyles()
         {
-            if (_isInitializing || UIUtility.IsDesignMode) return;
-            OnFilterChanged?.Invoke(FilterColumn, SearchText, Letter);
+            txtSearch.ApplyStandardStyle();
+            cbFilterBy.ApplyStandardStyle();
+            cbSearchByLetter.ApplyStandardStyle();
         }
-
+        #endregion
+        #region Events
         private void cbFilterBy_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (_isInitializing || UIUtility.IsDesignMode) return;
@@ -121,7 +113,6 @@ namespace DVLD.PL.DriversManagement
             _searchTimer?.Stop();
             TriggerFilterChanged();
         }
-
         private void cbSearchByLetter_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (_isInitializing || UIUtility.IsDesignMode) return;
@@ -132,7 +123,6 @@ namespace DVLD.PL.DriversManagement
             }
             TriggerFilterChanged();
         }
-
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
             if (_isInitializing || UIUtility.IsDesignMode) return;
@@ -147,7 +137,6 @@ namespace DVLD.PL.DriversManagement
             _searchTimer?.Stop();
             _searchTimer?.Start();
         }
-
         private void txtSearch_KeyDown(object sender, KeyEventArgs e)
         {
             if (UIUtility.IsDesignMode) return;
@@ -165,7 +154,6 @@ namespace DVLD.PL.DriversManagement
                 txtSearch.Text = string.Empty;
             }
         }
-
         public void ClearFilter()
         {
             // Halt event execution temporarily to prevent redundant database fetches
@@ -177,6 +165,12 @@ namespace DVLD.PL.DriversManagement
 
             _isInitializing = false;
             TriggerFilterChanged();
+        }
+        #endregion
+        private void TriggerFilterChanged()
+        {
+            if (_isInitializing || UIUtility.IsDesignMode) return;
+            OnFilterChanged?.Invoke(FilterColumn, SearchText, Letter);
         }
     }
 }

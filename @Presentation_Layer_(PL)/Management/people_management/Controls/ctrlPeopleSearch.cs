@@ -2,24 +2,18 @@
 using DVLD.BLL.OperationResults;
 using DVLD.BLL.Services;
 using DVLD.PL.Global;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
+using System.Runtime.InteropServices.ObjectiveC;
 namespace DVLD.PL.PeopleManagement
 {
     public partial class ctrlPeopleSearch : UserControl
     {
+        #region Fields & Properties
         private PersonService? _personService;
         private PersonService PersonServiceInstance => _personService ??= new PersonService();
-
         private readonly System.Windows.Forms.Timer? _searchTimer;
         private byte? _selectedGender = null;
         private bool _isInitializing = true;
-
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int PageNumber { get; set; } = 1;
@@ -27,17 +21,18 @@ namespace DVLD.PL.PeopleManagement
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int PageSize { get; set; } = 25;
-
+        #endregion
+        #region Events
         public event Action<string>? SearchTextChanged;
         public event EventHandler<OperationResults<PersonReadDTO>>? OnSearchResultsReceived;
         public event Action<int>? OnTotalCountReceived;
-
+        #endregion
+        #region Constructor & Initialization
         public ctrlPeopleSearch()
         {
             InitializeComponent();
 
-            if (UIUtility.IsDesignMode)
-                return;
+            if (UIUtility.IsDesignMode) return;
 
             _searchTimer = new System.Windows.Forms.Timer { Interval = 300 };
             _searchTimer.Tick += async (s, e) =>
@@ -50,15 +45,41 @@ namespace DVLD.PL.PeopleManagement
             ApplyStyles();
             _isInitializing = false;
 
-            this.Load += async (s, e) =>
-            {
-                if (UIUtility.IsDesignMode)
-                    return;
+            this.Load += PeopleSearch_Load;
+        }
+        private void InitializeControlsData()
+        {
+            cbSearchByLetter.Items.AddRange(EnglishLetters());
+            cbSearchByLetter.SelectedIndex = 0;
 
-                await PerformSearchAsync();
+            cbByGendor.Items.AddRange(GendorTypes());
+            cbByGendor.SelectedIndex = 0;
+
+            cbFilterBy.Items.AddRange(PersonColumns());
+            cbFilterBy.SelectedIndex = 2;
+
+            UpdatePlaceholder();
+        }
+        private object[] EnglishLetters()
+        {
+            return new object[]
+            {
+                "All", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
+                "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"
             };
         }
-
+        private object[] GendorTypes()
+        {
+            return new object[] { "Both", "Male", "Female" };
+        }
+        private object[] PersonColumns()
+        {
+            return new object[]
+            {
+                "Person ID", "National no.", "First name", "Second name",
+                "Third name", "Last name", "Year of birth", "Nationality", "Phone", "Email"
+            };
+        }
         private void ApplyStyles()
         {
             txtSearch.ApplyStandardStyle();
@@ -66,37 +87,30 @@ namespace DVLD.PL.PeopleManagement
             cbByGendor.ApplyStandardStyle();
             cbFilterBy.ApplyStandardStyle();
         }
-
-        private void InitializeControlsData()
+        private async void PeopleSearch_Load(object? sender, EventArgs e)
         {
-            cbSearchByLetter.Items.AddRange(new object[]
-            {
-                "All", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
-                "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"
-            });
-            cbSearchByLetter.SelectedIndex = 0;
-
-            cbByGendor.Items.AddRange(new object[] { "Both", "Male", "Female" });
-            cbByGendor.SelectedIndex = 0;
-
-            cbFilterBy.Items.AddRange(new object[]
-            {
-                "Person ID", "National no.", "First name", "Second name",
-                "Third name", "Last name", "Year of birth", "Nationality", "Phone", "Email"
-            });
-            cbFilterBy.SelectedIndex = 2;
-
+            if (UIUtility.IsDesignMode) return;
             UpdatePlaceholder();
         }
-
-        private void UpdatePlaceholder()
+        #endregion
+        #region Search Logic
+        public async Task PerformSearchAsync()
         {
-            if (cbFilterBy.SelectedIndex >= 0)
-            {
-                txtSearch.PlaceholderText = $"Search by {cbFilterBy.Text.ToLower()}...";
-            }
-        }
+            if (UIUtility.IsDesignMode) return;
 
+            var searchParams = GetCurrentSearchParameters();
+
+            await UpdateTotalRecordsCountAsync(searchParams);
+            await FetchAndBroadcastSearchResultsAsync(searchParams);
+        }
+        private (string FilterColumn, string SearchValue, string Letter, byte? Gender) GetCurrentSearchParameters()
+        {
+            string filterColumn = GetFilterColumnName();
+            string searchValue = txtSearch.Text.Trim();
+            string letter = cbSearchByLetter.Text == "All" ? string.Empty : cbSearchByLetter.Text;
+
+            return (filterColumn, searchValue, letter, _selectedGender);
+        }
         private string GetFilterColumnName()
         {
             return cbFilterBy.Text switch
@@ -114,39 +128,32 @@ namespace DVLD.PL.PeopleManagement
                 _ => "FirstName"
             };
         }
-
-        public async Task PerformSearchAsync()
+        private async Task UpdateTotalRecordsCountAsync((string Column, string Value, string Letter, byte? Gender) p)
         {
-            if (UIUtility.IsDesignMode) return;
-
-            string filterColumn = GetFilterColumnName();
-            string searchValue = txtSearch.Text.Trim();
-            string letter = cbSearchByLetter.Text == "All" ? string.Empty : cbSearchByLetter.Text;
-
-            int totalCount = await PersonServiceInstance.GetSearchCountAsync(filterColumn, searchValue, letter, _selectedGender);
+            int totalCount = 
+                await PersonServiceInstance.GetSearchCountAsync(p.Column, p.Value, p.Letter, p.Gender);
             OnTotalCountReceived?.Invoke(totalCount);
+        }
+        private async Task FetchAndBroadcastSearchResultsAsync((string Column, string Value, string Letter, byte? Gender) p)
+        {
+            var results = await PersonServiceInstance.SearchPeoplePagedAsync(
+                p.Column, p.Value, p.Letter, p.Gender, PageNumber, PageSize);
 
-            OperationResults<PersonReadDTO> results = await PersonServiceInstance.SearchPeoplePagedAsync(
-                filterColumn,
-                searchValue,
-                letter,
-                _selectedGender,
-                PageNumber,
-                PageSize);
-
+            HandleSuggestionsUpdate(results);
+            OnSearchResultsReceived?.Invoke(this, results);
+        }
+        private void HandleSuggestionsUpdate(OperationResults<PersonReadDTO> results)
+        {
             if (results.IsSuccess && results.DataList != null)
             {
-                UpdateSuggestions(results.DataList);
+                UpdateSuggestionsList(results.DataList);
             }
             else
             {
                 txtSearch.SuggestList = Array.Empty<string>();
             }
-
-            OnSearchResultsReceived?.Invoke(this, results);
         }
-
-        private void UpdateSuggestions(List<PersonReadDTO> people)
+        private void UpdateSuggestionsList(List<PersonReadDTO> people)
         {
             txtSearch.SuggestList = people
                 .Take(8)
@@ -155,25 +162,28 @@ namespace DVLD.PL.PeopleManagement
                 .Distinct()
                 .ToArray();
         }
-
-        private async void cbFilterBy_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (_isInitializing || UIUtility.IsDesignMode) return;
-
-            PageNumber = 1;
-            txtSearch.Text = string.Empty;
-            UpdatePlaceholder();
-            _searchTimer?.Stop();
-            await PerformSearchAsync();
-        }
-
+        #endregion
+        #region Event Handlers
         private async void cbSearchByLetter_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (_isInitializing || UIUtility.IsDesignMode) return;
 
-            PageNumber = 1;
-            if (cbSearchByLetter.Text != "All") txtSearch.Text = string.Empty;
-            await PerformSearchAsync();
+            bool shouldClearText = cbSearchByLetter.Text != "All";
+            await ResetPaginationAndSearchAsync(clearSearchText: shouldClearText);
+        }
+        private async void cbFilterBy_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (_isInitializing || UIUtility.IsDesignMode) return;
+
+            UpdatePlaceholder();
+            await ResetPaginationAndSearchAsync(clearSearchText: true);
+        }
+        private void UpdatePlaceholder()
+        {
+            if (cbFilterBy.SelectedIndex >= 0)
+            {
+                txtSearch.PlaceholderText = $"Search by {cbFilterBy.Text.ToLower()}...";
+            }
         }
 
         private async void cbByGendor_SelectedIndexChanged(object sender, EventArgs e)
@@ -190,8 +200,7 @@ namespace DVLD.PL.PeopleManagement
             if (_selectedGender == newGender) return;
 
             _selectedGender = newGender;
-            PageNumber = 1;
-            await PerformSearchAsync();
+            await ResetPaginationAndSearchAsync(clearSearchText: false);
         }
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
@@ -214,7 +223,9 @@ namespace DVLD.PL.PeopleManagement
 
             if (cbSearchByLetter.SelectedIndex != 0)
             {
+                _isInitializing = true;
                 cbSearchByLetter.SelectedIndex = 0;
+                _isInitializing = false;
             }
 
             _searchTimer?.Stop();
@@ -228,16 +239,25 @@ namespace DVLD.PL.PeopleManagement
             if (e.KeyCode == Keys.Enter)
             {
                 e.SuppressKeyPress = true;
-                _searchTimer?.Stop();
-                PageNumber = 1;
-                await PerformSearchAsync();
+                await ResetPaginationAndSearchAsync(clearSearchText: false);
             }
             else if (e.KeyCode == Keys.Escape)
             {
                 e.SuppressKeyPress = true;
-                _searchTimer?.Stop();
-                txtSearch.Text = string.Empty;
+                await ResetPaginationAndSearchAsync(clearSearchText: true);
             }
         }
+        private async Task ResetPaginationAndSearchAsync(bool clearSearchText = false)
+        {
+            PageNumber = 1;
+
+            if (clearSearchText)
+                txtSearch.Text = string.Empty;
+
+            _searchTimer?.Stop();
+            await PerformSearchAsync();
+        }
+
+        #endregion
     }
 }
