@@ -1,26 +1,20 @@
 ﻿using DVLD.PL.Global;
 using DVLD.PL.PeopleManagement;
+using DVLD.PL.Theme;
 namespace DVLD.PL.DriversManagement
 {
     public partial class frmDriverCard : frmBase
     {
-        #region Properties and the Constructor
         private readonly int _driverId;
         public frmDriverCard(int driverId)
         {
             InitializeComponent();
-            this.ApplyStandardFormTheme();
             SetContextTitle("Driver Details");
 
             _driverId = driverId;
 
-            ApplyStyles();
             RegisterEvents();
-        }
-        private void ApplyStyles()
-        {
-            btnEditPerson.ApplyPrimaryStyle();
-            btnClose.ApplySecondaryStyle();
+            base.ApplyTheme();
         }
         #region Register Events
         private void RegisterEvents()
@@ -35,7 +29,7 @@ namespace DVLD.PL.DriversManagement
 
             if (driverInfo == null || driverInfo.PersonID <= 0)
             {
-                UITheme.ShowErrorToast("Valid person context is missing.");
+                NotificationTheme.ShowErrorToast("Valid person context is missing.");
                 return;
             }
 
@@ -44,12 +38,11 @@ namespace DVLD.PL.DriversManagement
             {
                 // Reload the card to reflect any updated personal details (e.g., Name, Image)
                 await ctrlDriverCard1.LoadDriverInfoAsync(_driverId);
-                UITheme.ShowSuccessToast("Driver's personal information updated successfully.");
+                NotificationTheme.ShowSuccessToast("Driver's personal information updated successfully.");
             };
 
             frm.ShowDialog(this);
         }
-        #endregion
         #endregion
         #region Events
         private async void frmDriverCard_Load(object sender, EventArgs e)
@@ -58,7 +51,7 @@ namespace DVLD.PL.DriversManagement
 
             if (_driverId <= 0)
             {
-                UITheme.ShowErrorToast("Invalid Driver ID provided.");
+                NotificationTheme.ShowErrorToast("Invalid Driver ID provided.");
                 this.Close();
                 return;
             }
@@ -70,7 +63,7 @@ namespace DVLD.PL.DriversManagement
 
             if (ctrlDriverCard1.SelectedDriverInfo == null)
             {
-                UITheme.ShowWarningToast("Driver not found. The record may have been deleted.");
+                NotificationTheme.ShowWarningToast("Driver not found. The record may have been deleted.");
                 this.Close();
                 return;
             }

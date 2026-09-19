@@ -2,6 +2,7 @@
 using DVLD.BLL.OperationResults;
 using DVLD.BLL.Services;
 using DVLD.PL.Global;
+using DVLD.PL.Theme;
 using System.ComponentModel;
 using System.Runtime.InteropServices.ObjectiveC;
 namespace DVLD.PL.PeopleManagement
@@ -42,7 +43,7 @@ namespace DVLD.PL.PeopleManagement
             };
 
             InitializeControlsData();
-            ApplyStyles();
+            ThemeApplicator.Apply(this);
             _isInitializing = false;
 
             this.Load += PeopleSearch_Load;
@@ -79,13 +80,6 @@ namespace DVLD.PL.PeopleManagement
                 "Person ID", "National no.", "First name", "Second name",
                 "Third name", "Last name", "Year of birth", "Nationality", "Phone", "Email"
             };
-        }
-        private void ApplyStyles()
-        {
-            txtSearch.ApplyStandardStyle();
-            cbSearchByLetter.ApplyStandardStyle();
-            cbByGendor.ApplyStandardStyle();
-            cbFilterBy.ApplyStandardStyle();
         }
         private async void PeopleSearch_Load(object? sender, EventArgs e)
         {

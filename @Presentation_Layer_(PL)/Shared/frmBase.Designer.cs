@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using DVLD.PL.Theme;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace DVLD.PL.Global
@@ -12,8 +13,10 @@ namespace DVLD.PL.Global
             if (disposing)
             {
                 AppSession.OnUserSessionChanged -= HandleUserSessionChanged;
-                UITheme.OnThemeChanged -= HandleThemeChanged; 
+                ThemeManager.ThemeChanged -= HandleThemeChanged; 
                 components?.Dispose();
+                ThemeManager.ThemeChanged -= ThemeManager_ThemeChanged;
+
             }
             base.Dispose(disposing);
         }

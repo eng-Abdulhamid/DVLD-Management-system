@@ -11,50 +11,50 @@ namespace DVLD.PL.DriversManagement
         private readonly DriverService _driverService = new DriverService();
         private List<DriverReadDTO> _allDrivers = new List<DriverReadDTO>();
         private List<DriverReadDTO> _filteredDrivers = new List<DriverReadDTO>();
-        private readonly List<DataGridColumnDefinition> _columnDefinitions;
-
         public frmDriverManagement()
         {
             InitializeComponent();
-            this.ApplyStandardFormTheme();
             SetContextTitle("Drivers Management");
 
-            _columnDefinitions = new List<DataGridColumnDefinition>
-            {
-                new DataGridColumnDefinition 
-                { 
-                    Key = "DriverID", 
-                    HeaderText = "Driver ID", 
-                    DataPropertyName = "DriverID", 
-                    Width = 110 
-                },
-                new DataGridColumnDefinition 
-                { 
-                    Key = "PersonID", 
-                    HeaderText = "Person ID", 
-                    DataPropertyName = "PersonID", 
-                    Width = 110 
-                },
-                new DataGridColumnDefinition 
-                { 
-                    Key = "CreatedByUserID", 
-                    HeaderText = "Created By User ID", 
-                    DataPropertyName = "CreatedByUserID", 
-                    Width = 160 
-                },
-                new DataGridColumnDefinition 
-                { 
-                    Key = "CreatedDate", 
-                    HeaderText = "Created Date", 
-                    DataPropertyName = "CreatedDate", 
-                    Width = 180 
-                }
-            };
-
-            ctrlManagementDataGrid1.InitializeColumns(_columnDefinitions);
+            ctrlManagementDataGrid1.InitializeColumns(DriverColumns());
             InitializeRowContextMenuInDataGrid();
             RegisterEvents();
             CenterOverlays();
+            base.ApplyTheme();
+        }
+        private List<DataGridColumnDefinition> DriverColumns()
+        {
+            return new List<DataGridColumnDefinition>
+            {
+                new DataGridColumnDefinition
+                {
+                    Key = "DriverID",
+                    HeaderText = "Driver ID",
+                    DataPropertyName = "DriverID",
+                    Width = 110
+                },
+                new DataGridColumnDefinition
+                {
+                    Key = "PersonID",
+                    HeaderText = "Person ID",
+                    DataPropertyName = "PersonID",
+                    Width = 110
+                },
+                new DataGridColumnDefinition
+                {
+                    Key = "CreatedByUserID",
+                    HeaderText = "Created By User ID",
+                    DataPropertyName = "CreatedByUserID",
+                    Width = 160
+                },
+                new DataGridColumnDefinition
+                {
+                    Key = "CreatedDate",
+                    HeaderText = "Created Date",
+                    DataPropertyName = "CreatedDate",
+                    Width = 180
+                }
+            };
         }
         private void InitializeRowContextMenuInDataGrid()
         {

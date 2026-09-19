@@ -1,11 +1,9 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-using DVLD.BLL.OperationResults;
+﻿using DVLD.BLL.OperationResults;
 using DVLD.BLL.Services;
 using DVLD.PL.Configuration;
 using DVLD.PL.Global;
 using DVLD.PL.Properties;
+using DVLD.PL.Theme;
 using DVLD.PL.UsersManagement;
 using Timer = System.Windows.Forms.Timer;
 
@@ -28,9 +26,10 @@ namespace DVLD.PL.Login
             AllowMaximize = false;
             AllowResize = false;
             SetContextTitle("Login");
-
+            btnLogin.ButtonType = CustomizeControls.enButtonType.Primary;
             _userService = new UserService();
             InitializeUI();
+            base.ApplyTheme();
         }
 
         private void LoginScreen_Load(object sender, EventArgs e)
@@ -45,35 +44,8 @@ namespace DVLD.PL.Login
             RegisterEvents();
             SetupPasswordVisibility();
             SetupToolTips();
-            ApplyStyles();
-
             _lockoutTimer = new Timer { Interval = 1000 };
             _lockoutTimer.Tick += LockoutTimer_Tick;
-        }
-
-        protected override void OnThemeApplied()
-        {
-            base.OnThemeApplied();
-            ApplyStyles();
-        }
-
-        private void ApplyStyles()
-        {
-            pnlRightCanvas.BackColor = UITheme.Surface;
-            lblTitle.ForeColor = UITheme.TextPrimary;
-            lblSubtitle.ForeColor = UITheme.TextSecondary;
-            lblUserName.ForeColor = UITheme.TextSecondary;
-            lblPassword.ForeColor = UITheme.TextSecondary;
-
-            btnLogin.ApplyPrimaryStyle();
-            txtUserName.ApplyStandardStyle();
-            txtPassword.ApplyStandardStyle();
-            chkRememberMe.ApplyStandardStyle();
-
-            txtUserName.IconColor = UITheme.TextMuted;
-            txtUserName.HoverIconColor = UITheme.Primary;
-            txtPassword.IconColor = UITheme.TextMuted;
-            txtPassword.HoverIconColor = UITheme.Primary;
         }
 
         private void SetupToolTips()
@@ -180,7 +152,7 @@ namespace DVLD.PL.Login
             lblAttemptMessage.Text = "Too many failed attempts. System locked.";
             lblAttemptsCounter.Text = $"Please wait {_lockoutSecondsRemaining} seconds...";
 
-            UITheme.ShowWarningToast("Too many failed attempts. Access temporarily locked.", "Security Notice");
+            NotificationTheme.ShowWarningToast("Too many failed attempts. Access temporarily locked.", "Security Notice");
             _lockoutTimer?.Start();
         }
 
@@ -236,7 +208,7 @@ namespace DVLD.PL.Login
                 }
                 else
                 {
-                    UITheme.ShowErrorToast("Failed to load user profile.", "Login Error");
+                    NotificationTheme.ShowErrorToast("Failed to load user profile.", "Login Error");
                 }
             }
             else

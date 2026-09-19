@@ -1,14 +1,11 @@
-﻿using System;
-using System.ComponentModel;
-using System.Drawing;
+﻿using System.ComponentModel;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
 using CustomizeControls;
 using DVLD.BLL.Services;
+using DVLD.PL.Home;
 using DVLD.PL.Login;
 using DVLD.PL.Management.user_management;
-using DVLD.PL.UsersManagement;
-
+using DVLD.PL.Theme;
 namespace DVLD.PL.Global
 {
     public partial class ctrlFormHeader : UserControl
@@ -42,12 +39,12 @@ namespace DVLD.PL.Global
             {
                 RegisterEvents();
                 InitializeUserContextMenu();
-                UITheme.OnThemeChanged += HandleThemeChanged;
+                ThemeManager.ThemeChanged += HandleThemeChanged;
                 if (ShowUserProfile)
                 {
                     AppSession.OnUserSessionChanged += UpdateUserProfileDisplay;
                 }
-                ApplyThemeStyles();
+                ThemeApplicator.Apply(this);
             }
         }
 
@@ -157,22 +154,13 @@ namespace DVLD.PL.Global
                 DangerHoverBackground = Color.FromArgb(254, 242, 242)
             };
         }
-
-        private void HandleThemeChanged()
+        private void HandleThemeChanged(object? s, ThemeManager.ModeEventsArgs e)
         {
             if (IsHandleCreated && !IsDisposed)
             {
-                if (InvokeRequired)
-                {
-                    BeginInvoke(ApplyThemeStyles);
-                }
-                else
-                {
-                    ApplyThemeStyles();
-                }
+                ThemeApplicator.Apply(this);
             }
         }
-
         private void UpdateUserProfileDisplay()
         {
             if (!ShowUserProfile) return;
@@ -187,23 +175,6 @@ namespace DVLD.PL.Global
                 btnUserProfile.Text = "👤  Guest  ▾";
                 btnUserProfile.Visible = false;
             }
-        }
-
-        private void ApplyThemeStyles()
-        {
-            lblTitle.ForeColor = UITheme.TextPrimary;
-
-            btnMinimize.ForeColor = UITheme.TextSecondary;
-            btnMaximize.ForeColor = UITheme.TextSecondary;
-            btnClose.ForeColor = UITheme.TextSecondary;
-            btnUserProfile.ForeColor = UITheme.TextPrimary;
-
-            SetupHoverEffect(btnClose, UITheme.Danger, Color.White);
-            SetupHoverEffect(btnMaximize, UITheme.SelectionBg, UITheme.TextPrimary);
-            SetupHoverEffect(btnMinimize, UITheme.SelectionBg, UITheme.TextPrimary);
-            SetupHoverEffect(btnUserProfile, UITheme.SelectionBg, UITheme.TextPrimary);
-
-            Invalidate(true);
         }
 
         #endregion
@@ -256,7 +227,6 @@ namespace DVLD.PL.Global
                 _parentFormRef.Resize += ParentForm_Resize;
                 UpdateMaximizeIcon();
             }
-            ApplyThemeStyles();
         }
 
         private void ParentForm_Resize(object? sender, EventArgs e)
@@ -378,7 +348,7 @@ namespace DVLD.PL.Global
         {
             if (!AppSession.IsAuthenticated)
             {
-                UITheme.ShowInfoToast("There is no user in the system. Please Log in again.");
+                NotificationTheme.ShowInfoToast("There is no user in the system. Please Log in again.");
                 return true;
             }
             return false;
@@ -396,7 +366,7 @@ namespace DVLD.PL.Global
             }
         }
 
-        private void BtnUserProfile_Click(object? sender, EventArgs e)
+        private async void BtnUserProfile_Click(object? sender, EventArgs e)
         {
             if (CheckUserAuthentication()) return;
             if (contextMenuUser == null) return;
@@ -410,7 +380,7 @@ namespace DVLD.PL.Global
 
                 editUserForm.OnDeletedSuccessfully += () =>
                 {
-                    UITheme.ShowSuccessToast("Your account has been deleted successfully. The application will now restart.");
+                    NotificationTheme.ShowSuccessToast("Your account has been deleted successfully. The application will now restart.");
                     Application.Restart();
                 };
 
@@ -419,7 +389,7 @@ namespace DVLD.PL.Global
             }
         }
 
-        private void ItemCurrentUserInfo_Click(object? sender, EventArgs e)
+        private async void ItemCurrentUserInfo_Click(object? sender, EventArgs e)
         {
             if (CheckUserAuthentication()) return;
 
@@ -432,19 +402,19 @@ namespace DVLD.PL.Global
 
                 frm.OnDeletedSuccessfully += () =>
                 {
-                    UITheme.ShowSuccessToast("Your account has been deleted successfully. The application will now restart.");
+                    NotificationTheme.ShowSuccessToast("Your account has been deleted successfully. The application will now restart.");
                     Application.Restart();
                 };
-
-                frm.ShowDialog(ParentForm);
+                if (ParentForm != null)
+                    await frm.ShowDialogAsync(ParentForm);
             }
         }
 
-        private void ItemChangePassword_Click(object? sender, EventArgs e)
+        private async void ItemChangePassword_Click(object? sender, EventArgs e)
         {
             if (!AppSession.IsAuthenticated)
             {
-                UITheme.ShowInfoToast("There is no user in the system. Please Log in again.");
+                NotificationTheme.ShowInfoToast("There is no user in the system. Please Log in again.");
             }
             using (frmForgetPassword frm = new(AppSession.CurrentUserName, "Change Passowrd", false))
             {
@@ -452,13 +422,23 @@ namespace DVLD.PL.Global
                 {
                     Application.Restart();
                 };
-                frm.ShowDialog(ParentForm);
+                if (ParentForm != null)
+                    await frm.ShowDialogAsync(ParentForm);
             }
         }
 
-        private void ItemSettings_Click(object? sender, EventArgs e)
+        private async void ItemSettings_Click(object? sender, EventArgs e)
         {
-
+            if (!AppSession.IsAuthenticated)
+            {
+                NotificationTheme.ShowInfoToast("There is no user in the system. Please Log in again.");
+            }
+            using (var frm = new frmAppSettings())
+            {
+                if (ParentForm != null)
+                    await frm.ShowDialogAsync(ParentForm);
+            }
+            
         }
 
         private void ItemSignOut_Click(object? sender, EventArgs e)

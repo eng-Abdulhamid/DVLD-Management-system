@@ -1,4 +1,5 @@
 ﻿using DVLD.PL.Global;
+using DVLD.PL.Theme;
 using System.ComponentModel;
 using System.Reflection;
 namespace DVLD.PL.Management
@@ -66,7 +67,7 @@ namespace DVLD.PL.Management
 
             if (LicenseManager.UsageMode != LicenseUsageMode.Designtime)
             {
-                dgvResults.ApplyModernStyle();
+                dgvResults.ApplyDataGridStyle();
             }
         }
         private void ConfigureContextMenus()
@@ -136,7 +137,7 @@ namespace DVLD.PL.Management
                 cmsRowActions.Show(dgvResults, e.Location);
         }
         #endregion
-        private void dgvResults_SelectionChanged(object sender?, EventArgs e)
+        private void dgvResults_SelectionChanged(object? sender, EventArgs e)
         {
             if (_suppressSelectionEvents) return;
             SelectionChanged?.Invoke(this, EventArgs.Empty);

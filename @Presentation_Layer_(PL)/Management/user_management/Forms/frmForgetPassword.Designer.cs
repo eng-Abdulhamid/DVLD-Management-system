@@ -8,8 +8,6 @@ namespace DVLD.PL.Login
     {
         private System.ComponentModel.IContainer components = null;
         private System.Windows.Forms.Panel pnlMain;
-        private System.Windows.Forms.Label lblHeader;
-        private System.Windows.Forms.Label lblSubHeader;
         private System.Windows.Forms.Label lblStep1;
         private System.Windows.Forms.Label lblUsername;
         private CustomizeControls.NTextBox txtUserName;
@@ -50,8 +48,6 @@ namespace DVLD.PL.Login
             txtUserName = new NTextBox();
             lblUsername = new Label();
             lblStep1 = new Label();
-            lblSubHeader = new Label();
-            lblHeader = new Label();
             pnlCreateNewPassword = new Panel();
             lblStep2 = new Label();
             lblOldPassword = new Label();
@@ -72,7 +68,7 @@ namespace DVLD.PL.Login
             // 
             headerControl.AllowMaximize = false;
             headerControl.AllowMinimize = false;
-            headerControl.Size = new Size(516, 38);
+            headerControl.Size = new Size(492, 38);
             headerControl.TitleText = "DVLD - Reset Password";
             // 
             // lblStatus
@@ -96,6 +92,10 @@ namespace DVLD.PL.Login
             btnEditUsername.BorderSize = 1;
             btnEditUsername.CenterIconWithText = true;
             btnEditUsername.Cursor = Cursors.Hand;
+            btnEditUsername.DisabledBorderColor = Color.FromArgb(226, 232, 240);
+            btnEditUsername.DisabledEndColor = Color.FromArgb(241, 245, 249);
+            btnEditUsername.DisabledStartColor = Color.FromArgb(241, 245, 249);
+            btnEditUsername.DisabledTextColor = Color.FromArgb(148, 163, 184);
             btnEditUsername.EnableHoverAnimation = false;
             btnEditUsername.EnableIconTinting = false;
             btnEditUsername.EnableRippleEffect = false;
@@ -116,7 +116,7 @@ namespace DVLD.PL.Login
             btnEditUsername.IconSpacing = 5;
             btnEditUsername.IsLoading = false;
             btnEditUsername.LeftIcon = null;
-            btnEditUsername.Location = new Point(404, 168);
+            btnEditUsername.Location = new Point(416, 132);
             btnEditUsername.MiddleIcon = Properties.Resources.editSquare;
             btnEditUsername.Name = "btnEditUsername";
             btnEditUsername.PressedEndColor = Color.FromArgb(204, 228, 247);
@@ -143,6 +143,10 @@ namespace DVLD.PL.Login
             btnVerifiedCheck.BorderRadius = 8;
             btnVerifiedCheck.BorderSize = 0;
             btnVerifiedCheck.CenterIconWithText = true;
+            btnVerifiedCheck.DisabledBorderColor = Color.FromArgb(226, 232, 240);
+            btnVerifiedCheck.DisabledEndColor = Color.FromArgb(241, 245, 249);
+            btnVerifiedCheck.DisabledStartColor = Color.FromArgb(241, 245, 249);
+            btnVerifiedCheck.DisabledTextColor = Color.FromArgb(148, 163, 184);
             btnVerifiedCheck.EnableHoverAnimation = false;
             btnVerifiedCheck.EnableIconTinting = false;
             btnVerifiedCheck.EnableRippleEffect = false;
@@ -163,7 +167,7 @@ namespace DVLD.PL.Login
             btnVerifiedCheck.IconSpacing = 5;
             btnVerifiedCheck.IsLoading = false;
             btnVerifiedCheck.LeftIcon = null;
-            btnVerifiedCheck.Location = new Point(352, 168);
+            btnVerifiedCheck.Location = new Point(352, 132);
             btnVerifiedCheck.MiddleIcon = Properties.Resources.hasFounded;
             btnVerifiedCheck.Name = "btnVerifiedCheck";
             btnVerifiedCheck.PressedEndColor = Color.FromArgb(204, 228, 247);
@@ -192,6 +196,10 @@ namespace DVLD.PL.Login
             btnVerifyUser.BorderSize = 0;
             btnVerifyUser.CenterIconWithText = true;
             btnVerifyUser.Cursor = Cursors.Hand;
+            btnVerifyUser.DisabledBorderColor = Color.FromArgb(226, 232, 240);
+            btnVerifyUser.DisabledEndColor = Color.FromArgb(241, 245, 249);
+            btnVerifyUser.DisabledStartColor = Color.FromArgb(241, 245, 249);
+            btnVerifyUser.DisabledTextColor = Color.FromArgb(148, 163, 184);
             btnVerifyUser.EnableHoverAnimation = false;
             btnVerifyUser.EnableIconTinting = false;
             btnVerifyUser.EnableRippleEffect = false;
@@ -212,7 +220,7 @@ namespace DVLD.PL.Login
             btnVerifyUser.IconSpacing = 5;
             btnVerifyUser.IsLoading = false;
             btnVerifyUser.LeftIcon = null;
-            btnVerifyUser.Location = new Point(348, 168);
+            btnVerifyUser.Location = new Point(344, 132);
             btnVerifyUser.MiddleIcon = null;
             btnVerifyUser.Name = "btnVerifyUser";
             btnVerifyUser.PressedEndColor = Color.FromArgb(204, 228, 247);
@@ -258,7 +266,7 @@ namespace DVLD.PL.Login
             txtUserName.IconSpacing = 8;
             txtUserName.LeftIcon = Properties.Resources.User;
             txtUserName.LeftIconClickable = false;
-            txtUserName.Location = new Point(38, 168);
+            txtUserName.Location = new Point(38, 132);
             txtUserName.MaxLength = 50;
             txtUserName.MaxSuggestItems = 8;
             txtUserName.MoveToNextControlOnEnter = true;
@@ -280,7 +288,7 @@ namespace DVLD.PL.Login
             lblUsername.AutoSize = true;
             lblUsername.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblUsername.ForeColor = Color.FromArgb(71, 85, 105);
-            lblUsername.Location = new Point(38, 145);
+            lblUsername.Location = new Point(38, 109);
             lblUsername.Name = "lblUsername";
             lblUsername.Size = new Size(69, 17);
             lblUsername.TabIndex = 3;
@@ -291,33 +299,11 @@ namespace DVLD.PL.Login
             lblStep1.AutoSize = true;
             lblStep1.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
             lblStep1.ForeColor = Color.FromArgb(124, 58, 237);
-            lblStep1.Location = new Point(38, 115);
+            lblStep1.Location = new Point(38, 79);
             lblStep1.Name = "lblStep1";
             lblStep1.Size = new Size(144, 19);
             lblStep1.TabIndex = 2;
             lblStep1.Text = "1. Verify your account";
-            // 
-            // lblSubHeader
-            // 
-            lblSubHeader.AutoSize = true;
-            lblSubHeader.Font = new Font("Segoe UI", 9.5F);
-            lblSubHeader.ForeColor = Color.FromArgb(100, 116, 139);
-            lblSubHeader.Location = new Point(38, 66);
-            lblSubHeader.Name = "lblSubHeader";
-            lblSubHeader.Size = new Size(325, 17);
-            lblSubHeader.TabIndex = 1;
-            lblSubHeader.Text = "Verify your account first, then choose a new password.";
-            // 
-            // lblHeader
-            // 
-            lblHeader.AutoSize = true;
-            lblHeader.Font = new Font("Segoe UI Semibold", 20F, FontStyle.Bold);
-            lblHeader.ForeColor = Color.FromArgb(15, 23, 42);
-            lblHeader.Location = new Point(36, 25);
-            lblHeader.Name = "lblHeader";
-            lblHeader.Size = new Size(269, 37);
-            lblHeader.TabIndex = 0;
-            lblHeader.Text = "Reset your password";
             // 
             // pnlCreateNewPassword
             // 
@@ -331,9 +317,9 @@ namespace DVLD.PL.Login
             pnlCreateNewPassword.Controls.Add(lnkForgotCurrentPassword);
             pnlCreateNewPassword.Controls.Add(btnChangePassword);
             pnlCreateNewPassword.Controls.Add(btnCancel);
-            pnlCreateNewPassword.Location = new Point(28, 245);
+            pnlCreateNewPassword.Location = new Point(28, 225);
             pnlCreateNewPassword.Name = "pnlCreateNewPassword";
-            pnlCreateNewPassword.Size = new Size(460, 380);
+            pnlCreateNewPassword.Size = new Size(352, 344);
             pnlCreateNewPassword.TabIndex = 14;
             pnlCreateNewPassword.Visible = false;
             // 
@@ -541,6 +527,10 @@ namespace DVLD.PL.Login
             btnChangePassword.BorderSize = 0;
             btnChangePassword.CenterIconWithText = true;
             btnChangePassword.Cursor = Cursors.Hand;
+            btnChangePassword.DisabledBorderColor = Color.FromArgb(226, 232, 240);
+            btnChangePassword.DisabledEndColor = Color.FromArgb(241, 245, 249);
+            btnChangePassword.DisabledStartColor = Color.FromArgb(241, 245, 249);
+            btnChangePassword.DisabledTextColor = Color.FromArgb(148, 163, 184);
             btnChangePassword.EnableHoverAnimation = false;
             btnChangePassword.EnableIconTinting = false;
             btnChangePassword.EnableRippleEffect = false;
@@ -589,6 +579,10 @@ namespace DVLD.PL.Login
             btnCancel.BorderSize = 1;
             btnCancel.CenterIconWithText = true;
             btnCancel.Cursor = Cursors.Hand;
+            btnCancel.DisabledBorderColor = Color.FromArgb(226, 232, 240);
+            btnCancel.DisabledEndColor = Color.FromArgb(241, 245, 249);
+            btnCancel.DisabledStartColor = Color.FromArgb(241, 245, 249);
+            btnCancel.DisabledTextColor = Color.FromArgb(148, 163, 184);
             btnCancel.EnableHoverAnimation = false;
             btnCancel.EnableIconTinting = false;
             btnCancel.EnableRippleEffect = false;
@@ -631,8 +625,6 @@ namespace DVLD.PL.Login
             // 
             pnlMain.BackColor = Color.White;
             pnlMain.Controls.Add(pnlCreateNewPassword);
-            pnlMain.Controls.Add(lblHeader);
-            pnlMain.Controls.Add(lblSubHeader);
             pnlMain.Controls.Add(lblStep1);
             pnlMain.Controls.Add(lblUsername);
             pnlMain.Controls.Add(txtUserName);
@@ -643,16 +635,18 @@ namespace DVLD.PL.Login
             pnlMain.Dock = DockStyle.Fill;
             pnlMain.Location = new Point(2, 2);
             pnlMain.Name = "pnlMain";
-            pnlMain.Size = new Size(516, 676);
+            pnlMain.Size = new Size(492, 588);
             pnlMain.TabIndex = 0;
             // 
             // frmForgetPassword
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(124, 58, 237);
-            ClientSize = new Size(520, 680);
+            BackColor = Color.White;
+            ClientSize = new Size(496, 592);
             Controls.Add(pnlMain);
+            CustomBorderColor = Color.FromArgb(226, 232, 240);
+            ForeColor = Color.FromArgb(15, 23, 42);
             Name = "frmForgetPassword";
             Text = "DVLD - Reset Password";
             Controls.SetChildIndex(pnlMain, 0);

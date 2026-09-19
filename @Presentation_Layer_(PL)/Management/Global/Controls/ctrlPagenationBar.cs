@@ -1,6 +1,6 @@
 ﻿using DVLD.PL.Global;
+using DVLD.PL.Theme;
 using System.ComponentModel;
-using static DVLD.PL.Global.UITheme;
 
 namespace DVLD.PL.Management
 {
@@ -60,7 +60,6 @@ namespace DVLD.PL.Management
             if (UIUtility.IsDesignMode) return;
 
             InitializeComboBox();
-            ApplyStyles();
             RegisterEvents();
 
             _isInitializing = false;
@@ -133,16 +132,7 @@ namespace DVLD.PL.Management
             btnPrevPage.Enabled = _currentPage > 1;
             btnNextPage.Enabled = _currentPage < totalPages;
 
-            ApplyStyles();
-        }
-        private void ApplyStyles()
-        {
-            btnPrevPage.ApplySecondaryStyle();
-            btnNextPage.ApplySecondaryStyle();
-            cmbPageSize.ApplyStandardStyle();
-
-            btnPrevPage.Text = string.Empty;
-            btnNextPage.Text = string.Empty;
+            ThemeApplicator.Apply(this);
         }
         public void Reset()
         {

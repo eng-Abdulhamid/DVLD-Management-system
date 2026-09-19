@@ -1,4 +1,5 @@
 ﻿using DVLD.PL.Global;
+using DVLD.PL.Theme;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -46,15 +47,8 @@ namespace DVLD.PL.UsersManagement
             };
 
             InitializeControlsData();
-            ApplyStyles();
+            ThemeApplicator.Apply(this);
             _isInitializing = false;
-        }
-
-        private void ApplyStyles()
-        {
-            txtSearch.ApplyStandardStyle();
-            cbFilterBy.ApplyStandardStyle();
-            cbIsActive.ApplyStandardStyle();
         }
 
         private void InitializeControlsData()

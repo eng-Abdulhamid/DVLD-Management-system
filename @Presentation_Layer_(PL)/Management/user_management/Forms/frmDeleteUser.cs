@@ -1,5 +1,6 @@
 ﻿using DVLD.BLL.Services;
 using DVLD.PL.Global;
+using DVLD.PL.Theme;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -18,21 +19,13 @@ namespace DVLD.PL.UsersManagement
         {
             InitializeComponent();
             SetContextTitle("Delete User");
-            this.ApplyStandardFormTheme();
             _userId = userId;
             _userService = new UserService();
 
-            ApplyStyles();
             SetupToolTips();
             RegisterEvents();
+            base.ApplyTheme();
         }
-
-        private void ApplyStyles()
-        {
-            btnDelete.ApplyDangerStyle();
-            btnCancel.ApplySecondaryStyle();
-        }
-
         private void SetupToolTips()
         {
             _toolTips = new ToolTip
@@ -58,7 +51,7 @@ namespace DVLD.PL.UsersManagement
 
             if (_userId <= 0)
             {
-                UITheme.ShowErrorToast("Invalid user ID.");
+                NotificationTheme.ShowErrorToast("Invalid user ID.");
                 this.Close();
                 return;
             }
@@ -79,13 +72,13 @@ namespace DVLD.PL.UsersManagement
 
             if (result.IsSuccess)
             {
-                UITheme.ShowSuccessToast("User deleted successfully.");
+                NotificationTheme.ShowSuccessToast("User deleted successfully.");
                 DeletedSuccessfully?.Invoke();
                 this.Close();
             }
             else
             {
-                UITheme.ShowErrorToast(result.Message);
+                NotificationTheme.ShowErrorToast(result.Message);
             }
             UpdateDeleteButtonEnabled(true);
 

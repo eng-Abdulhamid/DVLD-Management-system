@@ -1,11 +1,6 @@
-﻿using System;
+﻿using DVLD.PL.Theme;
 using System.ComponentModel;
-using System.Drawing;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using CustomizeControls;
-using DVLD.PL.Common;
 
 namespace DVLD.PL.Global
 {
@@ -49,7 +44,6 @@ namespace DVLD.PL.Global
 
         private FormWindowState _lastWindowState = FormWindowState.Normal;
 
-        // Secure-by-default: override and return false only in login or public forms
         protected virtual bool RequiresAuthentication => true;
 
         protected override CreateParams CreateParams
@@ -74,14 +68,24 @@ namespace DVLD.PL.Global
 
             BackColor = Color.White;
             UpdatePadding();
-
             if (!UIUtility.IsDesignMode)
             {
                 AppSession.OnUserSessionChanged += HandleUserSessionChanged;
-                UITheme.OnThemeChanged += HandleThemeChanged;
             }
+            ThemeManager.ThemeChanged += ThemeManager_ThemeChanged;
 
             SyncHeaderProperties();
+        }
+        protected void ApplyTheme()
+        {
+            ThemeApplicator.Apply(this);
+            Invalidate(true);
+        }
+        private void ThemeManager_ThemeChanged(
+        object? sender,
+        EventArgs e)
+        {
+            ThemeApplicator.Apply(this);
         }
 
         public void SetContextTitle(string currentScreenTitle)
@@ -230,7 +234,6 @@ namespace DVLD.PL.Global
             {
                 BeginInvoke(new Action(() =>
                 {
-                    UITheme.ShowErrorToast("Access denied. Please log in to continue.", "Security Alert");
                     Close();
                 }));
                 return;
@@ -239,11 +242,6 @@ namespace DVLD.PL.Global
             UpdateWorkingAreaBounds();
             ApplyCornerPreference(true);
             SyncHeaderProperties();
-
-            // Apply current theme on initial load
-            this.ApplyStandardFormTheme();
-            CustomBorderColor = UITheme.Border;
-            OnThemeApplied();
 
             if (!UIUtility.IsDesignMode)
             {
@@ -254,24 +252,12 @@ namespace DVLD.PL.Global
         // Extensibility hook for asynchronous data fetching in derived forms
         protected virtual Task InitializeDataAsync() => Task.CompletedTask;
 
-        // Extensibility hook for derived forms to refresh custom control colors on theme changes
-        protected virtual void OnThemeApplied()
-        {
-        }
 
-        private void HandleThemeChanged()
+        private void HandleThemeChanged(object s, ThemeManager.ModeEventsArgs e)
         {
             if (IsDisposed || !IsHandleCreated) return;
 
-            if (InvokeRequired)
-            {
-                BeginInvoke(new Action(HandleThemeChanged));
-                return;
-            }
-
-            this.ApplyStandardFormTheme();
-            CustomBorderColor = UITheme.Border;
-            OnThemeApplied();
+            ThemeApplicator.Apply(this);
             Invalidate(true);
         }
 

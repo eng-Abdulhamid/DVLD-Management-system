@@ -1,7 +1,7 @@
 ﻿using DVLD.PL.Global;
 using System.ComponentModel;
-using static DVLD.PL.Global.UITheme;
 using CustomizeControls;
+using DVLD.PL.Theme;
 namespace DVLD.PL.Management
 {
     [DefaultEvent("OnAddClick")]
@@ -151,19 +151,12 @@ namespace DVLD.PL.Management
                 return;
             }
 
-            ApplyStyles();
+            ThemeApplicator.Apply(this);
             SetupToolTips();
             RegisterEvents();
 
             UpdateButtonsState(false);
             RearrangeButtons();
-        }
-        private void ApplyStyles()
-        {
-            btnAddNew.ApplySecondaryStyle();
-            btnRefresh.ApplySecondaryStyle();
-            btnUpdate.ApplySecondaryStyle();
-            btnDelete.ApplySecondaryStyle();
         }
         private void SetupToolTips()
         {

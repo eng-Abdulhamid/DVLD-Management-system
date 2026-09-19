@@ -1,4 +1,5 @@
 ﻿using DVLD.PL.Global;
+using DVLD.PL.Theme;
 using System;
 using System.ComponentModel;
 using System.Windows.Forms;
@@ -48,7 +49,7 @@ namespace DVLD.PL.DriversManagement
             _searchTimer.Tick += Search_Tick;
 
             InitializeControlsData();
-            ApplyStyles();
+            ThemeApplicator.Apply(this);
             _isInitializing = false;
         }
         private void Search_Tick(object? sender, EventArgs e)
@@ -93,12 +94,6 @@ namespace DVLD.PL.DriversManagement
             txtSearch.AllowSpaces = selectedFilter == "Full Name";
             txtSearch.AllowSymbols = false;
             txtSearch.MaxLength = isNumeric ? 10 : 50;
-        }
-        private void ApplyStyles()
-        {
-            txtSearch.ApplyStandardStyle();
-            cbFilterBy.ApplyStandardStyle();
-            cbSearchByLetter.ApplyStandardStyle();
         }
         #endregion
         #region Events

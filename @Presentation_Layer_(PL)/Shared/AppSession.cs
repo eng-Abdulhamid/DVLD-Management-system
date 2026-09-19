@@ -1,4 +1,5 @@
 ﻿using DVLD.BLL.DTOs;
+using DVLD.PL.Theme;
 
 namespace DVLD.PL.Global
 {
@@ -15,10 +16,7 @@ namespace DVLD.PL.Global
 
                 if (value.UserID <= 0)
                 {
-                    UITheme.ShowErrorToast(
-                        "This user cannot access the system. Please try again later."
-                    );
-
+                    NotificationTheme.ShowErrorToast("This user cannot access the system. Please try again later.");
                     return;
                 }
 

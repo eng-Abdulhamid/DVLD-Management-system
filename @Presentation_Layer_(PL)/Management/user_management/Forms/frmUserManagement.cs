@@ -11,28 +11,28 @@ namespace DVLD.PL.UsersManagement
         private readonly UserService _userService = new UserService();
         private List<UserReadDTO> _allUsers = new List<UserReadDTO>();
         private List<UserReadDTO> _filteredUsers = new List<UserReadDTO>();
-        private readonly List<DataGridColumnDefinition> _columnDefinitions;
 
         public frmUserManagement()
         {
             InitializeComponent();
-            this.ApplyStandardFormTheme();
             SetContextTitle("Users Management");
 
-            _columnDefinitions = new List<DataGridColumnDefinition>
+            ctrlManagementDataGrid1.InitializeColumns(UserColumns());
+            InitializeRowContextMenu();
+            RegisterEvents();
+            CenterOverlays();
+            base.ApplyTheme();
+        }
+        private List<DataGridColumnDefinition> UserColumns()
+        {
+            return new List<DataGridColumnDefinition>
             {
                 new DataGridColumnDefinition { Key = "UserID", HeaderText = "User ID", DataPropertyName = "UserID", Width = 120 },
                 new DataGridColumnDefinition { Key = "PersonID", HeaderText = "Person ID", DataPropertyName = "PersonID", Width = 120 },
                 new DataGridColumnDefinition { Key = "UserName", HeaderText = "Username", DataPropertyName = "UserName", Width = 220 },
                 new DataGridColumnDefinition { Key = "IsActive", HeaderText = "Is Active", DataPropertyName = "IsActive", Width = 120 }
-            };
-
-            ctrlManagementDataGrid1.InitializeColumns(_columnDefinitions);
-            InitializeRowContextMenu();
-            RegisterEvents();
-            CenterOverlays();
+            }; 
         }
-
         private void CenterOverlays()
         {
             if (ctrlNotFound1 == null || pnlMain == null) return;

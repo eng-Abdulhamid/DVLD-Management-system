@@ -1,6 +1,7 @@
 ﻿using CustomControls;
 using DVLD.PL.Global;
 using DVLD.PL.PeopleManagement;
+using DVLD.PL.Theme;
 using DVLD.PL.UsersManagement;
 using System;
 using System.Collections.Generic;
@@ -38,7 +39,7 @@ namespace DVLD.PL.Management.user_management
 
             if (_userID <= 0)
             {
-                UITheme.ShowErrorToast("Invalid user ID.");
+                NotificationTheme.ShowErrorToast("Invalid user ID.");
                 this.Close();
                 return;
             }

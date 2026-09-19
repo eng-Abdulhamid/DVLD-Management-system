@@ -4,6 +4,7 @@ using DVLD.BLL.Services;
 using DVLD.PL.Global;
 using DVLD.PL.Login;
 using DVLD.PL.PeopleManagement;
+using DVLD.PL.Theme;
 namespace DVLD.PL.UsersManagement
 {
     public partial class frmSaveUser : frmBase
@@ -28,32 +29,16 @@ namespace DVLD.PL.UsersManagement
         public frmSaveUser(int userId = -1)
         {
             InitializeComponent();
-            this.ApplyStandardFormTheme();
             SetContextTitle(_mode == Mode.AddNew ? "Add New User" : "Edit User");
 
             _userId = userId;
             _mode = (_userId <= 0) ? Mode.AddNew : Mode.UpdateExisting;
             _userService = new UserService();
-
-            ApplyStyles();
+          
             RegisterEvents();
+            base.ApplyTheme();
         }
-        private void ApplyStyles()
-        {
-            btnSave.ApplyPrimaryStyle();
-            btnCancel.ApplySecondaryStyle();
-            btnNext.ApplySecondaryStyle();
-            btnPrev.ApplySecondaryStyle();
-            btnSearchPerson.ApplySecondaryStyle();
-            btnAddNewPerson.ApplySecondaryStyle();
-            btnSelectPerson.ApplySecondaryStyle();
-
-            txtUserName.ApplyStandardStyle();
-            txtPassword.ApplyStandardStyle();
-            txtConfirmPassword.ApplyStandardStyle();
-            txtSearchNationalNo.ApplyStandardStyle();
-            chkIsActive.ApplyStandardStyle();
-        }
+        
         #region Event Handlers
         private void RegisterEvents()
         {
@@ -83,7 +68,7 @@ namespace DVLD.PL.UsersManagement
             {
                 if (await _userService.IsPersonLinkedToUserAsync(ctrlPersonCard1.PersonID))
                 {
-                    UITheme.ShowWarningToast("This person is already linked to an account.");
+                    NotificationTheme.ShowWarningToast("This person is already linked to an account.");
                     SelectedPersonId = -1;
                     return;
                 }
@@ -103,7 +88,7 @@ namespace DVLD.PL.UsersManagement
             {
                 if (await _userService.IsPersonLinkedToUserAsync(personId))
                 {
-                    UITheme.ShowWarningToast("This person already has an associated user account.");
+                    NotificationTheme.ShowWarningToast("This person already has an associated user account.");
                     return;
                 }
 
@@ -144,7 +129,7 @@ namespace DVLD.PL.UsersManagement
         {
             if (SelectedPersonId <= 0)
             {
-                UITheme.ShowWarningToast("Please select a valid person first.");
+                NotificationTheme.ShowWarningToast("Please select a valid person first.");
                 return;
             }
 
@@ -212,7 +197,7 @@ namespace DVLD.PL.UsersManagement
             var result = await _userService.GetByIdAsync(_userId);
             if (!result.IsSuccess || result.Data == null)
             {
-                UITheme.ShowErrorToast("User record not found.");
+                NotificationTheme.ShowErrorToast("User record not found.");
                 this.Close();
                 return;
             }
@@ -248,19 +233,19 @@ namespace DVLD.PL.UsersManagement
         {
             if (!ValidateRequiredField(txtUserName))
             {
-                UITheme.ShowErrorToast($"Please enter your user name.", "Validation Error");
+                NotificationTheme.ShowErrorToast($"Please enter your user name.", "Validation Error");
                 return false;
             }
             if (_mode == Mode.AddNew)
             {
                 if (!ValidateRequiredField(txtPassword))
                 {
-                    UITheme.ShowErrorToast($"Please enter a password.", "Validation Error");
+                    NotificationTheme.ShowErrorToast($"Please enter a password.", "Validation Error");
                     return false;
                 }
                 if (!ValidateRequiredField(txtConfirmPassword))
                 {
-                    UITheme.ShowErrorToast($"Please confirm your password.", "Validation Error");
+                    NotificationTheme.ShowErrorToast($"Please confirm your password.", "Validation Error");
                     return false;
                 }
                 if (!ValidatePasswordMatch())
@@ -290,7 +275,7 @@ namespace DVLD.PL.UsersManagement
             {
                 txtConfirmPassword.HasError = true;
                 txtConfirmPassword.Shake();
-                UITheme.ShowErrorToast("Passwords do not match.", "Validation Error");
+                NotificationTheme.ShowErrorToast("Passwords do not match.", "Validation Error");
                 txtConfirmPassword.Focus();
 
                 return false;
@@ -328,13 +313,13 @@ namespace DVLD.PL.UsersManagement
 
             if (result.IsSuccess)
             {
-                UITheme.ShowSuccessToast("User registered successfully.");
+                NotificationTheme.ShowSuccessToast("User registered successfully.");
                 UserSaved?.Invoke(result.Data);
                 this.Close();
             }
             else
             {
-                UITheme.ShowWarningToast(result.Message ?? "Failed to save user.", "Registration Failed");
+                NotificationTheme.ShowWarningToast(result.Message ?? "Failed to save user.", "Registration Failed");
             }
 
         }
@@ -360,13 +345,13 @@ namespace DVLD.PL.UsersManagement
                         UserName = updatedDto.UserName
                     };
                 }
-                UITheme.ShowSuccessToast("User updated successfully.");
+                NotificationTheme.ShowSuccessToast("User updated successfully.");
                 UserSaved?.Invoke(_userId);
                 this.Close();
             }
             else
             {
-                UITheme.ShowWarningToast(result.Message ?? "Failed to update user.", "Update Failed");
+                NotificationTheme.ShowWarningToast(result.Message ?? "Failed to update user.", "Update Failed");
             }
         }
         #endregion

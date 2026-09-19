@@ -1,9 +1,6 @@
 ﻿using DVLD.BLL.Services;
 using DVLD.PL.Global;
-using System;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
+using DVLD.PL.Theme;
 namespace DVLD.PL.DriversManagement
 {
     public partial class frmDeleteDriver : frmBase
@@ -15,21 +12,15 @@ namespace DVLD.PL.DriversManagement
         public frmDeleteDriver(int driverId)
         {
             InitializeComponent();
-            this.ApplyStandardFormTheme();
+           
             SetContextTitle("Delete Driver");
 
             _driverId = driverId;
             _driverService = new DriverService();
 
-            ApplyStyles();
+            base.ApplyTheme();
             SetupToolTips();
             RegisterEvents();
-        }
-
-        private void ApplyStyles()
-        {
-            btnDelete.ApplyDangerStyle();
-            btnCancel.ApplySecondaryStyle();
         }
         private void SetupToolTips()
         {
@@ -55,7 +46,7 @@ namespace DVLD.PL.DriversManagement
 
             if (_driverId <= 0)
             {
-                UITheme.ShowErrorToast("Invalid driver ID provided.");
+                NotificationTheme.ShowErrorToast("Invalid driver ID provided.");
                 this.Close();
                 return;
             }
@@ -96,14 +87,14 @@ namespace DVLD.PL.DriversManagement
 
             if (result.IsSuccess)
             {
-                UITheme.ShowSuccessToast("Driver deleted successfully.");
+                NotificationTheme.ShowSuccessToast("Driver deleted successfully.");
                 DeletedSuccessfully?.Invoke();
                 this.Close();
             }
             else
             {
                 // BLL restricts deletion if the driver is linked to active licenses or constraints.
-                UITheme.ShowWarningToast(result.Message ?? "Unable to delete driver due to linked constraints.", "Deletion Rejected");
+                NotificationTheme.ShowWarningToast(result.Message ?? "Unable to delete driver due to linked constraints.", "Deletion Rejected");
                 UpdateDeleteButtonEnabled(true);
             }
         }

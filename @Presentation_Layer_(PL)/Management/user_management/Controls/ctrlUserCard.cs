@@ -1,6 +1,7 @@
 ﻿using DVLD.BLL.DTOs;
 using DVLD.BLL.Services;
 using DVLD.PL.Global;
+using DVLD.PL.Theme;
 
 namespace DVLD.PL.UsersManagement
 {
@@ -69,7 +70,11 @@ namespace DVLD.PL.UsersManagement
             lblUserID.Text = SelectedUserInfo.UserID.ToString();
             lblUserName.Text = SelectedUserInfo.UserName;
             lblIsActive.Text = SelectedUserInfo.IsActive ? "Yes" : "No";
-            lblIsActive.ForeColor = SelectedUserInfo.IsActive ? UITheme.Success : UITheme.Danger;
+
+            if (SelectedUserInfo.IsActive)
+                lblIsActive.ApplyStatusBadge(StatusLabelStyler.Success, "Active");
+            else
+                lblIsActive.ApplyStatusBadge(StatusLabelStyler.Danger, "Not Active");
         }
 
         public void ResetCard()

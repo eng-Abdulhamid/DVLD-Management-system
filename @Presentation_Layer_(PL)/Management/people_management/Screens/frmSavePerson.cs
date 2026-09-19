@@ -4,6 +4,7 @@ using DVLD.BLL.OperationResults;
 using DVLD.BLL.Services;
 using DVLD.PL.Global;
 using DVLD.PL.Properties;
+using DVLD.PL.Theme;
 using System;
 using System.Drawing;
 using System.IO;
@@ -30,7 +31,6 @@ namespace DVLD.PL.PeopleManagement
             InitializeComponent();
             SetContextTitle(_mode == Mode.AddNew ? "Add New Person" : "Edit Person");
 
-            this.ApplyStandardFormTheme();
             this.AllowMaximize = false;
             this.AllowResize = false;
 
@@ -38,28 +38,9 @@ namespace DVLD.PL.PeopleManagement
             _mode = (_personId <= 0) ? Mode.AddNew : Mode.UpdateExisting;
             _personService = new PersonService();
 
-            ApplyStyles();
+            ThemeApplicator.Apply(this);
             RegisterEvents();
             SetupToolTips();
-        }
-
-        private void ApplyStyles()
-        {
-            btnSave.ApplyPrimaryStyle();
-            btnCancel.ApplySecondaryStyle();
-
-            txtPersonID.ApplyStandardStyle();
-            txtNationalNo.ApplyStandardStyle();
-            txtFirstName.ApplyStandardStyle();
-            txtSecondName.ApplyStandardStyle();
-            txtThirdName.ApplyStandardStyle();
-            txtLastName.ApplyStandardStyle();
-            txtPhone.ApplyStandardStyle();
-            txtEmail.ApplyStandardStyle();
-            txtAddress.ApplyStandardStyle();
-
-            cmbGender.ApplyStandardStyle();
-            cmbCountry.ApplyStandardStyle();
         }
 
         private async void frmSavePerson_Load(object sender, EventArgs e)
@@ -122,7 +103,7 @@ namespace DVLD.PL.PeopleManagement
 
             if (!result.IsSuccess || result.Data == null)
             {
-                UITheme.ShowErrorToast("Failed to load person data.");
+                NotificationTheme.ShowErrorToast("Failed to load person data.");
                 this.Close();
                 return;
             }
@@ -271,13 +252,13 @@ namespace DVLD.PL.PeopleManagement
 
                 if (result.IsSuccess && result.Data > 0)
                 {
-                    UITheme.ShowSuccessToast("Person added successfully.");
+                    NotificationTheme.ShowSuccessToast("Person added successfully.");
                     PersonSaved?.Invoke(result.Data);
                     this.Close();
                 }
                 else
                 {
-                    UITheme.ShowWarningToast(result.Message, "Save Failed");
+                    NotificationTheme.ShowWarningToast(result.Message, "Save Failed");
                 }
             }
             else
@@ -306,13 +287,13 @@ namespace DVLD.PL.PeopleManagement
 
                 if (result.IsSuccess)
                 {
-                    UITheme.ShowSuccessToast("Person updated successfully.");
+                    NotificationTheme.ShowSuccessToast("Person updated successfully.");
                     PersonSaved?.Invoke(_personId);
                     this.Close();
                 }
                 else
                 {
-                    UITheme.ShowWarningToast(result.Message, "Update Failed");
+                    NotificationTheme.ShowWarningToast(result.Message, "Update Failed");
                 }
             }
         }

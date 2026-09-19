@@ -9,9 +9,21 @@ using Timer = System.Windows.Forms.Timer;
 
 namespace CustomizeControls
 {
+    public enum enButtonType
+    {
+        Primary,
+        Secondary,
+        Danger,
+        Disabled
+    }
     [DefaultEvent("Click")]
     public class NButton : Control
     {
+        [Description("Select Button Type.")]
+        [DisplayName("Button Type.")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        [Browsable(true)]
+        public enButtonType ButtonType { get; set; }
         private Timer? _hoverTimer;
         private Timer? _rippleTimer;
         private Timer? _spinnerTimer;

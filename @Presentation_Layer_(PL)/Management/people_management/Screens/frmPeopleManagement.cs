@@ -1,7 +1,10 @@
 ﻿using DVLD.BLL.DTOs;
 using DVLD.BLL.OperationResults;
+using DVLD.BLL.Services;
 using DVLD.PL.Global;
 using DVLD.PL.Management;
+using DVLD.PL.Theme;
+using DVLD.PL.UsersManagement;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -12,57 +15,32 @@ namespace DVLD.PL.PeopleManagement
 {
     public partial class frmPeopleManagement : frmBase
     {
-        #region Enums & Events
-
         public enum enMode
         {
             ManagePeople = 0,
             SelectPerson = 1
         }
-
         public event Action<int>? OnPersonSelected;
-
-        #endregion
-
-        #region Fields & Properties
-
         private readonly enMode _mode;
         public int SelectedPersonID { get; private set; } = -1;
-
-        #endregion
-
-        #region Constructor & Lifecycle
-
         public frmPeopleManagement(enMode mode = enMode.ManagePeople)
         {
             InitializeComponent();
             _mode = mode;
+            SetContextTitle("People Management");
 
-            ApplyFormAppearance();
             InitializeDataGridColumns();
             ConfigureModeSettings();
             InitializeRowContextMenu();
             RegisterEvents();
-
             CenterOverlays();
+            base.ApplyTheme();
         }
-
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
             CenterOverlays();
         }
-
-        #endregion
-
-        #region UI Configuration & Setup
-
-        private void ApplyFormAppearance()
-        {
-            this.ApplyStandardFormTheme();
-            SetContextTitle("People Management");
-        }
-
         private void InitializeDataGridColumns()
         {
             var columnDefinitions = new List<DataGridColumnDefinition>
@@ -96,7 +74,6 @@ namespace DVLD.PL.PeopleManagement
                 UpdateSelectButtonState(false);
             }
         }
-
         private void UpdateSelectButtonState(bool hasSelection)
         {
             if (_mode != enMode.SelectPerson) return;
@@ -114,7 +91,6 @@ namespace DVLD.PL.PeopleManagement
 
             btnSelect.Update();
         }
-
         private void CenterOverlays()
         {
             if (ctrlNotFound1 == null || pnlMain == null) return;
@@ -124,9 +100,6 @@ namespace DVLD.PL.PeopleManagement
                 Math.Max(0, (pnlMain.Height - ctrlNotFound1.Height) / 2 + 30)
             );
         }
-
-        #endregion
-
         #region Context Menu Configuration
 
         private void InitializeRowContextMenu()
@@ -200,14 +173,15 @@ namespace DVLD.PL.PeopleManagement
 
         #endregion
 
-        #region Event Subscriptions
-
         private void RegisterEvents()
         {
             SubscribeSearchAndPaginationEvents();
             SubscribeManagementActionEvents();
             SubscribeGridEvents();
+            this.Load += FrmPeopleManagement_Load;
         }
+
+        
 
         private void SubscribeSearchAndPaginationEvents()
         {
@@ -233,7 +207,6 @@ namespace DVLD.PL.PeopleManagement
 
             ctrlNotFound1.OnClearFilterClick += async (s, e) => await HandleClearSearchFilterAsync();
         }
-
         private void SubscribeManagementActionEvents()
         {
             ctrlManagementActions1.OnAddClick += (s, e) => OpenAddNewPersonDialog();
@@ -243,7 +216,6 @@ namespace DVLD.PL.PeopleManagement
 
             btnSelect.Click += (s, e) => SelectCurrentPerson();
         }
-
         private void SubscribeGridEvents()
         {
             ctrlManagementDataGrid1.SelectionChanged += (s, e) =>
@@ -267,9 +239,10 @@ namespace DVLD.PL.PeopleManagement
                 }
             };
         }
-
-        #endregion
-
+        private async void FrmPeopleManagement_Load(object? sender, EventArgs e)
+        {
+            await HandleManualRefreshAsync();
+        }
         #region Grid Data Population
 
         private void PopulateDataGrid(object? sender, OperationResults<PersonReadDTO> results)

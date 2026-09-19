@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using DVLD.PL.Theme;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace DVLD.PL.Global
@@ -11,7 +12,7 @@ namespace DVLD.PL.Global
         {
             if (disposing)
             {
-                UITheme.OnThemeChanged -= HandleThemeChanged;
+                ThemeManager.ThemeChanged -= HandleThemeChanged;
                 UnhookParentFormEvents();
 
                 if (_parentControlRef != null)

@@ -1,4 +1,5 @@
 ﻿using DVLD.PL.Global;
+using DVLD.PL.Theme;
 using System.ComponentModel;
 namespace DVLD.PL.Management
 {
@@ -56,18 +57,10 @@ namespace DVLD.PL.Management
 
             if (UIUtility.IsDesignMode) return;
 
-            ApplyStyles();
             RegisterEvents();
 
             this.Resize += (s, e) => CenterControls();
-        }
-        private void ApplyStyles()
-        {
-            btnClearFilter.ApplySecondaryStyle();
-
-            lblEmptyTitle.ForeColor = UITheme.TextPrimary;
-            lblEmptyDesc.ForeColor = UITheme.NeutralText;
-            lblEmptyIcon.ForeColor = UITheme.TextMuted;
+            ThemeApplicator.Apply(this);
         }
         private void RegisterEvents()
         {

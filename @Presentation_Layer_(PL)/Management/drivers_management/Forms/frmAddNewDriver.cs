@@ -2,6 +2,7 @@
 using DVLD.BLL.Services;
 using DVLD.PL.Global;
 using DVLD.PL.PeopleManagement;
+using DVLD.PL.Theme;
 namespace DVLD.PL.DriversManagement
 {
     public partial class frmSaveDriver : frmBase
@@ -13,27 +14,26 @@ namespace DVLD.PL.DriversManagement
         public frmSaveDriver()
         {
             InitializeComponent();
-            this.ApplyStandardFormTheme();
+
             SetContextTitle("Add New Driver");
-
+            SetButtonsType();
             _driverService = new DriverService();
-
-            ApplyStyles();
+            
+            ApplyTheme();
             ConfigureWizardUI();
             RegisterEvents();
         }
-        private void ApplyStyles()
+        private void SetButtonsType()
         {
-            btnSave.ApplyPrimaryStyle();
-            btnCancel.ApplySecondaryStyle();
-            btnNext.ApplyPrimaryStyle();
-            btnBack.ApplySecondaryStyle();
-            btnSearchPerson.ApplySecondaryStyle();
-            btnAddNewPerson.ApplySecondaryStyle();
-            btnSelectPerson.ApplySecondaryStyle();
-
-            txtSearchNationalNo.ApplyStandardStyle();
+            btnNext.ButtonType = CustomizeControls.enButtonType.Secondary;
+            btnBack.ButtonType = CustomizeControls.enButtonType.Secondary;
+            btnCancel.ButtonType = CustomizeControls.enButtonType.Secondary;
+            btnSave.ButtonType = CustomizeControls.enButtonType.Primary;
+            btnSearchPerson.ButtonType = CustomizeControls.enButtonType.Secondary;
+            btnAddNewPerson.ButtonType = CustomizeControls.enButtonType.Secondary;
+            btnSelectPerson.ButtonType = CustomizeControls.enButtonType.Secondary;
         }
+
         private void ConfigureWizardUI()
         {
             // Enforce strictly guided wizard flow by hiding default tab headers
@@ -79,7 +79,7 @@ namespace DVLD.PL.DriversManagement
             {
                 if (_selectedPersonId <= 0)
                 {
-                    UITheme.ShowWarningToast("Please select a valid person first to proceed.");
+                    NotificationTheme.ShowWarningToast("Please select a valid person first to proceed.");
                     return;
                 }
 
@@ -136,7 +136,7 @@ namespace DVLD.PL.DriversManagement
         {
             if (_selectedPersonId <= 0)
             {
-                UITheme.ShowWarningToast("Valid person context lost. Please re-select a person.");
+                NotificationTheme.ShowWarningToast("Valid person context lost. Please re-select a person.");
                 tcWizard.SelectedTab = tpPersonSelection;
                 return;
             }
@@ -150,14 +150,14 @@ namespace DVLD.PL.DriversManagement
 
             if (result.IsSuccess)
             {
-                UITheme.ShowSuccessToast("Driver registered successfully.");
+                NotificationTheme.ShowSuccessToast("Driver registered successfully.");
                 DriverSaved?.Invoke(result.Data);
                 this.Close();
             }
             else
             {
                 // BLL restricts duplicate drivers linked to the same PersonID. The message surfaces here.
-                UITheme.ShowWarningToast(result.Message ?? "Failed to save driver.", "Registration Failed");
+                NotificationTheme.ShowWarningToast(result.Message ?? "Failed to save driver.", "Registration Failed");
                 UpdateSaveButtonStatus(true);
             }
         }

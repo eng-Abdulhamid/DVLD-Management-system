@@ -1,6 +1,7 @@
 ﻿using DVLD.BLL.OperationResults;
 using DVLD.BLL.Services;
 using DVLD.PL.Global;
+using DVLD.PL.Theme;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -26,7 +27,10 @@ namespace DVLD.PL.PeopleManagement
         public frmDeletePersonForm(int personId)
         {
             InitializeComponent();
-            ConfigureForm();
+            SetContextTitle("Delete Person");
+            this.AllowMaximize = false;
+            this.AllowMinimize = false;
+            this.AllowResize = false;
 
             _personId = personId;
 
@@ -35,24 +39,9 @@ namespace DVLD.PL.PeopleManagement
 
             _personService = new PersonService();
 
-            ApplyStyles();
             RegisterEvents();
             SetupToolTips();
-        }
-
-        private void ConfigureForm()
-        {
-            this.ApplyStandardFormTheme();
-            this.AllowMaximize = false;
-            this.AllowMinimize = false;
-            this.AllowResize = false;
-            SetContextTitle("Delete Person");
-        }
-
-        private void ApplyStyles()
-        {
-            btnDelete.ApplyDangerStyle();
-            btnCancel.ApplySecondaryStyle();
+            base.ApplyTheme();
         }
 
         private void SetupToolTips()
@@ -88,7 +77,7 @@ namespace DVLD.PL.PeopleManagement
         {
             if (_personId <= 0)
             {
-                UITheme.ShowErrorToast("Invalid person identifier.");
+                NotificationTheme.ShowErrorToast("Invalid person identifier.");
                 this.Close();
                 return false;
             }
@@ -131,14 +120,14 @@ namespace DVLD.PL.PeopleManagement
 
         private void OnDeleteSuccess()
         {
-            UITheme.ShowSuccessToast("Person deleted successfully.");
+            NotificationTheme.ShowSuccessToast("Person deleted successfully.");
             DeletedSuccessfully?.Invoke();
             this.Close();
         }
 
         private void OnDeleteFailure(string? errorMessage)
         {
-            UITheme.ShowWarningToast(errorMessage, "Delete Failed");
+            NotificationTheme.ShowWarningToast(errorMessage, "Delete Failed");
         }
 
         private void SetActionButtonsState(bool isEnabled)

@@ -1,5 +1,5 @@
 ﻿using DVLD.PL.Global;
-using static DVLD.PL.Global.UITheme;
+using DVLD.PL.Theme;
 
 namespace DVLD.PL.PeopleManagement
 {
@@ -19,23 +19,16 @@ namespace DVLD.PL.PeopleManagement
         {
             InitializeComponent();
             SetContextTitle("Person Details");
-            this.ApplyStandardFormTheme();
+            base.ApplyTheme();
             this.AllowMaximize = false;
             this.AllowResize = false;
 
             _personId = personId;
 
-            ApplyStyles();
+            ApplyTheme();
             RegisterEvents();
             SetupToolTips();
         }
-
-        private void ApplyStyles()
-        {
-            btnEdit.ApplyPrimaryStyle();
-            btnDelete.ApplyDangerStyle();
-        }
-
         private void SetupToolTips()
         {
             _toolTips = new ToolTip
@@ -57,7 +50,7 @@ namespace DVLD.PL.PeopleManagement
 
             if (_personId <= 0)
             {
-                UITheme.ShowErrorToast("Invalid person identifier.");
+                NotificationTheme.ShowErrorToast("Invalid person identifier.");
                 this.Close();
                 return;
             }
