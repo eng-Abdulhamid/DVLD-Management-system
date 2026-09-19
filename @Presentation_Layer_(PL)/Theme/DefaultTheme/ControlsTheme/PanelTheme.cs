@@ -2,7 +2,7 @@
 {
     public static class PannelTheme
     {
-        public static int PaddingSize { get; set; } = 16;
+        public static int PaddingSize { get; set; } = 0;
 
         public static void ApplyPanelStyle(this Panel pnl)
         {

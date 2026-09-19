@@ -4,6 +4,7 @@ using DVLD.PL.Global;
 using DVLD.PL.Login;
 using DVLD.PL.Management.user_management;
 using DVLD.PL.PeopleManagement;
+using DVLD.PL.Theme;
 using DVLD.PL.UsersManagement;
 
 namespace DVLD.PL
@@ -23,8 +24,7 @@ namespace DVLD.PL
             SetupHeaderIntegration();
             SetupDashboardCards();
             UpdateDashboardInfo();
-
-            //AppSession.OnUserSessionChanged += UpdateDashboardInfo;
+            ApplyTheme();
         }
 
         #region Header & Session Integration
@@ -126,17 +126,19 @@ namespace DVLD.PL
         }
         private static void ConfigureCardHover(Panel card, Action onClick)
         {
-            Color defaultBg = Color.FromArgb(248, 250, 252);
-            Color hoverBg = Color.FromArgb(241, 245, 249);
-
             card.Cursor = Cursors.Hand;
 
             void OnHoverEnter(object? s, EventArgs e)
             {
+                Color hoverBg = ThemeManager.Current.DisabledBackground;
                 card.BackColor = hoverBg;
+
                 foreach (Control ctrl in card.Controls)
                 {
-                    if (ctrl is not Panel) ctrl.BackColor = hoverBg;
+                    if (ctrl is not Panel)
+                    {
+                        ctrl.BackColor = hoverBg;
+                    }
                 }
             }
 
@@ -145,10 +147,15 @@ namespace DVLD.PL
                 Point mouseInCard = card.PointToClient(Cursor.Position);
                 if (!card.ClientRectangle.Contains(mouseInCard))
                 {
+                    Color defaultBg = ThemeManager.Current.Surface;
                     card.BackColor = defaultBg;
+
                     foreach (Control ctrl in card.Controls)
                     {
-                        if (ctrl is not Panel) ctrl.BackColor = defaultBg;
+                        if (ctrl is not Panel)
+                        {
+                            ctrl.BackColor = defaultBg;
+                        }
                     }
                 }
             }
@@ -165,7 +172,6 @@ namespace DVLD.PL
                 child.Click += (s, e) => onClick();
             }
         }
-
         #endregion
 
         #region Centralized Navigation Actions (Single Source of Truth)

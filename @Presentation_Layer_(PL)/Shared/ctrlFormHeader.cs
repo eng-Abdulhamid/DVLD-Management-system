@@ -6,6 +6,7 @@ using DVLD.PL.Home;
 using DVLD.PL.Login;
 using DVLD.PL.Management.user_management;
 using DVLD.PL.Theme;
+
 namespace DVLD.PL.Global
 {
     public partial class ctrlFormHeader : UserControl
@@ -25,14 +26,11 @@ namespace DVLD.PL.Global
         private Form? _parentFormRef;
         private Control? _parentControlRef;
 
-        #region Custom Events for Extensibility
         public event EventHandler? OnSignOutClicked;
-        #endregion
 
         public ctrlFormHeader()
         {
             InitializeComponent();
-
             Dock = DockStyle.Top;
 
             if (!UIUtility.IsDesignMode)
@@ -40,15 +38,67 @@ namespace DVLD.PL.Global
                 RegisterEvents();
                 InitializeUserContextMenu();
                 ThemeManager.ThemeChanged += HandleThemeChanged;
+
                 if (ShowUserProfile)
                 {
                     AppSession.OnUserSessionChanged += UpdateUserProfileDisplay;
                 }
+
+                SetButtonsType();
                 ThemeApplicator.Apply(this);
+                ApplyCustomizeThemeForHeaderButtons();
+                pnlWindowControls.BackColor = Color.Transparent;
             }
         }
 
-        #region Properties
+        private void SetButtonsType()
+        {
+            btnClose.ButtonType = enButtonType.Danger;
+            btnMaximize.ButtonType = enButtonType.Secondary;
+            btnMinimize.ButtonType = enButtonType.Secondary;
+            btnUserProfile.ButtonType = enButtonType.Secondary;
+        }
+
+        private void ApplyCustomizeThemeForHeaderButtons()
+        {
+            Color transparent = Color.Transparent;
+
+            btnClose.BackgroundStartColor = transparent;
+            btnClose.BackgroundEndColor = transparent;
+            btnClose.HoverStartColor = Color.FromArgb(232, 17, 35);
+            btnClose.HoverEndColor = Color.FromArgb(232, 17, 35);
+            btnClose.PressedStartColor = Color.FromArgb(241, 112, 122);
+            btnClose.PressedEndColor = Color.FromArgb(241, 112, 122);
+            btnClose.BorderRadius = 0;
+            btnClose.BorderSize = 0;
+            btnClose.BackColor = transparent;
+
+            btnMaximize.BackgroundStartColor = transparent;
+            btnMaximize.BackgroundEndColor = transparent;
+            btnMaximize.HoverStartColor = ThemeManager.Current.BorderHover;
+            btnMaximize.HoverEndColor = ThemeManager.Current.BorderHover;
+            btnMaximize.PressedStartColor = ThemeManager.Current.Border;
+            btnMaximize.PressedEndColor = ThemeManager.Current.Border;
+            btnMaximize.BorderRadius = 0;
+            btnMaximize.BorderSize = 0;
+            btnMaximize.BackColor = transparent;
+
+            btnMinimize.BackgroundStartColor = transparent;
+            btnMinimize.BackgroundEndColor = transparent;
+            btnMinimize.HoverStartColor = ThemeManager.Current.BorderHover;
+            btnMinimize.HoverEndColor = ThemeManager.Current.BorderHover;
+            btnMinimize.PressedStartColor = ThemeManager.Current.Border;
+            btnMinimize.PressedEndColor = ThemeManager.Current.Border;
+            btnMinimize.BorderRadius = 0;
+            btnMinimize.BorderSize = 0;
+            btnMinimize.BackColor = transparent;
+
+            btnUserProfile.BackgroundStartColor = transparent;
+            btnUserProfile.BackgroundEndColor = transparent;
+            btnUserProfile.BorderRadius = 0;
+            btnUserProfile.BorderSize = 0;
+            btnUserProfile.BackColor = transparent;
+        }
 
         [Category("Header Setup")]
         [DefaultValue(DockStyle.Top)]
@@ -59,7 +109,6 @@ namespace DVLD.PL.Global
         }
 
         [Category("Header Setup")]
-        [Description("The title text displayed on the header.")]
         [Browsable(true)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string TitleText
@@ -111,7 +160,6 @@ namespace DVLD.PL.Global
         } = true;
 
         [Category("Header Setup")]
-        [Description("Show or hide the current user profile badge and settings menu.")]
         [DefaultValue(false)]
         [Browsable(true)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
@@ -132,10 +180,6 @@ namespace DVLD.PL.Global
             }
         } = false;
 
-        #endregion
-
-        #region Menu & Theme Initialization
-
         private void InitializeUserContextMenu()
         {
             var colorTable = new NMenuColorTable
@@ -154,32 +198,31 @@ namespace DVLD.PL.Global
                 DangerHoverBackground = Color.FromArgb(254, 242, 242)
             };
         }
+
         private void HandleThemeChanged(object? s, ThemeManager.ModeEventsArgs e)
         {
             if (IsHandleCreated && !IsDisposed)
             {
                 ThemeApplicator.Apply(this);
+                ApplyCustomizeThemeForHeaderButtons();
             }
         }
+
         private void UpdateUserProfileDisplay()
         {
             if (!ShowUserProfile) return;
 
             if (AppSession.IsAuthenticated)
             {
-                btnUserProfile.Text = $"👤  {AppSession.CurrentUserName}  ▾";
+                btnUserProfile.Text = $"{AppSession.CurrentUserName}";
                 btnUserProfile.Visible = true;
             }
             else
             {
-                btnUserProfile.Text = "👤  Guest  ▾";
+                btnUserProfile.Text = "Guest";
                 btnUserProfile.Visible = false;
             }
         }
-
-        #endregion
-
-        #region Window Dragging & Lifecycle Events
 
         protected override void OnParentChanged(EventArgs e)
         {
@@ -195,7 +238,6 @@ namespace DVLD.PL.Global
             {
                 BackColor = _parentControlRef.BackColor;
                 _parentControlRef.BackColorChanged += Parent_BackColorChanged;
-
                 SendToBack();
             }
         }
@@ -211,7 +253,6 @@ namespace DVLD.PL.Global
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-
             SendToBack();
 
             if (btnClose != null) btnClose.Visible = AllowClose;
@@ -322,28 +363,6 @@ namespace DVLD.PL.Global
             btnMaximize.Text = (ParentForm.WindowState == FormWindowState.Maximized) ? "🗗" : "🗖";
         }
 
-        private static void SetupHoverEffect(Button btn, Color hoverBackColor, Color hoverForeColor)
-        {
-            Color defaultBackColor = Color.Transparent;
-            Color defaultForeColor = btn.ForeColor;
-
-            btn.MouseEnter += (s, e) =>
-            {
-                btn.BackColor = hoverBackColor;
-                btn.ForeColor = hoverForeColor;
-            };
-
-            btn.MouseLeave += (s, e) =>
-            {
-                btn.BackColor = defaultBackColor;
-                btn.ForeColor = defaultForeColor;
-            };
-        }
-
-        #endregion
-
-        #region User Profile Actions
-
         private bool CheckUserAuthentication()
         {
             if (!AppSession.IsAuthenticated)
@@ -366,27 +385,13 @@ namespace DVLD.PL.Global
             }
         }
 
-        private async void BtnUserProfile_Click(object? sender, EventArgs e)
+        private void BtnUserProfile_Click(object? sender, EventArgs e)
         {
             if (CheckUserAuthentication()) return;
             if (contextMenuUser == null) return;
 
-            using (var editUserForm = new frmUserCard(AppSession.CurrentUserID))
-            {
-                editUserForm.OnEditedSuccessfully += async () =>
-                {
-                    await RefreshCurrentUserSessionAsync();
-                };
-
-                editUserForm.OnDeletedSuccessfully += () =>
-                {
-                    NotificationTheme.ShowSuccessToast("Your account has been deleted successfully. The application will now restart.");
-                    Application.Restart();
-                };
-
-                Point screenPos = btnUserProfile.PointToScreen(new Point(btnUserProfile.Width, btnUserProfile.Height));
-                contextMenuUser.Show(screenPos.X - contextMenuUser.PreferredSize.Width, screenPos.Y);
-            }
+            Point screenPos = btnUserProfile.PointToScreen(new Point(btnUserProfile.Width, btnUserProfile.Height));
+            contextMenuUser.Show(screenPos.X - contextMenuUser.PreferredSize.Width, screenPos.Y);
         }
 
         private async void ItemCurrentUserInfo_Click(object? sender, EventArgs e)
@@ -416,7 +421,7 @@ namespace DVLD.PL.Global
             {
                 NotificationTheme.ShowInfoToast("There is no user in the system. Please Log in again.");
             }
-            using (frmForgetPassword frm = new(AppSession.CurrentUserName, "Change Passowrd", false))
+            using (frmForgetPassword frm = new(AppSession.CurrentUserName, "Change Password", false))
             {
                 frm.OnPasswordChange += (username, newPassword) =>
                 {
@@ -438,14 +443,12 @@ namespace DVLD.PL.Global
                 if (ParentForm != null)
                     await frm.ShowDialogAsync(ParentForm);
             }
-            
         }
 
         private void ItemSignOut_Click(object? sender, EventArgs e)
         {
             AppSession.LogOut();
+            OnSignOutClicked?.Invoke(this, EventArgs.Empty);
         }
-
-        #endregion
     }
 }

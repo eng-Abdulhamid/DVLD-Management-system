@@ -2,7 +2,7 @@
 {
     public static class CommonTheme
     {
-        public static int DefaultBorderRadius { get; set; } = 8;
+        public static int DefaultBorderRadius { get; set; } = 0;
 
         public static bool EnableSystemAnimations { get; set; } = true;
 

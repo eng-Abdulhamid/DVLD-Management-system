@@ -377,7 +377,7 @@ namespace DVLD.PL
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(124, 58, 237);
+            BackColor = Color.White;
             ClientSize = new Size(1100, 650);
             Controls.Add(pnlContainer);
             CustomBorderColor = Color.FromArgb(226, 232, 240);

@@ -9,7 +9,7 @@
             enMode.DefaultDark => DefaultDark.Colors,
             enMode.CustomLight => CustomLight.Colors,
             enMode.CustomDark => CustomDark.Colors,
-            _ => DefaultLight.Colors
+            _ => DefaultDark.Colors
         };
         /// <summary>
         /// Raised after the current theme mode changes.

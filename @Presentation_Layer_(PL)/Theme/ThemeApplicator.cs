@@ -35,7 +35,9 @@ namespace DVLD.PL.Theme
                 case ComboBox comboBox:
                     comboBox.ApplyComboBoxStyle();
                     break;
-
+                case Label label:
+                    label.ApplyLabelStyle();
+                    break;
                 case NCheckBox checkBox:
                     checkBox.ApplyCheckBoxStyle();
                     break;
