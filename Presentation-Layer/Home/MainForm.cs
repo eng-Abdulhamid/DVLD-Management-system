@@ -26,7 +26,26 @@ namespace DVLD.PL
             SetupDashboardCards();
             UpdateDashboardInfo();
             ApplyTheme();
+            SetCardsColours(Color.Silver, Color.Black);
+            flowCards.Padding = new Padding(30, 20, 30, 20);
             this.Icon = Resources.home;
+            ThemeManager.ThemeChanged += ThemeManager_ThemeChanged;
+        }
+        private void SetCardsColours(Color IconColor, Color HoverColor)
+        {
+            cardPeople.IconColor = IconColor;
+            cardDrivers.IconColor = IconColor;
+            cardUsers.IconColor = IconColor;
+
+            cardPeople.IconHoverColor = HoverColor;
+            cardDrivers.IconHoverColor = HoverColor;
+            cardUsers.IconHoverColor = HoverColor;
+        }
+        private void ThemeManager_ThemeChanged(object? sender, ThemeManager.ModeEventsArgs e)
+        {
+            ThemePalette theme = ThemeManager.Current;
+
+            SetCardsColours(theme.TextSecondary, theme.PrimaryHover);
         }
 
         #region Header & Session Integration
@@ -46,11 +65,13 @@ namespace DVLD.PL
 
             if (AppSession.IsAuthenticated)
             {
-                lblGreetingTitle.Text = $"Welcome back, {AppSession.CurrentUserName}";
+                lblGreetingTitle.Text =
+                    $"Welcome back, {AppSession.CurrentUserName}";
             }
             else
             {
-                lblGreetingTitle.Text = "Welcome to DVLD Portal";
+                lblGreetingTitle.Text =
+                    "Welcome to DVLD Portal";
             }
         }
 
@@ -62,9 +83,9 @@ namespace DVLD.PL
         {
             var colorTable = new NMenuColorTable
             {
-                CustomBorder = Color.Transparent, 
+                CustomBorder = Color.Transparent,
                 CustomBackground = Color.White,
-                CustomItemSelected = Color.FromArgb(241, 245, 249), 
+                CustomItemSelected = Color.FromArgb(241, 245, 249),
                 CustomSeparator = Color.FromArgb(226, 232, 240)
             };
 
@@ -84,21 +105,29 @@ namespace DVLD.PL
         {
             foreach (ToolStripItem item in menuStrip1.Items)
             {
-                item.MouseEnter += (s, e) => Cursor = Cursors.Hand;
-                item.MouseLeave += (s, e) => Cursor = Cursors.Default;
+                item.MouseEnter += (s, e) =>
+                    Cursor = Cursors.Hand;
+
+                item.MouseLeave += (s, e) =>
+                    Cursor = Cursors.Default;
 
                 if (item is ToolStripMenuItem menuItem)
                 {
-                    if (menuItem.DropDown is ToolStripDropDownMenu dropDown)
+                    if (menuItem.DropDown
+                        is ToolStripDropDownMenu dropDown)
                     {
                         dropDown.ShowImageMargin = false;
                         dropDown.Padding = new Padding(4);
                     }
 
-                    foreach (ToolStripItem subItem in menuItem.DropDownItems)
+                    foreach (ToolStripItem subItem
+                             in menuItem.DropDownItems)
                     {
-                        subItem.MouseEnter += (s, e) => Cursor = Cursors.Hand;
-                        subItem.MouseLeave += (s, e) => Cursor = Cursors.Default;
+                        subItem.MouseEnter += (s, e) =>
+                            Cursor = Cursors.Hand;
+
+                        subItem.MouseLeave += (s, e) =>
+                            Cursor = Cursors.Default;
                     }
                 }
             }
@@ -122,58 +151,16 @@ namespace DVLD.PL
 
         private void SetupDashboardCards()
         {
-            ConfigureCardHover(cardPeople, OpenPeopleManagement);
-            ConfigureCardHover(cardDrivers, OpenDriversManagement);
-            ConfigureCardHover(cardUsers, OpenUsersManagement);
+            cardPeople.Click +=
+                (s, e) => OpenPeopleManagement();
+
+            cardDrivers.Click +=
+                (s, e) => OpenDriversManagement();
+
+            cardUsers.Click +=
+                (s, e) => OpenUsersManagement();
         }
-        private static void ConfigureCardHover(Panel card, Action onClick)
-        {
-            card.Cursor = Cursors.Hand;
 
-            void OnHoverEnter(object? s, EventArgs e)
-            {
-                Color hoverBg = ThemeManager.Current.DisabledBackground;
-                card.BackColor = hoverBg;
-
-                foreach (Control ctrl in card.Controls)
-                {
-                    if (ctrl is not Panel)
-                    {
-                        ctrl.BackColor = hoverBg;
-                    }
-                }
-            }
-
-            void OnHoverLeave(object? s, EventArgs e)
-            {
-                Point mouseInCard = card.PointToClient(Cursor.Position);
-                if (!card.ClientRectangle.Contains(mouseInCard))
-                {
-                    Color defaultBg = ThemeManager.Current.Surface;
-                    card.BackColor = defaultBg;
-
-                    foreach (Control ctrl in card.Controls)
-                    {
-                        if (ctrl is not Panel)
-                        {
-                            ctrl.BackColor = defaultBg;
-                        }
-                    }
-                }
-            }
-
-            card.MouseEnter += OnHoverEnter;
-            card.MouseLeave += OnHoverLeave;
-            card.Click += (s, e) => onClick();
-
-            foreach (Control child in card.Controls)
-            {
-                child.Cursor = Cursors.Hand;
-                child.MouseEnter += OnHoverEnter;
-                child.MouseLeave += OnHoverLeave;
-                child.Click += (s, e) => onClick();
-            }
-        }
         #endregion
 
         #region Centralized Navigation Actions (Single Source of Truth)
@@ -182,7 +169,10 @@ namespace DVLD.PL
         private frmUserManagement? _frmUserManagementInstance;
         private frmDriverManagement? _frmDriverManagementInstance;
 
-        private void OpenFormSingleton<T>(ref T? formInstance, Func<T> formFactory) where T : Form
+        private void OpenFormSingleton<T>(
+            ref T? formInstance,
+            Func<T> formFactory)
+            where T : Form
         {
             if (formInstance == null || formInstance.IsDisposed)
             {
@@ -191,9 +181,11 @@ namespace DVLD.PL
             }
             else
             {
-                if (formInstance.WindowState == FormWindowState.Minimized)
+                if (formInstance.WindowState ==
+                    FormWindowState.Minimized)
                 {
-                    formInstance.WindowState = FormWindowState.Normal;
+                    formInstance.WindowState =
+                        FormWindowState.Normal;
                 }
 
                 formInstance.BringToFront();
@@ -201,27 +193,41 @@ namespace DVLD.PL
             }
         }
 
-        public void OpenPeopleManagement() => OpenFormSingleton(ref _frmPeopleManagementInstance, () => new frmPeopleManagement());
+        public void OpenPeopleManagement() =>
+            OpenFormSingleton(
+                ref _frmPeopleManagementInstance,
+                () => new frmPeopleManagement());
 
-        public void OpenUsersManagement() => OpenFormSingleton(ref _frmUserManagementInstance, () => new frmUserManagement());
+        public void OpenUsersManagement() =>
+            OpenFormSingleton(
+                ref _frmUserManagementInstance,
+                () => new frmUserManagement());
 
-        public void OpenDriversManagement() => OpenFormSingleton(ref _frmDriverManagementInstance, () => new frmDriverManagement());
+        public void OpenDriversManagement() =>
+            OpenFormSingleton(
+                ref _frmDriverManagementInstance,
+                () => new frmDriverManagement());
 
         public void OpenCurrentUserInfo()
         {
-            if (!AppSession.IsAuthenticated) return;
+            if (!AppSession.IsAuthenticated)
+                return;
 
-            using (frmUserCard frm = new frmUserCard(AppSession.CurrentUserID))
+            using (frmUserCard frm =
+                   new frmUserCard(AppSession.CurrentUserID))
             {
-                frm.ShowDialog(this); 
+                frm.ShowDialog(this);
             }
         }
 
         public void OpenChangePassword()
         {
-            if (!AppSession.IsAuthenticated) return;
+            if (!AppSession.IsAuthenticated)
+                return;
 
-            using (frmForgetPassword frm = new frmForgetPassword(AppSession.CurrentUserName))
+            using (frmForgetPassword frm =
+                   new frmForgetPassword(
+                       AppSession.CurrentUserName))
             {
                 frm.ShowDialog(this);
             }
@@ -231,15 +237,35 @@ namespace DVLD.PL
 
         #region Menu Click Handlers
 
-        private void btnPeopleManagement_Click(object sender, EventArgs e) => OpenPeopleManagement();
-        private void btnUsersManagement_Click(object sender, EventArgs e) => OpenUsersManagement();
-        private void btnDriversManagement_Click(object sender, EventArgs e) => OpenDriversManagement();
-        private void btnCurrentUserInfo_Click(object sender, EventArgs e) => OpenCurrentUserInfo();
-        private void btnChangePassword_Click(object sender, EventArgs e) => OpenChangePassword();
+        private void btnPeopleManagement_Click(
+            object sender,
+            EventArgs e) =>
+            OpenPeopleManagement();
+
+        private void btnUsersManagement_Click(
+            object sender,
+            EventArgs e) =>
+            OpenUsersManagement();
+
+        private void btnDriversManagement_Click(
+            object sender,
+            EventArgs e) =>
+            OpenDriversManagement();
+
+        private void btnCurrentUserInfo_Click(
+            object sender,
+            EventArgs e) =>
+            OpenCurrentUserInfo();
+
+        private void btnChangePassword_Click(
+            object sender,
+            EventArgs e) =>
+            OpenChangePassword();
 
         #endregion
 
-        protected override void OnFormClosed(FormClosedEventArgs e)
+        protected override void OnFormClosed(
+            FormClosedEventArgs e)
         {
             base.OnFormClosed(e);
         }

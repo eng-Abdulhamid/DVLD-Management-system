@@ -46,11 +46,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\@Custom_Controls\CustomizeControls.csproj" />
-		<ProjectReference Include="..\@Business_Logic_Layer_(BLL)\DVLD.BLL.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<Compile Update="Properties\Resources.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
@@ -68,5 +63,8 @@
 	<ItemGroup>
 	  <Folder Include="Common\Theme\SettingsTheme\" />
 	</ItemGroup>
-
+<ItemGroup>
+    <ProjectReference Include="..\Custom-WinForm-Controls\CustomizeControls.csproj" />
+    <ProjectReference Include="..\Business-Logic-Layer\DVLD.BLL.csproj" />
+</ItemGroup>
 </Project>

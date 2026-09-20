@@ -23,7 +23,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\@Data_Access_Layer_(DAL)\DVLD.DAL.csproj" />
+		<ProjectReference Include="..\Data-Access-Layer\DVLD.DAL.csproj" />
 	</ItemGroup>
-
 </Project>
