@@ -26,11 +26,10 @@
             if (lbl == null)
                 return;
 
-            var (accent, background) = GetColors(state);
+            var foreColor = GetForeColor(state);
 
             lbl.Text = text;
-            lbl.BackColor = background;
-            lbl.ForeColor = accent;
+            lbl.ForeColor = foreColor;
 
             lbl.Font = CommonTheme.CreateFont(
                 FontSize,
@@ -39,13 +38,30 @@
             lbl.TextAlign = ContentAlignment.MiddleCenter;
             lbl.Padding = Padding;
         }
+        public static void ApplyStatusBadge(
+            this Label lbl,
+            StatusLabelStyler state)
+        {
+            if (lbl == null)
+                return;
 
-        private static (Color Accent, Color Background) GetColors(
+            var foreColor = GetForeColor(state);
+
+            lbl.ForeColor = foreColor;
+
+            lbl.Font = CommonTheme.CreateFont(
+                FontSize,
+                FontStyle.Bold);
+
+            lbl.TextAlign = ContentAlignment.MiddleCenter;
+            lbl.Padding = Padding;
+        }
+        private static Color GetForeColor(
             StatusLabelStyler state)
         {
             var colors = ThemeManager.Current;
 
-            Color accent = state switch
+            return state switch
             {
                 StatusLabelStyler.Success => colors.Success,
                 StatusLabelStyler.Danger => colors.Danger,
@@ -53,12 +69,6 @@
                 StatusLabelStyler.Info => colors.Info,
                 _ => colors.TextMuted
             };
-
-            Color background = Color.FromArgb(
-                BackgroundAlpha,
-                accent);
-
-            return (accent, background);
         }
     }
 }

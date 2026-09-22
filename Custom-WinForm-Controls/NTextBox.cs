@@ -104,6 +104,7 @@ namespace CustomizeControls
             base.OnEnter(e);
             textBox.Visible = true;
             textBox.Focus();
+            
         }
 
         [Category("NTextBox - Text")]
@@ -123,7 +124,170 @@ namespace CustomizeControls
             add => textBox.KeyPress += value;
             remove => textBox.KeyPress -= value;
         }
+        // =========================
+        // Standard TextBox Properties
+        // =========================
 
+        [Category("NTextBox - TextBox")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public bool AcceptsReturn
+        {
+            get => textBox.AcceptsReturn;
+            set => textBox.AcceptsReturn = value;
+        }
+
+        [Category("NTextBox - TextBox")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public bool AcceptsTab
+        {
+            get => textBox.AcceptsTab;
+            set => textBox.AcceptsTab = value;
+        }
+
+        [Category("NTextBox - TextBox")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public AutoCompleteStringCollection AutoCompleteCustomSource
+        {
+            get => textBox.AutoCompleteCustomSource;
+            set => textBox.AutoCompleteCustomSource = value;
+        }
+
+        [Category("NTextBox - TextBox")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public AutoCompleteMode AutoCompleteMode
+        {
+            get => textBox.AutoCompleteMode;
+            set => textBox.AutoCompleteMode = value;
+        }
+
+        [Category("NTextBox - TextBox")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public AutoCompleteSource AutoCompleteSource
+        {
+            get => textBox.AutoCompleteSource;
+            set => textBox.AutoCompleteSource = value;
+        }
+
+        [Category("NTextBox - TextBox")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public CharacterCasing CharacterCasing
+        {
+            get => textBox.CharacterCasing;
+            set => textBox.CharacterCasing = value;
+        }
+
+        [Category("NTextBox - TextBox")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public bool HideSelection
+        {
+            get => textBox.HideSelection;
+            set => textBox.HideSelection = value;
+        }
+
+        [Category("NTextBox - TextBox")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public string[] Lines
+        {
+            get => textBox.Lines;
+            set => textBox.Lines = value;
+        }
+
+        [Category("NTextBox - TextBox")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public bool Multiline
+        {
+            get => textBox.Multiline;
+            set
+            {
+                textBox.Multiline = value;
+                UpdateControlHeight();
+                UpdateLayout();
+            }
+        }
+
+        [Category("NTextBox - TextBox")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public char PasswordChar
+        {
+            get => textBox.PasswordChar;
+            set => textBox.PasswordChar = value;
+        }
+
+        [Category("NTextBox - TextBox")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public bool ReadOnly
+        {
+            get => textBox.ReadOnly;
+            set => textBox.ReadOnly = value;
+        }
+
+        [Category("NTextBox - TextBox")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public ScrollBars ScrollBars
+        {
+            get => textBox.ScrollBars;
+            set => textBox.ScrollBars = value;
+        }
+
+        [Category("NTextBox - TextBox")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public bool ShortcutsEnabled
+        {
+            get => textBox.ShortcutsEnabled;
+            set => textBox.ShortcutsEnabled = value;
+        }
+
+        [Category("NTextBox - TextBox")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public HorizontalAlignment TextAlign
+        {
+            get => textBox.TextAlign;
+            set => textBox.TextAlign = value;
+        }
+
+        [Category("NTextBox - TextBox")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public bool WordWrap
+        {
+            get => textBox.WordWrap;
+            set => textBox.WordWrap = value;
+        }
+
+        [Category("NTextBox - TextBox")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public bool Modified
+        {
+            get => textBox.Modified;
+            set => textBox.Modified = value;
+        }
+
+        [Category("NTextBox - TextBox")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public int SelectionStart
+        {
+            get => textBox.SelectionStart;
+            set => textBox.SelectionStart = value;
+        }
+
+        [Category("NTextBox - TextBox")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public int SelectionLength
+        {
+            get => textBox.SelectionLength;
+            set => textBox.SelectionLength = value;
+        }
+
+        [Category("NTextBox - TextBox")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public string SelectedText
+        {
+            get => textBox.SelectedText;
+            set => textBox.SelectedText = value;
+        }
+
+        [Category("NTextBox - TextBox")]
+        [Browsable(false)]
+        public bool CanUndo => textBox.CanUndo;
         public NTextBox()
         {
             AutoScaleMode = AutoScaleMode.None;
@@ -365,7 +529,6 @@ namespace CustomizeControls
             get => textBox.UseSystemPasswordChar;
             set { textBox.UseSystemPasswordChar = value; Invalidate(); }
         }
-
         [Category("NTextBox - Icons")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool ShowClearButton

@@ -13,17 +13,6 @@ namespace DVLD.PL.Login
         private NButton btnVerifyUser;
         private NButton btnVerifiedCheck;
         private NButton btnEditUsername;
-        private System.Windows.Forms.Label lblStatus;
-        private System.Windows.Forms.Panel pnlCreateNewPassword;
-        private System.Windows.Forms.Label lblOldPassword;
-        private CustomizeControls.NTextBox txtOldPassword;
-        private System.Windows.Forms.Label lblNewPassword;
-        private CustomizeControls.NTextBox txtNewPassword;
-        private System.Windows.Forms.Label lblConfirmPassword;
-        private CustomizeControls.NTextBox txtConfirmPassword;
-        private System.Windows.Forms.LinkLabel lnkForgotCurrentPassword;
-        private NButton btnChangePassword;
-        private NButton btnCancel;
         private System.Windows.Forms.ToolTip toolTip1;
 
         protected override void Dispose(bool disposing)
@@ -39,45 +28,29 @@ namespace DVLD.PL.Login
         {
             components = new System.ComponentModel.Container();
             toolTip1 = new ToolTip(components);
-            lblStatus = new Label();
             btnEditUsername = new NButton();
             btnVerifiedCheck = new NButton();
             btnVerifyUser = new NButton();
             txtUserName = new NTextBox();
             lblUsername = new Label();
+            pnlMain = new Panel();
             pnlCreateNewPassword = new Panel();
-            lblOldPassword = new Label();
             txtOldPassword = new NTextBox();
-            lblNewPassword = new Label();
-            txtNewPassword = new NTextBox();
-            lblConfirmPassword = new Label();
-            txtConfirmPassword = new NTextBox();
+            lblOldPassword = new Label();
             lnkForgotCurrentPassword = new LinkLabel();
+            ctrlPasswordInput = new DVLD.PL.UsersManagement.PasswordInputControl();
             btnChangePassword = new NButton();
             btnCancel = new NButton();
-            pnlMain = new Panel();
-            pnlCreateNewPassword.SuspendLayout();
             pnlMain.SuspendLayout();
+            pnlCreateNewPassword.SuspendLayout();
             SuspendLayout();
             // 
             // headerControl
             // 
             headerControl.AllowMaximize = false;
             headerControl.AllowMinimize = false;
-            headerControl.Size = new Size(492, 38);
+            headerControl.Size = new Size(505, 38);
             headerControl.TitleText = "DVLD - Reset Password";
-            // 
-            // lblStatus
-            // 
-            lblStatus.AutoSize = true;
-            lblStatus.Font = new Font("Segoe UI", 9F);
-            lblStatus.ForeColor = Color.FromArgb(100, 116, 139);
-            lblStatus.Location = new Point(10, 270);
-            lblStatus.Name = "lblStatus";
-            lblStatus.Size = new Size(70, 15);
-            lblStatus.TabIndex = 11;
-            lblStatus.Text = "Status Label";
-            lblStatus.Visible = false;
             // 
             // btnEditUsername
             // 
@@ -114,7 +87,7 @@ namespace DVLD.PL.Login
             btnEditUsername.IconSpacing = 5;
             btnEditUsername.IsLoading = false;
             btnEditUsername.LeftIcon = null;
-            btnEditUsername.Location = new Point(413, 92);
+            btnEditUsername.Location = new Point(428, 74);
             btnEditUsername.MiddleIcon = Properties.Resources.editSquare;
             btnEditUsername.Name = "btnEditUsername";
             btnEditUsername.PressedEndColor = Color.FromArgb(204, 228, 247);
@@ -166,7 +139,7 @@ namespace DVLD.PL.Login
             btnVerifiedCheck.IconSpacing = 5;
             btnVerifiedCheck.IsLoading = false;
             btnVerifiedCheck.LeftIcon = null;
-            btnVerifiedCheck.Location = new Point(349, 92);
+            btnVerifiedCheck.Location = new Point(364, 74);
             btnVerifiedCheck.MiddleIcon = Properties.Resources.hasFounded;
             btnVerifiedCheck.Name = "btnVerifiedCheck";
             btnVerifiedCheck.PressedEndColor = Color.FromArgb(204, 228, 247);
@@ -220,7 +193,7 @@ namespace DVLD.PL.Login
             btnVerifyUser.IconSpacing = 5;
             btnVerifyUser.IsLoading = false;
             btnVerifyUser.LeftIcon = null;
-            btnVerifyUser.Location = new Point(341, 92);
+            btnVerifyUser.Location = new Point(356, 74);
             btnVerifyUser.MiddleIcon = null;
             btnVerifyUser.Name = "btnVerifyUser";
             btnVerifyUser.PressedEndColor = Color.FromArgb(204, 228, 247);
@@ -240,16 +213,21 @@ namespace DVLD.PL.Login
             // 
             // txtUserName
             // 
+            txtUserName.AcceptsReturn = false;
+            txtUserName.AcceptsTab = false;
             txtUserName.AllowArabicCharacters = false;
             txtUserName.AllowEnglishCharacters = true;
             txtUserName.AllowNumbers = true;
             txtUserName.AllowSpaces = false;
             txtUserName.AllowSymbols = true;
+            txtUserName.AutoCompleteMode = AutoCompleteMode.None;
+            txtUserName.AutoCompleteSource = AutoCompleteSource.None;
             txtUserName.BackColor = Color.Transparent;
             txtUserName.BorderColor = Color.FromArgb(226, 232, 240);
             txtUserName.BorderFocusColor = Color.FromArgb(124, 58, 237);
             txtUserName.BorderRadius = 8;
             txtUserName.BorderSize = 1;
+            txtUserName.CharacterCasing = CharacterCasing.Normal;
             txtUserName.CustomAllowedCharacters = "";
             txtUserName.EnableIconTinting = true;
             txtUserName.EnableSuggest = false;
@@ -258,6 +236,7 @@ namespace DVLD.PL.Login
             txtUserName.Font = new Font("Segoe UI", 10F);
             txtUserName.ForeColor = Color.FromArgb(15, 23, 42);
             txtUserName.HasError = false;
+            txtUserName.HideSelection = true;
             txtUserName.HoverIconColor = Color.FromArgb(15, 23, 42);
             txtUserName.IconColor = Color.FromArgb(148, 163, 184);
             txtUserName.IconOffsetLeft = 12;
@@ -266,75 +245,93 @@ namespace DVLD.PL.Login
             txtUserName.IconSpacing = 8;
             txtUserName.LeftIcon = Properties.Resources.User;
             txtUserName.LeftIconClickable = false;
-            txtUserName.Location = new Point(35, 92);
+            txtUserName.Location = new Point(50, 74);
             txtUserName.MaxLength = 50;
             txtUserName.MaxSuggestItems = 8;
+            txtUserName.Modified = false;
             txtUserName.MoveToNextControlOnEnter = true;
+            txtUserName.Multiline = false;
             txtUserName.Name = "txtUserName";
             txtUserName.Padding = new Padding(8, 12, 8, 12);
+            txtUserName.PasswordChar = '\0';
             txtUserName.PlaceholderColor = Color.FromArgb(148, 163, 184);
             txtUserName.PlaceholderText = "Enter your username";
+            txtUserName.ReadOnly = false;
             txtUserName.RightIcon = null;
             txtUserName.RightIconClickable = false;
+            txtUserName.ScrollBars = ScrollBars.None;
+            txtUserName.SelectedText = "";
+            txtUserName.SelectionLength = 0;
+            txtUserName.SelectionStart = 0;
+            txtUserName.ShortcutsEnabled = true;
             txtUserName.ShowClearButton = false;
             txtUserName.Size = new Size(300, 44);
             txtUserName.SuggestIcon = null;
             txtUserName.TabIndex = 0;
+            txtUserName.TextAlign = HorizontalAlignment.Left;
             txtUserName.UseSystemPasswordChar = false;
             txtUserName.ValidateEmail = false;
+            txtUserName.WordWrap = true;
             // 
             // lblUsername
             // 
             lblUsername.AutoSize = true;
             lblUsername.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblUsername.ForeColor = Color.FromArgb(71, 85, 105);
-            lblUsername.Location = new Point(35, 69);
+            lblUsername.Location = new Point(50, 51);
             lblUsername.Name = "lblUsername";
             lblUsername.Size = new Size(69, 17);
             lblUsername.TabIndex = 3;
             lblUsername.Text = "Username";
             // 
+            // pnlMain
+            // 
+            pnlMain.BackColor = Color.White;
+            pnlMain.Controls.Add(pnlCreateNewPassword);
+            pnlMain.Controls.Add(btnChangePassword);
+            pnlMain.Controls.Add(btnCancel);
+            pnlMain.Controls.Add(lblUsername);
+            pnlMain.Controls.Add(txtUserName);
+            pnlMain.Controls.Add(btnVerifyUser);
+            pnlMain.Controls.Add(btnVerifiedCheck);
+            pnlMain.Controls.Add(btnEditUsername);
+            pnlMain.Dock = DockStyle.Fill;
+            pnlMain.Location = new Point(2, 2);
+            pnlMain.Name = "pnlMain";
+            pnlMain.Size = new Size(505, 638);
+            pnlMain.TabIndex = 0;
+            // 
             // pnlCreateNewPassword
             // 
-            pnlCreateNewPassword.Controls.Add(lblOldPassword);
+            pnlCreateNewPassword.Anchor = AnchorStyles.None;
             pnlCreateNewPassword.Controls.Add(txtOldPassword);
-            pnlCreateNewPassword.Controls.Add(lblNewPassword);
-            pnlCreateNewPassword.Controls.Add(txtNewPassword);
-            pnlCreateNewPassword.Controls.Add(lblConfirmPassword);
-            pnlCreateNewPassword.Controls.Add(txtConfirmPassword);
-            pnlCreateNewPassword.Controls.Add(lblStatus);
+            pnlCreateNewPassword.Controls.Add(lblOldPassword);
             pnlCreateNewPassword.Controls.Add(lnkForgotCurrentPassword);
-            pnlCreateNewPassword.Controls.Add(btnChangePassword);
-            pnlCreateNewPassword.Controls.Add(btnCancel);
-            pnlCreateNewPassword.Location = new Point(25, 193);
+            pnlCreateNewPassword.Controls.Add(ctrlPasswordInput);
+            pnlCreateNewPassword.Location = new Point(30, 134);
             pnlCreateNewPassword.Name = "pnlCreateNewPassword";
-            pnlCreateNewPassword.Size = new Size(352, 344);
-            pnlCreateNewPassword.TabIndex = 14;
+            pnlCreateNewPassword.Size = new Size(395, 427);
+            pnlCreateNewPassword.TabIndex = 17;
             pnlCreateNewPassword.Visible = false;
-            // 
-            // lblOldPassword
-            // 
-            lblOldPassword.AutoSize = true;
-            lblOldPassword.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
-            lblOldPassword.ForeColor = Color.FromArgb(71, 85, 105);
-            lblOldPassword.Location = new Point(10, 42);
-            lblOldPassword.Name = "lblOldPassword";
-            lblOldPassword.Size = new Size(116, 17);
-            lblOldPassword.TabIndex = 6;
-            lblOldPassword.Text = "Current password";
             // 
             // txtOldPassword
             // 
+            txtOldPassword.AcceptsReturn = false;
+            txtOldPassword.AcceptsTab = false;
             txtOldPassword.AllowArabicCharacters = true;
             txtOldPassword.AllowEnglishCharacters = true;
             txtOldPassword.AllowNumbers = true;
             txtOldPassword.AllowSpaces = true;
             txtOldPassword.AllowSymbols = true;
+            txtOldPassword.Anchor = AnchorStyles.None;
+            txtOldPassword.AutoCompleteMode = AutoCompleteMode.None;
+            txtOldPassword.AutoCompleteSource = AutoCompleteSource.None;
             txtOldPassword.BackColor = Color.Transparent;
             txtOldPassword.BorderColor = Color.FromArgb(226, 232, 240);
             txtOldPassword.BorderFocusColor = Color.FromArgb(124, 58, 237);
             txtOldPassword.BorderRadius = 8;
             txtOldPassword.BorderSize = 1;
+            txtOldPassword.CharacterCasing = CharacterCasing.Normal;
             txtOldPassword.CustomAllowedCharacters = "";
             txtOldPassword.EnableIconTinting = true;
             txtOldPassword.EnableSuggest = false;
@@ -343,6 +340,7 @@ namespace DVLD.PL.Login
             txtOldPassword.Font = new Font("Segoe UI", 10F);
             txtOldPassword.ForeColor = Color.FromArgb(15, 23, 42);
             txtOldPassword.HasError = false;
+            txtOldPassword.HideSelection = true;
             txtOldPassword.HoverIconColor = Color.FromArgb(15, 23, 42);
             txtOldPassword.IconColor = Color.FromArgb(148, 163, 184);
             txtOldPassword.IconOffsetLeft = 10;
@@ -351,152 +349,73 @@ namespace DVLD.PL.Login
             txtOldPassword.IconSpacing = 8;
             txtOldPassword.LeftIcon = null;
             txtOldPassword.LeftIconClickable = false;
-            txtOldPassword.Location = new Point(10, 64);
+            txtOldPassword.Location = new Point(18, 30);
             txtOldPassword.MaxLength = 50;
             txtOldPassword.MaxSuggestItems = 8;
+            txtOldPassword.Modified = false;
             txtOldPassword.MoveToNextControlOnEnter = true;
+            txtOldPassword.Multiline = false;
             txtOldPassword.Name = "txtOldPassword";
             txtOldPassword.Padding = new Padding(8, 12, 8, 12);
+            txtOldPassword.PasswordChar = '●';
             txtOldPassword.PlaceholderColor = Color.FromArgb(148, 163, 184);
             txtOldPassword.PlaceholderText = "Enter your current password";
+            txtOldPassword.ReadOnly = false;
             txtOldPassword.RightIcon = Properties.Resources.visibilityOff;
             txtOldPassword.RightIconClickable = true;
+            txtOldPassword.ScrollBars = ScrollBars.None;
+            txtOldPassword.SelectedText = "";
+            txtOldPassword.SelectionLength = 0;
+            txtOldPassword.SelectionStart = 0;
+            txtOldPassword.ShortcutsEnabled = true;
             txtOldPassword.ShowClearButton = false;
             txtOldPassword.Size = new Size(330, 44);
             txtOldPassword.SuggestIcon = null;
-            txtOldPassword.TabIndex = 4;
+            txtOldPassword.TabIndex = 21;
+            txtOldPassword.TextAlign = HorizontalAlignment.Left;
             txtOldPassword.UseSystemPasswordChar = true;
             txtOldPassword.ValidateEmail = false;
+            txtOldPassword.WordWrap = true;
             // 
-            // lblNewPassword
+            // lblOldPassword
             // 
-            lblNewPassword.AutoSize = true;
-            lblNewPassword.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
-            lblNewPassword.ForeColor = Color.FromArgb(71, 85, 105);
-            lblNewPassword.Location = new Point(10, 120);
-            lblNewPassword.Name = "lblNewPassword";
-            lblNewPassword.Size = new Size(97, 17);
-            lblNewPassword.TabIndex = 7;
-            lblNewPassword.Text = "New password";
-            // 
-            // txtNewPassword
-            // 
-            txtNewPassword.AllowArabicCharacters = true;
-            txtNewPassword.AllowEnglishCharacters = true;
-            txtNewPassword.AllowNumbers = true;
-            txtNewPassword.AllowSpaces = true;
-            txtNewPassword.AllowSymbols = true;
-            txtNewPassword.BackColor = Color.Transparent;
-            txtNewPassword.BorderColor = Color.FromArgb(226, 232, 240);
-            txtNewPassword.BorderFocusColor = Color.FromArgb(124, 58, 237);
-            txtNewPassword.BorderRadius = 8;
-            txtNewPassword.BorderSize = 1;
-            txtNewPassword.CustomAllowedCharacters = "";
-            txtNewPassword.EnableIconTinting = true;
-            txtNewPassword.EnableSuggest = false;
-            txtNewPassword.ErrorBorderColor = Color.FromArgb(239, 68, 68);
-            txtNewPassword.FillColor = Color.White;
-            txtNewPassword.Font = new Font("Segoe UI", 10F);
-            txtNewPassword.ForeColor = Color.FromArgb(15, 23, 42);
-            txtNewPassword.HasError = false;
-            txtNewPassword.HoverIconColor = Color.FromArgb(15, 23, 42);
-            txtNewPassword.IconColor = Color.FromArgb(148, 163, 184);
-            txtNewPassword.IconOffsetLeft = 10;
-            txtNewPassword.IconOffsetRight = 12;
-            txtNewPassword.IconSize = new Size(18, 18);
-            txtNewPassword.IconSpacing = 8;
-            txtNewPassword.LeftIcon = null;
-            txtNewPassword.LeftIconClickable = false;
-            txtNewPassword.Location = new Point(10, 142);
-            txtNewPassword.MaxLength = 50;
-            txtNewPassword.MaxSuggestItems = 8;
-            txtNewPassword.MoveToNextControlOnEnter = true;
-            txtNewPassword.Name = "txtNewPassword";
-            txtNewPassword.Padding = new Padding(8, 12, 8, 12);
-            txtNewPassword.PlaceholderColor = Color.FromArgb(148, 163, 184);
-            txtNewPassword.PlaceholderText = "Enter a new password";
-            txtNewPassword.RightIcon = Properties.Resources.visibilityOff;
-            txtNewPassword.RightIconClickable = true;
-            txtNewPassword.ShowClearButton = false;
-            txtNewPassword.Size = new Size(330, 44);
-            txtNewPassword.SuggestIcon = null;
-            txtNewPassword.TabIndex = 5;
-            txtNewPassword.UseSystemPasswordChar = true;
-            txtNewPassword.ValidateEmail = false;
-            // 
-            // lblConfirmPassword
-            // 
-            lblConfirmPassword.AutoSize = true;
-            lblConfirmPassword.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
-            lblConfirmPassword.ForeColor = Color.FromArgb(71, 85, 105);
-            lblConfirmPassword.Location = new Point(10, 198);
-            lblConfirmPassword.Name = "lblConfirmPassword";
-            lblConfirmPassword.Size = new Size(147, 17);
-            lblConfirmPassword.TabIndex = 8;
-            lblConfirmPassword.Text = "Confirm new password";
-            // 
-            // txtConfirmPassword
-            // 
-            txtConfirmPassword.AllowArabicCharacters = true;
-            txtConfirmPassword.AllowEnglishCharacters = true;
-            txtConfirmPassword.AllowNumbers = true;
-            txtConfirmPassword.AllowSpaces = true;
-            txtConfirmPassword.AllowSymbols = true;
-            txtConfirmPassword.BackColor = Color.Transparent;
-            txtConfirmPassword.BorderColor = Color.FromArgb(226, 232, 240);
-            txtConfirmPassword.BorderFocusColor = Color.FromArgb(124, 58, 237);
-            txtConfirmPassword.BorderRadius = 8;
-            txtConfirmPassword.BorderSize = 1;
-            txtConfirmPassword.CustomAllowedCharacters = "";
-            txtConfirmPassword.EnableIconTinting = true;
-            txtConfirmPassword.EnableSuggest = false;
-            txtConfirmPassword.ErrorBorderColor = Color.FromArgb(239, 68, 68);
-            txtConfirmPassword.FillColor = Color.White;
-            txtConfirmPassword.Font = new Font("Segoe UI", 10F);
-            txtConfirmPassword.ForeColor = Color.FromArgb(15, 23, 42);
-            txtConfirmPassword.HasError = false;
-            txtConfirmPassword.HoverIconColor = Color.FromArgb(15, 23, 42);
-            txtConfirmPassword.IconColor = Color.FromArgb(148, 163, 184);
-            txtConfirmPassword.IconOffsetLeft = 10;
-            txtConfirmPassword.IconOffsetRight = 12;
-            txtConfirmPassword.IconSize = new Size(18, 18);
-            txtConfirmPassword.IconSpacing = 8;
-            txtConfirmPassword.LeftIcon = null;
-            txtConfirmPassword.LeftIconClickable = false;
-            txtConfirmPassword.Location = new Point(10, 220);
-            txtConfirmPassword.MaxLength = 50;
-            txtConfirmPassword.MaxSuggestItems = 8;
-            txtConfirmPassword.MoveToNextControlOnEnter = true;
-            txtConfirmPassword.Name = "txtConfirmPassword";
-            txtConfirmPassword.Padding = new Padding(8, 12, 8, 12);
-            txtConfirmPassword.PlaceholderColor = Color.FromArgb(148, 163, 184);
-            txtConfirmPassword.PlaceholderText = "Re-enter the new password";
-            txtConfirmPassword.RightIcon = Properties.Resources.visibilityOff;
-            txtConfirmPassword.RightIconClickable = true;
-            txtConfirmPassword.ShowClearButton = false;
-            txtConfirmPassword.Size = new Size(330, 44);
-            txtConfirmPassword.SuggestIcon = null;
-            txtConfirmPassword.TabIndex = 6;
-            txtConfirmPassword.UseSystemPasswordChar = true;
-            txtConfirmPassword.ValidateEmail = false;
+            lblOldPassword.Anchor = AnchorStyles.None;
+            lblOldPassword.AutoSize = true;
+            lblOldPassword.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblOldPassword.ForeColor = Color.FromArgb(71, 85, 105);
+            lblOldPassword.Location = new Point(18, 8);
+            lblOldPassword.Name = "lblOldPassword";
+            lblOldPassword.Size = new Size(116, 17);
+            lblOldPassword.TabIndex = 22;
+            lblOldPassword.Text = "Current password";
             // 
             // lnkForgotCurrentPassword
             // 
             lnkForgotCurrentPassword.ActiveLinkColor = Color.FromArgb(126, 87, 194);
+            lnkForgotCurrentPassword.Anchor = AnchorStyles.None;
             lnkForgotCurrentPassword.AutoSize = true;
             lnkForgotCurrentPassword.Cursor = Cursors.Hand;
             lnkForgotCurrentPassword.Font = new Font("Segoe UI", 8.5F);
             lnkForgotCurrentPassword.LinkBehavior = LinkBehavior.NeverUnderline;
             lnkForgotCurrentPassword.LinkColor = Color.FromArgb(124, 58, 237);
-            lnkForgotCurrentPassword.Location = new Point(140, 44);
+            lnkForgotCurrentPassword.Location = new Point(148, 10);
             lnkForgotCurrentPassword.Name = "lnkForgotCurrentPassword";
             lnkForgotCurrentPassword.Size = new Size(141, 15);
-            lnkForgotCurrentPassword.TabIndex = 10;
+            lnkForgotCurrentPassword.TabIndex = 23;
             lnkForgotCurrentPassword.TabStop = true;
             lnkForgotCurrentPassword.Text = "Forgot current password?";
             // 
+            // ctrlPasswordInput
+            // 
+            ctrlPasswordInput.BackColor = Color.Transparent;
+            ctrlPasswordInput.Location = new Point(10, 82);
+            ctrlPasswordInput.Name = "ctrlPasswordInput";
+            ctrlPasswordInput.Size = new Size(368, 345);
+            ctrlPasswordInput.TabIndex = 24;
+            // 
             // btnChangePassword
             // 
+            btnChangePassword.Anchor = AnchorStyles.None;
             btnChangePassword.BackColor = Color.Transparent;
             btnChangePassword.BackgroundEndColor = SystemColors.Control;
             btnChangePassword.BackgroundStartColor = SystemColors.Control;
@@ -530,7 +449,7 @@ namespace DVLD.PL.Login
             btnChangePassword.IconSpacing = 5;
             btnChangePassword.IsLoading = false;
             btnChangePassword.LeftIcon = null;
-            btnChangePassword.Location = new Point(125, 294);
+            btnChangePassword.Location = new Point(321, 576);
             btnChangePassword.MiddleIcon = null;
             btnChangePassword.Name = "btnChangePassword";
             btnChangePassword.PressedEndColor = Color.FromArgb(204, 228, 247);
@@ -543,13 +462,14 @@ namespace DVLD.PL.Login
             btnChangePassword.ShadowSize = 3;
             btnChangePassword.ShiftOnPress = false;
             btnChangePassword.Size = new Size(160, 44);
-            btnChangePassword.TabIndex = 8;
+            btnChangePassword.TabIndex = 15;
             btnChangePassword.Text = "Update password";
             btnChangePassword.TextColor = SystemColors.ControlText;
             btnChangePassword.TextOffset = new Point(0, 0);
             // 
             // btnCancel
             // 
+            btnCancel.Anchor = AnchorStyles.None;
             btnCancel.BackColor = Color.Transparent;
             btnCancel.BackgroundEndColor = SystemColors.Control;
             btnCancel.BackgroundStartColor = SystemColors.Control;
@@ -583,7 +503,7 @@ namespace DVLD.PL.Login
             btnCancel.IconSpacing = 5;
             btnCancel.IsLoading = false;
             btnCancel.LeftIcon = null;
-            btnCancel.Location = new Point(10, 294);
+            btnCancel.Location = new Point(207, 576);
             btnCancel.MiddleIcon = null;
             btnCancel.Name = "btnCancel";
             btnCancel.PressedEndColor = Color.FromArgb(204, 228, 247);
@@ -596,46 +516,42 @@ namespace DVLD.PL.Login
             btnCancel.ShadowSize = 3;
             btnCancel.ShiftOnPress = false;
             btnCancel.Size = new Size(100, 44);
-            btnCancel.TabIndex = 9;
+            btnCancel.TabIndex = 16;
             btnCancel.Text = "Cancel";
             btnCancel.TextColor = SystemColors.ControlText;
             btnCancel.TextOffset = new Point(0, 0);
             // 
-            // pnlMain
-            // 
-            pnlMain.BackColor = Color.White;
-            pnlMain.Controls.Add(pnlCreateNewPassword);
-            pnlMain.Controls.Add(lblUsername);
-            pnlMain.Controls.Add(txtUserName);
-            pnlMain.Controls.Add(btnVerifyUser);
-            pnlMain.Controls.Add(btnVerifiedCheck);
-            pnlMain.Controls.Add(btnEditUsername);
-            pnlMain.Dock = DockStyle.Fill;
-            pnlMain.Location = new Point(2, 2);
-            pnlMain.Name = "pnlMain";
-            pnlMain.Size = new Size(492, 588);
-            pnlMain.TabIndex = 0;
-            // 
             // frmForgetPassword
             // 
+            AllowMaximize = false;
+            AllowResize = false;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(496, 592);
+            ClientSize = new Size(509, 642);
             Controls.Add(pnlMain);
             CustomBorderColor = Color.FromArgb(226, 232, 240);
             ForeColor = Color.FromArgb(15, 23, 42);
+            MaximizeBox = false;
             Name = "frmForgetPassword";
             ShowIcon = false;
             ShowInTaskbar = false;
             Text = "DVLD - Reset Password";
             Controls.SetChildIndex(pnlMain, 0);
             Controls.SetChildIndex(headerControl, 0);
-            pnlCreateNewPassword.ResumeLayout(false);
-            pnlCreateNewPassword.PerformLayout();
             pnlMain.ResumeLayout(false);
             pnlMain.PerformLayout();
+            pnlCreateNewPassword.ResumeLayout(false);
+            pnlCreateNewPassword.PerformLayout();
             ResumeLayout(false);
         }
+
+        private Panel pnlCreateNewPassword;
+        private NTextBox txtOldPassword;
+        private Label lblOldPassword;
+        private LinkLabel lnkForgotCurrentPassword;
+        private UsersManagement.PasswordInputControl ctrlPasswordInput;
+        private NButton btnChangePassword;
+        private NButton btnCancel;
     }
 }

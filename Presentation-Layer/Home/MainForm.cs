@@ -46,6 +46,8 @@ namespace DVLD.PL
             ThemePalette theme = ThemeManager.Current;
 
             SetCardsColours(theme.TextSecondary, theme.PrimaryHover);
+            flowCards.Padding = new Padding(30, 20, 30, 20);
+
         }
 
         #region Header & Session Integration
@@ -207,63 +209,7 @@ namespace DVLD.PL
             OpenFormSingleton(
                 ref _frmDriverManagementInstance,
                 () => new frmDriverManagement());
-
-        public void OpenCurrentUserInfo()
-        {
-            if (!AppSession.IsAuthenticated)
-                return;
-
-            using (frmUserCard frm =
-                   new frmUserCard(AppSession.CurrentUserID))
-            {
-                frm.ShowDialog(this);
-            }
-        }
-
-        public void OpenChangePassword()
-        {
-            if (!AppSession.IsAuthenticated)
-                return;
-
-            using (frmForgetPassword frm =
-                   new frmForgetPassword(
-                       AppSession.CurrentUserName))
-            {
-                frm.ShowDialog(this);
-            }
-        }
-
         #endregion
-
-        #region Menu Click Handlers
-
-        private void btnPeopleManagement_Click(
-            object sender,
-            EventArgs e) =>
-            OpenPeopleManagement();
-
-        private void btnUsersManagement_Click(
-            object sender,
-            EventArgs e) =>
-            OpenUsersManagement();
-
-        private void btnDriversManagement_Click(
-            object sender,
-            EventArgs e) =>
-            OpenDriversManagement();
-
-        private void btnCurrentUserInfo_Click(
-            object sender,
-            EventArgs e) =>
-            OpenCurrentUserInfo();
-
-        private void btnChangePassword_Click(
-            object sender,
-            EventArgs e) =>
-            OpenChangePassword();
-
-        #endregion
-
         protected override void OnFormClosed(
             FormClosedEventArgs e)
         {

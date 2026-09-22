@@ -1,6 +1,8 @@
-﻿using System.ComponentModel;
+﻿using CustomizeControls;
+using DVLD.PL.Properties;
+using System.ComponentModel;
 using System.Diagnostics;
-using CustomizeControls;
+using System.Security.Cryptography;
 namespace DVLD.PL.Global
 {
     public static class UIUtility
@@ -29,24 +31,58 @@ namespace DVLD.PL.Global
         }
 
         // Toggles password mask and swaps only the dedicated right eye icon without clearing other icons
-        public static void TogglePasswordVisibility(NTextBox txt, Image eyeOnIcon, Image eyeOffIcon)
+        public static void SetupPasswordVisibility(NTextBox txtBox)
         {
-            ArgumentNullException.ThrowIfNull(txt);
+            txtBox.UseSystemPasswordChar = true;
+            txtBox.RightIcon = Resources.visibilityOff;
+            txtBox.RightIconClickable = true;
 
-            txt.UseSystemPasswordChar = !txt.UseSystemPasswordChar;
-            txt.RightIcon = txt.UseSystemPasswordChar ? eyeOnIcon : eyeOffIcon;
-            txt.RightIconClickable = true;
-
-            txt.RightIconClick -= PasswordEye_Click;
-            txt.RightIconClick += PasswordEye_Click;
-
-            void PasswordEye_Click(object? sender, EventArgs e)
+            txtBox.RightIconClick += (s, e) =>
             {
-                if (sender is NTextBox target)
-                {
-                    TogglePasswordVisibility(target, eyeOnIcon, eyeOffIcon);
-                }
-            }
+                txtBox.UseSystemPasswordChar = !txtBox.UseSystemPasswordChar;
+                txtBox.RightIcon = txtBox.UseSystemPasswordChar
+                    ? Resources.visibilityOff
+                    : Resources.visibilityOn;
+            };
         }
+
+
+        public static string GenerateRandomPassword()
+    {
+        const int defaultLength = 20;
+
+        const string uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const string lowercase = "abcdefghijklmnopqrstuvwxyz";
+        const string numbers = "0123456789";
+        const string special = "!@#$%^&*()-_=+";
+
+        string allCharacters = uppercase + lowercase + numbers + special;
+
+        char[] password = new char[defaultLength];
+
+        // Guarantee all required criteria
+        password[0] = uppercase[RandomNumberGenerator.GetInt32(uppercase.Length)];
+        password[1] = lowercase[RandomNumberGenerator.GetInt32(lowercase.Length)];
+        password[2] = numbers[RandomNumberGenerator.GetInt32(numbers.Length)];
+        password[3] = special[RandomNumberGenerator.GetInt32(special.Length)];
+
+        // Fill the remaining characters
+        for (int i = 4; i < password.Length; i++)
+        {
+            password[i] = allCharacters[
+                RandomNumberGenerator.GetInt32(allCharacters.Length)
+            ];
+        }
+
+        // Cryptographically secure Fisher-Yates shuffle
+        for (int i = password.Length - 1; i > 0; i--)
+        {
+            int j = RandomNumberGenerator.GetInt32(i + 1);
+
+            (password[i], password[j]) = (password[j], password[i]);
+        }
+
+        return new string(password);
     }
+}
 }

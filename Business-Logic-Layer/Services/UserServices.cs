@@ -75,28 +75,12 @@ namespace DVLD.BLL.Services
         }
         public async Task<OperationResult<int>> AddAsync(UserAddDTO dto)
         {
-            if (dto == null)
-            {
-                return OperationResult<int>.Failure(ErrorCode.BadRequest, "User data cannot be null.");
-            }
+            var validationResults = await CheckFieldsBeforeAdd(dto);
+            if (!validationResults.IsSuccess)
+                return validationResults;
             
-            if (!string.IsNullOrEmpty(dto.Password))
-                 // Hash the password before adding
-                 dto.Password = ComputeHash(dto.Password);
+            dto.Password = ComputeHash(dto.Password);
             
-            else
-                return OperationResult<int>.Failure(ErrorCode.BadRequest, "New password cannot be null or empty.");
-            
-
-            if(await _userRepo.IsPersonLinkedToUserAsync(dto.PersonID))
-            {
-                return OperationResult<int>.Failure(ErrorCode.Conflict, "This person is already linked to another user.");
-            }
-            if (await _userRepo.IsUsernameExistAsync(dto.UserName))
-            {
-                return OperationResult<int>.Failure(ErrorCode.Conflict, "Username already exists.");
-            }
-
             int addResult = await _userRepo.AddAsync(MapToEntity(dto));
 
             if (addResult > 0)
@@ -106,7 +90,25 @@ namespace DVLD.BLL.Services
 
             return OperationResult<int>.Failure(ErrorCode.Conflict, "Failed to add user.");
         }
+        private async Task<OperationResult<int>> CheckFieldsBeforeAdd(UserAddDTO dto)
+        {
+            if (dto == null)
+                return OperationResult<int>.Failure(ErrorCode.ValidationError, "User data cannot be null.");
+            if (!string.IsNullOrEmpty(dto.Password))
+                return OperationResult<int>.Failure(ErrorCode.BadRequest, "New password cannot be null or empty.");
 
+            if (!IsPasswordValid(dto.Password))
+                return OperationResult<int>.Failure(ErrorCode.ValidationError, "New password does not meet requirment.");
+            if (await _userRepo.IsPersonLinkedToUserAsync(dto.PersonID))
+            {
+                return OperationResult<int>.Failure(ErrorCode.Conflict, "This person is already linked to another user.");
+            }
+            if (await _userRepo.IsUsernameExistAsync(dto.UserName))
+            {
+                return OperationResult<int>.Failure(ErrorCode.Conflict, "Username already exists.");
+            }
+            return OperationResult<int>.Success(-1);
+        }
         public async Task<int> GetCountAsync()
         {
             return await _userRepo.CountAsync();
@@ -147,7 +149,11 @@ namespace DVLD.BLL.Services
                 return OperationResult<bool>.Failure(ErrorCode.NotFound, "User not found.");
             }
 
-            string errorMessage = deletionResult switch
+            return OperationResult<bool>.Failure(ErrorCode.Conflict, SelectErrorMessage(deletionResult));
+        }
+        private string SelectErrorMessage(UserDeletionResult deletionResult)
+        {
+            return deletionResult switch
             {
                 UserDeletionResult.HasApplications => "Cannot delete this user because they created application records.",
                 UserDeletionResult.HasTestAppointments => "Cannot delete this user because they scheduled test appointments.",
@@ -158,13 +164,16 @@ namespace DVLD.BLL.Services
                 _ => "An unexpected error occurred while deleting the user."
             };
 
-            return OperationResult<bool>.Failure(ErrorCode.Conflict, errorMessage);
         }
-        private async Task<OperationResult<bool>> ProcessPasswordChangeAsync(User user, string currentPassword, string newPassword)
+        private async Task<OperationResult<bool>> ChangePasswordAsync(User user, string currentPassword, string newPassword)
         {
             if (user.Password != ComputeHash(currentPassword))
             {
-                return OperationResult<bool>.Failure(ErrorCode.BadRequest, "Last password is incorrect.");
+                return OperationResult<bool>.Failure(ErrorCode.ValidationError, "Last password is incorrect.");
+            }
+            if (!IsPasswordValid(newPassword))
+            {
+                return OperationResult<bool>.Failure(ErrorCode.ValidationError, "New password does not meet the requirment.");
             }
 
             string hashedNewPassword = ComputeHash(newPassword);
@@ -177,13 +186,30 @@ namespace DVLD.BLL.Services
 
             return OperationResult<bool>.Success(true, "Password updated successfully.");
         }
+        private static bool IsSpecialCharacter(char character)
+        {
+            return char.IsPunctuation(character) ||
+                   char.IsSymbol(character);
+        }
+        private bool IsPasswordValid(string password)
+        {
+            if (!password.Any(char.IsUpper) ||
+                !password.Any(char.IsLower) ||
+                !password.Any(char.IsNumber) ||
+                !password.Any(IsSpecialCharacter))
+                return false;
 
+            if (password.Length < 8 || password.Length > 128)
+                return false;
+
+            return true;
+        }
         public async Task<OperationResult<bool>> ChangePasswordAsync(string userName, string currentPassword, string newPassword)
         {
             var user = await _userRepo.FindByUsernameAsync(userName);
             if (user == null) return OperationResult<bool>.Failure(ErrorCode.NotFound, "User not found.");
 
-            return await ProcessPasswordChangeAsync(user, currentPassword, newPassword);
+            return await ChangePasswordAsync(user, currentPassword, newPassword);
         }
 
         public async Task<OperationResult<bool>> ChangePasswordAsync(int userId, string currentPassword, string newPassword)
@@ -191,7 +217,7 @@ namespace DVLD.BLL.Services
             var user = await _userRepo.FindAsync(userId);
             if (user == null) return OperationResult<bool>.Failure(ErrorCode.NotFound, "User not found.");
 
-            return await ProcessPasswordChangeAsync(user, currentPassword, newPassword);
+            return await ChangePasswordAsync(user, currentPassword, newPassword);
         }
         public async Task<OperationResult<bool>> UpdateAsync(UserUpdateDTO dto)
         {

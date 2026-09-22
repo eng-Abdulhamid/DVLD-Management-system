@@ -34,11 +34,11 @@ namespace DVLD.PL.UsersManagement
             _userId = userId;
             _mode = (_userId <= 0) ? Mode.AddNew : Mode.UpdateExisting;
             _userService = new UserService();
-          
+
             RegisterEvents();
             base.ApplyTheme();
         }
-        
+
         #region Event Handlers
         private void RegisterEvents()
         {
@@ -69,6 +69,7 @@ namespace DVLD.PL.UsersManagement
                 if (await _userService.IsPersonLinkedToUserAsync(ctrlPersonCard1.PersonID))
                 {
                     NotificationTheme.ShowWarningToast("This person is already linked to an account.");
+                    ctrlPersonCard1.ResetCard();
                     SelectedPersonId = -1;
                     return;
                 }
@@ -172,22 +173,15 @@ namespace DVLD.PL.UsersManagement
             btnSave.ApplyDisabledStyle();
             lnkEditPerson.Visible = false;
 
-            lblPassword.Visible = true;
-            txtPassword.Visible = true;
-            lblConfirmPassword.Visible = true;
-            txtConfirmPassword.Visible = true;
-
+            ctrlInputPassword.Visible = true;
             lnkEditPassword.Visible = false;
         }
         private async Task SwitchUpdateMode()
         {
             btnSave.Text = "Update User";
 
-            lblPassword.Visible = false;
-            txtPassword.Visible = false;
-            lblConfirmPassword.Visible = false;
-            txtConfirmPassword.Visible = false;
-            chkIsActive.Location = new Point(186, 124);
+            ctrlInputPassword.Visible = false;
+
             lnkEditPassword.Visible = true;
 
             await LoadUserDataAsync();
@@ -219,8 +213,8 @@ namespace DVLD.PL.UsersManagement
         #region Perform Save Operations
         private async Task PerformSaveAsync()
         {
-            if (!ValidateFieldsBeforeSave()) return;
-            
+            if (!ValidateUsernameField()) return;
+
             UpdateSaveButtonStatus(false);
             btnSave.IsLoading = false;
 
@@ -229,29 +223,12 @@ namespace DVLD.PL.UsersManagement
             UpdateSaveButtonStatus(true);
 
         }
-        private bool ValidateFieldsBeforeSave()
+        private bool ValidateUsernameField()
         {
             if (!ValidateRequiredField(txtUserName))
             {
                 NotificationTheme.ShowErrorToast($"Please enter your user name.", "Validation Error");
                 return false;
-            }
-            if (_mode == Mode.AddNew)
-            {
-                if (!ValidateRequiredField(txtPassword))
-                {
-                    NotificationTheme.ShowErrorToast($"Please enter a password.", "Validation Error");
-                    return false;
-                }
-                if (!ValidateRequiredField(txtConfirmPassword))
-                {
-                    NotificationTheme.ShowErrorToast($"Please confirm your password.", "Validation Error");
-                    return false;
-                }
-                if (!ValidatePasswordMatch())
-                {
-                    return false;
-                }
             }
             return true;
         }
@@ -267,21 +244,6 @@ namespace DVLD.PL.UsersManagement
             }
 
             txtBox.HasError = false;
-            return true;
-        }
-        private bool ValidatePasswordMatch()
-        {
-            if (txtPassword.Text != txtConfirmPassword.Text)
-            {
-                txtConfirmPassword.HasError = true;
-                txtConfirmPassword.Shake();
-                NotificationTheme.ShowErrorToast("Passwords do not match.", "Validation Error");
-                txtConfirmPassword.Focus();
-
-                return false;
-            }
-
-            txtConfirmPassword.HasError = false;
             return true;
         }
         private async Task SaveDependsOnCurrentMode()
@@ -302,7 +264,7 @@ namespace DVLD.PL.UsersManagement
         }
         private async Task AddNew()
         {
-            var dto = new UserAddDTO(SelectedPersonId, txtUserName.Text.Trim(), txtPassword.Text, chkIsActive.Checked);
+            var dto = new UserAddDTO(SelectedPersonId, txtUserName.Text.Trim(), ctrlInputPassword.NewPassword, chkIsActive.Checked);
             var taskResult = _userService.AddAsync(dto);
 
             btnSave.IsLoading = true;
@@ -357,11 +319,8 @@ namespace DVLD.PL.UsersManagement
         #endregion
         private bool CheckTextBoxsIfCanSave()
         {
-            return (
-                (!string.IsNullOrEmpty(txtUserName.Text)) &&
-                (!string.IsNullOrEmpty(txtPassword.Text)) &&
-                (!string.IsNullOrEmpty(txtConfirmPassword.Text))
-                );
+            return ((!string.IsNullOrEmpty(txtUserName.Text)) &&
+                ctrlInputPassword.IsValid);
         }
         private void CheckTextBoxsIfCanSave_TextChange(object sender, EventArgs e)
         {
@@ -382,6 +341,11 @@ namespace DVLD.PL.UsersManagement
         private void btnSelectPerson_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void lnkEditPerson_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            HandleEditPersonEvent_LinkClicked(sender, e);
         }
     }
 }

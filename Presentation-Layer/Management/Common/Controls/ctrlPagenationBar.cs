@@ -4,12 +4,9 @@ using System.ComponentModel;
 
 namespace DVLD.PL.Management
 {
-    [DefaultEvent("OnPageChanged")]
     public partial class ctrlPagination : UserControl
     {
         #region Properites and the Constructor
-        private int _totalRecords = 0;
-        private int _currentPage = 1;
         private bool _isInitializing = true;
         [Category("Pagination")]
         public event EventHandler? OnPageChanged;
@@ -33,10 +30,10 @@ namespace DVLD.PL.Management
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int CurrentPage
         {
-            get => _currentPage;
+            get => field;
             set
             {
-                _currentPage = Math.Max(1, value);
+                field = Math.Max(1, value);
                 UpdateUI();
             }
         }
@@ -46,10 +43,10 @@ namespace DVLD.PL.Management
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int TotalRecords
         {
-            get => _totalRecords;
+            get => field;
             set
             {
-                _totalRecords = Math.Max(0, value);
+                field = Math.Max(0, value);
                 UpdateUI();
             }
         }
@@ -68,7 +65,7 @@ namespace DVLD.PL.Management
         {
             cmbPageSize.Items.Clear();
             cmbPageSize.Items.AddRange(new object[] { "10", "25", "50", "100" });
-            cmbPageSize.SelectedIndex = 1; // Default to 25
+            cmbPageSize.SelectedIndex = 1; 
         }
         #region Event Registration
         private void RegisterEvents()
@@ -79,19 +76,19 @@ namespace DVLD.PL.Management
         }
         private void BtnNextPage_Click(object? sender, EventArgs e)
         {
-            int totalPages = (int)Math.Ceiling((double)_totalRecords / PageSize);
-            if (_currentPage < totalPages)
+            int totalPages = (int)Math.Ceiling((double)TotalRecords / PageSize);
+            if (CurrentPage < totalPages)
             {
-                _currentPage++;
+                CurrentPage++;
                 UpdateUI();
                 OnPageChanged?.Invoke(this, EventArgs.Empty);
             }
         }
         private void BtnPrevPage_Click(object? sender, EventArgs e)
         {
-            if (_currentPage > 1)
+            if (CurrentPage > 1)
             {
-                _currentPage--;
+                CurrentPage--;
                 UpdateUI();
                 OnPageChanged?.Invoke(this, EventArgs.Empty);
             }
@@ -100,17 +97,15 @@ namespace DVLD.PL.Management
         {
             if (_isInitializing) return;
 
-            _currentPage = 1;
+            CurrentPage = 1;
             UpdateUI();
             OnPageSizeChanged?.Invoke(this, EventArgs.Empty);
         }
-
-
         #endregion
         #endregion
         public void UpdateUI()
         {
-            if (_totalRecords == 0)
+            if (TotalRecords == 0)
             {
                 lblPaginationInfo.Text = "0-0 of 0";
                 btnPrevPage.Enabled = false;
@@ -118,25 +113,25 @@ namespace DVLD.PL.Management
                 return;
             }
 
-            int totalPages = (int)Math.Ceiling((double)_totalRecords / PageSize);
+            int totalPages = (int)Math.Ceiling((double)TotalRecords / PageSize);
 
-            if (_currentPage > totalPages) _currentPage = totalPages;
-            if (_currentPage < 1) _currentPage = 1;
+            if (CurrentPage > totalPages) CurrentPage = totalPages;
+            if (CurrentPage < 1) CurrentPage = 1;
 
-            int startRecord = ((_currentPage - 1) * PageSize) + 1;
+            int startRecord = ((CurrentPage - 1) * PageSize) + 1;
 
-            int endRecord = Math.Min(_currentPage * PageSize, _totalRecords);
+            int endRecord = Math.Min(CurrentPage * PageSize, TotalRecords);
 
-            lblPaginationInfo.Text = $"{startRecord}-{endRecord} of {_totalRecords}";
+            lblPaginationInfo.Text = $"{startRecord}-{endRecord} of {TotalRecords}";
 
-            btnPrevPage.Enabled = _currentPage > 1;
-            btnNextPage.Enabled = _currentPage < totalPages;
+            btnPrevPage.Enabled = CurrentPage > 1;
+            btnNextPage.Enabled = TotalRecords < totalPages;
 
             ThemeApplicator.Apply(this);
         }
         public void Reset()
         {
-            _currentPage = 1;
+            TotalRecords = 1;
             UpdateUI();
         }
     }

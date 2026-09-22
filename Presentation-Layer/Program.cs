@@ -1,5 +1,5 @@
 ﻿using DVLD.PL;
-using DVLD.PL.Configuration;
+using DVLD.PL.AppConfigration;
 using DVLD.PL.Global;
 using DVLD.PL.Login;
 using DVLD.PL.PeopleManagement;

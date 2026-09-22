@@ -21,21 +21,18 @@ namespace DVLD.PL.UsersManagement
             toolTip1 = new ToolTip(components);
             tcWizard = new NTabControl();
             tpPersonSelection = new TabPage();
+            lnkEditPerson = new LinkLabel();
             gbSearchFilter = new GroupBox();
             txtSearchNationalNo = new NTextBox();
             btnSearchPerson = new NButton();
             btnSelectPerson = new NButton();
             btnAddNewPerson = new NButton();
-            lnkEditPerson = new LinkLabel();
             btnNext = new NButton();
             ctrlPersonCard1 = new DVLD.PL.PeopleManagement.ctrlPersonCard();
             tpLoginInfo = new TabPage();
+            ctrlInputPassword = new PasswordInputControl();
             lblUserName = new Label();
             txtUserName = new NTextBox();
-            lblPassword = new Label();
-            txtPassword = new NTextBox();
-            lblConfirmPassword = new Label();
-            txtConfirmPassword = new NTextBox();
             lnkEditPassword = new LinkLabel();
             chkIsActive = new NCheckBox();
             btnPrev = new NButton();
@@ -174,8 +171,8 @@ namespace DVLD.PL.UsersManagement
             // tpPersonSelection
             // 
             tpPersonSelection.BackColor = Color.FromArgb(248, 250, 252);
-            tpPersonSelection.Controls.Add(gbSearchFilter);
             tpPersonSelection.Controls.Add(lnkEditPerson);
+            tpPersonSelection.Controls.Add(gbSearchFilter);
             tpPersonSelection.Controls.Add(btnNext);
             tpPersonSelection.Controls.Add(ctrlPersonCard1);
             tpPersonSelection.Location = new Point(4, 24);
@@ -184,6 +181,19 @@ namespace DVLD.PL.UsersManagement
             tpPersonSelection.Size = new Size(828, 381);
             tpPersonSelection.TabIndex = 0;
             tpPersonSelection.Text = "1. Person Selection";
+            // 
+            // lnkEditPerson
+            // 
+            lnkEditPerson.AutoSize = true;
+            lnkEditPerson.BackColor = Color.White;
+            lnkEditPerson.Font = new Font("Segoe UI", 9.5F);
+            lnkEditPerson.Location = new Point(701, 113);
+            lnkEditPerson.Name = "lnkEditPerson";
+            lnkEditPerson.Size = new Size(100, 17);
+            lnkEditPerson.TabIndex = 2;
+            lnkEditPerson.TabStop = true;
+            lnkEditPerson.Text = "Edit Person Info";
+            lnkEditPerson.Visible = false;
             // 
             // gbSearchFilter
             // 
@@ -202,22 +212,28 @@ namespace DVLD.PL.UsersManagement
             // 
             // txtSearchNationalNo
             // 
+            txtSearchNationalNo.AcceptsReturn = false;
+            txtSearchNationalNo.AcceptsTab = false;
             txtSearchNationalNo.AllowArabicCharacters = true;
             txtSearchNationalNo.AllowEnglishCharacters = true;
             txtSearchNationalNo.AllowNumbers = true;
             txtSearchNationalNo.AllowSpaces = true;
             txtSearchNationalNo.AllowSymbols = true;
+            txtSearchNationalNo.AutoCompleteMode = AutoCompleteMode.None;
+            txtSearchNationalNo.AutoCompleteSource = AutoCompleteSource.None;
             txtSearchNationalNo.BackColor = Color.Transparent;
             txtSearchNationalNo.BorderColor = Color.FromArgb(220, 220, 220);
             txtSearchNationalNo.BorderFocusColor = Color.FromArgb(200, 200, 200);
             txtSearchNationalNo.BorderRadius = 24;
             txtSearchNationalNo.BorderSize = 1;
+            txtSearchNationalNo.CharacterCasing = CharacterCasing.Normal;
             txtSearchNationalNo.CustomAllowedCharacters = "";
             txtSearchNationalNo.EnableIconTinting = false;
             txtSearchNationalNo.EnableSuggest = false;
             txtSearchNationalNo.ErrorBorderColor = Color.FromArgb(239, 68, 68);
             txtSearchNationalNo.FillColor = Color.White;
             txtSearchNationalNo.HasError = false;
+            txtSearchNationalNo.HideSelection = true;
             txtSearchNationalNo.HoverIconColor = Color.FromArgb(15, 23, 42);
             txtSearchNationalNo.IconColor = Color.FromArgb(148, 163, 184);
             txtSearchNationalNo.IconOffsetLeft = 10;
@@ -229,19 +245,30 @@ namespace DVLD.PL.UsersManagement
             txtSearchNationalNo.Location = new Point(15, 22);
             txtSearchNationalNo.MaxLength = 32767;
             txtSearchNationalNo.MaxSuggestItems = 8;
+            txtSearchNationalNo.Modified = false;
             txtSearchNationalNo.MoveToNextControlOnEnter = true;
+            txtSearchNationalNo.Multiline = false;
             txtSearchNationalNo.Name = "txtSearchNationalNo";
             txtSearchNationalNo.Padding = new Padding(8, 12, 8, 12);
+            txtSearchNationalNo.PasswordChar = '\0';
             txtSearchNationalNo.PlaceholderColor = Color.DarkGray;
             txtSearchNationalNo.PlaceholderText = "National No...";
+            txtSearchNationalNo.ReadOnly = false;
             txtSearchNationalNo.RightIcon = null;
             txtSearchNationalNo.RightIconClickable = false;
+            txtSearchNationalNo.ScrollBars = ScrollBars.None;
+            txtSearchNationalNo.SelectedText = "";
+            txtSearchNationalNo.SelectionLength = 0;
+            txtSearchNationalNo.SelectionStart = 0;
+            txtSearchNationalNo.ShortcutsEnabled = true;
             txtSearchNationalNo.ShowClearButton = false;
             txtSearchNationalNo.Size = new Size(220, 36);
             txtSearchNationalNo.SuggestIcon = null;
             txtSearchNationalNo.TabIndex = 0;
+            txtSearchNationalNo.TextAlign = HorizontalAlignment.Left;
             txtSearchNationalNo.UseSystemPasswordChar = false;
             txtSearchNationalNo.ValidateEmail = false;
+            txtSearchNationalNo.WordWrap = true;
             // 
             // btnSearchPerson
             // 
@@ -400,19 +427,6 @@ namespace DVLD.PL.UsersManagement
             btnAddNewPerson.TextOffset = new Point(0, 0);
             toolTip1.SetToolTip(btnAddNewPerson, "Add new person and select him");
             // 
-            // lnkEditPerson
-            // 
-            lnkEditPerson.AutoSize = true;
-            lnkEditPerson.BackColor = Color.White;
-            lnkEditPerson.Font = new Font("Segoe UI", 9.5F);
-            lnkEditPerson.Location = new Point(698, 109);
-            lnkEditPerson.Name = "lnkEditPerson";
-            lnkEditPerson.Size = new Size(100, 17);
-            lnkEditPerson.TabIndex = 2;
-            lnkEditPerson.TabStop = true;
-            lnkEditPerson.Text = "Edit Person Info";
-            lnkEditPerson.Visible = false;
-            // 
             // btnNext
             // 
             btnNext.BackColor = Color.Transparent;
@@ -478,12 +492,9 @@ namespace DVLD.PL.UsersManagement
             // tpLoginInfo
             // 
             tpLoginInfo.BackColor = Color.FromArgb(248, 250, 252);
+            tpLoginInfo.Controls.Add(ctrlInputPassword);
             tpLoginInfo.Controls.Add(lblUserName);
             tpLoginInfo.Controls.Add(txtUserName);
-            tpLoginInfo.Controls.Add(lblPassword);
-            tpLoginInfo.Controls.Add(txtPassword);
-            tpLoginInfo.Controls.Add(lblConfirmPassword);
-            tpLoginInfo.Controls.Add(txtConfirmPassword);
             tpLoginInfo.Controls.Add(lnkEditPassword);
             tpLoginInfo.Controls.Add(chkIsActive);
             tpLoginInfo.Controls.Add(btnPrev);
@@ -493,6 +504,14 @@ namespace DVLD.PL.UsersManagement
             tpLoginInfo.Size = new Size(828, 381);
             tpLoginInfo.TabIndex = 1;
             tpLoginInfo.Text = "2. Login Credentials";
+            // 
+            // ctrlInputPassword
+            // 
+            ctrlInputPassword.BackColor = Color.Transparent;
+            ctrlInputPassword.Location = new Point(454, 26);
+            ctrlInputPassword.Name = "ctrlInputPassword";
+            ctrlInputPassword.Size = new Size(356, 335);
+            ctrlInputPassword.TabIndex = 9;
             // 
             // lblUserName
             // 
@@ -506,22 +525,28 @@ namespace DVLD.PL.UsersManagement
             // 
             // txtUserName
             // 
+            txtUserName.AcceptsReturn = false;
+            txtUserName.AcceptsTab = false;
             txtUserName.AllowArabicCharacters = false;
             txtUserName.AllowEnglishCharacters = true;
             txtUserName.AllowNumbers = true;
             txtUserName.AllowSpaces = false;
             txtUserName.AllowSymbols = false;
+            txtUserName.AutoCompleteMode = AutoCompleteMode.None;
+            txtUserName.AutoCompleteSource = AutoCompleteSource.None;
             txtUserName.BackColor = Color.Transparent;
             txtUserName.BorderColor = Color.FromArgb(220, 220, 220);
             txtUserName.BorderFocusColor = Color.FromArgb(200, 200, 200);
             txtUserName.BorderRadius = 24;
             txtUserName.BorderSize = 1;
+            txtUserName.CharacterCasing = CharacterCasing.Normal;
             txtUserName.CustomAllowedCharacters = "";
             txtUserName.EnableIconTinting = false;
             txtUserName.EnableSuggest = false;
             txtUserName.ErrorBorderColor = Color.FromArgb(239, 68, 68);
             txtUserName.FillColor = Color.White;
             txtUserName.HasError = false;
+            txtUserName.HideSelection = true;
             txtUserName.HoverIconColor = Color.FromArgb(15, 23, 42);
             txtUserName.IconColor = Color.FromArgb(148, 163, 184);
             txtUserName.IconOffsetLeft = 10;
@@ -530,137 +555,40 @@ namespace DVLD.PL.UsersManagement
             txtUserName.IconSpacing = 8;
             txtUserName.LeftIcon = null;
             txtUserName.LeftIconClickable = false;
-            txtUserName.Location = new Point(186, 35);
+            txtUserName.Location = new Point(122, 33);
             txtUserName.MaxLength = 32767;
             txtUserName.MaxSuggestItems = 8;
+            txtUserName.Modified = false;
             txtUserName.MoveToNextControlOnEnter = true;
+            txtUserName.Multiline = false;
             txtUserName.Name = "txtUserName";
             txtUserName.Padding = new Padding(8, 12, 8, 12);
+            txtUserName.PasswordChar = '\0';
             txtUserName.PlaceholderColor = Color.DarkGray;
             txtUserName.PlaceholderText = "";
+            txtUserName.ReadOnly = false;
             txtUserName.RightIcon = null;
             txtUserName.RightIconClickable = false;
+            txtUserName.ScrollBars = ScrollBars.None;
+            txtUserName.SelectedText = "";
+            txtUserName.SelectionLength = 0;
+            txtUserName.SelectionStart = 0;
+            txtUserName.ShortcutsEnabled = true;
             txtUserName.ShowClearButton = false;
             txtUserName.Size = new Size(250, 36);
             txtUserName.SuggestIcon = null;
             txtUserName.TabIndex = 1;
+            txtUserName.TextAlign = HorizontalAlignment.Left;
             txtUserName.UseSystemPasswordChar = false;
             txtUserName.ValidateEmail = false;
+            txtUserName.WordWrap = true;
             txtUserName.TextChanged += CheckTextBoxsIfCanSave_TextChange;
-            // 
-            // lblPassword
-            // 
-            lblPassword.AutoSize = true;
-            lblPassword.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            lblPassword.Location = new Point(36, 99);
-            lblPassword.Name = "lblPassword";
-            lblPassword.Size = new Size(77, 19);
-            lblPassword.TabIndex = 2;
-            lblPassword.Text = "Password:";
-            // 
-            // txtPassword
-            // 
-            txtPassword.AllowArabicCharacters = true;
-            txtPassword.AllowEnglishCharacters = true;
-            txtPassword.AllowNumbers = true;
-            txtPassword.AllowSpaces = true;
-            txtPassword.AllowSymbols = true;
-            txtPassword.BackColor = Color.Transparent;
-            txtPassword.BorderColor = Color.FromArgb(220, 220, 220);
-            txtPassword.BorderFocusColor = Color.FromArgb(200, 200, 200);
-            txtPassword.BorderRadius = 24;
-            txtPassword.BorderSize = 1;
-            txtPassword.CustomAllowedCharacters = "";
-            txtPassword.EnableIconTinting = false;
-            txtPassword.EnableSuggest = false;
-            txtPassword.ErrorBorderColor = Color.FromArgb(239, 68, 68);
-            txtPassword.FillColor = Color.White;
-            txtPassword.HasError = false;
-            txtPassword.HoverIconColor = Color.FromArgb(15, 23, 42);
-            txtPassword.IconColor = Color.FromArgb(148, 163, 184);
-            txtPassword.IconOffsetLeft = 10;
-            txtPassword.IconOffsetRight = 10;
-            txtPassword.IconSize = new Size(20, 20);
-            txtPassword.IconSpacing = 8;
-            txtPassword.LeftIcon = null;
-            txtPassword.LeftIconClickable = false;
-            txtPassword.Location = new Point(186, 90);
-            txtPassword.MaxLength = 32767;
-            txtPassword.MaxSuggestItems = 8;
-            txtPassword.MoveToNextControlOnEnter = true;
-            txtPassword.Name = "txtPassword";
-            txtPassword.Padding = new Padding(8, 12, 8, 12);
-            txtPassword.PlaceholderColor = Color.DarkGray;
-            txtPassword.PlaceholderText = "";
-            txtPassword.RightIcon = null;
-            txtPassword.RightIconClickable = false;
-            txtPassword.ShowClearButton = false;
-            txtPassword.Size = new Size(250, 36);
-            txtPassword.SuggestIcon = null;
-            txtPassword.TabIndex = 3;
-            txtPassword.UseSystemPasswordChar = false;
-            txtPassword.ValidateEmail = false;
-            txtPassword.TextChanged += CheckTextBoxsIfCanSave_TextChange;
-            // 
-            // lblConfirmPassword
-            // 
-            lblConfirmPassword.AutoSize = true;
-            lblConfirmPassword.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            lblConfirmPassword.Location = new Point(36, 156);
-            lblConfirmPassword.Name = "lblConfirmPassword";
-            lblConfirmPassword.Size = new Size(135, 19);
-            lblConfirmPassword.TabIndex = 4;
-            lblConfirmPassword.Text = "Confirm Password:";
-            // 
-            // txtConfirmPassword
-            // 
-            txtConfirmPassword.AllowArabicCharacters = true;
-            txtConfirmPassword.AllowEnglishCharacters = true;
-            txtConfirmPassword.AllowNumbers = true;
-            txtConfirmPassword.AllowSpaces = true;
-            txtConfirmPassword.AllowSymbols = true;
-            txtConfirmPassword.BackColor = Color.Transparent;
-            txtConfirmPassword.BorderColor = Color.FromArgb(220, 220, 220);
-            txtConfirmPassword.BorderFocusColor = Color.FromArgb(200, 200, 200);
-            txtConfirmPassword.BorderRadius = 24;
-            txtConfirmPassword.BorderSize = 1;
-            txtConfirmPassword.CustomAllowedCharacters = "";
-            txtConfirmPassword.EnableIconTinting = false;
-            txtConfirmPassword.EnableSuggest = false;
-            txtConfirmPassword.ErrorBorderColor = Color.FromArgb(239, 68, 68);
-            txtConfirmPassword.FillColor = Color.White;
-            txtConfirmPassword.HasError = false;
-            txtConfirmPassword.HoverIconColor = Color.FromArgb(15, 23, 42);
-            txtConfirmPassword.IconColor = Color.FromArgb(148, 163, 184);
-            txtConfirmPassword.IconOffsetLeft = 10;
-            txtConfirmPassword.IconOffsetRight = 10;
-            txtConfirmPassword.IconSize = new Size(20, 20);
-            txtConfirmPassword.IconSpacing = 8;
-            txtConfirmPassword.LeftIcon = null;
-            txtConfirmPassword.LeftIconClickable = false;
-            txtConfirmPassword.Location = new Point(186, 145);
-            txtConfirmPassword.MaxLength = 32767;
-            txtConfirmPassword.MaxSuggestItems = 8;
-            txtConfirmPassword.MoveToNextControlOnEnter = true;
-            txtConfirmPassword.Name = "txtConfirmPassword";
-            txtConfirmPassword.Padding = new Padding(8, 12, 8, 12);
-            txtConfirmPassword.PlaceholderColor = Color.DarkGray;
-            txtConfirmPassword.PlaceholderText = "";
-            txtConfirmPassword.RightIcon = null;
-            txtConfirmPassword.RightIconClickable = false;
-            txtConfirmPassword.ShowClearButton = false;
-            txtConfirmPassword.Size = new Size(250, 36);
-            txtConfirmPassword.SuggestIcon = null;
-            txtConfirmPassword.TabIndex = 5;
-            txtConfirmPassword.UseSystemPasswordChar = false;
-            txtConfirmPassword.ValidateEmail = false;
-            txtConfirmPassword.TextChanged += CheckTextBoxsIfCanSave_TextChange;
             // 
             // lnkEditPassword
             // 
             lnkEditPassword.AutoSize = true;
             lnkEditPassword.Font = new Font("Segoe UI", 9.5F);
-            lnkEditPassword.Location = new Point(186, 85);
+            lnkEditPassword.Location = new Point(121, 83);
             lnkEditPassword.Name = "lnkEditPassword";
             lnkEditPassword.Size = new Size(112, 17);
             lnkEditPassword.TabIndex = 6;
@@ -692,7 +620,7 @@ namespace DVLD.PL.UsersManagement
             chkIsActive.Font = new Font("Segoe UI", 9.5F);
             chkIsActive.ForeColor = Color.FromArgb(30, 41, 59);
             chkIsActive.HoverBorderColor = Color.FromArgb(0, 120, 215);
-            chkIsActive.Location = new Point(186, 205);
+            chkIsActive.Location = new Point(122, 102);
             chkIsActive.Name = "chkIsActive";
             chkIsActive.RippleColor = Color.FromArgb(40, 0, 120, 215);
             chkIsActive.Size = new Size(120, 24);
@@ -809,12 +737,9 @@ namespace DVLD.PL.UsersManagement
         private TabPage tpLoginInfo;
         private Label lblUserName;
         private NTextBox txtUserName;
-        private Label lblPassword;
-        private NTextBox txtPassword;
-        private Label lblConfirmPassword;
-        private NTextBox txtConfirmPassword;
         private LinkLabel lnkEditPassword;
         private NCheckBox chkIsActive;
         private NButton btnPrev;
+        private PasswordInputControl ctrlInputPassword;
     }
 }

@@ -1,6 +1,6 @@
 ﻿using DVLD.BLL.OperationResults;
 using DVLD.BLL.Services;
-using DVLD.PL.Configuration;
+using DVLD.PL.AppConfigration;
 using DVLD.PL.Global;
 using DVLD.PL.Properties;
 using DVLD.PL.Theme;
@@ -42,7 +42,7 @@ namespace DVLD.PL.Login
         {
             Icon = Resources.iconLoginIn;
             RegisterEvents();
-            SetupPasswordVisibility();
+            UIUtility.SetupPasswordVisibility(txtPassword);
             SetupToolTips();
             _lockoutTimer = new Timer { Interval = 1000 };
             _lockoutTimer.Tick += LockoutTimer_Tick;
@@ -99,21 +99,6 @@ namespace DVLD.PL.Login
                 txtPassword.Text = rememberedPassword;
                 chkRememberMe.Checked = true;
             }
-        }
-
-        private void SetupPasswordVisibility()
-        {
-            txtPassword.UseSystemPasswordChar = true;
-            txtPassword.RightIcon = Resources.visibilityOff;
-            txtPassword.RightIconClickable = true;
-
-            txtPassword.RightIconClick += (s, e) =>
-            {
-                txtPassword.UseSystemPasswordChar = !txtPassword.UseSystemPasswordChar;
-                txtPassword.RightIcon = txtPassword.UseSystemPasswordChar
-                    ? Resources.visibilityOff
-                    : Resources.visibilityOn;
-            };
         }
 
         private void CheckTextBoxsAreNotEmpty()

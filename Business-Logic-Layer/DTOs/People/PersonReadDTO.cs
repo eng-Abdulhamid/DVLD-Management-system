@@ -19,7 +19,7 @@ namespace DVLD.BLL.DTOs
         public string ImagePath { get; init; } = string.Empty; // Nullable column
         public string CountryName { get; init; } = string.Empty;
         public string FullName { get; init; } = string.Empty;
-        public PersonReadDTO(int personID, string nationalNo, string firstName, string secondName, string thirdName, string lastName, int age, DateTime dateOfBirth, Gendor Gendor, string address, string phone, string email, int nationalityCountryID, string imagePath, string countryName, string fullName)
+        internal PersonReadDTO(int personID, string nationalNo, string firstName, string secondName, string thirdName, string lastName, int age, DateTime dateOfBirth, Gendor Gendor, string address, string phone, string email, int nationalityCountryID, string imagePath, string countryName, string fullName)
         {
             PersonID = personID;
             NationalNo = nationalNo;
@@ -38,6 +38,7 @@ namespace DVLD.BLL.DTOs
             CountryName = countryName;
             FullName = fullName;
         }
+        public PersonReadDTO() { }
     }
 }
 
