@@ -1,16 +1,20 @@
-﻿namespace DVLD.PL.Theme
+﻿namespace DVLD.PL.ControlsTheme
 {
-    public static class CommonTheme
+    public sealed class CommonTheme
     {
-        public static int DefaultBorderRadius { get; set; } = 0;
+        public string FontFamily { get; init; } =
+            "Segoe UI";
 
-        public static bool EnableSystemAnimations { get; set; } = true;
+        public float DefaultFontSize { get; init; }
 
-        public static string SystemFontFamily { get; set; } = "Segoe UI";
+        public int DefaultBorderRadius { get; init; }
 
-        public static Font CreateFont(float size, FontStyle style = FontStyle.Regular)
-        {
-            return new Font(SystemFontFamily, size, style);
-        }
+        public int DefaultBorderSize { get; init; }
+
+        public bool EnableAnimations { get; init; }
+
+        public bool EnableRippleEffects { get; init; }
+
+        public bool EnableShadows { get; init; }
     }
 }

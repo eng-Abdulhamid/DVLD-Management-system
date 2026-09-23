@@ -51,7 +51,7 @@ namespace DVLD.PL.UsersManagement
 
             if (_userId <= 0)
             {
-                NotificationTheme.ShowErrorToast("Invalid user ID.");
+                //NotificationTheme.ShowErrorToast("Invalid user ID.");
                 this.Close();
                 return;
             }
@@ -69,7 +69,7 @@ namespace DVLD.PL.UsersManagement
             UpdateDeleteButtonEnabled(false);
             
             if (_userId == AppSession.CurrentUserID) {
-                NotificationTheme.ShowWarningToast("You cannot delete login user. Please login with another account to delete this one.", "Deleting faild");
+                //NotificationTheme.ShowWarningToast("You cannot delete login user. Please login with another account to delete this one.", "Deleting faild");
                 return;
             };
 
@@ -77,13 +77,13 @@ namespace DVLD.PL.UsersManagement
 
             if (result.IsSuccess)
             {
-                NotificationTheme.ShowSuccessToast("User deleted successfully.");
+                //NotificationTheme.ShowSuccessToast("User deleted successfully.");
                 DeletedSuccessfully?.Invoke();
                 this.Close();
             }
             else
             {
-                NotificationTheme.ShowErrorToast(result.Message);
+                //NotificationTheme.ShowErrorToast(result.Message);
             }
             UpdateDeleteButtonEnabled(true);
 

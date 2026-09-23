@@ -79,7 +79,7 @@ namespace DVLD.PL.DriversManagement
             {
                 if (_selectedPersonId <= 0)
                 {
-                    NotificationTheme.ShowWarningToast("Please select a valid person first to proceed.");
+                    //NotificationTheme.ShowWarningToast("Please select a valid person first to proceed.");
                     return;
                 }
 
@@ -136,7 +136,7 @@ namespace DVLD.PL.DriversManagement
         {
             if (_selectedPersonId <= 0)
             {
-                NotificationTheme.ShowWarningToast("Valid person context lost. Please re-select a person.");
+                //NotificationTheme.ShowWarningToast("Valid person context lost. Please re-select a person.");
                 tcWizard.SelectedTab = tpPersonSelection;
                 return;
             }
@@ -150,14 +150,14 @@ namespace DVLD.PL.DriversManagement
 
             if (result.IsSuccess)
             {
-                NotificationTheme.ShowSuccessToast("Driver registered successfully.");
+                //NotificationTheme.ShowSuccessToast("Driver registered successfully.");
                 DriverSaved?.Invoke(result.Data);
                 this.Close();
             }
             else
             {
                 // BLL restricts duplicate drivers linked to the same PersonID. The message surfaces here.
-                NotificationTheme.ShowWarningToast(result.Message ?? "Failed to save driver.", "Registration Failed");
+                //NotificationTheme.ShowWarningToast(result.Message ?? "Failed to save driver.", "Registration Failed");
                 UpdateSaveButtonStatus(true);
             }
         }

@@ -46,7 +46,7 @@ namespace DVLD.PL.DriversManagement
 
             if (_driverId <= 0)
             {
-                NotificationTheme.ShowErrorToast("Invalid driver ID provided.");
+                //NotificationTheme.ShowErrorToast("Invalid driver ID provided.");
                 this.Close();
                 return;
             }
@@ -87,14 +87,14 @@ namespace DVLD.PL.DriversManagement
 
             if (result.IsSuccess)
             {
-                NotificationTheme.ShowSuccessToast("Driver deleted successfully.");
+                //NotificationTheme.ShowSuccessToast("Driver deleted successfully.");
                 DeletedSuccessfully?.Invoke();
                 this.Close();
             }
             else
             {
                 // BLL restricts deletion if the driver is linked to active licenses or constraints.
-                NotificationTheme.ShowWarningToast(result.Message ?? "Unable to delete driver due to linked constraints.", "Deletion Rejected");
+                //NotificationTheme.ShowWarningToast(result.Message ?? "Unable to delete driver due to linked constraints.", "Deletion Rejected");
                 UpdateDeleteButtonEnabled(true);
             }
         }

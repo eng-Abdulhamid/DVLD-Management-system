@@ -78,14 +78,14 @@ namespace DVLD.PL.Global
         }
         protected void ApplyTheme()
         {
-            ThemeApplicator.Apply(this);
+            this.ApplyThemeToAll();
             Invalidate(true);
         }
         private void ThemeManager_ThemeChanged(
         object? sender,
         EventArgs e)
         {
-            ThemeApplicator.Apply(this);
+            this.ApplyTheme();
         }
 
         public void SetContextTitle(string currentScreenTitle)
@@ -253,11 +253,11 @@ namespace DVLD.PL.Global
         protected virtual Task InitializeDataAsync() => Task.CompletedTask;
 
 
-        private void HandleThemeChanged(object s, ThemeManager.ModeEventsArgs e)
+        private void HandleThemeChanged(object s, EventArgs e)
         {
             if (IsDisposed || !IsHandleCreated) return;
 
-            ThemeApplicator.Apply(this);
+            this.ApplyTheme();
             Invalidate(true);
         }
 

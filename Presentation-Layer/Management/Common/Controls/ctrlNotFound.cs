@@ -60,7 +60,7 @@ namespace DVLD.PL.Management
             RegisterEvents();
 
             this.Resize += (s, e) => CenterControls();
-            ThemeApplicator.Apply(this);
+            this.ApplyThemeToAll();
         }
         private void RegisterEvents()
         {

@@ -127,7 +127,7 @@ namespace DVLD.PL.Management
             btnPrevPage.Enabled = CurrentPage > 1;
             btnNextPage.Enabled = TotalRecords < totalPages;
 
-            ThemeApplicator.Apply(this);
+            this.ApplyThemeToAll();
         }
         public void Reset()
         {

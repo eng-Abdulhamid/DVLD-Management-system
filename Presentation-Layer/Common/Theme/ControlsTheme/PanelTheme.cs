@@ -1,16 +1,10 @@
-﻿namespace DVLD.PL.Theme
+﻿namespace DVLD.PL.ControlsTheme
 {
-    public static class PannelTheme
+    public sealed class PanelTheme
     {
-        public static int PaddingSize { get; set; } = 0;
+        public Color Background { get; init; }
 
-        public static void ApplyPanelStyle(this Panel pnl)
-        {
-            if (pnl == null)
-                return;
+        public Color Foreground { get; init; }
 
-            pnl.BackColor = ThemeManager.Current.Surface;
-            pnl.Padding = new Padding(PaddingSize);
-        }
     }
 }

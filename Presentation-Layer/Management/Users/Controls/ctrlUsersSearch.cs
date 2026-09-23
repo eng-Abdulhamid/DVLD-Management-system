@@ -47,7 +47,7 @@ namespace DVLD.PL.UsersManagement
             };
 
             InitializeControlsData();
-            ThemeApplicator.Apply(this);
+            this.ApplyThemeToAll();
             _isInitializing = false;
         }
 

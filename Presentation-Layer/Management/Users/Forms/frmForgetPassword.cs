@@ -240,7 +240,7 @@ namespace DVLD.PL.Login
             }
 
             OnPasswordChange?.Invoke(txtUserName.Text.Trim(), ctrlPasswordInput.NewPassword);
-            NotificationTheme.ShowSuccessToast("Your password has been changed successfully.", "Update");
+            //NotificationTheme.ShowSuccessToast("Your password has been changed successfully.", "Update");
             Close();
         }
 
@@ -252,14 +252,14 @@ namespace DVLD.PL.Login
             }
             else
             {
-                NotificationTheme.ShowErrorToast(message ?? "Failed to update password.", "Update Failed");
+                //NotificationTheme.ShowErrorToast(message ?? "Failed to update password.", "Update Failed");
             }
         }
         private void TriggerFieldError(CustomizeControls.NTextBox control, string message)
         {
             control.HasError = true;
             control.Shake();
-            NotificationTheme.ShowErrorToast(message, "Validation Error");
+            //NotificationTheme.ShowErrorToast(message, "Validation Error");
             control.Focus();
         }
 

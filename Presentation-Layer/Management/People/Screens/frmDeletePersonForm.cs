@@ -77,7 +77,7 @@ namespace DVLD.PL.PeopleManagement
         {
             if (_personId <= 0)
             {
-                NotificationTheme.ShowErrorToast("Invalid person identifier.");
+                //NotificationTheme.ShowErrorToast("Invalid person identifier.");
                 this.Close();
                 return false;
             }
@@ -120,14 +120,14 @@ namespace DVLD.PL.PeopleManagement
 
         private void OnDeleteSuccess()
         {
-            NotificationTheme.ShowSuccessToast("Person deleted successfully.");
+            //NotificationTheme.ShowSuccessToast("Person deleted successfully.");
             DeletedSuccessfully?.Invoke();
             this.Close();
         }
 
         private void OnDeleteFailure(string? errorMessage)
         {
-            NotificationTheme.ShowWarningToast(errorMessage, "Delete Failed");
+            //NotificationTheme.ShowWarningToast(errorMessage, "Delete Failed");
         }
 
         private void SetActionButtonsState(bool isEnabled)

@@ -127,6 +127,45 @@ namespace CustomizeControls
         // =========================
         // Standard TextBox Properties
         // =========================
+        [Category("NTextBox - Appearance")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Color DisabledFillColor
+        {
+            get => disabledFillColor;
+            set { disabledFillColor = value; if (!Enabled) textBox.BackColor = value; Invalidate(); }
+        }
+
+        [Category("NTextBox - Appearance")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Color DisabledBorderColor
+        {
+            get => disabledBorderColor;
+            set { disabledBorderColor = value; Invalidate(); }
+        }
+
+        [Category("NTextBox - Icons")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Color ClearButtonColor { get; set; } = Color.FromArgb(148, 163, 184);
+
+        [Category("NTextBox - Icons")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Color ClearButtonHoverColor { get; set; } = Color.FromArgb(239, 68, 68);
+
+        [Category("NTextBox - AutoSuggest")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Color SuggestBackground { get; set; } = Color.White;
+
+        [Category("NTextBox - AutoSuggest")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Color SuggestTextColor { get; set; } = Color.FromArgb(30, 41, 59);
+
+        [Category("NTextBox - AutoSuggest")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Color SuggestHoverColor { get; set; } = Color.FromArgb(243, 232, 255);
+
+        [Category("NTextBox - AutoSuggest")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Color SuggestBorderColor { get; set; } = Color.FromArgb(226, 232, 240);
 
         [Category("NTextBox - TextBox")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
@@ -481,31 +520,37 @@ namespace CustomizeControls
 
         [Category("NTextBox - Text")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-        public override Font Font
+        public override Font? Font
         {
             get => base.Font;
-            set { base.Font = value; textBox.Font = value; UpdateControlHeight(); }
+            set
+            {
+                base.Font = value;
+                if (value is not null)
+                {
+                    textBox.Font = value;
+                }
+                UpdateControlHeight();
+            }
         }
-
         [Category("NTextBox - Text")]
         [Browsable(true)]
         [EditorBrowsable(EditorBrowsableState.Always)]
         [Bindable(true)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-        public override string Text
+        public override string? Text
         {
             get => textBox?.Text ?? base.Text;
             set
             {
                 base.Text = value;
-                if (textBox != null && textBox.Text != value)
+                if (textBox is not null && textBox.Text != value)
                 {
-                    textBox.Text = value;
+                    textBox.Text = value ?? string.Empty;
                 }
                 Invalidate();
             }
         }
-
         [Category("NTextBox - Text")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string PlaceholderText
@@ -1244,10 +1289,9 @@ namespace CustomizeControls
         {
             if (!textBox.Multiline)
             {
-                textBox.Multiline = true;
-                textBox.MinimumSize = new Size(0, TextRenderer.MeasureText("T", Font).Height + 2);
-                textBox.Multiline = false;
-                Height = textBox.Height + Padding.Top + Padding.Bottom;
+                int textHeight = TextRenderer.MeasureText("T", Font).Height;
+                textBox.Height = textHeight;
+                Height = textHeight + Padding.Top + Padding.Bottom;
             }
         }
 

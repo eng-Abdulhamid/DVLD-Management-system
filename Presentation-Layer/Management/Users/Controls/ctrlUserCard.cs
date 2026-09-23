@@ -19,7 +19,7 @@ namespace DVLD.PL.UsersManagement
         {
             InitializeComponent();
             ResetCard();
-            ThemeApplicator.Apply(this);
+            this.ApplyThemeToAll();
         }
         public async Task LoadUserInfoAsync(int userId)
         {
@@ -72,10 +72,10 @@ namespace DVLD.PL.UsersManagement
             lblUserName.Text = SelectedUserInfo.UserName;
             lblIsActive.Text = SelectedUserInfo.IsActive ? "Yes" : "No";
 
-            if (SelectedUserInfo.IsActive)
-                lblIsActive.ApplyStatusBadge(StatusLabelStyler.Success, "Active");
-            else
-                lblIsActive.ApplyStatusBadge(StatusLabelStyler.Danger, "Not Active");
+            //if (SelectedUserInfo.IsActive)
+            //    lblIsActive.ApplyStatusBadge(StatusLabelStyler.Success, "Active");
+            //else
+            //    lblIsActive.ApplyStatusBadge(StatusLabelStyler.Danger, "Not Active");
         }
 
         public void ResetCard()

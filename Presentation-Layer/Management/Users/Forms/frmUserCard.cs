@@ -30,7 +30,7 @@ namespace DVLD.PL.Management.user_management
 
             if (_userID <= 0)
             {
-                NotificationTheme.ShowErrorToast("Invalid user ID.");
+                //NotificationTheme.ShowErrorToast("Invalid user ID.");
                 this.Close();
                 return;
             }

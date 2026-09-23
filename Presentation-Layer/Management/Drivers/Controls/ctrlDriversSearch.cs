@@ -49,7 +49,7 @@ namespace DVLD.PL.DriversManagement
             _searchTimer.Tick += Search_Tick;
 
             InitializeControlsData();
-            ThemeApplicator.Apply(this);
+            this.ApplyThemeToAll();
             _isInitializing = false;
         }
         private void Search_Tick(object? sender, EventArgs e)

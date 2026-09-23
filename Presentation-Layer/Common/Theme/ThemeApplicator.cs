@@ -1,76 +1,92 @@
-﻿using CustomizeControls;
-using DVLD.PL.Global;
-namespace DVLD.PL.Theme
+﻿using System.Windows.Forms;
+using CustomizeControls;
+
+namespace DVLD.PL.Theme;
+
+public static class ThemeApplicator
 {
-    public static class ThemeApplicator
+    public static void ApplyThemeToAll(this Control? root)
     {
-        public static void Apply(Control root)
+        if (root is null) return;
+
+        ApplyToControl(root);
+
+        foreach (Control child in root.Controls)
         {
-            if (root == null)
-                return;
+            ApplyThemeToAll(child);
+        }
+    }
 
-            ApplyToControl(root);
+    private static void ApplyToControl(Control control)
+    {
+        switch (control)
+        {
+            case Form frm:
+                ThemeManager.Current.ApplyCurrentFormTheme(frm);
+                break;
 
-            foreach (Control control in root.Controls)
-            {
-                Apply(control);
-            }
+            case NButton btn:
+                btn.ApplyTheme();
+                break;
+
+            case NTextBox textBox:
+                ThemeManager.Current.ApplyCurrentTextBoxTheme(textBox);
+                break;
+
+            case NCheckBox checkBox:
+                ThemeManager.Current.ApplyCurrentCheckBoxTheme(checkBox);
+                break;
+
+            case ComboBox comboBox:
+                ThemeManager.Current.ApplyCurrentComboBoxTheme(comboBox);
+                break;
+
+            case Label label:
+                ThemeManager.Current.ApplyCurrentLabelTheme(label);
+                break;
+
+            case NDataGrid dataGrid:
+                ThemeManager.Current.ApplyCurrentDataGridTheme(dataGrid);
+                break;
+
+            case Panel panel:
+                ThemeManager.Current.ApplyCurrentPanelTheme(panel);
+                break;
+
+            case ToolStrip toolStrip:
+                ThemeManager.Current.ApplyCurrentToolStripTheme(toolStrip);
+                if (toolStrip is MenuStrip menuStrip && menuStrip.Renderer is NMenuRenderer menuRenderer)
+                {
+                    ThemeManager.Current.ApplyCurrentMenuTheme(menuRenderer);
+                }
+                break;
         }
 
-        private static void ApplyToControl(Control control)
+        if (control.ContextMenuStrip?.Renderer is NMenuRenderer contextRenderer)
         {
-            switch (control)
-            {
-                case BaseForm frm:
-                    frm.ApplyStandardFormTheme();
-                    break;
-
-                case Panel panel:
-                    panel.ApplyPanelStyle();
-                    break;
-
-                case NTextBox textBox:
-                    textBox.ApplyTextBoxStyle();
-                    break;
-
-                case ComboBox comboBox:
-                    comboBox.ApplyComboBoxStyle();
-                    break;
-                case Label label:
-                    label.ApplyLabelStyle();
-                    break;
-                case NCheckBox checkBox:
-                    checkBox.ApplyCheckBoxStyle();
-                    break;
-
-                case DataGridView dataGrid:
-                    dataGrid.ApplyDataGridStyle();
-                    break;
-                case NButton btn:
-                    btn.ApplyButtonTheme();
-                    break;
-            }
+            ThemeManager.Current.ApplyCurrentMenuTheme(contextRenderer);
         }
-        private static void ApplyButtonTheme(this NButton btn)
+    }
+
+    public static void ApplyTheme(this NButton btn)
+    {
+        switch (btn.ButtonType)
         {
-            switch (btn.ButtonType)
-            {
-                case enButtonType.Primary:
-                    btn.ApplyPrimaryStyle();
-                    break;
+            case enButtonType.Primary:
+                ThemeManager.Current.ApplyCurrentPrimaryButtonTheme(btn);
+                break;
 
-                case enButtonType.Secondary:
-                    btn.ApplySecondaryStyle();
-                    break;
+            case enButtonType.Secondary:
+                ThemeManager.Current.ApplyCurrentSecondaryButtonTheme(btn);
+                break;
 
-                case enButtonType.Danger:
-                    btn.ApplyDangerStyle();
-                    break;
+            case enButtonType.Danger:
+                ThemeManager.Current.ApplyCurrentDangerButtonTheme(btn);
+                break;
 
-                case enButtonType.Disabled:
-                    btn.ApplyDisabledStyle();
-                    break;
-            }
+            case enButtonType.Disabled:
+                ThemeManager.Current.ApplyCurrentDisabledButtonTheme(btn);
+                break;
         }
     }
 }

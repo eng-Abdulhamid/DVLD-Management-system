@@ -43,7 +43,7 @@ namespace DVLD.PL.PeopleManagement
             };
 
             InitializeControlsData();
-            ThemeApplicator.Apply(this);
+            this.ApplyThemeToAll();
             _isInitializing = false;
 
             this.Load += PeopleSearch_Load;

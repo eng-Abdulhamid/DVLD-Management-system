@@ -49,7 +49,7 @@ namespace DVLD.PL.PeopleManagement
 
             if (_personId <= 0)
             {
-                NotificationTheme.ShowErrorToast("Invalid person identifier.");
+                //NotificationTheme.ShowErrorToast("Invalid person identifier.");
                 this.Close();
                 return;
             }

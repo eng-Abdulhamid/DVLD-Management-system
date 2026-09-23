@@ -137,7 +137,7 @@ namespace DVLD.PL.Login
             lblAttemptMessage.Text = "Too many failed attempts. System locked.";
             lblAttemptsCounter.Text = $"Please wait {_lockoutSecondsRemaining} seconds...";
 
-            NotificationTheme.ShowWarningToast("Too many failed attempts. Access temporarily locked.", "Security Notice");
+            ////NotificationTheme.ShowWarningToast("Too many failed attempts. Access temporarily locked.", "Security Notice");
             _lockoutTimer?.Start();
         }
 
@@ -193,7 +193,7 @@ namespace DVLD.PL.Login
                 }
                 else
                 {
-                    NotificationTheme.ShowErrorToast("Failed to load user profile.", "Login Error");
+                    ////NotificationTheme.ShowErrorToast("Failed to load user profile.", "Login Error");
                 }
             }
             else

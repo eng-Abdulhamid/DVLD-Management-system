@@ -1,51 +1,30 @@
-﻿namespace DVLD.PL.Theme
+﻿using System;
+using CustomizeControls;
+
+namespace DVLD.PL.Theme;
+
+public static class ThemeManager
 {
-    public static class ThemeManager
+    public static enMode Mode { get; private set; }
+    private static IControlApplicator _currentApplicator =
+        new ControlApplicator(new DefaultLightThemeProvider().BuildTheme());
+
+    public static IControlApplicator Current => _currentApplicator;
+    public static event EventHandler? ThemeChanged;
+
+    public static void SetMode(enMode mode, ThemePreferences? customPreferences = null)
     {
-        public static enMode Mode { get; private set; } = enMode.DefaultLight;
-
-        public static ThemePalette Current => Mode switch
+        Mode = mode;
+        IThemeProvider provider = mode switch
         {
-            enMode.DefaultDark => DefaultDark.Colors,
-            enMode.CustomLight => CustomLight.Colors,
-            enMode.CustomDark => CustomDark.Colors,
-            _ => DefaultLight.Colors
+            enMode.DefaultLight => new DefaultLightThemeProvider(),
+            enMode.DefaultDark => new DefaultDarkThemeProvider(),
+            enMode.CustomDark => new CustomDarkThemeProvider(customPreferences),
+            enMode.CustomLight => new CustomLightThemeProvider(customPreferences),
+            _ => new DefaultLightThemeProvider()
         };
-        /// <summary>
-        /// Raised after the current theme mode changes.
-        /// Subscribers should apply the provided theme palette to their controls.
-        /// </summary>
-        public static event EventHandler<ModeEventsArgs>? ThemeChanged;
 
-        public class ModeEventsArgs : EventArgs
-        {
-            public ThemePalette CurrentThemePalette { get; }
-            public enMode Mode { get; }
-
-            public ModeEventsArgs(
-                ThemePalette currentThemePalette,
-                enMode mode)
-            {
-                CurrentThemePalette = currentThemePalette;
-                Mode = mode;
-            }
-        }
-
-        /// <summary>
-        /// Changes the current theme mode and raises ThemeChanged when the mode changes.
-        /// Controls should get the updated theme from ThemeManager.Current
-        /// and apply it to themselves through frmBase.
-        /// </summary>
-        public static void SetMode(enMode mode)
-        {
-            if (Mode == mode)
-                return;
-
-            Mode = mode;
-
-            ThemeChanged?.Invoke(
-                null,
-                new ModeEventsArgs(Current, Mode));
-        }
+        _currentApplicator = new ControlApplicator(provider.BuildTheme());
+        ThemeChanged?.Invoke(null, EventArgs.Empty);
     }
 }

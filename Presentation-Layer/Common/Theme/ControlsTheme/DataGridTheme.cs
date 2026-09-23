@@ -1,104 +1,33 @@
-﻿namespace DVLD.PL.Theme
+﻿namespace DVLD.PL.ControlsTheme
 {
-    public static class DataGridTheme
+    public sealed class DataGridTheme
     {
-        public static int RowHeight { get; set; } = 42;
+        public Color Background { get; init; }
 
-        public static int HeaderHeight { get; set; } = 44;
+        public Color BorderColor { get; init; }
 
-        public static float HeaderFontSize { get; set; } = 10F;
+        public Color GridColor { get; init; }
 
-        public static float CellFontSize { get; set; } = 9.5F;
+        public Color HeaderBackground { get; init; }
 
-        public static int HorizontalPadding { get; set; } = 12;
+        public Color HeaderForeground { get; init; }
 
-        public static void ApplyDataGridStyle(this DataGridView dgv)
-        {
-            if (dgv == null)
-                return;
+        public Color HeaderSelectionBackground { get; init; }
 
-            ApplyGeneralSettings(dgv);
-            ApplyHeaderStyle(dgv);
-            ApplyDefaultCellStyle(dgv);
-            ApplyAlternatingRowStyle(dgv);
-        }
+        public Color HeaderSelectionForeground { get; init; }
 
-        private static void ApplyGeneralSettings(DataGridView dgv)
-        {
-            var colors = ThemeManager.Current;
+        public Color CellBackground { get; init; }
 
-            dgv.BackgroundColor = colors.Surface;
-            dgv.BorderStyle = BorderStyle.None;
-            dgv.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            dgv.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+        public Color CellForeground { get; init; }
 
-            dgv.EnableHeadersVisualStyles = false;
+        public Color AlternatingRowBackground { get; init; }
 
-            dgv.GridColor = colors.Border;
+        public Color AlternatingRowForeground { get; init; }
 
-            dgv.RowHeadersVisible = false;
+        public Color SelectionBackground { get; init; }
 
-            dgv.RowTemplate.Height = RowHeight;
-            dgv.ColumnHeadersHeight = HeaderHeight;
+        public Color SelectionForeground { get; init; }
 
-            dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgv.MultiSelect = false;
-
-            dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-        }
-
-        private static void ApplyHeaderStyle(DataGridView dgv)
-        {
-            var colors = ThemeManager.Current;
-
-            dgv.ColumnHeadersDefaultCellStyle = new DataGridViewCellStyle
-            {
-                Alignment = DataGridViewContentAlignment.MiddleLeft,
-                BackColor = colors.Background,
-                Font = CommonTheme.CreateFont(
-                    HeaderFontSize,
-                    FontStyle.Bold),
-                ForeColor = colors.TextSecondary,
-                SelectionBackColor = colors.Background,
-                SelectionForeColor = colors.TextSecondary,
-                Padding = new Padding(HorizontalPadding, 0, 0, 0)
-            };
-        }
-
-        private static void ApplyDefaultCellStyle(DataGridView dgv)
-        {
-            var colors = ThemeManager.Current;
-
-            dgv.DefaultCellStyle = CreateCellStyle(
-                colors.Surface,
-                colors.TextPrimary);
-        }
-
-        private static void ApplyAlternatingRowStyle(DataGridView dgv)
-        {
-            var colors = ThemeManager.Current;
-
-            dgv.AlternatingRowsDefaultCellStyle = CreateCellStyle(
-                colors.Background,
-                colors.TextPrimary);
-        }
-
-        private static DataGridViewCellStyle CreateCellStyle(
-            Color background,
-            Color foreground)
-        {
-            var colors = ThemeManager.Current;
-
-            return new DataGridViewCellStyle
-            {
-                Alignment = DataGridViewContentAlignment.MiddleLeft,
-                BackColor = background,
-                Font = CommonTheme.CreateFont(CellFontSize),
-                ForeColor = foreground,
-                SelectionBackColor = colors.SelectionBg,
-                SelectionForeColor = colors.SelectionText,
-                Padding = new Padding(HorizontalPadding, 0, 0, 0)
-            };
-        }
+        public int BorderSize { get; init; }
     }
 }

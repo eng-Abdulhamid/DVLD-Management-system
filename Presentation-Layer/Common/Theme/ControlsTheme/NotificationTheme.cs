@@ -1,73 +1,31 @@
-﻿using CustomizeControls;
-namespace DVLD.PL.Theme
+﻿namespace DVLD.PL.ControlsTheme
 {
-    public static class NotificationTheme
+    public sealed class NotificationTheme
     {
-        public static bool Enabled { get; set; } = true;
+        public Color Background { get; init; }
 
-        public static bool PlaySound { get; set; } = false;
+        public Color TextColor { get; init; }
 
-        public static bool ShowProgressBar { get; set; } = true;
+        public Color BorderColor { get; init; }
 
-        public static int DefaultDuration { get; set; } = 4;
+        public Color SuccessColor { get; init; }
 
-        public static NotificationPosition DefaultPosition { get; set; } =
-            NotificationPosition.BottomRight;
+        public Color DangerColor { get; init; }
 
-        public static void ShowSuccessToast(
-            string message,
-            string title = "Success") =>
-            ShowToast(title, message, IconType.Success);
+        public Color WarningColor { get; init; }
 
-        public static void ShowErrorToast(
-            string message,
-            string title = "Error") =>
-            ShowToast(title, message, IconType.Error);
+        public Color InfoColor { get; init; }
 
-        public static void ShowWarningToast(
-            string message,
-            string title = "Warning") =>
-            ShowToast(title, message, IconType.Warning);
+        public Color ProgressBarColor { get; init; }
 
-        public static void ShowInfoToast(
-            string message,
-            string title = "Information") =>
-            ShowToast(title, message, IconType.Info);
+        public float TitleFontSize { get; init; }
 
-        private static void ShowToast(
-            string title,
-            string message,
-            IconType type)
-        {
-            if (!Enabled)
-                return;
+        public float MessageFontSize { get; init; }
 
-            new NotificationBuilder()
-                .WithTitle(title)
-                .WithMessage(message)
-                .WithType(type)
-                .WithDuration(DefaultDuration)
-                .WithPosition(DefaultPosition)
-                .WithProgressBar(ShowProgressBar)
-                .WithSound(PlaySound)
-                .WithCustomColors(
-                    accent: GetAccentColor(type),
-                    back: ThemeManager.Current.Surface,
-                    text: ThemeManager.Current.TextPrimary,
-                    border: ThemeManager.Current.Border)
-                .Show();
-        }
+        public int BorderSize { get; init; }
 
-        private static Color GetAccentColor(IconType type)
-        {
-            return type switch
-            {
-                IconType.Success => ThemeManager.Current.Success,
-                IconType.Error => ThemeManager.Current.Danger,
-                IconType.Warning => ThemeManager.Current.Warning,
-                IconType.Info => ThemeManager.Current.Info,
-                _ => ThemeManager.Current.Primary
-            };
-        }
+        public int BorderRadius { get; init; }
+
+        public Padding Padding { get; init; }
     }
 }

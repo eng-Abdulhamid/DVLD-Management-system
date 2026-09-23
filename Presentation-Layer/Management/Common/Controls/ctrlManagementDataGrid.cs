@@ -2,6 +2,7 @@
 using DVLD.PL.Theme;
 using System.ComponentModel;
 using System.Reflection;
+
 namespace DVLD.PL.Management
 {
     public partial class ctrlManagementDataGrid : UserControl
@@ -67,7 +68,7 @@ namespace DVLD.PL.Management
 
             if (LicenseManager.UsageMode != LicenseUsageMode.Designtime)
             {
-                dgvResults.ApplyDataGridStyle();
+                dgvResults.ApplyThemeToAll();
             }
         }
         private void ConfigureContextMenus()

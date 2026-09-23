@@ -41,11 +41,10 @@ namespace DVLD.PL
             cardDrivers.IconHoverColor = HoverColor;
             cardUsers.IconHoverColor = HoverColor;
         }
-        private void ThemeManager_ThemeChanged(object? sender, ThemeManager.ModeEventsArgs e)
+        private void ThemeManager_ThemeChanged(object? sender, EventArgs e)
         {
-            ThemePalette theme = ThemeManager.Current;
 
-            SetCardsColours(theme.TextSecondary, theme.PrimaryHover);
+            SetCardsColours(ThemeManager.Current.theme.Colors.TextSecondary, ThemeManager.Current.theme.Colors.PrimaryHover);
             flowCards.Padding = new Padding(30, 20, 30, 20);
 
         }

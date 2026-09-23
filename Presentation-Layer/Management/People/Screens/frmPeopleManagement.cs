@@ -86,11 +86,11 @@ namespace DVLD.PL.PeopleManagement
 
             if (hasSelection)
             {
-                btnSelect.ApplyPrimaryStyle();
+                btnSelect.ApplyPrimary();
             }
             else
             {
-                btnSelect.ApplyDisabledStyle();
+                btnSelect.ApplyDisabled();
             }
 
             btnSelect.Update();

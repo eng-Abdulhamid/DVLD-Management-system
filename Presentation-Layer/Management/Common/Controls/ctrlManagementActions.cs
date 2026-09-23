@@ -151,7 +151,7 @@ namespace DVLD.PL.Management
                 return;
             }
 
-            ThemeApplicator.Apply(this);
+            this.ApplyThemeToAll();
             SetupToolTips();
             RegisterEvents();
 

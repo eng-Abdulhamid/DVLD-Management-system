@@ -1,4 +1,5 @@
-﻿using DVLD.PL.Theme;
+﻿using DVLD.PL.ControlsTheme;
+using DVLD.PL.Theme;
 using System.ComponentModel;
 
 namespace DVLD.PL
@@ -296,7 +297,7 @@ namespace DVLD.PL
 
         private void ThemeManager_ThemeChanged(
             object? sender,
-            ThemeManager.ModeEventsArgs e)
+            EventArgs e)
         {
             if (IsDisposed)
                 return;
@@ -307,8 +308,8 @@ namespace DVLD.PL
 
         private void ApplyTheme()
         {
-            ThemePalette theme =
-                ThemeManager.Current;
+            ThemeColors theme =
+                ThemeManager.Current.theme.Colors;
 
             Color accent =
                 GetAccentColor(theme);
@@ -348,7 +349,7 @@ namespace DVLD.PL
         }
 
         private Color GetAccentColor(
-            ThemePalette theme)
+            ThemeColors theme)
         {
             return _accent switch
             {
@@ -369,7 +370,7 @@ namespace DVLD.PL
         }
 
         private Color GetIconColor(
-            ThemePalette theme,
+            ThemeColors theme,
             bool hovered)
         {
             if (hovered)
@@ -429,8 +430,8 @@ namespace DVLD.PL
             if (source == null)
                 return null;
 
-            ThemePalette theme =
-                ThemeManager.Current;
+            ThemeColors theme =
+                ThemeManager.Current.theme.Colors;
 
             Color color =
                 GetIconColor(theme, hovered);
@@ -588,8 +589,8 @@ namespace DVLD.PL
         {
             base.OnPaint(e);
 
-            ThemePalette theme =
-                ThemeManager.Current;
+            ThemeColors theme =
+                ThemeManager.Current.theme.Colors;
 
             using var pen =
                 new Pen(

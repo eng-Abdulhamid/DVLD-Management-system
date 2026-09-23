@@ -1,30 +1,25 @@
-﻿namespace DVLD.PL.Theme
+﻿namespace DVLD.PL.ControlsTheme
 {
-    public static class LabelTheme
+    public sealed class LabelTheme
     {
-        public static void ApplyLabelStyle(this Label lbl)
-        {
-            if (lbl == null)
-                return;
+        public Color PrimaryColor { get; init; }
 
-            lbl.BackColor = Color.Transparent;
+        public Color SecondaryColor { get; init; }
 
-            if (IsDangerColor(lbl.ForeColor))
-            {
-                lbl.ForeColor = ThemeManager.Current.Danger;
-            }
-            else
-            {
-                lbl.ForeColor = ThemeManager.Current.TextPrimary;
-            }
-        }
+        public Color MutedColor { get; init; }
 
-        private static bool IsDangerColor(Color color)
-        {
-            return color == Color.Red ||
-                   color == Color.DarkRed ||
-                   color == Color.Crimson ||
-                   (color.R > 180 && color.G < 80 && color.B < 80);
-        }
+        public Color SuccessColor { get; init; }
+
+        public Color DangerColor { get; init; }
+
+        public Color WarningColor { get; init; }
+
+        public Color InfoColor { get; init; }
+
+        public Color DisabledColor { get; init; }
+
+        public Color LinkColor { get; init; }
+
+        public Color LinkHoverColor { get; init; }
     }
 }

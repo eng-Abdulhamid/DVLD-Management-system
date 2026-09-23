@@ -1,17 +1,27 @@
-﻿using DVLD.PL.Global;
-
-namespace DVLD.PL.Theme
+﻿namespace DVLD.PL.ControlsTheme
 {
-    public static class FormTheme
+    public sealed class FormTheme
     {
-        public static void ApplyStandardFormTheme(this BaseForm frm)
-        {
-            if (frm == null)
-                return;
+        public Color Background { get; init; }
 
-            frm.BackColor = ThemeManager.Current.Background;
-            frm.ForeColor = ThemeManager.Current.TextPrimary;
-            frm.CustomBorderColor = ThemeManager.Current.Primary;
-        }
+        public Color Foreground { get; init; }
+
+        public Color BorderColor { get; init; }
+
+        public int BorderSize { get; init; }
+
+        public Color HeaderBackground { get; init; }
+
+        public Color HeaderForeground { get; init; }
+
+        public Color HeaderBorderColor { get; init; }
+
+        public Color CloseButtonHoverColor { get; init; }
+
+        public Color CloseButtonPressedColor { get; init; }
+
+        public Color WindowControlHoverColor { get; init; }
+
+        public Color WindowControlPressedColor { get; init; }
     }
 }

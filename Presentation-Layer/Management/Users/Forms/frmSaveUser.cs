@@ -68,7 +68,7 @@ namespace DVLD.PL.UsersManagement
             {
                 if (await _userService.IsPersonLinkedToUserAsync(ctrlPersonCard1.PersonID))
                 {
-                    NotificationTheme.ShowWarningToast("This person is already linked to an account.");
+                    //NotificationTheme.ShowWarningToast("This person is already linked to an account.");
                     ctrlPersonCard1.ResetCard();
                     SelectedPersonId = -1;
                     return;
@@ -89,7 +89,7 @@ namespace DVLD.PL.UsersManagement
             {
                 if (await _userService.IsPersonLinkedToUserAsync(personId))
                 {
-                    NotificationTheme.ShowWarningToast("This person already has an associated user account.");
+                    //NotificationTheme.ShowWarningToast("This person already has an associated user account.");
                     return;
                 }
 
@@ -130,13 +130,13 @@ namespace DVLD.PL.UsersManagement
         {
             if (SelectedPersonId <= 0)
             {
-                NotificationTheme.ShowWarningToast("Please select a valid person first.");
+                ////NotificationTheme.ShowWarningToast("Please select a valid person first.");
                 return;
             }
 
             tcWizard.SelectedTab = tpLoginInfo;
             btnPrev.Enabled = true;
-            btnPrev.ApplySecondaryStyle();
+            btnPrev.ApplySecondary();
             btnNext.Visible = false;
         }
         private void HandlePreviousButtonEvent_Clicked(object? sender, EventArgs e)
@@ -170,7 +170,7 @@ namespace DVLD.PL.UsersManagement
         {
             tcWizard.SelectedTab = tpPersonSelection;
             btnSave.Enabled = false;
-            btnSave.ApplyDisabledStyle();
+            btnSave.ApplyDisabled();
             lnkEditPerson.Visible = false;
 
             ctrlInputPassword.Visible = true;
@@ -191,7 +191,7 @@ namespace DVLD.PL.UsersManagement
             var result = await _userService.GetByIdAsync(_userId);
             if (!result.IsSuccess || result.Data == null)
             {
-                NotificationTheme.ShowErrorToast("User record not found.");
+                //NotificationTheme.ShowErrorToast("User record not found.");
                 this.Close();
                 return;
             }
@@ -208,7 +208,7 @@ namespace DVLD.PL.UsersManagement
             tcWizard.SelectedTab = tpLoginInfo;
             btnNext.Visible = false;
             btnSave.Enabled = true;
-            btnSave.ApplyPrimaryStyle();
+            btnSave.ApplyPrimary();
         }
         #region Perform Save Operations
         private async Task PerformSaveAsync()
@@ -227,7 +227,7 @@ namespace DVLD.PL.UsersManagement
         {
             if (!ValidateRequiredField(txtUserName))
             {
-                NotificationTheme.ShowErrorToast($"Please enter your user name.", "Validation Error");
+                //NotificationTheme.ShowErrorToast($"Please enter your user name.", "Validation Error");
                 return false;
             }
             return true;
@@ -275,13 +275,13 @@ namespace DVLD.PL.UsersManagement
 
             if (result.IsSuccess)
             {
-                NotificationTheme.ShowSuccessToast("User registered successfully.");
+                //NotificationTheme.ShowSuccessToast("User registered successfully.");
                 UserSaved?.Invoke(result.Data);
                 this.Close();
             }
             else
             {
-                NotificationTheme.ShowWarningToast(result.Message ?? "Failed to save user.", "Registration Failed");
+                //NotificationTheme.ShowWarningToast(result.Message ?? "Failed to save user.", "Registration Failed");
             }
 
         }
@@ -307,13 +307,13 @@ namespace DVLD.PL.UsersManagement
                         UserName = updatedDto.UserName
                     };
                 }
-                NotificationTheme.ShowSuccessToast("User updated successfully.");
+                //NotificationTheme.ShowSuccessToast("User updated successfully.");
                 UserSaved?.Invoke(_userId);
                 this.Close();
             }
             else
             {
-                NotificationTheme.ShowWarningToast(result.Message ?? "Failed to update user.", "Update Failed");
+                //NotificationTheme.ShowWarningToast(result.Message ?? "Failed to update user.", "Update Failed");
             }
         }
         #endregion
@@ -335,8 +335,8 @@ namespace DVLD.PL.UsersManagement
         {
             btnSave.Enabled = Enabled;
             btnCancel.Enabled = Enabled;
-            if (Enabled) btnSave.ApplyPrimaryStyle();
-            else btnSave.ApplyDisabledStyle();
+            if (Enabled) btnSave.ApplyPrimary();
+            else btnSave.ApplyDisabled();
         }
         private void btnSelectPerson_Click(object sender, EventArgs e)
         {

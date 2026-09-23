@@ -1,19 +1,21 @@
-﻿namespace DVLD.PL.Theme
+﻿namespace DVLD.PL.ControlsTheme;
+
+public sealed class ComboBoxTheme
 {
-    public static class ComboBoxTheme
-    {
-        public static float FontSize { get; set; } = 9.5F;
+    public Color Background { get; init; }
+    public Color Foreground { get; init; }
+    public Color BorderColor { get; init; }
+    public Color HoverColor { get; init; }
+    public Color FocusColor { get; init; }
 
-        public static void ApplyComboBoxStyle(this ComboBox cb)
-        {
-            if (cb == null)
-                return;
+    public Color DropDownBackground { get; init; }
+    public Color DropDownForeground { get; init; }
+    public Color DropDownHoverBackground { get; init; }
+    public Color DropDownHoverForeground { get; init; }
 
-            cb.FlatStyle = FlatStyle.Flat;
-            cb.Font = CommonTheme.CreateFont(FontSize);
-            cb.ForeColor = ThemeManager.Current.TextPrimary;
-            cb.BackColor = ThemeManager.Current.Surface;
-            cb.DropDownStyle = ComboBoxStyle.DropDownList;
-        }
-    }
+    public Color DisabledBackground { get; init; }
+    public Color DisabledForeground { get; init; }
+
+    public int BorderSize { get; init; }
+    public int BorderRadius { get; init; }
 }

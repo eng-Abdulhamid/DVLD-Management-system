@@ -27,7 +27,7 @@ namespace DVLD.PL.DriversManagement
 
             if (driverInfo == null || driverInfo.PersonID <= 0)
             {
-                NotificationTheme.ShowErrorToast("Valid person context is missing.");
+                //NotificationTheme.ShowErrorToast("Valid person context is missing.");
                 return;
             }
 
@@ -36,7 +36,7 @@ namespace DVLD.PL.DriversManagement
             {
                 // Reload the card to reflect any updated personal details (e.g., Name, Image)
                 await ctrlDriverCard1.LoadDriverInfoAsync(_driverId);
-                NotificationTheme.ShowSuccessToast("Driver's personal information updated successfully.");
+                //NotificationTheme.ShowSuccessToast("Driver's personal information updated successfully.");
             };
 
             frm.ShowDialog(this);
@@ -49,7 +49,7 @@ namespace DVLD.PL.DriversManagement
 
             if (_driverId <= 0)
             {
-                NotificationTheme.ShowErrorToast("Invalid Driver ID provided.");
+                //NotificationTheme.ShowErrorToast("Invalid Driver ID provided.");
                 this.Close();
                 return;
             }
@@ -61,7 +61,7 @@ namespace DVLD.PL.DriversManagement
 
             if (ctrlDriverCard1.SelectedDriverInfo == null)
             {
-                NotificationTheme.ShowWarningToast("Driver not found. The record may have been deleted.");
+                //NotificationTheme.ShowWarningToast("Driver not found. The record may have been deleted.");
                 this.Close();
                 return;
             }

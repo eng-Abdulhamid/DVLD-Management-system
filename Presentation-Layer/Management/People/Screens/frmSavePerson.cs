@@ -32,7 +32,7 @@ namespace DVLD.PL.PeopleManagement
             _mode = (_personId <= 0) ? Mode.AddNew : Mode.UpdateExisting;
             _personService = new PersonService();
 
-            ThemeApplicator.Apply(this);
+            this.ApplyThemeToAll();
             RegisterEvents();
             SetupToolTips();
         }
@@ -107,7 +107,7 @@ namespace DVLD.PL.PeopleManagement
             }
             else
             {
-                NotificationTheme.ShowErrorToast("There is a problem while loading the countries.");
+                //NotificationTheme.ShowErrorToast("There is a problem while loading the countries.");
                 this.Close();
             }
         }
@@ -117,7 +117,7 @@ namespace DVLD.PL.PeopleManagement
 
             if (!result.IsSuccess || result.Data == null)
             {
-                NotificationTheme.ShowErrorToast("Failed to load person data.");
+                //NotificationTheme.ShowErrorToast("Failed to load person data.");
                 this.Close();
                 return;
             }
@@ -264,13 +264,13 @@ namespace DVLD.PL.PeopleManagement
 
             if (result.IsSuccess && result.Data > 0)
             {
-                NotificationTheme.ShowSuccessToast("Person added successfully.");
+                //NotificationTheme.ShowSuccessToast("Person added successfully.");
                 PersonSaved?.Invoke(result.Data);
                 this.Close();
             }
             else
             {
-                NotificationTheme.ShowWarningToast(result.Message, "Save Failed");
+                //NotificationTheme.ShowWarningToast(result.Message, "Save Failed");
             }
 
         }
@@ -300,13 +300,13 @@ namespace DVLD.PL.PeopleManagement
 
             if (result.IsSuccess)
             {
-                NotificationTheme.ShowSuccessToast("Person updated successfully.");
+                //NotificationTheme.ShowSuccessToast("Person updated successfully.");
                 PersonSaved?.Invoke(_personId);
                 this.Close();
             }
             else
             {
-                NotificationTheme.ShowWarningToast(result.Message, "Update Failed");
+                //NotificationTheme.ShowWarningToast(result.Message, "Update Failed");
             }
         }
         

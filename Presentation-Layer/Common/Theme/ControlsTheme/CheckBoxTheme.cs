@@ -1,27 +1,39 @@
-﻿using CustomizeControls;
-namespace DVLD.PL.Theme
+﻿namespace DVLD.PL.ControlsTheme
 {
-    public static class CheckBoxTheme
+    public sealed class CheckBoxTheme
     {
-        public static void ApplyCheckBoxStyle(this NCheckBox chk)
-        {
-            if (chk == null)
-                return;
+        public Color BoxBackground { get; init; }
 
-            var colors = ThemeManager.Current;
+        public Color BoxBorder { get; init; }
 
-            chk.CheckedColor = colors.Primary;
-            chk.HoverBorderColor = colors.Primary;
+        public Color CheckedColor { get; init; }
 
-            chk.BoxBorderColor = colors.Border;
-            chk.BoxBackColor = colors.Surface;
+        public Color HoverBorderColor { get; init; }
 
-            chk.CheckMarkColor = Color.White;
+        public Color DisabledColor { get; init; }
 
-            chk.ForeColor = colors.TextPrimary;
-            chk.Cursor = Cursors.Hand;
+        public Color CheckMarkColor { get; init; }
 
-            chk.EnableAnimation = CommonTheme.EnableSystemAnimations;
-        }
+        public Color DisabledTextColor { get; init; }
+
+        public Color SwitchOffTrackColor { get; init; }
+
+        public Color SwitchThumbColor { get; init; }
+
+        public Color TextColor { get; init; }
+
+        public float CheckThickness { get; init; }
+
+        public int BorderRadius { get; init; }
+
+        public int BorderSize { get; init; }
+
+        public bool EnableAnimation { get; init; }
+
+        public int AnimationSpeed { get; init; }
+
+        public bool EnableRipple { get; init; }
+
+        public Color RippleColor { get; init; }
     }
 }

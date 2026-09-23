@@ -26,7 +26,7 @@ namespace DVLD.PL.UsersManagement
             UIUtility.SetupPasswordVisibility(txtConfirmPassword);
 
             UpdateCriteria();
-            ThemeApplicator.Apply(this);
+            this.ApplyThemeToAll();
 
             txtNewPassword.ShowClearButton = false;
             txtConfirmPassword.ShowClearButton = false;
@@ -34,9 +34,9 @@ namespace DVLD.PL.UsersManagement
             ThemeManager.ThemeChanged += ThemeManager_ThemeChanged;
         }
 
-        private void ThemeManager_ThemeChanged(object? sender, ThemeManager.ModeEventsArgs e)
+        private void ThemeManager_ThemeChanged(object? sender, EventArgs e)
         {
-            ThemeApplicator.Apply(this);
+            this.ApplyThemeToAll();
             txtNewPassword.ShowClearButton = false;
             txtConfirmPassword.ShowClearButton = false;
             UpdateCriteria();
@@ -331,12 +331,12 @@ namespace DVLD.PL.UsersManagement
             if (isMet)
             {
                 pictureBox.Image = Resources._checked;
-                label.ApplyStatusBadge(StatusLabelStyler.Success, label.Text);
+                //label.ApplyTheme(StatusLabelStyler.Success, label.Text);
             }
             else
             {
                 pictureBox.Image = Resources.unChecked;
-                label.ApplyStatusBadge(StatusLabelStyler.Danger, label.Text);
+                //label.ApplyStatusBadge(StatusLabelStyler.Danger, label.Text);
             }
         }
 
@@ -348,9 +348,9 @@ namespace DVLD.PL.UsersManagement
             control.Focus();
             control.Shake();
 
-            NotificationTheme.ShowErrorToast(
-                message,
-                "Validation Error");
+            ////NotificationTheme.ShowErrorToast(
+            //    message,
+            //    "Validation Error");
         }
 
         private void ClearErrors()

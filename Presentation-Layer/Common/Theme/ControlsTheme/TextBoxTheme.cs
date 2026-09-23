@@ -1,36 +1,28 @@
-﻿using CustomizeControls;
-namespace DVLD.PL.Theme
+﻿namespace DVLD.PL.ControlsTheme;
+
+public sealed class TextBoxTheme
 {
-    public static class TextBoxTheme
-    {
-        public static float FontSize { get; set; } = 10F;
+    public Color Background { get; init; }
+    public Color DisabledBackground { get; init; }
+    public Color BorderColor { get; init; }
+    public Color FocusBorderColor { get; init; }
+    public Color DisabledBorderColor { get; init; }
+    public Color ErrorBorderColor { get; init; }
+    public Color TextColor { get; init; }
+    public Color PlaceholderColor { get; init; }
 
-        public static void ApplyTextBoxStyle(this NTextBox txt)
-        {
-            if (txt == null)
-                return;
+    public int BorderRadius { get; init; }
+    public int BorderSize { get; init; }
 
-            var colors = ThemeManager.Current;
+    public bool EnableIconTinting { get; init; }
+    public Color IconColor { get; init; }
+    public Color HoverIconColor { get; init; }
 
-            txt.BorderRadius = CommonTheme.DefaultBorderRadius;
-            txt.BorderSize = 1;
+    public Color ClearButtonColor { get; init; }
+    public Color ClearButtonHoverColor { get; init; }
 
-            txt.BorderColor = colors.Border;
-            txt.BorderFocusColor = colors.Primary;
-
-            txt.FillColor = colors.Surface;
-
-            txt.Font = CommonTheme.CreateFont(FontSize);
-            txt.ForeColor = colors.TextPrimary;
-            txt.PlaceholderColor = colors.TextMuted;
-
-            txt.ErrorBorderColor = colors.Danger;
-
-            txt.ShowClearButton = true;
-
-            txt.EnableIconTinting = true;
-            txt.IconColor = colors.TextMuted;
-            txt.HoverIconColor = colors.TextPrimary;
-        }
-    }
+    public Color SuggestBackground { get; init; }
+    public Color SuggestTextColor { get; init; }
+    public Color SuggestHoverColor { get; init; }
+    public Color SuggestBorderColor { get; init; }
 }
